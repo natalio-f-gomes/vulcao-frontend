@@ -1,0 +1,97 @@
+/* ── Cart layout ───────────────────────────────────────────── */
+.cart-content {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.cart-items-panel {
+  flex: 2;
+  min-width: 0; /* prevents flex blowout */
+}
+
+.cart-summary-panel {
+  flex: 1;
+  min-width: 260px;
+  position: sticky;
+  top: 1.5rem;   /* summary stays visible while scrolling items */
+}
+
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border, #eee);
+}
+
+.cart-item-thumb  { font-size: 2.2rem; min-width: 3rem; text-align: center; }
+.cart-item-info   { flex: 1; min-width: 0; }
+.cart-item-name   { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-unit   { font-size: 0.85rem; }
+.cart-item-qty    { display: flex; align-items: center; gap: 0.5rem; }
+.cart-item-total  { min-width: 5rem; text-align: right; font-weight: 600; }
+
+.cart-qty-btn     { padding: 0.2rem 0.65rem; }
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-total {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+/* ── Tablet: stack panels ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .cart-content {
+    flex-direction: column;
+  }
+
+  .cart-summary-panel {
+    position: static; /* un-stick on small screens */
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ── Mobile: compress item rows ────────────────────────────── */
+@media (max-width: 600px) {
+  .profile-page {
+    flex-direction: column; /* sidebar above content */
+  }
+
+  .profile-sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .cart-item-row {
+    flex-wrap: wrap;
+  }
+
+  .cart-item-thumb {
+    display: none; /* save space on tiny screens */
+  }
+
+  .cart-item-total {
+    min-width: auto;
+  }
+}
