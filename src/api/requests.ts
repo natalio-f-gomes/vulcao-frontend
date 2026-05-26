@@ -1,7 +1,7 @@
 import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
-const BACKEND_URL = "api"
+const BACKEND_URL = "/api"
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
   return match ? decodeURIComponent(match[2]) : null;
@@ -97,7 +97,7 @@ async function handleUserRequests(
 
 
 export async function getUserProfileData() {
-  const response = await fetchAPIWithCredentials("/v1/user/get/my-profile"); // Adjust endpoint to your actual path
+  const response = await fetchAPIWithCredentials("/v1/user/get/my-profile"); 
   
   if (!response.ok) {
     console.log(`Server returned status code ${response.status}`);

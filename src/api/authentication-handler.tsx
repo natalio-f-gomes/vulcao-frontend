@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkSession();
   }, []);
 
-      console.log(`Entity in localstorage: ${localStorage.getItem("active_role")}`)
+    console.log(`Entity in localstorage: ${localStorage.getItem("active_role")}`) 
     console.log(`Entity in entity field: ${entity}`)
   return (
     <AuthenticationContext.Provider
