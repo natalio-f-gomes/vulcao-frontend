@@ -47,6 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    
       try {
         const response = await fetchAPIWithCredentials(`/api/v1/${savedRole}/get/my-profile`);
+        console.log(`Response Getting profile: ${response}`)
         if (response.ok) {
             setEntity(savedRole)
         }
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
       console.log(`Entity in localstorage: ${localStorage.getItem("active_role")}`)
-    console.log(`Entity in entity foield: ${entity}`)
+    console.log(`Entity in entity field: ${entity}`)
   return (
     <AuthenticationContext.Provider
       value={{ isEntityLoggedIn: !!entity, entityType: entity, isLoading, login, logoutHandler }}

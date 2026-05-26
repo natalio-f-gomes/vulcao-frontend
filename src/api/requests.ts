@@ -2,13 +2,19 @@ import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
 const BACKEND_URL = "api"
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  return match ? decodeURIComponent(match[2]) : null;
+}
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
+     const csrfToken = getCookie("XSRF-TOKEN");
     return await fetch(`${BACKEND_URL}${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
+              ...(csrfToken ? { "X-XSRF-TOKEN": csrfToken } : {}),
             ...options.headers
         }
 
