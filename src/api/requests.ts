@@ -108,8 +108,8 @@ export async function getUserProfileData() {
 }
 
 
-export async function updateUserProfile(username: string,userProfile: {firstName: string, lastName: string}){
-    const response = await fetchAPIWithCredentials(`/v1/user/update/${username}/profile`,
+export async function updateUserProfile(user_id: string,userProfile: {firstName: string, lastName: string}){
+    const response = await fetchAPIWithCredentials(`/v1/user/update/${user_id}/profile`,
          {method: "PUT", body: JSON.stringify(userProfile)})
     return response;
 

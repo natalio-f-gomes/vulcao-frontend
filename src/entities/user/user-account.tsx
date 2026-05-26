@@ -107,7 +107,7 @@ function GetUserAccountPage() {
     try {
       if (section === "personal") {
         dataToUpdate = { firstName: formData.firstName, lastName: formData.lastName };
-        const response = await updateUserProfile(user.username, dataToUpdate);
+        const response = await updateUserProfile(user.id, dataToUpdate);
         
         if (response.status === 200) {
           setUserProfile({ firstName: formData.firstName, lastName: formData.lastName });
