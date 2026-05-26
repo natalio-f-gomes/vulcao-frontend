@@ -115,15 +115,15 @@ export async function updateUserProfile(user_id: string,userProfile: {firstName:
 
 }
 
-export async function updateUserContact(username: string, userContact: {email: string, phoneNumber: string}){
-    const response =  await fetchAPIWithCredentials(`/v1/user/update/${username}/contact`,
+export async function updateUserContact(user_id: string, userContact: {email: string, phoneNumber: string}){
+    const response =  await fetchAPIWithCredentials(`/v1/user/update/${user_id}/contact`,
         {method: "PUT", body: JSON.stringify(userContact)})
     return response;
       
 }
 
-export async function updateUserAddress(username: string, userAddress: AddressModel){
-   const response =await fetchAPIWithCredentials(`/v1/user/update/${username}/address`, {method: "PUT", body: JSON.stringify(userAddress)})
+export async function updateUserAddress(user_id: string, userAddress: AddressModel){
+   const response =await fetchAPIWithCredentials(`/v1/user/update/${user_id}/address`, {method: "PUT", body: JSON.stringify(userAddress)})
     return response;
        
 }

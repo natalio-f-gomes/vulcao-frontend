@@ -120,7 +120,7 @@ function GetUserAccountPage() {
 
       } else if (section === "contact") {
         dataToUpdate = { email: formData.email, phoneNumber: formData.phoneNumber };
-        const response = await updateUserContact(user.username, dataToUpdate);
+        const response = await updateUserContact(user.id, dataToUpdate);
         
         if (response.status === 200) {
           setUserContact({ email: formData.email, phoneNumber: formData.phoneNumber });
@@ -139,7 +139,7 @@ function GetUserAccountPage() {
           postalCode: formData.postalCode,
           street:     formData.street,
         };
-        const response = await updateUserAddress(user.username, dataToUpdate);
+        const response = await updateUserAddress(user.id, dataToUpdate);
         
         if (response.status === 200) {
           setUserAddress({ ...dataToUpdate });
