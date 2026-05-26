@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
    
       try {
-        const response = await fetchAPIWithCredentials(`/api/v1/${savedRole}/get/my-profile`);
+        const response = await fetchAPIWithCredentials(`/v1/${savedRole}/get/my-profile`);
         console.log(`Response Getting profile: ${response}`)
         if (response.ok) {
             setEntity(savedRole)
