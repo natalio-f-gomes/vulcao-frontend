@@ -1,7 +1,7 @@
 import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
-const BACKEND_URL = "http://localhost:8080"
+const BACKEND_URL = "api"
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
     return await fetch(`${BACKEND_URL}${endpoint}`,{
@@ -29,7 +29,7 @@ export async function fetchAPIWithoutCredentials(endpoint: string, options: Requ
 }
 
 export async function refreshToken(entity: string){
-    const endpoint: string = `/api/v1/${entity}/refresh`
+    const endpoint: string = `/v1/${entity}/refresh`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST"
@@ -38,7 +38,7 @@ export async function refreshToken(entity: string){
 }
 
 export async function loginUser(userData: UserLoginModel){
-    const endpoint: string = `/api/v1/auth/user/login`
+    const endpoint: string = `/v1/auth/user/login`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST",
@@ -49,7 +49,7 @@ export async function loginUser(userData: UserLoginModel){
 
 
 export async function registerUser(userData: UserRegistrationModel){
-    const endpoint: string = `/api/v1/auth/user/register`
+    const endpoint: string = `/v1/auth/user/register`
     return await fetchAPIWithoutCredentials(
         endpoint,{
         method: "POST",
@@ -60,7 +60,7 @@ export async function registerUser(userData: UserRegistrationModel){
 
 
 export async function logoutEntity(entity: string){
-    const endpoint: string = `/api/v1/auth/${entity}/logout`
+    const endpoint: string = `/v1/auth/${entity}/logout`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST"
@@ -91,7 +91,7 @@ async function handleUserRequests(
 
 
 export async function getUserProfileData() {
-  const response = await fetchAPIWithCredentials("/api/v1/user/get/my-profile"); // Adjust endpoint to your actual path
+  const response = await fetchAPIWithCredentials("/v1/user/get/my-profile"); // Adjust endpoint to your actual path
   
   if (!response.ok) {
     console.log(`Server returned status code ${response.status}`);
@@ -104,21 +104,21 @@ export async function getUserProfileData() {
 
 
 export async function updateUserProfile(username: string,userProfile: {firstName: string, lastName: string}){
-    const response = await fetchAPIWithCredentials(`/api/v1/user/update/${username}/profile`,
+    const response = await fetchAPIWithCredentials(`/v1/user/update/${username}/profile`,
          {method: "PUT", body: JSON.stringify(userProfile)})
     return response;
 
 }
 
 export async function updateUserContact(username: string, userContact: {email: string, phoneNumber: string}){
-    const response =  await fetchAPIWithCredentials(`/api/v1/user/update/${username}/contact`,
+    const response =  await fetchAPIWithCredentials(`/v1/user/update/${username}/contact`,
         {method: "PUT", body: JSON.stringify(userContact)})
     return response;
       
 }
 
 export async function updateUserAddress(username: string, userAddress: AddressModel){
-   const response =await fetchAPIWithCredentials(`/api/v1/user/update/${username}/address`, {method: "PUT", body: JSON.stringify(userAddress)})
+   const response =await fetchAPIWithCredentials(`/v1/user/update/${username}/address`, {method: "PUT", body: JSON.stringify(userAddress)})
     return response;
        
 }
@@ -126,7 +126,7 @@ export async function updateUserAddress(username: string, userAddress: AddressMo
 {/** This section is for employer apis */}
 
 export async function registeremployer(employer: UserRegistrationModel){
-    return await fetchAPIWithoutCredentials(`/api/v1/auth/employer/register`,
+    return await fetchAPIWithoutCredentials(`/v1/auth/employer/register`,
          {method: "POST", body: JSON.stringify(employer)})
     
 
@@ -134,7 +134,7 @@ export async function registeremployer(employer: UserRegistrationModel){
 
 
 export async function loginEmployer(userData: UserLoginModel){
-    const endpoint: string = `/api/v1/auth/employer/login`
+    const endpoint: string = `/v1/auth/employer/login`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST",
@@ -146,7 +146,7 @@ export async function loginEmployer(userData: UserLoginModel){
 
 
 export async function loginStaff(userData: UserLoginModel){
-    const endpoint: string = `/api/v1/auth/staff/login`
+    const endpoint: string = `/v1/auth/staff/login`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST",
@@ -156,7 +156,7 @@ export async function loginStaff(userData: UserLoginModel){
 }
 
 export async function registerCompany(newBusiness: CompanyRegistrationModel ): Promise<Response>{
-    const endpoint: string = `/api/v1/company/register`;
+    const endpoint: string = `/v1/company/register`;
     return await fetchAPIWithCredentials(
         endpoint,{
             method: "POST",
@@ -166,7 +166,7 @@ export async function registerCompany(newBusiness: CompanyRegistrationModel ): P
 }
 
 export async function getEmployerCompanies(){
-    const endpoint:string = `/api/v1/employer/company/get/all`;
+    const endpoint:string = `/v1/employer/company/get/all`;
     return await fetchAPIWithCredentials(
         endpoint,
         {method:"GET"}
@@ -174,7 +174,7 @@ export async function getEmployerCompanies(){
 }
 
 export async function updateCompany(id:string, updatedCompany:CompanyModel) {
-    const endpoint: string = `/api/v1/company/update/${id}`;
+    const endpoint: string = `/v1/company/update/${id}`;
     return await fetchAPIWithCredentials(
         endpoint,
         {method:"PUT", body: JSON.stringify(updatedCompany)},
@@ -183,7 +183,7 @@ export async function updateCompany(id:string, updatedCompany:CompanyModel) {
 }
 
 export async function registerStaff(newstaff:RegisterStaffModel) {
-    const endpoint: string = `/api/v1/auth/staff/register`;
+    const endpoint: string = `/v1/auth/staff/register`;
     return await fetchAPIWithCredentials(
         endpoint,
         {method:"POST", body: JSON.stringify(newstaff)},
@@ -192,7 +192,7 @@ export async function registerStaff(newstaff:RegisterStaffModel) {
 }
 
 export async function getCompanyDashboard(companyID: string) {
-    const endpoint: string = `/api/v1/public/company/get/${companyID}`;
+    const endpoint: string = `/v1/public/company/get/${companyID}`;
     return await fetchAPIWithCredentials(
         endpoint,
         {method:"GET"},
@@ -200,14 +200,14 @@ export async function getCompanyDashboard(companyID: string) {
 }
 
 export async function employerUpdateStaff(staffID: string, staff: RegisterStaffModel){
-    const endpoint: string = `/api/v1/staff/update/${staffID}/byEmployer`
+    const endpoint: string = `/v1/staff/update/${staffID}/byEmployer`
     return await fetchAPIWithCredentials(endpoint,
         {method:"PUT", body: JSON.stringify(staff)}
     )
 }
 
 export async function getCompanyByID(companyID: string){
-    const endpoint: string = `/api/v1/public/company/get/${companyID}`;
+    const endpoint: string = `/v1/public/company/get/${companyID}`;
     return await fetchAPIWithoutCredentials(endpoint, {
         method:"GET"
     })
@@ -218,8 +218,8 @@ export async function addProduct(newProduct: ProductModel){
     const entityType: string | null= localStorage.getItem("active_role");
     let endpoint: string = '';
     switch(entityType){
-        case "staff": endpoint = `/api/v1/offering/product/staff/add`;break;
-        case "employer": endpoint = `/api/v1/offering/product/employer/add`;break;
+        case "staff": endpoint = `/v1/offering/product/staff/add`;break;
+        case "employer": endpoint = `/v1/offering/product/employer/add`;break;
         default: window.location.href = "/"
     }
     
@@ -234,8 +234,8 @@ export async function updateProduct(id:string, product: ProductModel){
       const entityType: string | null= localStorage.getItem("active_role");
     let endpoint: string = '';
     switch(entityType){
-        case "staff": endpoint = `/api/v1/offering/product/staff/update/${id}`;break;
-        case "employer": endpoint = `/api/v1/offering/product/employer/update/${id}`;break;
+        case "staff": endpoint = `/v1/offering/product/staff/update/${id}`;break;
+        case "employer": endpoint = `/v1/offering/product/employer/update/${id}`;break;
         default: window.location.href = "/"
     }
     
@@ -247,7 +247,7 @@ export async function updateProduct(id:string, product: ProductModel){
 
 
 export async function getEmployerProfile(){
-    const endpoint:string = "/api/v1/employer/get/my-profile";
+    const endpoint:string = "/v1/employer/get/my-profile";
     return await fetchAPIWithCredentials(endpoint, {method: "GET"})
 
 }
@@ -255,36 +255,36 @@ export async function getEmployerProfile(){
 
 
 export async function deleteProductById(id:string){
-    const endpoint = `/api/v1/product/delete/${id}`;
+    const endpoint = `/v1/product/delete/${id}`;
     return await fetchAPIWithCredentials(endpoint, {
         method:"DELETE"
     })
 }
 
 export async function getAllProducts() {
-    const endpoint =  "/api/v1/public/offering/product/get/all"
+    const endpoint =  "/v1/public/offering/product/get/all"
     return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
 }
 
 export async function getProductsByCompanyId(companyId: string) {
-    const endpoint =  `/api/v1/public/offering/product/company/${companyId}`
+    const endpoint =  `/v1/public/offering/product/company/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
 export async function getStaffByCompanyId(companyId: string) {
-    const endpoint =  `/api/v1/public/staff/get/all/${companyId}`
+    const endpoint =  `/v1/public/staff/get/all/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
 
 export async function addProductToCart(productId:string, quantity: number) {
-    const endpoint =  `/api/v1/user/cart/add/product/${productId}/${quantity}`
+    const endpoint =  `/v1/user/cart/add/product/${productId}/${quantity}`
     return await fetchAPIWithCredentials(endpoint, {method:"POST"})
 }
 
 
 export async function getStaffProfile(){
-    const endpoint:string = "/api/v1/staff/get/my-profile";
+    const endpoint:string = "/v1/staff/get/my-profile";
     return await fetchAPIWithCredentials(endpoint, {method: "GET"})
 
 }
