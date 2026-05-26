@@ -8,7 +8,7 @@ function getCookie(name: string): string | null {
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
      const csrfToken = getCookie("XSRF-TOKEN");
-    return await fetch(`/api/v1/${endpoint}`,{
+    return await fetch(`/api/${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
@@ -22,7 +22,7 @@ export async function fetchAPIWithCredentials(endpoint: string, options: Request
 
 
 export async function fetchAPIWithoutCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
-    return await fetch(`/api/v1/${endpoint}`,{
+    return await fetch(`/api/${endpoint}`,{
         ...options,
         credentials: "same-origin",
         headers: {
