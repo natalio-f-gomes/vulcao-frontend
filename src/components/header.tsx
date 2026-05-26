@@ -10,7 +10,7 @@ const GetHeader: React.FC = () => {
       <div className="container-fluid px-0 align-items-center">
 
         <Link className="navbar-brand me-4 d-flex align-items-center" to="/">
-          Shop<span>Lane</span>
+          <span> Vulcão</span>
         </Link>
 
         <button className="navbar-toggler ms-auto me-3" type="button"
