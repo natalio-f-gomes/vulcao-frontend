@@ -1,7 +1,6 @@
 import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
-const URL = "http://localhost:8080"
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
@@ -10,8 +9,7 @@ function getCookie(name: string): string | null {
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
      const csrfToken = getCookie("XSRF-TOKEN");
-     console.log("csrfToken ", csrfToken)
-    return await fetch(`${URL}/api${endpoint}`,{
+    return await fetch(`/api${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
@@ -25,7 +23,7 @@ export async function fetchAPIWithCredentials(endpoint: string, options: Request
 
 
 export async function fetchAPIWithoutCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
-    return await fetch(`${URL}/api${endpoint}`,{
+    return await fetch(`/api${endpoint}`,{
         ...options,
         credentials: "same-origin",
         headers: {
@@ -36,14 +34,7 @@ export async function fetchAPIWithoutCredentials(endpoint: string, options: Requ
     });
 }
 
-export async function refreshToken(entity: string){
-    const endpoint: string = `${URL}/v1/${entity}/refresh`
-    return await fetchAPIWithCredentials(
-        endpoint,{
-        method: "POST"
-        }
-    )
-}
+
 
 export async function loginUser(userData: UserLoginModel){
     const endpoint: string = `/v1/auth/user/login`
@@ -74,27 +65,6 @@ export async function logoutEntity(entity: string){
         method: "POST"
         }
     )
-}
-
-
-async function handleUserRequests(
-    endpoint: string,
-    options: RequestInit = {},
-    entity: string | null = null
-):Promise<Response>{
-    const response = await fetchAPIWithCredentials(endpoint, options);
-    if(response.status === 401 && entity){
-        const refresh = await refreshToken(entity);
-        if(refresh){
-            const retryResponse = await fetchAPIWithCredentials(endpoint, options);
-            return retryResponse;
-        }else{
-            window.location.href = "/";
-            alert("You have been logged out. Please try again");
-            throw new Error("Session Expired")
-        }
-    }
-    return response;
 }
 
 
