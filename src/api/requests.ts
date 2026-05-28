@@ -1,6 +1,7 @@
 import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
+const URL = "http://localhost:8080"
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
@@ -9,7 +10,7 @@ function getCookie(name: string): string | null {
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
      const csrfToken = getCookie("XSRF-TOKEN");
-    return await fetch(`/api${endpoint}`,{
+     return await fetch(`/api${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
@@ -66,6 +67,9 @@ export async function logoutEntity(entity: string){
         }
     )
 }
+
+
+
 
 
 export async function getUserProfileData() {

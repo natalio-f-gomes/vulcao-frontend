@@ -59,7 +59,8 @@ function BusinessesView() {
 
   return (
     <>
-      <div className="view-heading"style={{marginTop:"40px"}} >My Businesses</div>
+
+      <div className="view-heading"style={{marginTop:"40px"}}  >My Businesses</div>
       <div className="view-sub">Manage and monitor all your registered businesses.</div>
 
       <div className="quick-actions">

@@ -2,17 +2,20 @@ import { act, useEffect, useState } from "react";
 import { getEmployerProfile } from "../../../api/requests";
 import { StaffModel, EmployerModel } from "../../../api/interfaces";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import EmployerDashSideBar from "./Sidebar";
 import TopBar from "./Topbar";
 import OverviewView from "./views/OverviewView";
-import "../../../css/employer-dashboard.css"
-import "../../../css/side-bar.css"
+import "../../../css/dashboard.css"
 import BusinessesView from "./views/BusinessesView";
 import ProductsView from "./views/ProductsView";
 import OrdersView from "./views/OrdersView";
 import EmployeesView from "./views/EmployeesView";
 import CustomersView from "./views/CustumersView";
 import SettingsView from "./views/SettingsView";
+import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";
+import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
+import GetHeader from "../../../components/header";
+import GetFooterSection from "../../../components/footer";
 
 
 export type EmployerDashView =
@@ -31,8 +34,14 @@ function EmployerDashboard(){
 
     const navigate = useNavigate();
     const [employer, setEmployer] = useState<EmployerModel | null> (null);
-
     const [activeView, setActiveView] = useState<EmployerDashView>("overview")
+    const sidebar = useResponsiveSidebar(768);
+
+      const handleNavigate = (view: EmployerDashView) => {
+        setActiveView(view);
+        sidebar.close();
+      };
+    
 
     useEffect( () => {
     const getEmployer = async () => {
@@ -54,6 +63,7 @@ function EmployerDashboard(){
     }, [navigate]) // runs once on mount
 
    const renderView = () => {
+    if(!employer) return <div>Loading ... </div>
     switch (activeView) {
       case "overview":    return <OverviewView />;
       case "businesses":  return <BusinessesView />;
@@ -64,15 +74,31 @@ function EmployerDashboard(){
       case "settings":    return <SettingsView />;
     }
   };
-    return (
-        <>
-        <Sidebar activeView={activeView} onNavigate={setActiveView} employer={employer}/>
-        <div className="dash-main">
-            <TopBar activeView={activeView} />
-            <div className="view active"> {renderView()}</div>
-        </div>
-        </>
-    )
+   return (
+  <>
+    <div className="profile-page">
+      <ResponsiveSidebar
+        isOpen={sidebar.isOpen}
+        isMobile={sidebar.isMobile}
+        onOpen={sidebar.open}
+        onClose={sidebar.close}
+        ariaLabel="Account navigation"
+      >
+        <EmployerDashSideBar
+          activeView={activeView}
+          onNavigate={handleNavigate}
+          employer={employer!}
+        />
+      </ResponsiveSidebar>
+
+      <main style={{ flex: 1, minWidth: 0 }}>
+        <TopBar activeView={activeView} />
+        <div className="view active">{renderView()}</div>
+      </main>
+    </div>
+     <GetFooterSection/>
+  </>
+);
 }
 
 export default EmployerDashboard;

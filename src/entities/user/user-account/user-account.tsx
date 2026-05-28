@@ -4,8 +4,8 @@ import GetUserDashBoard from "./views/UserDashboard";
 import UserCartView from "./views/UserCartView";
 import UserOrderView from "./views/UserOrderView";
 import UserDashSideBar from "./components/SideBar";
-import { useResponsiveSidebar } from "./components/useResponsiveSidebar";
-import { ResponsiveSidebar } from "./components/ResponsiveSidebar";
+import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";
+import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
 import GetHeader from "../../../components/header";
 import GetFooterSection from "../../../components/footer";
 import {
@@ -18,9 +18,7 @@ import {
   getUserCartItems,
   getUserProfileData,
 } from "../../../api/requests";
-
-// Ensure the layout CSS is bundled. Adjust path if your file lives elsewhere.
-import "../../../css/user-profile.css";
+import "../../../css/dashboard.css";
 
 export type UserDashView = "overview" | "cart" | "orders" | "security";
 

@@ -6,13 +6,7 @@ import ActivityFeed   from "../components/ActivityFeed";
 function OverviewView() {
   return (
     <>
-      <div className="quick-actions" style={{marginTop: "40px"}}>
-        <button className="qa-btn primary"><i className="bi bi-plus-lg"></i> Register Business</button>
-        <button className="qa-btn outline"><i className="bi bi-building"></i> My Businesses</button>
-        <button className="qa-btn outline"><i className="bi bi-download"></i> Export Report</button>
-      </div>
-
-
+   
 
       <KpiGrid />
 
