@@ -29,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try{
             await logoutEntity(entity); // Spring Boot clears the cookie
             localStorage.removeItem("active_role")
+            window.location.href = "/"
         }catch(error){
             console.log("Logout Error")
         }finally{setEntity(null); localStorage.removeItem("active_role")}
