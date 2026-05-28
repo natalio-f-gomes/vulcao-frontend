@@ -33,7 +33,7 @@ function BusinessesView() {
     try {
       const response = await updateCompany(updateData.id!, updateData);
       if (response.ok) {
-         setEditingBusiness(null); // close edit modal
+        setEditingBusiness(null); // close edit modal
         await loadCompanies();
       }if(response.status === 400){
         alert("There was a problem with your request, please ensure this company name is not being used.")

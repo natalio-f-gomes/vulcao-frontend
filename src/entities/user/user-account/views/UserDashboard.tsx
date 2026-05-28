@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import GetHeader from "../../components/header";
-import GetFooterSection from "../../components/footer";
-import { UserProfileModel, AddressModel} from "../../api/interfaces";
-import { getUserProfileData, updateUserAddress, updateUserProfile , updateUserContact } from "../../api/requests";
-import { useUserAuthManager } from "../../api/authentication-handler";
-import { Link, useNavigate } from "react-router-dom";
+import { UserProfileModel, AddressModel } from "../../../../api/interfaces";
+import {
+  getUserProfileData, 
+  updateUserAddress,
+  updateUserProfile,
+  updateUserContact } from "../../../../api/requests";
+import { useUserAuthManager } from "../../../../api/authentication-handler";
+import { CartItem } from "../../../../api/interfaces";
+import {  useNavigate } from "react-router-dom";
 
 
 interface UserProfile {
@@ -31,7 +34,9 @@ interface FormData {
   username:     string;
 }
 
-function GetUserAccountPage() {
+
+
+function GetUserDashBoard() {
   const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
   const navigate = useNavigate();
 
@@ -40,7 +45,9 @@ function GetUserAccountPage() {
   const [userContact, setUserContact]       = useState<UserContact>({email: "", phoneNumber:""});
   const [userAddress, setUserAddress]       = useState<AddressModel>({island: "", city:"", zone:"", street:"", postalCode:""});
   const [loading, setLoading]               = useState<boolean>(true);
+  const [userCart, setUserCart] = useState<CartItem[]>([]);
   const [error, setError]                   = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<string>("");
   const [editingSection, setEditingSection] = useState<string | null>(null); // which section is open
   const [formData, setFormData]             = useState<FormData>({
     firstName:   "",
@@ -55,9 +62,12 @@ function GetUserAccountPage() {
     username:    "",
   });
 
+
+
   // ── Redirect if not logged in (@PreAuthorize equivalent) ──────────────────
   useEffect(() => {
     if (!isEntityLoggedIn) navigate("/user-login");
+    
   }, [isEntityLoggedIn]);
 
   // ── Fetch profile on mount (@PostConstruct equivalent) ────────────────────
@@ -81,7 +91,9 @@ function GetUserAccountPage() {
       })
       .catch((err) => setError(err.message || "Failed to load profile"))
       .finally(() => setLoading(false));
+
   }, []);
+
 
   // ── Generic input handler — works for ALL fields ───────────────────────────
   // id format is "inp-fieldName" so we strip the prefix to get the key
@@ -173,52 +185,18 @@ function GetUserAccountPage() {
 
   return (
     <div>
-      <GetHeader />
-      <div className="profile-page">
 
-        {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-        <aside className="profile-sidebar">
-          <div className="avatar-ring">
-            <i className="bi bi-person"></i>
-          </div>
-          <p className="sidebar-name">{user.username || "Guest"}</p>
-          <p className="sidebar-id">ID: {user.id || "N/A"}</p>
-          <div className="sidebar-divider"></div>
 
-          <nav className="sidebar-nav">
-            <a href="#section-personal" className="sidebar-nav-item active">
-              <i className="bi bi-person"></i> Personal Info
-            </a>
-            <a href="#section-contact" className="sidebar-nav-item">
-              <i className="bi bi-envelope"></i> Contact
-            </a>
-            <a href="#section-address" className="sidebar-nav-item">
-              <i className="bi bi-geo-alt"></i> Address
-            </a>
-            <Link to="/user-cart" className="sidebar-nav-item">
-              <i className="bi bi-cart-fill"></i> Cart
-            </Link>
-            <a href="#section-contact" className="sidebar-nav-item">
-              <i className="bi bi-bag-fill"></i> Orders
-            </a>
-            <a href="#section-security" className="sidebar-nav-item">
-              <i className="bi bi-shield-lock"></i> Security
-            </a>
-          </nav>
+        
 
-          <div className="sidebar-logout">
-            <button className="btn-logout" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right"></i> Sign Out
-            </button>
-          </div>
-        </aside>
 
-        {/* ── Main Content ─────────────────────────────────────────────────── */}
         <main className="profile-main">
           <div className="page-header">
             <p className="page-eyebrow">Account</p>
             <h1 className="page-title">My Profile</h1>
           </div>
+
+        
 
           {/* ── Personal Info ──────────────────────────────────────────────── */}
           <div className="profile-section" id="section-personal">
@@ -369,7 +347,7 @@ function GetUserAccountPage() {
                 className={`btn-edit ${isEditing("security") ? "editing" : ""}`}
                 onClick={() => isEditing("security") ? cancelEditing() : startEditing("security")}
               >
-                <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancel" : "Change Credentials"}
+                <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancel" : "Edit"}
               </button>
             </div>
 
@@ -399,11 +377,12 @@ function GetUserAccountPage() {
             )}
           </div>
 
+         
+
         </main>
-      </div>
-      <GetFooterSection />
+ 
     </div>
   );
 }
 
-export default GetUserAccountPage;
+export default GetUserDashBoard;

@@ -1,5 +1,5 @@
-import { createContext, useState, useContext, useEffect,useRef, ReactNode} from "react"
-import { refreshToken, logoutEntity, fetchAPIWithCredentials, loginUser} from "./requests";
+import { createContext, useState, useContext, useEffect, ReactNode} from "react"
+import { logoutEntity, fetchAPIWithCredentials } from "./requests";
 
 
 type Entity = "user" | "staff" | "employer" | "admin" | null

@@ -25,7 +25,7 @@ function Sidebar({activeView, onNavigate, employer}: SidebarParameters){
      return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <a className="brand-logo" href="/">Shop<span>Lane</span></a>
+        <a className="brand-logo" href="/"><span>Vulcão</span></a>
         <div className="brand-sub">Business Dashboard</div>
       </div>
 
@@ -81,7 +81,3 @@ function Sidebar({activeView, onNavigate, employer}: SidebarParameters){
 }
 
 export default Sidebar;
-
-function logoutHandler() {
-  throw new Error("Function not implemented.");
-}

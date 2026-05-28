@@ -1,0 +1,111 @@
+/* ============================================================
+   RESPONSIVE SIDEBAR — drop-in drawer behavior
+   All selectors scoped to .rs-* so this file cannot leak.
+   ============================================================ */
+
+.rs-sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile drawer mode */
+.rs-sidebar--mobile {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: #ffffff;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.rs-sidebar--mobile.rs-sidebar--left  { left: 0;  transform: translateX(-100%); }
+.rs-sidebar--mobile.rs-sidebar--right { right: 0; transform: translateX(100%); }
+.rs-sidebar--mobile.rs-sidebar--open  { transform: translateX(0); }
+
+/* Backdrop */
+.rs-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.rs-backdrop--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Floating hamburger toggle */
+.rs-toggle {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.rs-toggle:hover  { background: #f7f6f3; }
+.rs-toggle:active { transform: scale(0.95); }
+
+/* Notch-safe insets */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .rs-toggle {
+    top:  calc(12px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .rs-sidebar,
+  .rs-backdrop,
+  .rs-toggle { transition: none; }
+}
+
+/* ============================================================
+   Sidebar nav items rendered inside the drawer.
+   Overrides uppercase/letter-spacing that clips text in narrow widths.
+   ============================================================ */
+.rs-sidebar .sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.25rem;
+  overflow: visible;
+}
+
+.rs-sidebar .sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.rs-sidebar .sidebar-nav-item i {
+  flex-shrink: 0;
+}

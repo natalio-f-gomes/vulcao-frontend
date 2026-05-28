@@ -1,3 +1,4 @@
+import { OfferingType } from "./categories";
 
 export interface UserLoginModel{
   username: string,
@@ -384,3 +385,16 @@ export interface CompanyDashboardData {
   staffList: StaffModel[];
 }
 
+export interface CartItem{
+  id: string,
+  quantity: number,
+  cartId: string,
+  itemId: string,
+  itemType: OfferingType,
+
+}
+
+export interface UserCart{
+  id: string,
+  items: CartItem[]
+}

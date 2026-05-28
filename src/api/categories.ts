@@ -241,3 +241,5 @@ export const UNIT_TYPES: string[] = [
   "CRATE", "PALLET", "ROLL", "SLICE", "BLOCK", "STICK", "PORTION", "SERVING", 
   "CONTAINER", "PACKET", "SLEEVE", "STRIP"
 ];
+
+export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONIC"|  "MUSIC";

@@ -8,7 +8,7 @@ import "./css/style.css"
 import UserRegistrationPage from "./entities/user/user-register";
 import GetFooterSection from "./components/footer";
 import UserLoginPage from "./entities/user/user-login"
-import GetUserAccountPage from "./entities/user/user-account";
+import GetUserAccountPage from "./entities/user/user-account/user-account";
 import GetHeroSection from "./components/Hero";
 import GetFeatureSection from "./components/Feature";
 import GetOfferingsSection from "./components/Offerings";

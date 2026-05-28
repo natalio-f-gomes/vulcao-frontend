@@ -1,6 +1,8 @@
 import { use } from "react";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
 
+const URL = "http://localhost:8080"
+
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
   return match ? decodeURIComponent(match[2]) : null;
@@ -8,7 +10,8 @@ function getCookie(name: string): string | null {
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
      const csrfToken = getCookie("XSRF-TOKEN");
-    return await fetch(`/api${endpoint}`,{
+     console.log("csrfToken ", csrfToken)
+    return await fetch(`${URL}/api${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
@@ -22,7 +25,7 @@ export async function fetchAPIWithCredentials(endpoint: string, options: Request
 
 
 export async function fetchAPIWithoutCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
-    return await fetch(`/api${endpoint}`,{
+    return await fetch(`${URL}/api${endpoint}`,{
         ...options,
         credentials: "same-origin",
         headers: {
@@ -34,7 +37,7 @@ export async function fetchAPIWithoutCredentials(endpoint: string, options: Requ
 }
 
 export async function refreshToken(entity: string){
-    const endpoint: string = `/v1/${entity}/refresh`
+    const endpoint: string = `${URL}/v1/${entity}/refresh`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST"
@@ -276,6 +279,21 @@ export async function getProductsByCompanyId(companyId: string) {
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
+export async function getProductById(id: string) {
+    const endpoint =  `/v1/public/offering/product/get/${id}`
+    return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+
+export async function getMovieById(id: string) {
+    const endpoint =  `/v1/public/offering/movie/get/${id}`
+    return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+
+export async function getBookById(id: string) {
+    const endpoint =  `/v1/public/offering/book/get/${id}`
+    return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+
 export async function getStaffByCompanyId(companyId: string) {
     const endpoint =  `/v1/public/staff/get/all/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
@@ -287,9 +305,19 @@ export async function addProductToCart(productId:string, quantity: number) {
     return await fetchAPIWithCredentials(endpoint, {method:"POST"})
 }
 
+export async function decrementCartItemQuantity(productId:string, quantity: number) {
+    const endpoint =  `/v1/user/cart/decrement/product/${productId}/${quantity}`
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT"})
+}
+
 
 export async function getStaffProfile(){
     const endpoint:string = "/v1/staff/get/my-profile";
     return await fetchAPIWithCredentials(endpoint, {method: "GET"})
 
+}
+
+export async function getUserCartItems(userId: string){
+    const endpoint: string = `/v1/user/get/cart/${userId}`;
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
