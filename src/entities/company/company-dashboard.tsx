@@ -12,6 +12,7 @@ import GetFooterSection from "../../components/footer";
 import CompanyOverviewView from "./views/OverviewView";
 import CompanyHeader from "./CompanyTopBar";
 import CompanyOverView from "./views/OverviewView";
+import CompanyStaffView from "./views/StaffView";
 
 function CompanyDashboard(){
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ function CompanyDashboard(){
           if(!company) return <div>Loading Company ....</div>
           switch (activeView) {
                case "overview": return <CompanyOverView company={company}/>;
-               
+               case "staffview": return <CompanyStaffView company={company}/>
           
                default:
                     return <CompanyOverviewView company={company}/>;

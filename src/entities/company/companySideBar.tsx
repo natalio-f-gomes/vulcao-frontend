@@ -3,7 +3,7 @@ import { CompanyModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import { companyName } from "../../api/global";
 
-export type CompanyView = "overview" | "staff" | "products";
+export type CompanyView = "overview" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
 
 
 interface Parameters {
@@ -147,44 +147,42 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
           <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
             <i className="bi bi-grid-1x2" /> Dashboard
           </a>
-          <a style={{marginLeft:25}} >
-            <i className="bi bi-people" /> Staff Members
-          </a>
-          <a style={styles.navItem} >
-            <i className="bi bi-person" /> Register Staff
+
+           <a style={itemStyle("staffview")} onClick={() => onNavigate("staffview")}>
+            <i className="bi bi-people" /> Staff Management
           </a>
 
           <div style={styles.sectionLabel} >Offerings</div>
 
-          <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
             <i className="bi bi-box-seam" /> Products
           </a>
-          <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
             <i className="bi bi-box-seam" /> Electronics
           </a>
-          <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <a style={itemStyle("tvShowView")} onClick={() => onNavigate("tvShowView")}>
             <i className="bi bi-box-seam" /> TV Shows
           </a>
-          <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <a style={itemStyle("filmView")} onClick={() => onNavigate("filmView")}>
             <i className="bi bi-box-seam" /> Films
           </a>
-          <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <a style={itemStyle("bookView")} onClick={() => onNavigate("bookView")}>
             <i className="bi bi-box-seam" /> Books
           </a>
 
           <div style={styles.sectionLabel}>Store</div>
-          <a style={itemStyle("products")}>
+          <a style={itemStyle("orderView")}>
             <i className="bi bi-bag-check" /> Orders
           </a>
-          <a  style={itemStyle("products")}>
+          <a  style={itemStyle("customerView")}>
             <i className="bi bi-people" /> Customers
           </a>
-            <a  style={itemStyle("products")}>
+            <a  style={itemStyle("reviewsView")}>
             <i className="bi bi-people" /> Reviews
           </a>
 
           <div style={styles.sectionLabel}>System</div>
-          <a style={itemStyle("products")}>
+          <a style={itemStyle("productView")}>
             <i className="bi bi-gear" /> Settings
           </a>
         </nav>

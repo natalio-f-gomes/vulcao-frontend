@@ -1,3 +1,4 @@
+import { Permissions } from "./interfaces";
 
 export const BUSINESS_CATEGORIES: string[] = [
   // Food & Beverage
@@ -243,3 +244,76 @@ export const UNIT_TYPES: string[] = [
 ];
 
 export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONIC"|  "MUSIC";
+
+
+
+export const ALL_PERMISSIONS: { value: Permissions; label: string; description: string }[] = [
+  // Product Management
+  { 
+    value: "ADD_PRODUCT",  
+    label: "Add Product",  
+    description: "Allows the user to create new product entries in the system." 
+  },
+  { 
+    value: "UPDATE_PRODUCT",    
+    label: "Update Product",    
+    description: "Allows the user to edit existing product details and inventory." 
+  },
+  { 
+    value: "DELETE_PRODUCT", 
+    label: "Delete Product", 
+    description: "Allows the user to permanently remove products from the catalog." 
+  },
+
+  // Employee Management
+  { 
+    value: "ADD_EMPLOYEE",  
+    label: "Add Employee",  
+    description: "Allows the user to register new staff members and assign roles." 
+  },
+  { 
+    value: "UPDATE_EMPLOYEE",   
+    label: "Update Employee",   
+    description: "Allows the user to modify employee profiles and review information." 
+  },
+  { 
+    value: "FIRE_EMPLOYEE",   
+    label: "Terminate Employee",   
+    description: "Allows the user to remove employees from the company roster." 
+  },
+
+  // Company Management
+  { 
+    value: "ADD_COMPANY",   
+    label: "Add Company",   
+    description: "Allows the user to register new companies or subsidiaries." 
+  },
+  { 
+    value: "UPDATE_COMPANY",   
+    label: "Update Company",   
+    description: "Allows the user to edit company profiles and settings." 
+  },
+  { 
+    value: "DELETE_COMPANY",   
+    label: "Delete Company",   
+    description: "Allows the user to remove company entities from the system." 
+  },
+
+  // Service Management
+  { 
+    value: "ADD_SERVICE",   
+    label: "Add Service",   
+    description: "Allows the user to define and offer new services." 
+  },
+  { 
+    value: "UPDATE_SERVICE",   
+    label: "Update Service",   
+    description: "Allows the user to modify existing service details and pricing." 
+  },
+  { 
+    value: "DELETE_SERVICE",   
+    label: "Delete Service",   
+    description: "Allows the user to retire or remove service offerings." 
+  },
+
+];
