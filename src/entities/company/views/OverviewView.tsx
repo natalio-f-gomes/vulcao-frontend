@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AddressModel, CompanyAboutInfo, CompanyContact, CompanyModel } from "../../../api/interfaces";
-import Card from "react-bootstrap/card"
+import Card from "react-bootstrap/Card"
 import Button from 'react-bootstrap/Button';
 import Table  from "react-bootstrap/Table";
 import { useUserAuthManager } from "../../../api/authentication-handler";
