@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CompanyModel, RegisterStaffModel } from "../../../api/interfaces";
-import { ALL_PERMISSIONS } from "../../../api/categories";
-import { Permissions } from "../../../api/interfaces";
-import { registerStaff } from "../../../api/requests";
-import { companyName } from "../../../api/global";
+import { CompanyModel, RegisterStaffModel } from "../../../../api/interfaces";
+import { addressFields, ALL_PERMISSIONS } from "../../../../api/categories";
+import { Permissions } from "../../../../api/interfaces";
+import { registerStaff } from "../../../../api/requests";
+import { companyName } from "../../../../api/global";
+import { hanldeResponseStatus } from "../../views/StaffView";
 interface Parameters{
     isOpen: boolean;
     onClose: ()  => void;
@@ -14,7 +15,6 @@ interface Parameters{
 function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
     const [error, setError] = useState<string | null>(null);
     const [loading,setLoadiong] = useState<boolean>(false);
-    const addressFields = ["island", "city", "zone", "street", "postalCode"];
     const [staff, setStaff] = useState<RegisterStaffModel>({
             username : "",
             firstName:  "",
@@ -58,28 +58,15 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         event.preventDefault();
         setError(null);
         setLoadiong(true);
-        try{
-            const response = await registerStaff(staff);
-            console.log("Response Registering Staff: ", response)
-            if(!response.ok){
-                alert("There was an issue with your request");
-            }else if(response.status === 201){
-                alert("Staff Successfylly Registered")
-                onSuccess();
-                onClose();
-            }else if(response.status === 409 ){
-                alert("Please choose a different email and/or username")
-            }else if(response.status === 400){
-                alert("Please ensure that all fields are valid")
-            }else{
-                alert("There was an unexpected error: ")
-                console.log(response)
-            }
-        }catch(exception){
-            setError(`Staff Registration Failed ${exception}`)
-            console.log("An exception occured", error);
-
-        }finally{setLoadiong(false)}
+        const response = await registerStaff(staff);
+        console.log("Response Registering Staff: ", response)
+        if(response.status === 201){
+            alert("Staff Successfylly Registered")
+            onSuccess();
+            onClose();
+        }
+        hanldeResponseStatus(response.status);
+        setLoadiong(false)
     
     }
 

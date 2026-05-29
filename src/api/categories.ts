@@ -267,17 +267,17 @@ export const ALL_PERMISSIONS: { value: Permissions; label: string; description: 
 
   // Employee Management
   { 
-    value: "ADD_EMPLOYEE",  
-    label: "Add Employee",  
+    value: "ADD_STAFF",  
+    label: "Add Staff",  
     description: "Allows the user to register new staff members and assign roles." 
   },
   { 
-    value: "UPDATE_EMPLOYEE",   
-    label: "Update Employee",   
+    value: "UPDATE_STAFF",   
+    label: "Update Staff",   
     description: "Allows the user to modify employee profiles and review information." 
   },
   { 
-    value: "FIRE_EMPLOYEE",   
+    value: "FIRE_STAFF",   
     label: "Terminate Employee",   
     description: "Allows the user to remove employees from the company roster." 
   },
@@ -317,3 +317,5 @@ export const ALL_PERMISSIONS: { value: Permissions; label: string; description: 
   },
 
 ];
+
+export const addressFields = ["island", "city", "zone", "street", "postalCode"];

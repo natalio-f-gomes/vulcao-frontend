@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { CompanyModel, RegisterStaffModel, StaffModel } from "../../../api/interfaces";
-import { getStaffByCompanyId, registerStaff } from "../../../api/requests";
-import RegisterStaffModal from "../modals/RegisterStaffModal";
+import { employerUpdateStaff, getStaffByCompanyId, registerStaff } from "../../../api/requests";
+import RegisterStaffModal from "../modals/Staff/RegisterStaffModal";
+import EditStaffModal from "../modals/Staff/EditStaffModal";
+import ViewStaffModal from "../modals/Staff/ViewStaffModal";
 
 interface StaffViewParameters{
     company: CompanyModel
 }
 
+export const hanldeResponseStatus = (status: number)=> {
+    switch(status){
+        case 200: alert("Successgully Updated"); return;
+        case 201: alert("Successgully Registered"); return;
+        case 500: alert("There was a server error"); return;
+        case 403: alert("Access Denied"); return;
+        case 401: alert("You do not have the permissions to do this action"); return;
+        case 409: alert("please choose different email or username"); return;
+        case 202: alert("Accepted"); return;
+        case 400: alert("Please verify the data and ensure to follow the rules"); return;
+    }
+}
+
+
 function CompanyStaffView({company}: StaffViewParameters){
     const [staff, setStaff] = useState<StaffModel[]>([]);
     const [staffToEdit, setStaffToEdit] = useState<RegisterStaffModel| null>(null);
+    const [staffToView, setStaffToView] = useState<StaffModel|null>(null);
     const [showStaffRegisterModal, setShowStaffRegisterModal] = useState<boolean>(false);
-    const addStaff = async (staff: RegisterStaffModel) => {
-        const response = await registerStaff(staff);
-        if(!response.ok){
-            alert("there was an issue registering a new staff")
+
+    const updateStaff = async (staff: RegisterStaffModel) =>{
+        const response = await employerUpdateStaff(staff.id!, staff);
+        console.log(`Staff Update response: ${response}`)
+        if(response.status === 200){
+            setStaffToEdit(null);
+            getStaff();
+            alert("Staff Updated successfully");
             return;
-        }
-        else if(response.status === 200){
-            const data = await response.json();
-            setStaff(data);
-            alert("Staff successfully registered");
-            return;
-        }
-        else if(response.status === 401 || response.status === 403){
-            alert("It seems like you do not have the permissions to add a new staff");
-            return;
-        }
-        else if(response.status === 409){
-            alert("There is an eneity with this same username or email, please choose differen tcredentials!");
-            return;
+        }else{
+            hanldeResponseStatus(response.status);
         }
     }
 
@@ -116,10 +125,10 @@ function CompanyStaffView({company}: StaffViewParameters){
 
                     {/* Action Buttons */}
                     <div className="biz-actions" style={{ width: "100%", marginTop: "15px" }}>
-                    <button className="biz-btn view">
+                    <button className="biz-btn view" onClick={()=> setStaffToView(member)} >
                         <i className="bi bi-eye"></i> View
                     </button>
-                    <button className="biz-btn edit">
+                    <button className="biz-btn edit" onClick={()=> setStaffToEdit(member as RegisterStaffModel)}>
                         <i className="bi bi-pencil"></i> Edit
                     </button>
                     <button className="biz-btn del">
@@ -144,9 +153,27 @@ function CompanyStaffView({company}: StaffViewParameters){
             onSuccess={getStaff}
             company={company}
          />
+         {staffToEdit &&(
+         <EditStaffModal
+            onClose={()=>setStaffToEdit(null)}
+            isOpen={staffToEdit !== null}
+            company={company}
+            staff={staffToEdit!}
+            onSave={updateStaff}
+         />
+         )}
+
+         {staffToView && (
+            <ViewStaffModal
+            onClose={() => setStaffToView(null)}
+            isOpen={staffToView !== null}
+            staff={staffToView}
+            />
+         )}
         </>
         
-    )
+    );
 }
+
 
 export default CompanyStaffView;

@@ -6,7 +6,7 @@ interface Props {
 const styles: Record<string, React.CSSProperties> ={
   overviewHeader: {
     width: "100vh",
-    marginBottom: -75
+    marginBottom: -25
   },
 }
 
