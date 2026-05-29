@@ -398,3 +398,15 @@ export interface UserCart{
   id: string,
   items: CartItem[]
 }
+
+export interface CompanyContact{
+      phoneNumber:string,
+      email:string,
+      faxNumber:string,
+      taxIdNumber:string
+}
+
+export interface CompanyAboutInfo{
+  description: string,
+  status: CompanyStatuses
+}

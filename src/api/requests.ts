@@ -1,5 +1,5 @@
 import { use } from "react";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel, CompanyContact, CompanyAboutInfo } from "./interfaces";
 
 const URL = "http://localhost:8080"
 
@@ -147,6 +147,27 @@ export async function registerCompany(newBusiness: CompanyRegistrationModel ): P
     );
 }
 
+export async function updateCompanyAddress(newAddress: AddressModel, companyId:string ): Promise<Response>{
+    const endpoint: string = `/v1/company/update/address/${companyId}`;
+    return await fetchAPIWithCredentials(
+        endpoint,{
+            method: "PUT",
+            body: JSON.stringify(newAddress)
+        }
+    );
+}
+
+
+export async function updateCompanyContact(newContact: CompanyContact, companyId:string ): Promise<Response>{
+    const endpoint: string = `/v1/company/update/contact/${companyId}`;
+    return await fetchAPIWithCredentials(
+        endpoint,{
+            method: "PUT",
+            body: JSON.stringify(newContact)
+        }
+    );
+}
+
 export async function getEmployerCompanies(){
     const endpoint:string = `/v1/employer/company/get/all`;
     return await fetchAPIWithCredentials(
@@ -160,8 +181,15 @@ export async function updateCompany(id:string, updatedCompany:CompanyModel) {
     return await fetchAPIWithCredentials(
         endpoint,
         {method:"PUT", body: JSON.stringify(updatedCompany)},
-    )
-    
+    )   
+}
+
+export async function updateCompanyAboutInfo(id:string, updatedCompany:CompanyAboutInfo) {
+    const endpoint: string = `/v1/company/update/description/${id}`;
+    return await fetchAPIWithCredentials(
+        endpoint,
+        {method:"PUT", body: JSON.stringify(updatedCompany)},
+    )   
 }
 
 export async function registerStaff(newstaff:RegisterStaffModel) {

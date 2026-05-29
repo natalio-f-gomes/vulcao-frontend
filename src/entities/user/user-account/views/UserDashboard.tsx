@@ -186,17 +186,11 @@ function GetUserDashBoard() {
   return (
     <div>
 
-
-        
-
-
         <main className="profile-main">
           <div className="page-header">
             <p className="page-eyebrow">Account</p>
             <h1 className="page-title">My Profile</h1>
           </div>
-
-        
 
           {/* ── Personal Info ──────────────────────────────────────────────── */}
           <div className="profile-section" id="section-personal">

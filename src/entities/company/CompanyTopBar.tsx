@@ -1,31 +1,34 @@
-// src/pages/Company-Dashboard/CompanyTopBar.tsx
-
 interface Props {
   companyName: string;
   onBack:      () => void;
-  onEdit:      () => void;
 }
 
-function CompanyTopBar({ companyName, onBack, onEdit }: Props) {
+const styles: Record<string, React.CSSProperties> ={
+  overviewHeader: {
+    width: "100vh",
+  },
+}
+
+function CompanyHeader({ companyName, onBack }: Props) {
   return (
-    <div className="topbar">
-      <button className="topbar-back" onClick={onBack}>
-        <i className="bi bi-arrow-left" style={{ fontSize: "13px" }}></i> Back
-      </button>
-      <div className="topbar-divider"></div>
-      <div>
-        <div className="topbar-title">Company Dashboard</div>
-        <div className="topbar-sub">
-          {companyName ? companyName : "Loading..."}
-        </div>
-      </div>
-      <div className="topbar-right">
-        <button className="btn-secondary-custom" onClick={onEdit}>
-          <i className="bi bi-pencil"></i> Edit Company
-        </button>
-      </div>
-    </div>
+    <>
+      <div style={styles.overviewHeader}>
+        <div className="row">
+          <div className="col-8">
+              <div className="page-header">
+                  <p className="page-eyebrow">Company Dashboard</p>
+                  <h1 className="page-title">{companyName}</h1>
+              </div>
+            </div>
+              <div className="col-3 me-2 d-flex justify-content-between align-items-center mb-3" >
+                <button onClick={onBack} className="btn btn-primary mt-4" style={{fontSize:14}}>
+                      <i className="bi bi-arrow-left" ></i> Back
+                </button>
+          </div>
+          </div>
+      </div> 
+    </>
   );
 }
 
-export default CompanyTopBar;
+export default CompanyHeader;
