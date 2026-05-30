@@ -10,7 +10,7 @@ interface Properties {
   onSave:   (updated: RegisterStaffModel) => void;
 }   
 
-function EditStaffModal({isOpen, company, onClose, onSave, staff}:Properties){
+function EditProductModal({isOpen, company, onClose, onSave, staff}:Properties){
     const [staffForm, setStaffForm] = useState<RegisterStaffModel>({
         id: "",
         username : "",
@@ -220,4 +220,4 @@ const handleStaffUpdate = () => {
     </div>
         )
 }
-export default EditStaffModal;
+export default EditProductModal;

@@ -78,7 +78,6 @@ function EditStaffModal({isOpen, company, onClose, onSave, staff}:Properties){
 
 const handleStaffUpdate = () => {
     console.log("Staff data to update: ",JSON.stringify(staffForm))
-   
     onSave(staffForm)
 };
     

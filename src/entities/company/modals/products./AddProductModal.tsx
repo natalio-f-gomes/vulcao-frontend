@@ -12,7 +12,7 @@ interface Parameters{
     company: CompanyModel
 }
 
-function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
+function AddProductModal({isOpen, onClose, onSuccess, company}:Parameters){
     const [error, setError] = useState<string | null>(null);
     const [loading,setLoadiong] = useState<boolean>(false);
     const [staff, setStaff] = useState<RegisterStaffModel>({
@@ -217,4 +217,4 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
 </div>
     )
 }
-export default RegisterStaffModal;
+export default AddProductModal;

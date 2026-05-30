@@ -9,7 +9,7 @@ interface Properties {
   onClose:  () => void;
 }   
 
-function ViewStaffModal({isOpen, onClose, staff}:Properties){
+function EditProductModal({isOpen, onClose, staff}:Properties){
     const [staffForm, setStaffForm] = useState<StaffModel>({
         id: "",
         username : "",
@@ -160,4 +160,4 @@ function ViewStaffModal({isOpen, onClose, staff}:Properties){
     </div>
         )
 }
-export default ViewStaffModal;
+export default EditProductModal;
