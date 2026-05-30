@@ -21,6 +21,7 @@ function EditStaffModal({isOpen, company, onClose, onSave, staff}:Properties){
         hiredAt :  "",
         salary :  0,
         jobTitle:  "",
+        department:"",
         companyId :  company!.id!,
         assignedPermissions: [],
         address:{
@@ -136,6 +137,10 @@ const handleStaffUpdate = () => {
               <div className="m-field">
                 <label className="m-label">Job Title *</label>
                 <input className="m-input" type="text" placeholder="e.g. Cashier" name="jobTitle"  value={staffForm.jobTitle}  onChange={handleInputChange} required/>
+              </div>
+              <div className="m-field">
+                <label className="m-label">Department *</label>
+                <input className="m-input" type="text" placeholder="Meat Department" name="department"  value={staffForm.department}  onChange={handleInputChange}/>
               </div>
     
             </div>

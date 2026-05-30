@@ -24,6 +24,7 @@ function StaffModal({ isOpen, employee, onClose, onSave, company }: Parameters) 
             hiredAt : "",
             salary : 0,
             jobTitle: "",
+            department:"",
             companyId : company.id!,
             assignedPermissions: [],
             address:{
@@ -132,6 +133,7 @@ useEffect(() => {
       salary: 0,
       jobTitle: "",
       companyId: company.id!,
+      department:"",
       assignedPermissions: [],
       address: {
         island: "",
@@ -224,6 +226,11 @@ useEffect(() => {
                 <label className="form-label">Job title <span className="req">*</span></label>
                 <input className="form-control-custom" type="text" name="jobTitle"
                   placeholder="Store Manager" value={staffRegistrationForm.jobTitle} onChange={handleInputChange} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Department <span className="req">*</span></label>
+                <input className="form-control-custom" type="text" name="department"
+                  placeholder="Seafood" value={staffRegistrationForm.department} onChange={handleInputChange} />
               </div>
               <div className="form-group">
                 <label className="form-label">Salary (USD)</label>

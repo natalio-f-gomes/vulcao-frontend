@@ -363,6 +363,7 @@ export interface StaffModel{
     hiredAt : string;
     salary : number;
     jobTitle: string;
+    department: string,
     companyId : string;
     assignedPermissions: Permissions[];
     address: AddressModel;

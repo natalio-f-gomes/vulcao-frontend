@@ -24,6 +24,7 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
             hiredAt :  "",
             salary :  0,
             jobTitle:  "",
+            department:"",
             companyId :  company.id!,
             assignedPermissions: [],
             address:{
@@ -136,6 +137,10 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
           <div className="m-field">
             <label className="m-label">Job Title *</label>
             <input className="m-input" type="text" placeholder="e.g. Cashier" name="jobTitle"  onChange={handleInputChange} />
+          </div>
+           <div className="m-field">
+            <label className="m-label">Department *</label>
+            <input className="m-input" type="text" placeholder="Seafood" name="department"  onChange={handleInputChange} />
           </div>
 
         </div>

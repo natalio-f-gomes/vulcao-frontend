@@ -21,6 +21,7 @@ function ViewStaffModal({isOpen, onClose, staff}:Properties){
         salary :  0,
         jobTitle:  "",
         companyId :  "",
+        department:"",
         assignedPermissions: [],
         address:{
             island: "",
@@ -87,6 +88,10 @@ function ViewStaffModal({isOpen, onClose, staff}:Properties){
               <div className="m-field">
                 <label className="m-label">Job Title *</label>
                 <input className="m-input" type="text"  value={staffForm.jobTitle} readOnly />
+              </div>
+               <div className="m-field">
+                <label className="m-label">Department</label>
+                <input className="m-input" type="text"  value={staffForm.department} readOnly />
               </div>
     
             </div>
