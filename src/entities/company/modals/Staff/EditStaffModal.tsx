@@ -36,7 +36,10 @@ function EditStaffModal({isOpen, company, onClose, onSave, staff}:Properties){
      
         useEffect(()=>{
             if(staff){
-                setStaffForm(staff)
+                setStaffForm({
+                  ...staff,
+                  password:""
+                })
             }
         },[staff]);
         
