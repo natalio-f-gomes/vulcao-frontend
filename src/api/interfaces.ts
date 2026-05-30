@@ -49,7 +49,6 @@ export interface AddProductModel{
     stock:number;
     unitType: UnitTypes
     pricePerUnit:number;
-
     companyId?: string;
     currency: Currency;
     creatorUsername: string;

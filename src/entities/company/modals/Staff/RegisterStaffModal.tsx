@@ -65,8 +65,10 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
             alert("Staff Successfylly Registered")
             onSuccess();
             onClose();
+        }else{
+          hanldeResponseStatus(response.status);
         }
-        hanldeResponseStatus(response.status);
+       
         setLoadiong(false)
     
     }
@@ -100,11 +102,11 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">Username *</label>
-            <input className="m-input" type="text" placeholder="e.g. jsmith" name="username" onChange={handleInputChange} />
+            <input className="m-input" type="text" placeholder="e.g. jsmith" name="username" onChange={handleInputChange} required/>
           </div>
           <div className="m-field">
             <label className="m-label">Password *</label>
-            <input className="m-input" type="password" placeholder="••••••••" name="password"  onChange={handleInputChange} />
+            <input className="m-input" type="password" placeholder="••••••••" name="password"  onChange={handleInputChange} required />
           </div>
         </div>
 
@@ -112,11 +114,11 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">First Name *</label>
-            <input className="m-input" type="text" placeholder="e.g. John" name="firstName"  onChange={handleInputChange} />
+            <input className="m-input" type="text" placeholder="e.g. John" name="firstName"  onChange={handleInputChange} required/>
           </div>
           <div className="m-field">
             <label className="m-label">Last Name *</label>
-            <input className="m-input" type="text" placeholder="e.g. Smith" name="lastName"  onChange={handleInputChange} />
+            <input className="m-input" type="text" placeholder="e.g. Smith" name="lastName"  onChange={handleInputChange} required/>
           </div>
         </div>
 
@@ -124,11 +126,11 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">Email *</label>
-            <input className="m-input" type="email" placeholder="jsmith@example.com" name="email"   onChange={handleInputChange}/>
+            <input className="m-input" type="email" placeholder="jsmith@example.com" name="email"   onChange={handleInputChange} required />
           </div>
           <div className="m-field">
             <label className="m-label">Phone Number</label>
-            <input className="m-input" type="tel" placeholder="+1 (555) 000-0000" name="phoneNumber"  onChange={handleInputChange} />
+            <input className="m-input" type="tel" placeholder="+1 (555) 000-0000" name="phoneNumber"  onChange={handleInputChange} required />
           </div>
         </div>
 
@@ -148,11 +150,11 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">Hired At</label>
-            <input className="m-input" type="date" name="hiredAt"  onChange={handleInputChange}/>
+            <input className="m-input" type="date" name="hiredAt"  onChange={handleInputChange} required/>
           </div>
           <div className="m-field">
             <label className="m-label">Salary</label>
-            <input className="m-input" type="number" placeholder="e.g. 35000" name="salary" onChange={handleInputChange}/>
+            <input className="m-input" type="number" placeholder="e.g. 35000" name="salary" onChange={handleInputChange} required/>
           </div>
         </div>
 
@@ -164,18 +166,18 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">Island</label>
-            <input className="m-input" type="text" placeholder="e.g. Santiago" name="island"  onChange={handleInputChange}/>
+            <input className="m-input" type="text" placeholder="e.g. Santiago" name="island"  onChange={handleInputChange} required/>
           </div>
           <div className="m-field">
             <label className="m-label">City</label>
-            <input className="m-input" type="text" placeholder="e.g. Praia" name="city"  onChange={handleInputChange}/>
+            <input className="m-input" type="text" placeholder="e.g. Praia" name="city"  onChange={handleInputChange} required/>
           </div>
         </div>
         
         <div className="m-row">
           <div className="m-field">
             <label className="m-label">Zone</label>
-            <input className="m-input" type="text" placeholder="e.g. Plateau" name="zone" onChange={handleInputChange} />
+            <input className="m-input" type="text" placeholder="e.g. Plateau" name="zone" onChange={handleInputChange}  required/>
           </div>
           <div className="m-field">
             <label className="m-label">Postal Code</label>

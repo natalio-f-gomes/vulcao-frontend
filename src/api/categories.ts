@@ -36,6 +36,81 @@ export const BUSINESS_CATEGORIES: string[] = [
 ];
 
 
+export const ProductCategories: string[] = [
+  // --- GROCERY & FRESH FOOD ---
+  "FRESH_PRODUCE",
+  "MEAT_POULTRY",
+  "SEAFOOD",
+  "DAIRY_EGGS",
+  "PLANT_BASED",
+  "BAKERY",
+  "FROZEN",
+  "GRAINS_PASTA",
+  "CANNED_JARRED",
+  "OILS_VINEGARS",
+  "SPICES_HERBS",
+  "SNACKS",
+  "CANDY",
+  "BEVERAGES",
+  "DELI_PREPARED",
+  
+  // --- ELECTRONICS & COMPUTERS ---
+  "ELECTRONICS_COMPONENTS",
+  "COMPUTERS_ACCESSORIES",
+  "SMART_HOME_DEVICES",
+  "VIDEO_GAMES_CONSOLES",
+  "AUDIO_HEADPHONES",
+  "CAMERAS_PHOTOGRAPHY",
+  
+  // --- HOME, GARDEN & TOOLS ---
+  "KITCHEN_DINING",
+  "FURNITURE",
+  "BEDDING_BATH",
+  "GARDEN_OUTDOOR",
+  "HOME_IMPROVEMENT_TOOLS",
+  "SMART_LIGHTING",
+  
+  // --- HEALTH, BEAUTY & PERSONAL CARE ---
+  "HEALTH_NUTRITION",
+  "PERSONAL_CARE",
+  "BEAUTY_COSMETICS",
+  "PHARMACY_MEDICAL_SUPPLIES",
+  "VITAMINS_DIETARY_SUPPLEMENTS",
+  
+  // --- FASHION & APPAREL ---
+  "CLOTHING_MENS",
+  "CLOTHING_WOMENS",
+  "CLOTHING_KIDS_BABY",
+  "SHOES",
+  "JEWELRY_WATCHES",
+  "LUGGAGE_TRAVEL_GEAR",
+  
+  // --- BABY & PETS ---
+  "BABY_INFANT_GEAR",
+  "PET_FOOD_SUPPLIES",
+  "PET_TOYS_ACCESSORIES",
+  
+  // --- TOYS, HOBBIES & SPORTS ---
+  "TOYS_GAMES",
+  "COLLECTIBLES",
+  "SPORTS_EQUIPMENT",
+  "OUTDOOR_RECREATION",
+  "BOOKS_MAGAZINES",
+  "MOVIES_MUSIC",
+  
+  // --- AUTOMOTIVE & INDUSTRIAL ---
+  "AUTOMOTIVE_PARTS_ACCESSORIES",
+  "INDUSTRIAL_SCIENTIFIC",
+  "OFFICE_SUPPLIES",
+  
+  // --- HOUSEHOLD & MISC ---
+  "HOUSEHOLD_CLEANING",
+  "PAPER_PLASTIC_PRODUCTS",
+  "GIFT_CARDS",
+  "OTHER"
+]
+
+
 export const PRODUCT_TYPES: string[] = [
   // Fresh Produce
   "FRESH_FRUIT", "FRESH_VEGETABLE", "FRESH_HERB", "SALAD_KIT", "MICROGREENS",
@@ -173,64 +248,7 @@ export const PRODUCT_TYPES: string[] = [
 
 
 export const CURRENCIES: string[] = [
-  // A
-  "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
-  // B
-  "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL",
-  "BSD", "BTN", "BWP", "BYN", "BZD",
-  // C
-  "CAD", "CDF", "CHF", "CLP", "CNY", "COP", "CRC", "CUP", "CVE", "CZK",
-  // D
-  "DJF", "DKK", "DOP", "DZD",
-  // E
-  "EGP", "ERN", "ETB", "EUR",
-  // F
-  "FJD", "FKP",
-  // G
-  "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD",
-  // H
-  "HKD", "HNL", "HRK", "HTG", "HUF",
-  // I
-  "IDR", "ILS", "INR", "IQD", "IRR", "ISK",
-  // J
-  "JMD", "JOD", "JPY",
-  // K
-  "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT",
-  // L
-  "LAK", "LBP", "LKR", "LRD", "LSL", "LYD",
-  // M
-  "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR",
-  "MWK", "MXN", "MYR", "MZN",
-  // N
-  "NAD", "NGN", "NIO", "NOK", "NPR", "NZD",
-  // O
-  "OMR",
-  // P
-  "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG",
-  // Q
-  "QAR",
-  // R
-  "RON", "RSD", "RUB", "RWF",
-  // S
-  "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD",
-  "STN", "SYP", "SZL",
-  // T
-  "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS",
-  // U
-  "UAH", "UGX", "USD", "UYU", "UZS",
-  // V
-  "VES", "VND", "VUV",
-  // W
-  "WST",
-  // X
-  "XAF", "XCD", "XOF", "XPF",
-  // Y
-  "YER",
-  // Z
-  "ZAR", "ZMW", "ZWL",
-  // Cryptocurrencies
-  "BTC", "ETH", "USDT", "USDC", "BNB", "XRP", "ADA", "SOL", "DOT", "DOGE",
-  "LTC", "MATIC"
+  "USD", "CVE", "EUR"
 ];
 
 

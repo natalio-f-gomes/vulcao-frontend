@@ -44,7 +44,7 @@ function ViewStaffModal({isOpen, onClose, staff}:Properties){
             <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
-          <span className="m-head-title">View @{staff?.username}</span>
+          <span className="m-head-title">View @{staff?.username} Account</span>
           <button className="m-close" onClick={()=> onClose()}>&times;</button>
         </div>
     

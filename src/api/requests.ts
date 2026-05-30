@@ -1,7 +1,8 @@
 
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel, CompanyContact, CompanyAboutInfo } from "./interfaces";
 
-const URL = "http://localhost:8080"
+//const URL = "http://localhost:8080"
+const URL = ""
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
@@ -10,7 +11,7 @@ function getCookie(name: string): string | null {
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
      const csrfToken = getCookie("XSRF-TOKEN");
-     return await fetch(`/api${endpoint}`,{
+     return await fetch(`${URL}/api${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
@@ -24,7 +25,7 @@ export async function fetchAPIWithCredentials(endpoint: string, options: Request
 
 
 export async function fetchAPIWithoutCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
-    return await fetch(`/api${endpoint}`,{
+    return await fetch(`${URL}/api${endpoint}`,{
         ...options,
         credentials: "same-origin",
         headers: {
@@ -277,7 +278,7 @@ export async function getAllProducts() {
 }
 
 export async function getProductsByCompanyId(companyId: string) {
-    const endpoint =  `/v1/public/offering/product/company/${companyId}`
+    const endpoint =  `/v1/public/offering/get/product/company/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 

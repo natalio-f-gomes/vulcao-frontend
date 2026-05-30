@@ -11,7 +11,6 @@ interface StaffViewParameters{
 
 export const hanldeResponseStatus = (status: number)=> {
     switch(status){
-        case 200: alert("Successgully Updated"); return;
         case 201: alert("Successgully Registered"); return;
         case 500: alert("There was a server error"); return;
         case 403: alert("Access Denied"); return;
@@ -104,7 +103,8 @@ function CompanyStaffView({company}: StaffViewParameters){
                     <div style={{ marginBottom: "4px" }}><i className="bi bi-envelope" style={{ marginRight: "8px" }}></i>{member.email}</div>
                     <div style={{ marginBottom: "4px" }}><i className="bi bi-telephone" style={{ marginRight: "8px" }}></i>{member.phoneNumber ?? "Not Set"}</div>
                     <div style={{ marginBottom: "4px" }}><i className="bi bi-geo-alt" style={{ marginRight: "8px" }}></i>{member?.address?.island ?? "Island"} - {member?.address?.city ?? "City"} - {member?.address?.zone ?? "Zone"} - {member?.address?.street ?? "Street"} - {member?.address?.postalCode ?? "Code"}</div>
-                    <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>Company ID: #12345</div>
+                    <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>{member.department}</div>
+                    <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>{member.companyId}</div>
                     </div>
 
                     {/* Staff Stats (Salary, Hire Date, Permissions count) */}
@@ -142,11 +142,11 @@ function CompanyStaffView({company}: StaffViewParameters){
             </div>
            
         </div>
-          {/* Add New Staff Card */}
-                <div className="biz-card-new" onClick={()=> setShowStaffRegisterModal(true)}>
-                <i className="bi bi-plus-circle"></i>
-                <span> Register a Staff</span>
-                </div>
+    {/* Add New Staff Card */}
+        <div className="biz-card-new" onClick={()=> setShowStaffRegisterModal(true)}>
+        <i className="bi bi-plus-circle"></i>
+        <span> Register a Staff</span>
+        </div>
         <RegisterStaffModal
             isOpen={showStaffRegisterModal}
             onClose={()=> setShowStaffRegisterModal(false)}
