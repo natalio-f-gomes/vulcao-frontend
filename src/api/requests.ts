@@ -210,7 +210,7 @@ export async function getCompanyDashboard(companyID: string) {
     )
 }
 
-export async function employerUpdateStaff(staffID: string, staff: RegisterStaffModel){
+export async function updateStaff(staffID: string, staff: RegisterStaffModel){
     const endpoint: string = `/v1/staff/update/${staffID}/byEmployer`
     return await fetchAPIWithCredentials(endpoint,
         {method:"PUT", body: JSON.stringify(staff)}
@@ -322,5 +322,27 @@ export async function getStaffProfile(){
 
 export async function getUserCartItems(userId: string){
     const endpoint: string = `/v1/user/get/cart/${userId}`;
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+
+//TODO
+export async function updateStaffProfile(staffId: string, staffProfile:{ firstName: string, lastName: string}){
+    const endpoint: string = `/v1/staff/update/${staffId}/profile`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(staffProfile)})
+}
+
+export async function updateStaffContact(staffId: string, contact: {email:string, phoneNumber:string}){
+     const endpoint: string = `/v1/staff/update/${staffId}/contact`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(contact)})
+}
+
+export async function updateStaffAddress(staffId: string, address: AddressModel){
+    const endpoint: string = `/v1/staff/update/${staffId}/address`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(address)})
+}
+
+export async function updateStaffSecurity(staffId: string, credentials: {username:string, password: string}){
+       const endpoint: string = `/v1/user/get/cart/${staffId}`;
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }

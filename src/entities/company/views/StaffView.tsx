@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CompanyModel, RegisterStaffModel, StaffModel } from "../../../api/interfaces";
-import { employerUpdateStaff, getStaffByCompanyId, registerStaff } from "../../../api/requests";
+import { updateStaff, getStaffByCompanyId, registerStaff } from "../../../api/requests";
 import RegisterStaffModal from "../modals/Staff/RegisterStaffModal";
 import EditStaffModal from "../modals/Staff/EditStaffModal";
 import ViewStaffModal from "../modals/Staff/ViewStaffModal";
@@ -28,8 +28,8 @@ function CompanyStaffView({company}: StaffViewParameters){
     const [staffToView, setStaffToView] = useState<StaffModel|null>(null);
     const [showStaffRegisterModal, setShowStaffRegisterModal] = useState<boolean>(false);
 
-    const updateStaff = async (staff: RegisterStaffModel) =>{
-        const response = await employerUpdateStaff(staff.id!, staff);
+    const updateStaffRequest = async (staff: RegisterStaffModel) =>{
+        const response = await updateStaff(staff.id!, staff);
         console.log(`Staff Update response: ${response}`)
         if(response.status === 200){
             setStaffToEdit(null);
@@ -159,7 +159,7 @@ function CompanyStaffView({company}: StaffViewParameters){
             isOpen={staffToEdit !== null}
             company={company}
             staff={staffToEdit!}
-            onSave={updateStaff}
+            onSave={updateStaffRequest}
          />
          )}
 

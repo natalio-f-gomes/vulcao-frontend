@@ -102,15 +102,15 @@ function ProductView({company}: Paramaters){
             {/* Product Inventory Stats */}
             <div className="biz-stats" style={{ width: "100%" }}>
               <div>
-                <div className="biz-stat-val">{product.stock}</div>
+                <div className="biz-stat-val" style={{fontSize:15}}>{product.stock}</div>
                 <div className="biz-stat-label">Stock ({product.unitType}s)</div>
               </div>
               <div>
-                <div className="biz-stat-val">{product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "YYYY-MM-DD"}</div>
+                <div className="biz-stat-val" style={{fontSize:15}}>{product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "YYYY-MM-DD"}</div>
                 <div className="biz-stat-label">Added On</div>
               </div>
                 <div>
-                <div className="biz-stat-val">{product.creatorUsername}</div>
+                <div className="biz-stat-val" style={{fontSize:15}}>@{product.creatorUsername}</div>
                 <div className="biz-stat-label">Added by</div>
               </div>
             </div>

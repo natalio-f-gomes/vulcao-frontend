@@ -38,7 +38,7 @@ return (
   <div className="m-overlay open">
     <div className="m-box">
       <div className="m-head">
-        <span className="m-head-title">Add a New Product</span>
+        <span className="m-head-title">Product Details</span>
         <button className="m-close" onClick={() => onClose()}>&times;</button>
       </div>
         <div className="m-body">
@@ -105,15 +105,29 @@ return (
           </div>
 
           {/* Meta Data (Hidden or Read-only visual indicators) */}
-          <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
+          <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem", display:'flex'}}>
              <div className="m-field">
                 <label className="m-label">Added By</label>
                 <input className="m-input" type="text" value={`@${product.creatorUsername }`} readOnly disabled />
+             </div>
+              <div className="m-field">
+                <label className="m-label">Updated By</label>
+                <input className="m-input" type="text" value={`@${product.updatedBy?? "Not Updated" }`} readOnly disabled />
              </div>
              <div className="m-field">
                 <label className="m-label">Company</label>
                 <input className="m-input" type="text" value={companyName || "N/A"} readOnly disabled />
              </div>
+          </div>
+          <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem", display:'flex'}}>
+              <div className="m-field">
+                <label className="m-label">Created At</label>
+                <input className="m-input" type="text" value={product.createdAt || "N/A"} readOnly disabled />
+              </div>
+              <div className="m-field">
+                <label className="m-label">Updated At</label>
+                <input className="m-input" type="text" value={product.updatedAt || "N/A"} readOnly disabled />
+              </div>
           </div>
 
           <div className="m-footer" style={{ marginTop: "20px" }}>

@@ -1,30 +1,29 @@
-import { StaffModel, CompanyModel } from "../../../../api/interfaces";
-import { StaffDashView } from "../StaffDashboard";
-
-// Reusing employer-side display components (purely visual / hardcoded data)
+import { CompanyModel, StaffModel } from "../../../../api/interfaces";
+import ActivityFeed from "../../../employer/dashboard/components/ActivityFeed";
 import KpiGrid from "../../../employer/dashboard/components/KpiGrid";
 import RevenueOverview from "../../../employer/dashboard/components/RevenueView";
 import TopProducts from "../../../employer/dashboard/components/TopProducts";
-import ActivityFeed from "../../../employer/dashboard/components/ActivityFeed";
+import { StaffDashView } from "../StaffDashboard";
 
-interface Props {
+interface Parameters {
   staff:      StaffModel  | null;
   company:    CompanyModel | null;
   onNavigate: (view: StaffDashView) => void;
 }
 
-function StaffOverviewView({ staff, company, onNavigate }: Props) {
-  return (
+
+function StaffOverviewView({staff, company, onNavigate}:Parameters){
+    return (
     <>
       {/* Quick actions — NO "Register Business". Staff can't create companies. */}
       <div className="quick-actions" style={{ marginTop: "40px" }}>
-        <button className="qa-btn primary" onClick={() => onNavigate("orders")}>
+        <button className="qa-btn primary" >
           <i className="bi bi-bag-check"></i> View Orders
         </button>
-        <button className="qa-btn outline" onClick={() => onNavigate("company")}>
+        <button className="qa-btn outline">
           <i className="bi bi-building"></i> My Company
         </button>
-        <button className="qa-btn outline" onClick={() => onNavigate("profile")}>
+        <button className="qa-btn outline" >
           <i className="bi bi-person-badge"></i> My Profile
         </button>
       </div>
@@ -36,7 +35,6 @@ function StaffOverviewView({ staff, company, onNavigate }: Props) {
             <span className="card-title">You're working at</span>
             <a
               className="card-action"
-              onClick={() => onNavigate("company")}
               style={{ cursor: "pointer" }}
             >
               View Details
@@ -69,8 +67,8 @@ function StaffOverviewView({ staff, company, onNavigate }: Props) {
             )}
           </div>
         </div>
+        
       )}
-
       <KpiGrid />
 
       <div className="mid-row">

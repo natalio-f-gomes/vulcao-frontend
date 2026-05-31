@@ -144,7 +144,7 @@ return (
           <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
              <div className="m-field">
                 <label className="m-label">Added By</label>
-                <input className="m-input" type="text" value={`@${ localStorage.getItem("username")}`} readOnly disabled />
+                <input className="m-input" type="text" value={`@${product.creatorUsername}`} readOnly disabled />
              </div>
              <div className="m-field">
                 <label className="m-label">Company</label>

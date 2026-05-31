@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CompanyTopBar from "./CompanyTopBar";
 import { CompanyModel, CompanyStats, ProductModel, RegisterStaffModel, StaffModel } from "../../api/interfaces";
 import CompanySidebar, { CompanyView } from "./companySideBar";
-import { employerUpdateStaff, getCompanyDashboard, getProductsByCompanyId, getStaffByCompanyId, logoutEntity, registerStaff } from "../../api/requests";
+import { getCompanyDashboard, getProductsByCompanyId, getStaffByCompanyId, logoutEntity, registerStaff } from "../../api/requests";
 import { useEffect, useRef, useState } from "react";
 
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
@@ -57,7 +57,8 @@ function CompanyDashboard(){
      logoutEntity(entityType)
      navigate("/")
      };
-      const getCompanyData = async (companyId: string)=>{
+     
+     const getCompanyData = async (companyId: string)=>{
           const response = await getCompanyDashboard(companyId);
           if(!response.ok){
                console.log(`There was an issue getting the company Data: ${response}`)

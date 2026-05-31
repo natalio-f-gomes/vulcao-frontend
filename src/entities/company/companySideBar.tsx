@@ -14,7 +14,7 @@ interface Parameters {
     company: CompanyModel
 }
 
-const styles: Record<string, React.CSSProperties> = {
+export const styles: Record<string, React.CSSProperties> = {
  sidebar: {
     background: "#0f0e0e",
     color: "#bbb",
@@ -122,7 +122,7 @@ const styles: Record<string, React.CSSProperties> = {
 
 function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Parameters){
     const navigate = useNavigate();
-     const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
+    const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
     
       async function handleLogout() {
         await logoutHandler();

@@ -5,31 +5,25 @@ import {
   getStaffProfile,
   getCompanyDashboard,
   getProductsByCompanyId,
+  logoutEntity,
 } from "../../../api/requests";
 
 import StaffSidebar from "./StaffSidebar";
 import StaffTopbar from "./StaffTopbar";
 
-import StaffCustomersView from "./views/StaffCustomersView";
-import MyCompanyView from "./views/MyCompanyView";
-import StaffOverviewView from "./views/StaffOverviewView";
-import StaffOrdersView from "./views/StaffOrdersView";
-import StaffProfileView from "./views/StaffProfileView";
-import StaffSettingsView from "./views/StaffSettingsView";
-import StaffProductsView from "./views/StaffProductsView";
 import "../../../css/employer-dashboard.css"
-import "../../../css/side-bar.css"
+
+import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
+import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";
+import StaffOverviewView from "./views/StaffOverviewView";
+import GetFooterSection from "../../../components/footer";
+import EmployeeStaffView from "./views/StaffView";
+import ProductView from "../../company/views/ProductsView";
+import StaffProfileView from "./views/StaffProfileView";
 
 
+export type StaffDashView = "overview" | "profileView" |"companyView" | "settinhgsView" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
 
-export type StaffDashView =
-  | "overview"
-  | "company"
-  | "orders"
-  | "products"
-  | "customers"
-  | "profile"
-  | "settings";
 
 function StaffDashboard() {
   const navigate = useNavigate();
@@ -81,40 +75,51 @@ function StaffDashboard() {
     loadStaff();
   }, [navigate]);
 
+  const sidebar = useResponsiveSidebar(768);
+
+  const handleLogout = (entityType: string) =>{
+  logoutEntity(entityType)
+  navigate("/")
+  };
+
   const renderView = () => {
     switch (activeView) {
       case "overview":
-        return (
-          <StaffOverviewView
-            staff={staff}
-            company={company}
-            onNavigate={setActiveView}
-          />
-        );
-      case "company":   return <MyCompanyView company={company} />;
-      case "orders":    return <StaffOrdersView companyId={staff?.companyId} />;
-      case "products":  return <StaffProductsView products={productList!} staff={staff!} company={company!} />;
-      case "customers": return <StaffCustomersView />;
-      case "profile":   return <StaffProfileView staff={staff} />;
-      case "settings":  return <StaffSettingsView />;
+          return <StaffOverviewView staff={staff} company={company} onNavigate={navigate}/>
+      case "staffview": return <EmployeeStaffView company={company}/>
+      case "productView": return <ProductView company={company!}/>
+      case "profileView": return <StaffProfileView staff={staff!}/>
     }
   };
 
-  return (
-    <>
-      <StaffSidebar
-        activeView={activeView}
-        onNavigate={setActiveView}
-        staff={staff}
-        productCount={productList.length}
-      />
-
-      <div className="dash-main">
+return (
+  <>
+     <div className="profile-page" style={{ display: "flex", width: "100vw", minHeight: "100vh" }}>
+        <ResponsiveSidebar
+          isOpen={sidebar.isOpen}
+          isMobile={sidebar.isMobile}
+          onOpen={sidebar.open}
+          onClose={sidebar.close}
+          ariaLabel="Account navigation"
+        >
+          <StaffSidebar
+            company={company!}
+            onBack={()=> {navigate("/company-dashboard")}}
+            onLogout={handleLogout}
+            activeView={activeView}
+            onNavigate={(view) => setActiveView(view)}
+            staff={staff!}
+          />
+        </ResponsiveSidebar>
+     
+      <div className="dash-main" style={{ flexGrow: 1, marginLeft: -25, minWidth: 0 }}>
         <StaffTopbar activeView={activeView} staff={staff} />
         <div className="view active">{renderView()}</div>
       </div>
-    </>
-  );
+    </div>
+    <GetFooterSection/>
+  </>
+);
 }
 
 export default StaffDashboard;

@@ -18,7 +18,7 @@ import EmployerDashboard from "./entities/employer/dashboard/employer-dashboard"
 import CompanyDashboard from "./entities/company/company-dashboard";
 import StaffLoginPage from "./entities/staff/staff-login";
 import StaffDashboard from "./entities/staff/dashboard/StaffDashboard";
-import ProductsPage from "./entities/company/pages/products";
+
 
 function App(){
     return (
@@ -43,7 +43,6 @@ function App(){
             <Route path="company-dashboard/:id" element={<CompanyDashboard/>}/>
             <Route path="/staff-login" element={<StaffLoginPage/>}/>
             <Route path="/staff-dashboard" element={<StaffDashboard/>}/>
-            <Route path="/company-dashboard/:id/products" element={<ProductsPage/>}/>
         </Routes>
     </AuthProvider>
 
