@@ -15,7 +15,6 @@ function EmployeeStaffView({company}: StaffViewParameters){
     const [staffToView, setStaffToView] = useState<StaffModel|null>(null);
     const [showStaffRegisterModal, setShowStaffRegisterModal] = useState<boolean>(false);
 
-
     const getStaff = async () => {
         if(!company) {console.log("NO COMPANY");return null};
         const response = await getStaffByCompanyId(company.id!);

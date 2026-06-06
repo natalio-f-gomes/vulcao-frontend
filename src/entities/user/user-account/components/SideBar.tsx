@@ -54,7 +54,7 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
   return (
     <>
       {currentUser && (
-        <aside className="profile-sidebar">
+        <aside className="profile-sidebar" style={{color:"white"}}>
           <div className="avatar-ring">
             <i className="bi bi-person"></i>
           </div>

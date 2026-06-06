@@ -3,6 +3,7 @@ import { AddProductModel, CompanyModel, ProductModel, RegisterStaffModel } from 
 import { addressFields, ALL_PERMISSIONS, CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
 
 import { companyName } from "../../../../api/global";
+import ProductImageCarousel from "../../../../components/ProductImageCarousel";
 
 interface Parameters{
     isOpen: boolean;
@@ -26,6 +27,7 @@ function EditProductModal({isOpen, onClose, onSave, productToEdit}:Parameters){
       companyId : "",
       currency: "CVE",
       creatorUsername: "",
+      imgS3UrlKeys:[]
     });
 
     const handleInputChange  = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -56,6 +58,7 @@ return (
         <span className="m-head-title">Edit {productToEdit.name}</span>
         <button className="m-close" onClick={() => onClose()}>&times;</button>
       </div>
+      
       <form id="productRegistrationForm" >    
         <div className="m-body">
           

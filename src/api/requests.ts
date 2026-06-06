@@ -1,5 +1,7 @@
 
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, StaffModel, ProductModel, CompanyContact, CompanyAboutInfo } from "./interfaces";
+import { OfferingType } from "./categories";
+import { ImageMetadata } from "./ImageValidatorService";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, ConfirmImageUploadRequest } from "./interfaces";
 
 //const URL = "http://localhost:8080"
 const URL = ""
@@ -225,7 +227,7 @@ export async function getCompanyByID(companyID: string){
 }
 
 
-export async function addProduct(newProduct: ProductModel){
+export async function addProduct(newProduct: ProductModel){ 
     const entityType: string | null= localStorage.getItem("active_role");
     let endpoint: string = '';
     switch(entityType){
@@ -345,4 +347,29 @@ export async function updateStaffAddress(staffId: string, address: AddressModel)
 export async function updateStaffSecurity(staffId: string, credentials: {username:string, password: string}){
        const endpoint: string = `/v1/user/get/cart/${staffId}`;
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+
+export async function offeringsUplaodImageRequest(imageMetadata: ImageMetadata[], offeringType: OfferingType, offeringId: string){
+    const endpoint: string = `/v1/image/upload/request`;
+    return await fetchAPIWithCredentials(endpoint, {method:"POST", body:JSON.stringify({offeringType, offeringId, imageMetadata})})
+}
+
+
+export async function offeringsUplaodImageConfirmation(offeringId: string, keys: string[]){
+    const endpoint: string = `/v1/image/upload/confirm`;
+    return await fetchAPIWithCredentials(endpoint, {method:"POST", body:JSON.stringify({offeringId, keys})})
+}
+
+export async function updateProductImage(product: ProductModel){
+    const endpoint: string = `/v1/offering/product/update/image`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(product)})
+}
+
+
+// Part 3 — After we upload the pictures to the S3 bucket, if everything goes well, we need to post the presign key to backend
+export async function postPictureKeys(requestData: ConfirmImageUploadRequest) {
+    console.log("Request Data", requestData);
+    const endpoint: string = "/v1/offering/image/upload/confirm";
+    return await fetchAPIWithCredentials(endpoint, {method: "POST", body:JSON.stringify(requestData)})
 }

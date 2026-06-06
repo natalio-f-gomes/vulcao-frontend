@@ -21,7 +21,11 @@ const GetHeader: React.FC = () => {
         <div className="collapse navbar-collapse" id="mainNav">
           <ul className="navbar-nav me-auto align-items-lg-center">
             <li className="nav-item"><Link className="nav-link active" to="/">Home</Link></li>
+            {/* 
             <li className="nav-item"><a className="nav-link" href="#">About</a></li>
+            <li className="nav-item"><a className="nav-link" href="#">Contact Us</a></li>
+            <li className="nav-item"><a className="nav-link" href="#">Feature Request</a></li>
+            */}
 
             {/* Logged out — show login/register dropdowns */}
             {!isEntityLoggedIn  && (

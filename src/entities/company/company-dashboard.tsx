@@ -14,6 +14,7 @@ import CompanyHeader from "./CompanyTopBar";
 import CompanyOverView from "./views/OverviewView";
 import CompanyStaffView from "./views/StaffView";
 import ProductView from "./views/ProductsView";
+import ElectronicView from "./views/ElectronicsView";
 
 function CompanyDashboard(){
     const navigate = useNavigate();
@@ -74,7 +75,7 @@ function CompanyDashboard(){
                case "overview": return <CompanyOverView company={company}/>;
                case "staffview": return <CompanyStaffView company={company}/>
                case "productView": return <ProductView company={company}/>
-          
+               case "electronicView": return <ElectronicView/>
                default:
                     return <CompanyOverviewView company={company}/>;
           }

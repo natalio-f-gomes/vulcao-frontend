@@ -1,3 +1,4 @@
+import { ImageMetadata } from "./ImageValidatorService";
 import { OfferingType } from "./categories";
 
 export interface UserLoginModel{
@@ -52,6 +53,8 @@ export interface AddProductModel{
     companyId?: string;
     currency: Currency;
     creatorUsername: string;
+    offeringType?: OfferingType;
+    imagesMetadata?: ImageMetadata[],
 }
 
 export interface ProductModel extends AddProductModel{
@@ -61,6 +64,7 @@ export interface ProductModel extends AddProductModel{
     companyName?: string;
     createdAt?:string;
     updatedAt?:string;
+    imgS3UrlKeys?: string[]
 }
 
 
@@ -338,9 +342,8 @@ export interface CompanyRegistrationModel{
 }
 
 
-export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | 
-"ADD_STAFF"| "UPDATE_STAFF"| "FIRE_STAFF"| "ADD_COMPANY"| "UPDATE_COMPANY"| "DELETE_COMPANY"| 
-"ADD_SERVICE"| "UPDATE_SERVICE"| "DELETE_SERVICE";
+export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | "ASSIGN_TASKS" | "VIEW_REPORTS" | "CREATE_TASK" | "DELETE_TASK";
+
 
 
 export type UnitTypes = "LIQUID" | "SOLID" | "SINGULAR" | "BOX" |
@@ -408,4 +411,10 @@ export interface CompanyContact{
 export interface CompanyAboutInfo{
   description: string,
   status: CompanyStatuses
+}
+
+export interface ConfirmImageUploadRequest {
+  offeringId: string,
+  offeringType: OfferingType
+  s3PresignKeys: string[]
 }

@@ -283,57 +283,31 @@ export const ALL_PERMISSIONS: { value: Permissions; label: string; description: 
     description: "Allows the user to permanently remove products from the catalog." 
   },
 
-  // Employee Management
+  // Task Management
   { 
-    value: "ADD_STAFF",  
-    label: "Add Staff",  
-    description: "Allows the user to register new staff members and assign roles." 
+    value: "ASSIGN_TASKS", 
+    label: "Assign Tasks", 
+    description: "Allows the user to delegate, track, and assign tasks to staff members." 
   },
+  
   { 
-    value: "UPDATE_STAFF",   
-    label: "Update Staff",   
-    description: "Allows the user to modify employee profiles and review information." 
+    value: "CREATE_TASK", 
+    label: "Create Tasks", 
+    description: "Allows the staff to cretae tasks for itself or others." 
   },
+  
   { 
-    value: "FIRE_STAFF",   
-    label: "Terminate Employee",   
-    description: "Allows the user to remove employees from the company roster." 
-  },
-
-  // Company Management
-  { 
-    value: "ADD_COMPANY",   
-    label: "Add Company",   
-    description: "Allows the user to register new companies or subsidiaries." 
-  },
-  { 
-    value: "UPDATE_COMPANY",   
-    label: "Update Company",   
-    description: "Allows the user to edit company profiles and settings." 
-  },
-  { 
-    value: "DELETE_COMPANY",   
-    label: "Delete Company",   
-    description: "Allows the user to remove company entities from the system." 
+    value: "DELETE_TASK", 
+    label: "Delete Tasks", 
+    description: "Allows the staff to delete tasks for itself or others." 
   },
 
-  // Service Management
+  // Analytics & Reporting
   { 
-    value: "ADD_SERVICE",   
-    label: "Add Service",   
-    description: "Allows the user to define and offer new services." 
-  },
-  { 
-    value: "UPDATE_SERVICE",   
-    label: "Update Service",   
-    description: "Allows the user to modify existing service details and pricing." 
-  },
-  { 
-    value: "DELETE_SERVICE",   
-    label: "Delete Service",   
-    description: "Allows the user to retire or remove service offerings." 
-  },
-
+    value: "VIEW_REPORTS", 
+    label: "View Reports", 
+    description: "Allows the user to access operational dashboards and system analytical summaries." 
+  }
+  
 ];
-
 export const addressFields = ["island", "city", "zone", "street", "postalCode"];

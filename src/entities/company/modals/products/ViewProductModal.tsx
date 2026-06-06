@@ -5,6 +5,7 @@ import { Permissions } from "../../../../api/interfaces";
 import { addProduct, registerStaff } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
 import { hanldeResponseStatus } from "../../views/StaffView";
+import ProductImageCarousel from "../../../../components/ProductImageCarousel";
 
 interface Parameters{
     isOpen: boolean;
@@ -24,6 +25,7 @@ function ViewProductModal({isOpen, onClose, productToView}:Parameters){
       companyId : "",
       currency: "CVE",
       creatorUsername: "",
+      imgS3UrlKeys:[]
     });
 
     useEffect(()=>{
@@ -42,6 +44,15 @@ return (
         <button className="m-close" onClick={() => onClose()}>&times;</button>
       </div>
         <div className="m-body">
+            {/* Product image header — first image shown, arrows when multiple */}
+               <div style={{ marginTop: "12px", marginBottom: "15px" }}>
+                  <ProductImageCarousel
+                    imageKeys={product.imgS3UrlKeys}
+                    width={300}
+                    height={300}
+                    altText={product.name}
+                  />
+                </div>
           
           {/* Basic Product Info */}
           <div className="m-row">

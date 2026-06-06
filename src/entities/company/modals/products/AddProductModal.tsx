@@ -1,171 +1,341 @@
 import { useState } from "react";
-import { AddProductModel, CompanyModel, RegisterStaffModel } from "../../../../api/interfaces";
-import { addressFields, ALL_PERMISSIONS, CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
-import { Permissions } from "../../../../api/interfaces";
-import { addProduct, registerStaff } from "../../../../api/requests";
+import { AddProductModel, CompanyModel } from "../../../../api/interfaces";
+import {  CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
+import { addProduct, postPictureKeys } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
 import { hanldeResponseStatus } from "../../views/StaffView";
+import { buildImageMetadata, Dimensions, getImageDimensions, PresignBatchRequest, uploadFileToS3 } from "../../../../api/ImageValidatorService";
+import { ConfirmImageUploadRequest } from "../../../../api/interfaces";
 
-interface Parameters{
-    isOpen: boolean;
-    onClose: ()  => void;
-    onSuccess: () => void;
-    company: CompanyModel
+interface Parameters {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+  company: CompanyModel;
 }
 
-function AddProductModal({isOpen, onClose, onSuccess, company}:Parameters){
-    const [error, setError] = useState<string | null>(null);
-    const [loading,setLoading] = useState<boolean>(false);
-    const [product, setProduct] = useState<AddProductModel>({
-      name: "",
-      productType: "UNKNOWN",
-      expirationDate:"",
-      description:"",
-      stock:0,
-      unitType: "",
-      pricePerUnit:0,
-      companyId : company.id,
-      currency: "CVE",
-      creatorUsername: "",
-    });
+function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  
+  // Local state to manage selected file objects and preview URLs
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    const handleInputChange  = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const {name, value} = event.target;
-        setProduct( (prev:AddProductModel) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+  const [product, setProduct] = useState<AddProductModel>({
+    name: "",
+    productType: "UNKNOWN",
+    expirationDate: "",
+    description: "",
+    stock: 0,
+    unitType: "",
+    pricePerUnit: 0,
+    companyId: company.id,
+    currency: "CVE",
+    creatorUsername: "",
+    offeringType: "PRODUCT",
+    imagesMetadata: []
+  });
 
-    const handleAddProduct = async (event: React.SyntheticEvent<HTMLFormElement>)=>{
-        event.preventDefault();
-        setError(null);
-        setLoading(true);
-        const response = await addProduct(product);
-        console.log("Response Adding Prodcut: ", response)
-        if(response.status === 201){
-            alert("Product Successfylly Added")
-            onSuccess();
-            onClose();
-        }else{
-        hanldeResponseStatus(response.status);
-        }
-        setLoading(false)
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setProduct((prev: AddProductModel) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handles adding new images to the stack
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const filesArray = Array.from(event.target.files);
+      setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
+
+      const newPreviews = filesArray.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
     }
+  };
 
-    if(!isOpen) return null;
-return (
-  <div className="m-overlay open">
-    <div className="m-box">
-      <div className="m-head">
-        <span className="m-head-title">Add a New Product</span>
-        <button className="m-close" onClick={() => onClose()}>&times;</button>
-      </div>
-      <form id="productRegistrationForm" onSubmit={handleAddProduct} >    
-        <div className="m-body">
-          
-          {/* Basic Product Info */}
-          <div className="m-row">
-            <div className="m-field">
-              <label className="m-label">Product Name *</label>
-              <input className="m-input" type="text" placeholder="e.g. Fresh Salmon" name="name" onChange={handleInputChange} required/>
-            </div>
-            <div className="m-field">
-              <label className="m-label">Product Type *</label>
-              <select className="m-input" name="productType" onChange={handleInputChange} required>
-                <option value="">Select Type</option>
-                {ProductCategories.map( (category: string) =>{
-                  const label = category.replaceAll("_", " ").toUpperCase();
-                  return (
-                    <option key={category} value={category}>
-                    {label}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-          </div>
+  // Handles removing an image by index
+  const removeImage = (indexToRemove: number) => {
+    // Revoke the Object URL to avoid memory leaks
+    URL.revokeObjectURL(imagePreviews[indexToRemove]);
+    
+    setSelectedImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+    setImagePreviews((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
 
-          {/* Pricing and Stock */}
-          <div className="m-row">
+  const handleAddProduct = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    for(const image of selectedImages){
+       console.log("Dimesions: ",  getImageDimensions(image));
+    }
+    const metadata = buildImageMetadata(selectedImages);
+    const productRequest: AddProductModel = {...product, imagesMetadata:metadata}
+
+    const response = await addProduct(productRequest);
+    console.log("Response Adding Prodcut: ", response);
+    if (response.status === 204) {
+      alert("Product Successfully Added. You can Add images later");
+      onSuccess();
+      onClose();
+      return;
+    } else if (response.status === 200) {
+
+      const preSignUrlResponse = await response.json();
+      const productId: string = preSignUrlResponse.offeringId;
+  
+      const preSignResult: Array<{ url: string; key: string }> = preSignUrlResponse.uploadResult;
+     
+
+    try {
+      console.log("selectedImages:", selectedImages);
+      console.log("preSignResult:", preSignResult);
+      console.log("selectedImages length:", selectedImages.length);
+      console.log("preSignResult length:", preSignResult.length);
+      // 3. Map through the files and trigger S3 uploads in parallel
+      const uploadPromises = selectedImages.map((image, index) => {
+        // Pull out the URL belonging to this exact index matching the image order
+        const s3PresignUrl = preSignResult[index].url;
+        const s3PresignKey = preSignResult[index].key;
+        console.log("S3 Signed URL: ", s3PresignUrl)
+        console.log("S3 Signed KEY: ", s3PresignKey)
+        return uploadFileToS3(s3PresignUrl, image );
+        setLoading(true)
+      });
+
+     try {
+        await Promise.all(uploadPromises);
+        const keys = preSignResult.map((p) => p.key);
+        const uploadData: ConfirmImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
+        const postImgDataResponse =  await postPictureKeys(uploadData);  
+        console.log("postImgDataResponse: ",postImgDataResponse);
+          alert("Product and all images successfully added.");
+           setLoading(false);
+        } catch (uploadError) {
+          console.error("Error during image transfer to S3:", uploadError);
+          setError("Product saved, but some images failed to upload.");
+        }
+
+  } catch (uploadError) {
+    console.error("Error during image transfer to S3:", uploadError);
+    setError("Failed to upload images. Please check connection.");
+  }
+
+  onSuccess();
+  onClose();
+  setLoading(false);
+}
+
+    else {
+      hanldeResponseStatus(response.status);
+    }
+    setLoading(false);
+  };
+
+  if (!isOpen) return null;
+  return (
+    <>
+   {loading && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
+          Loading ...
+        </div>
+      )}
+    <div className="m-overlay open">
+      <div className="m-box">
+        <div className="m-head">
+          <span className="m-head-title">Add a New Product</span>
+          <button className="m-close" onClick={() => onClose()}>&times;</button>
+        </div>
+        <form id="productRegistrationForm" onSubmit={handleAddProduct} >
+          <div className="m-body">
+
+            {/* Product Images Field */}
             <div className="m-field">
-              <label className="m-label">Price Per Unit *</label>
-              <div style={{ display: "flex", gap: "5px" }}>
-                <input className="m-input" type="number" step="0.01" placeholder="0.00" name="pricePerUnit" onChange={handleInputChange}  required/>
-                <select className="m-input" name="currency" style={{ width: "80px" }} onChange={handleInputChange} required>
-                   {CURRENCIES.map( (currency:string) => {
+              <label className="m-label">Product Images</label>
+              
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+                
+                {/* Image Previews Wrapper */}
+                {imagePreviews.map((url, index) => (
+                  <div 
+                    key={index} 
+                    style={{ 
+                      position: "relative", 
+                      width: "80px", 
+                      height: "80px", 
+                      borderRadius: "6px", 
+                      overflow: "hidden", 
+                      border: "1px solid #ccc" 
+                    }}
+                  >
+                    <img 
+                      src={url} 
+                      alt={`Preview ${index}`} 
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      style={{
+                        position: "absolute",
+                        top: "2px",
+                        right: "2px",
+                        background: "rgba(0,0,0,0.6)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "18px",
+                        height: "18px",
+                        cursor: "pointer",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        lineHeight: "1"
+                      }}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+
+                {/* Upload Trigger Square */}
+                <label 
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    border: "2px dashed #ccc",
+                    borderRadius: "6px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    backgroundColor: "#f9f9f9",
+                    color: "#666",
+                    fontSize: "0.8rem"
+                  }}
+                >
+                  <i className="bi bi-camera" style={{ fontSize: "1.2rem", marginBottom: "2px" }}></i>
+                  <span>Add</span>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    multiple 
+                    onChange={handleImageChange} 
+                    style={{ display: "none" }} 
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* Basic Product Info */}
+            <div className="m-row">
+              <div className="m-field">
+                <label className="m-label">Product Name *</label>
+                <input className="m-input" type="text" placeholder="e.g. Fresh Salmon" name="name" onChange={handleInputChange} required />
+              </div>
+              <div className="m-field">
+                <label className="m-label">Product Type *</label>
+                <select className="m-input" name="productType" onChange={handleInputChange} required>
+                  <option value="">Select Type</option>
+                  {ProductCategories.map((category: string) => {
+                    const label = category.replaceAll("_", " ").toUpperCase();
                     return (
-                      <option key={currency} value={currency}>
-                        {currency}
+                      <option key={category} value={category}>
+                        {label}
                       </option>
-                    )
-                   })}
+                    );
+                  })}
                 </select>
               </div>
             </div>
-            <div className="m-field">
-              <label className="m-label">Unit Type *</label>
-              <select className="m-input" name="unitType" onChange={handleInputChange} required>
-                <option value="">Select Unit</option>
-                {UNIT_TYPES.map( (unit:string) => {
-                  return (
-                    <option key={unit} value={unit}>
-                      {unit}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
-          </div>
 
-          {/* Inventory Details */}
-          <div className="m-row">
-            <div className="m-field">
-              <label className="m-label">Initial Stock *</label>
-              <input className="m-input" type="number" placeholder="e.g. 100" name="stock" onChange={handleInputChange} required />
+            {/* Pricing and Stock */}
+            <div className="m-row">
+              <div className="m-field">
+                <label className="m-label">Price Per Unit *</label>
+                <div style={{ display: "flex", gap: "5px" }}>
+                  <input className="m-input" type="number" step="0.01" placeholder="0.00" name="pricePerUnit" onChange={handleInputChange} required />
+                  <select className="m-input" name="currency" style={{ width: "80px" }} onChange={handleInputChange} required>
+                    {CURRENCIES.map((currency: string) => {
+                      return (
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+              <div className="m-field">
+                <label className="m-label">Unit Type *</label>
+                <select className="m-input" name="unitType" onChange={handleInputChange} required>
+                  <option value="">Select Unit</option>
+                  {UNIT_TYPES.map((unit: string) => {
+                    return (
+                      <option key={unit} value={unit}>
+                        {unit}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
-            <div className="m-field">
-              <label className="m-label">Expiration Date</label>
-              <input className="m-input" type="date" name="expirationDate" onChange={handleInputChange} required />
-            </div>
-          </div>
 
-          {/* Description */}
-          <div className="m-field">
-            <label className="m-label">Description</label>
-            <textarea 
-                className="m-input" 
+            {/* Inventory Details */}
+            <div className="m-row">
+              <div className="m-field">
+                <label className="m-label">Initial Stock *</label>
+                <input className="m-input" type="number" placeholder="e.g. 100" name="stock" onChange={handleInputChange} required />
+              </div>
+              <div className="m-field">
+                <label className="m-label">Expiration Date</label>
+                <input className="m-input" type="date" name="expirationDate" onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="m-field">
+              <label className="m-label">Description</label>
+              <textarea
+                className="m-input"
                 rows={4}
-                placeholder="Describe the product features, quality, or notes..." 
+                placeholder="Describe the product features, quality, or notes..."
                 name="description"
                 onChange={handleInputChange}
-              
                 style={{ resize: "none" }}
-            ></textarea>
-          </div>
+                required
+              ></textarea>
+            </div>
 
-          {/* Meta Data (Hidden or Read-only visual indicators) */}
-          <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
-             <div className="m-field">
+            {/* Meta Data (Hidden or Read-only visual indicators) */}
+            <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
+              <div className="m-field">
                 <label className="m-label">Added By</label>
-                <input className="m-input" type="text" value={`@${ localStorage.getItem("username")}`} readOnly disabled />
-             </div>
-             <div className="m-field">
+                <input className="m-input" type="text" value={`@${localStorage.getItem("username")}`} readOnly disabled />
+              </div>
+              <div className="m-field">
                 <label className="m-label">Company</label>
                 <input className="m-input" type="text" value={companyName || "N/A"} readOnly disabled />
-             </div>
-          </div>
+              </div>
+            </div>
 
-          <div className="m-footer" style={{ marginTop: "20px" }}>
-            <button className="m-btn-cancel" type="button" onClick={() => onClose()}>Cancel</button>
-            <button className="m-btn-save" type="submit">
-              <i className="bi bi-check2"></i> Save Product
-            </button>
+            <div className="m-footer" style={{ marginTop: "20px" }}>
+              <button className="m-btn-cancel" type="button" onClick={() => onClose()}>Cancel</button>
+              <button className="m-btn-save" type="submit" disabled={loading}>
+                <i className="bi bi-check2"></i> {loading ? "Saving..." : "Save Product"}
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-);
+        </>
+  );
 }
 export default AddProductModal;
