@@ -42,6 +42,7 @@ function EmployerLoginPage() {
         console.log(response)
         
       }
+
       if(response.status === 200){
         alert("Employer Login Successfully")
         await login("employer");
@@ -63,7 +64,11 @@ function EmployerLoginPage() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <GetHeader />
-      
+      {loading && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
+          Loading ...
+        </div>
+      )}
       <style>{`
         .login-wrapper { 
           flex: 1; 

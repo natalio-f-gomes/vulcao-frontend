@@ -76,6 +76,11 @@ function EmployerRegistrationPage(){
   return (
     <>
       <GetHeader />
+            {loading && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
+          Loading ...
+        </div>
+      )}
 
       <main className="split-container" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="form-side">

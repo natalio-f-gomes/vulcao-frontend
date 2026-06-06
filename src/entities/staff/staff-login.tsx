@@ -2,10 +2,9 @@ import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
 import { Link } from "react-router-dom"; 
-import { loginEmployer, loginStaff, loginUser } from "../../api/requests";
+import { loginStaff } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
-import { getUserProfileData } from "../../api/requests";
 
 function StaffLoginPage() {
   const {login} = useUserAuthManager();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { addProductToCart , getAllProducts, getUserProfileData} from "../api/requests";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ProductModel , UserProfileModel} from "../api/interfaces";
 
 

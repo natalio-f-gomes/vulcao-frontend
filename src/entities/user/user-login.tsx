@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { loginUser } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
-import { getUserProfileData } from "../../api/requests";
 
 function UserLoginPage() {
   const {login} = useUserAuthManager();
