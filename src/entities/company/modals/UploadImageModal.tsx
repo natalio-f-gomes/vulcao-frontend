@@ -103,6 +103,7 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
       setImagePreviews([]);
       onClose();
     } catch (err) {
+        console.log("Error trying to upload pictures to s3 bucket: ",err)
       setError("Something went wrong during image processing.");
     } finally {
       setLoading(false);
