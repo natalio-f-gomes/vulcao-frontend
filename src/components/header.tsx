@@ -27,7 +27,21 @@ const GetHeader: React.FC = () => {
             <li className="nav-item"><a className="nav-link" href="#">Feature Request</a></li>
             */}
 
-            {/* Logged out — show login/register dropdowns */}
+         
+          </ul>
+
+          <form className="d-flex search-wrapper me-lg-3" role="search">
+            <div className="input-group">
+              <span className="input-group-text bg-transparent border-end-0 border-secondary">
+                <i className="bi bi-search text-secondary"></i>
+              </span>
+              <input className="form-control bg-transparent border-start-0 border-secondary text-cream shadow-none"
+                type="search" placeholder="Search items..." aria-label="Search" />
+            </div>
+          </form>
+
+
+             {/* Logged out — show login/register dropdowns */}
             {!isEntityLoggedIn  && (
               <>
                 <li className="nav-item dropdown">
@@ -78,22 +92,6 @@ const GetHeader: React.FC = () => {
                   </button>
                 </li>
               )}
-          </ul>
-
-          <form className="d-flex search-wrapper me-lg-3" role="search">
-            <div className="input-group">
-              <span className="input-group-text bg-transparent border-end-0 border-secondary">
-                <i className="bi bi-search text-secondary"></i>
-              </span>
-              <input className="form-control bg-transparent border-start-0 border-secondary text-cream shadow-none"
-                type="search" placeholder="Search items..." aria-label="Search" />
-            </div>
-          </form>
-
-          <Link to="/user-cart" className="cart-btn text-decoration-none mt-2 mt-lg-0">
-            <i className="bi bi-bag"></i> Cart
-            <span className="cart-badge">3</span>
-          </Link>
         </div>
       </div>
     </nav>

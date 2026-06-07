@@ -1,7 +1,7 @@
 
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, ConfirmImageUploadRequest } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest } from "./interfaces";
 
 //const URL = "http://localhost:8080"
 const URL = ""
@@ -38,8 +38,6 @@ export async function fetchAPIWithoutCredentials(endpoint: string, options: Requ
     });
 }
 
-
-
 export async function loginUser(userData: UserLoginModel){
     const endpoint: string = `/v1/auth/user/login`
     return await fetchAPIWithCredentials(
@@ -49,7 +47,6 @@ export async function loginUser(userData: UserLoginModel){
         }
     )
 }
-
 
 export async function registerUser(userData: UserRegistrationModel){
     const endpoint: string = `/v1/auth/user/register`
@@ -61,7 +58,6 @@ export async function registerUser(userData: UserRegistrationModel){
     )
 }
 
-
 export async function logoutEntity(entity: string){
     const endpoint: string = `/v1/auth/${entity}/logout`
     return await fetchAPIWithCredentials(
@@ -70,10 +66,6 @@ export async function logoutEntity(entity: string){
         }
     )
 }
-
-
-
-
 
 export async function getUserProfileData() {
   const response = await fetchAPIWithCredentials("/v1/user/get/my-profile"); 
@@ -86,7 +78,6 @@ export async function getUserProfileData() {
   const text = await response.text();
   return text ? JSON.parse(text) : null;
 }
-
 
 export async function updateUserProfile(user_id: string,userProfile: {firstName: string, lastName: string}){
     const response = await fetchAPIWithCredentials(`/v1/user/update/${user_id}/profile`,
@@ -109,14 +100,10 @@ export async function updateUserAddress(user_id: string, userAddress: AddressMod
 }
 
 {/** This section is for employer apis */}
-
 export async function registeremployer(employer: UserRegistrationModel){
     return await fetchAPIWithoutCredentials(`/v1/auth/employer/register`,
          {method: "POST", body: JSON.stringify(employer)})
-    
-
 }
-
 
 export async function loginEmployer(userData: UserLoginModel){
     const endpoint: string = `/v1/auth/employer/login`
@@ -127,8 +114,6 @@ export async function loginEmployer(userData: UserLoginModel){
         }
     )
 }
-
-
 
 export async function loginStaff(userData: UserLoginModel){
     const endpoint: string = `/v1/auth/staff/login`
@@ -159,7 +144,6 @@ export async function updateCompanyAddress(newAddress: AddressModel, companyId:s
         }
     );
 }
-
 
 export async function updateCompanyContact(newContact: CompanyContact, companyId:string ): Promise<Response>{
     const endpoint: string = `/v1/company/update/contact/${companyId}`;
@@ -235,13 +219,11 @@ export async function addProduct(newProduct: ProductModel){
         case "employer": endpoint = `/v1/offering/product/employer/add`;break;
         default: window.location.href = "/"
     }
-    
     return await fetchAPIWithCredentials(endpoint, {
         method:"POST",
         body: JSON.stringify(newProduct)
     })
 }
-
 
 export async function updateProduct(id:string, product: ProductModel){
       const entityType: string | null= localStorage.getItem("active_role");
@@ -251,21 +233,17 @@ export async function updateProduct(id:string, product: ProductModel){
         case "employer": endpoint = `/v1/offering/product/employer/update/${id}`;break;
         default: window.location.href = "/"
     }
-    
     return await fetchAPIWithCredentials(endpoint, {
         method:"PUT",
         body: JSON.stringify(product)
     })
 }
 
-
 export async function getEmployerProfile(){
     const endpoint:string = "/v1/employer/get/my-profile";
     return await fetchAPIWithCredentials(endpoint, {method: "GET"})
 
 }
-
-
 
 export async function deleteProductById(id:string){
     const endpoint = `/v1/product/delete/${id}`;
@@ -366,10 +344,26 @@ export async function updateProductImage(product: ProductModel){
     return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(product)})
 }
 
-
 // Part 3 — After we upload the pictures to the S3 bucket, if everything goes well, we need to post the presign key to backend
-export async function postPictureKeys(requestData: ConfirmImageUploadRequest) {
+export async function postOfferingImageKeys(requestData: OfferingImageUploadRequest) {
     console.log("Request Data", requestData);
     const endpoint: string = "/v1/offering/image/upload/confirm";
     return await fetchAPIWithCredentials(endpoint, {method: "POST", body:JSON.stringify(requestData)})
+}
+
+
+export async function postCompanyImageKeys(requestData: CompanyImageUploadRequest) {
+    console.log("Request Data", requestData);
+    const endpoint: string = "/v1/company/image/upload/confirm";
+    return await fetchAPIWithCredentials(endpoint, {method: "POST", body:JSON.stringify(requestData)})
+}
+
+export async function updateCompanyImage(company: CompanyRegistrationModel){
+    const endpoint: string = `/v1/company/update/image`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(company)})
+}
+
+export async function getAllCompanies(){
+    const endpoint: string = "/v1/public/company/get/all";
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }

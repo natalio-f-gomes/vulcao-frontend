@@ -5,7 +5,7 @@ import { Permissions } from "../../../../api/interfaces";
 import { addProduct, registerStaff } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
 import { hanldeResponseStatus } from "../../views/StaffView";
-import ProductImageCarousel from "../../../../components/ProductImageCarousel";
+import ProductImageCarousel from "../../../../components/ImageCarousel";
 
 interface Parameters{
     isOpen: boolean;

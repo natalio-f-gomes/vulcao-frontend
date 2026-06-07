@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from "react";
-import { offeringsUplaodImageRequest, postPictureKeys } from "./requests";
+
 import { OfferingType } from "./categories";
 
 

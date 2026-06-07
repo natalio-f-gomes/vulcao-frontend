@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { AddProductModel, ConfirmImageUploadRequest, ProductModel } from "../../../api/interfaces";
-import { MAX_OFFERING_PICTURES } from "../../../api/global";
-import { imageUrlFromKey } from "../../../components/ProductImageCarousel";
-import { buildImageMetadata, getImageDimensions, uploadFileToS3 } from "../../../api/ImageValidatorService";
-import { postPictureKeys, updateProductImage } from "../../../api/requests";
+import { CompanyImageUploadRequest, CompanyModel, CompanyRegistrationModel } from "../../../../api/interfaces";
+import { buildImageMetadata, getImageDimensions, uploadFileToS3 } from "../../../../api/ImageValidatorService";
+import { postCompanyImageKeys, updateCompanyImage } from "../../../../api/requests";
+import { MAX_OFFERING_PICTURES } from "../../../../api/global";
+import { imageUrlFromKey } from "../../../../components/ImageCarousel";
+
 
 interface Parameters {
   isOpen: boolean;
   onClose: () => void;
-  productToEdit: ProductModel;
+  company: CompanyModel;
 }
 
-function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
+function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [product, setProduct] = useState<ProductModel> (productToEdit)
+  const [companyForm, setCompanyForm] = useState<CompanyModel> (company)
 
   // Local state to manage selected file objects and preview URLs
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -53,13 +54,13 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
        console.log("Dimesions: ",  getImageDimensions(image));
     }
     const metadata = buildImageMetadata(selectedImages);
-    const productRequest: AddProductModel = {...product, imagesMetadata:metadata}
-    const response = await updateProductImage(productRequest);
-    console.log("RESPONSE UPDATING PRODUCT IMAGES", response);
+    const companyRequest: CompanyRegistrationModel = {...companyForm, imagesMetadata:metadata}
+    const response = await updateCompanyImage(companyRequest);
+    console.log("RESPONSE UPDATING COMPANY IMAGES", response);
     if(!response.ok){alert("There was an issue updating the prodcut images");return;}
     else if(response.status === 200){
         const preSignUrlResponse = await response.json();
-        const productId: string = preSignUrlResponse.offeringId;
+        const companyId: string = preSignUrlResponse.companyId;
         const preSignResult: Array<{ url: string; key: string }> = preSignUrlResponse.uploadResult;
             try {
               console.log("selectedImages:", selectedImages);
@@ -80,10 +81,10 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
              try {
                 await Promise.all(uploadPromises);
                 const keys = preSignResult.map((p) => p.key);
-                const uploadData: ConfirmImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
-                const postImgDataResponse =  await postPictureKeys(uploadData);  
+                const uploadData: CompanyImageUploadRequest = { s3PresignKeys: keys, companyId: companyId, };
+                const postImgDataResponse =  await postCompanyImageKeys(uploadData);  
                 console.log("postImgDataResponse: ",postImgDataResponse);
-                  alert("Product and all images successfully added.");
+                  alert("COMPANY and all images successfully added.");
                    setLoading(false);
                 } catch (uploadError) {
                   console.error("Error during image transfer to S3:", uploadError);
@@ -113,7 +114,7 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
   if (!isOpen) return null;
 
   // Safeguard array for existing images
-  const existingImages = productToEdit?.imgS3UrlKeys || [];
+  const existingImages = company?.imgS3UrlKeys || [];
 
   return (
     <>
@@ -126,7 +127,7 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
       <div className="m-box">
         <div className="m-head">
           <span className="m-head-title">
-            {productToEdit ? `Update Images for ${productToEdit.name}` : "Upload Images"}
+            {company ? `Update Images for ${company.name}` : "Upload Images"}
           </span>
           <button type="button" className="m-close" onClick={onClose}>&times;</button>
         </div>
@@ -161,7 +162,7 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
                   >
                     <img 
                       src={imageUrlFromKey(key)}
-                      alt={`${productToEdit.name} asset ${index + 1}`} 
+                      alt={`${company.name} asset ${index + 1}`} 
                       style={{ width: "100%", height: "100%", objectFit: "cover" }} 
                     />
                   </div>
@@ -296,4 +297,4 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
   );
 }
 
-export default UploadImageModal;
+export default UpdateCompanyImageModal;

@@ -5,8 +5,8 @@ import AddProductModal from "../modals/products/AddProductModal";
 import ViewProductModal from "../modals/products/ViewProductModal";
 import EditProductModal from "../modals/products/EditProductModal";
 import { hanldeResponseStatus } from "./StaffView";
-import ProductImageCarousel from "../../../components/ProductImageCarousel"; // adjust path
-import UploadImageModal from "../modals/UploadImageModal";
+import ProductImageCarousel from "../../../components/ImageCarousel"; // adjust path
+import UploadImageModal from "../modals/ProductUpdateImageModal";
 
 interface Paramaters {
   company: CompanyModel;
@@ -32,9 +32,7 @@ function ProductView({ company }: Paramaters) {
     hanldeResponseStatus(response.status);
   };
 
-  const handleImageUpload = async (product: ProductModel)=> {
-      console.log("IMAGE UPLAOD REACHED")
-  }
+
 
   const getProducts = async () => {
     const response = await getProductsByCompanyId(company.id!);

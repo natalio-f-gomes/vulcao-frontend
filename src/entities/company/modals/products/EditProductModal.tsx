@@ -3,7 +3,7 @@ import { AddProductModel, CompanyModel, ProductModel, RegisterStaffModel } from 
 import { addressFields, ALL_PERMISSIONS, CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
 
 import { companyName } from "../../../../api/global";
-import ProductImageCarousel from "../../../../components/ProductImageCarousel";
+import ProductImageCarousel from "../../../../components/ImageCarousel";
 
 interface Parameters{
     isOpen: boolean;

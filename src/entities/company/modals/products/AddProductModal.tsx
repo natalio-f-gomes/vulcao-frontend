@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { AddProductModel, CompanyModel } from "../../../../api/interfaces";
 import {  CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
-import { addProduct, postPictureKeys } from "../../../../api/requests";
+import { addProduct, postOfferingImageKeys } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
 import { hanldeResponseStatus } from "../../views/StaffView";
 import { buildImageMetadata, Dimensions, getImageDimensions, PresignBatchRequest, uploadFileToS3 } from "../../../../api/ImageValidatorService";
-import { ConfirmImageUploadRequest } from "../../../../api/interfaces";
+import { OfferingImageUploadRequest } from "../../../../api/interfaces";
 
 interface Parameters {
   isOpen: boolean;
@@ -110,8 +110,8 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
      try {
         await Promise.all(uploadPromises);
         const keys = preSignResult.map((p) => p.key);
-        const uploadData: ConfirmImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
-        const postImgDataResponse =  await postPictureKeys(uploadData);  
+        const uploadData: OfferingImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
+        const postImgDataResponse =  await postOfferingImageKeys(uploadData);  
         console.log("postImgDataResponse: ",postImgDataResponse);
           alert("Product and all images successfully added.");
            setLoading(false);

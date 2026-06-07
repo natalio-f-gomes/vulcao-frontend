@@ -32,7 +32,7 @@ function StaffDashboard() {
   const [company, setCompany] = useState<CompanyModel | null>(null);
   const [activeView, setActiveView] = useState<StaffDashView>("overview");
   const [productList, setProductList] =  useState<ProductModel[]>([]);
-const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   useEffect(() => {
     const loadStaff = async () => {
   try {

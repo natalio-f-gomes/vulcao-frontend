@@ -325,6 +325,7 @@ export interface CompanyModel extends CompanyRegistrationModel{
     id ?: string;
     createdAt: string;
     updatedAt: string;
+    imgS3UrlKeys?: string[]
 }
 
 export interface CompanyRegistrationModel{
@@ -339,6 +340,7 @@ export interface CompanyRegistrationModel{
     address:AddressModel;
     status:CompanyStatuses;
     creatorUsername:string;
+    imagesMetadata?: ImageMetadata[]
 }
 
 
@@ -413,8 +415,13 @@ export interface CompanyAboutInfo{
   status: CompanyStatuses
 }
 
-export interface ConfirmImageUploadRequest {
+export interface OfferingImageUploadRequest {
   offeringId: string,
   offeringType: OfferingType
+  s3PresignKeys: string[]
+}
+
+export interface CompanyImageUploadRequest {
+  companyId: string,
   s3PresignKeys: string[]
 }

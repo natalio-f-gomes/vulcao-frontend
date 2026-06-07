@@ -10,7 +10,7 @@ export function imageUrlFromKey(key: string): string {
   return `${IMAGE_BASE_URL}/${key}`;
 }
 
-interface ProductImageCarouselProps {
+interface ImageCarouselProps {
   imageKeys?: string[] | null;
   /** Rendered size of the image area */
   width?: number;
@@ -18,12 +18,12 @@ interface ProductImageCarouselProps {
   altText?: string;
 }
 
-function ProductImageCarousel({
+function ImageCarousel({
   imageKeys,
   width = 200,
   height = 140,
-  altText = "Product image",
-}: ProductImageCarouselProps) {
+  altText = "image",
+}: ImageCarouselProps) {
   const [index, setIndex] = useState(0);
 
   const keys = imageKeys ?? [];
@@ -148,4 +148,4 @@ function ProductImageCarousel({
   );
 }
 
-export default ProductImageCarousel;
+export default ImageCarousel;
