@@ -157,6 +157,7 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
           <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
             <i className="bi bi-box-seam" /> Products
           </a>
+          {/* 
           <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
             <i className="bi bi-box-seam" /> Electronics
           </a>
@@ -169,6 +170,7 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
           <a style={itemStyle("bookView")} onClick={() => onNavigate("bookView")}>
             <i className="bi bi-box-seam" /> Books
           </a>
+          */}
 
           <div style={styles.sectionLabel}>Store</div>
           <a style={itemStyle("orderView")}>
@@ -177,9 +179,11 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
           <a  style={itemStyle("customerView")}>
             <i className="bi bi-people" /> Customers
           </a>
+          {/*
             <a  style={itemStyle("reviewsView")}>
             <i className="bi bi-people" /> Reviews
           </a>
+          */}
 
           <div style={styles.sectionLabel}>System</div>
           <a style={itemStyle("productView")}>

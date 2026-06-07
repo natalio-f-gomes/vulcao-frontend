@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllCompanies } from "../api/requests";
 import { CompanyModel } from "../api/interfaces";
+import ImageCarousel from "./ImageCarousel";
 
 function GetBusinessesSection() {
   const [companies, setCompanies] = useState<CompanyModel[]>([]);
@@ -47,26 +48,43 @@ function GetBusinessesSection() {
           <div
             className="product-card"
             key={company.id}
-            onClick={() => navigate(`/business/${company.id}`)}
+            onClick={() => navigate(`/business/public/${company.id}`)}
           >
-            {/* ---- banner: initial + status ---- */}
-            <div className="product-thumb" style={{ height: 150, background: "var(--ink)" }}>
-              <span
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: "2.6rem",
-                  fontWeight: 900,
-                  color: "var(--cream)",
-                }}
-              >
-                {company.name?.charAt(0).toUpperCase()}
-              </span>
+
+            {/* ---- banner: image carousel (or initial), status badge on top ---- */}
+            <div className="product-thumb" style={{ height: 150, background: "var(--ink)", position: "relative" }}>
+
+              {(company.imgS3UrlKeys?.length ?? 0) > 0 ? (
+                /* fill the whole thumb with the carousel */
+                <div style={{ position: "absolute", inset: 0 }}>
+                  <ImageCarousel
+                    imageKeys={company.imgS3UrlKeys}
+                    width={"100%"}
+                    height={150}
+                    altText={company.name}
+                  />
+                </div>
+              ) : (
+                /* fallback: the Playfair initial, as before */
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', serif",
+                    fontSize: "2.6rem",
+                    fontWeight: 900,
+                    color: "var(--cream)",
+                  }}
+                >
+                  {company.name?.charAt(0).toUpperCase()}
+                </span>
+              )}
+
+              {/* badge LAST in DOM + zIndex so it always sits above the image */}
               {company.status === "OPERATING" ? (
-                <span className="product-badge" style={{ background: "#2d6a4f" }}>
+                <span className="product-badge" style={{ background: "#2d6a4f", zIndex: 2 }}>
                   Open
                 </span>
               ) : (
-                <span className="product-badge" style={{ background: "#888" }}>
+                <span className="product-badge" style={{ background: "#888", zIndex: 2 }}>
                   {company.status?.toLowerCase()}
                 </span>
               )}

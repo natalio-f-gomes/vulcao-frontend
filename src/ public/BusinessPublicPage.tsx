@@ -8,6 +8,8 @@ import {
 } from "../api/requests";
 import { CompanyModel, ProductModel, UserProfileModel } from "../api/interfaces";
 import { imageUrlFromKey } from "../components/ImageCarousel";
+import GetHeader from "../components/header";
+import GetFooterSection from "../components/footer";
 
 function BusinessPublicPage() {
   const { id } = useParams<{ id: string }>();
@@ -106,8 +108,50 @@ function BusinessPublicPage() {
   }
 
   return (
+    <>
+    <GetHeader/>
     <div style={{ background: "var(--cream)", minHeight: "100vh" }}>
+      {/* ================= COVER IMAGE (full-bleed, short) ================= */}
+{(company.imgS3UrlKeys?.length ?? 0) > 0 && (
+  <div
+    style={{
+      width: "100%",
+      // wide but short: scales with viewport, min 160px, max 300px
+      height: "clamp(160px, 26vw, 300px)",
+      position: "relative",
+      overflow: "hidden",
+      background: "var(--ink)",
+    }}
+  >
+    <img
+     src={
+  company.imgS3UrlKeys && company.imgS3UrlKeys.length > 0
+    ? imageUrlFromKey(company.imgS3UrlKeys[Math.floor(Math.random() * company.imgS3UrlKeys.length)])
+    : "https://unsplash.com/photos/foggy-mountain-summit-1Z2niiBPg5A" 
+}
 
+      alt={`${company.name} cover`}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",      // fills the strip, crops vertically
+        display: "block",
+      }}
+      onError={(e) => {
+        (e.target as HTMLImageElement).style.display = "none";
+      }}
+    />
+    {/* fade into the dark header below so the two blend */}
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(to bottom, rgba(15,14,14,0) 55%, rgba(15,14,14,0.85) 100%)",
+        pointerEvents: "none",
+      }}
+    />
+  </div>
+)}
       {/* ================= BUSINESS HEADER (dark banner) ================= */}
       <header
         style={{
@@ -358,6 +402,8 @@ function BusinessPublicPage() {
         }
       `}</style>
     </div>
+    <GetFooterSection/>
+        </>
   );
 }
 

@@ -75,7 +75,6 @@ function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
                 console.log("S3 Signed URL: ", s3PresignUrl)
                 console.log("S3 Signed KEY: ", s3PresignKey)
                 return uploadFileToS3(s3PresignUrl, image );
-                 setLoading(true)
               });
         
              try {
@@ -86,6 +85,7 @@ function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
                 console.log("postImgDataResponse: ",postImgDataResponse);
                   alert("COMPANY and all images successfully added.");
                    setLoading(false);
+                   window.location.reload();
                 } catch (uploadError) {
                   console.error("Error during image transfer to S3:", uploadError);
                   setError("Product saved, but some images failed to upload.");

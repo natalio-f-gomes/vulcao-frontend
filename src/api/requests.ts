@@ -3,8 +3,8 @@ import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest } from "./interfaces";
 
-//const URL = "http://localhost:8080"
-const URL = ""
+//const URL = "http://localhost:8080";
+const URL = "";
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));

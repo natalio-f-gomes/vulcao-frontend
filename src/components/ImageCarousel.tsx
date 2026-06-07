@@ -12,8 +12,7 @@ export function imageUrlFromKey(key: string): string {
 
 interface ImageCarouselProps {
   imageKeys?: string[] | null;
-  /** Rendered size of the image area */
-  width?: number;
+  width?: number | string;
   height?: number;
   altText?: string;
 }
@@ -28,13 +27,21 @@ function ImageCarousel({
 
   const keys = imageKeys ?? [];
 
-  // No images — show a neutral placeholder box.
+  // Fluid container: fills the parent, capped at `width`, height follows the ratio.
+  const ratioW = typeof width === "number" ? width : 200;
+  const containerStyle: React.CSSProperties = {
+    position: "relative",
+    width: "100%",
+    maxWidth: width,                       // number → px cap; "100%" → no cap
+    aspectRatio: `${ratioW} / ${height}`,  // height derived at ANY width
+  };
+
+  // No images — show a neutral placeholder box (same fluid sizing).
   if (keys.length === 0) {
     return (
       <div
         style={{
-          width,
-          height,
+          ...containerStyle,
           borderRadius: 12,
           background: "#f0ece6",
           display: "flex",
@@ -60,8 +67,8 @@ function ImageCarousel({
     position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
-    width: 26,
-    height: 26,
+    width: "clamp(22px, 12%, 30px)",   // arrows scale with the carousel
+    aspectRatio: "1 / 1",
     borderRadius: "50%",
     border: "none",
     background: "rgba(0,0,0,0.45)",
@@ -75,7 +82,7 @@ function ImageCarousel({
   };
 
   return (
-    <div style={{ position: "relative", width, height }}>
+    <div style={containerStyle}>
       <img
         src={imageUrlFromKey(keys[safeIndex])}
         alt={`${altText} ${safeIndex + 1} of ${keys.length}`}
