@@ -35,7 +35,7 @@ function StaffDashboard() {
 
   useEffect(() => {
     const loadStaff = async () => {
-      try {
+
         const response = await getStaffProfile();
 
         if (response.status === 403) {
@@ -73,9 +73,7 @@ function StaffDashboard() {
           }
 
         }
-      } catch (err) {
-        console.error("Failed to load staff profile:", err);
-      }
+     
     };
     loadStaff();
   }, [navigate]);
