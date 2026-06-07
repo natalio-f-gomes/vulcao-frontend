@@ -37,7 +37,7 @@ function StaffDashboard() {
     const loadStaff = async () => {
 
         const response = await getStaffProfile();
-
+        console.log("RESPONSE STAFF DASHBOARD: ", response)
         if (response.status === 403) {
           alert("You do not have permission to view this page");
           navigate("/");
