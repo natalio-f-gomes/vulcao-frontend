@@ -38,9 +38,14 @@ function StaffDashboard() {
       try {
         const response = await getStaffProfile();
 
-        if (response.status === 401 || response.status === 403) {
+        if (response.status === 403) {
           alert("You do not have permission to view this page");
           navigate("/");
+          return;
+        }
+        if(response.status === 401){
+          alert("You are not logged in");
+          navigate("/staff-login");
           return;
         }
         if (!response.ok) {

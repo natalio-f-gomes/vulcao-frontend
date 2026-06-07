@@ -48,9 +48,13 @@ function EmployerDashboard(){
         const response = await getEmployerProfile();
         if(!response.ok){
             console.log("There was an issue with your request. ", response)
-        }else if(response.status === 401 || response.status === 403){
-            alert("You do not have the permissions to view this page")
+        }else if(response.status === 403){
+            alert("You do not have the permissions to view this page.")
             navigate("/")
+        }
+        else if(response.status === 401){
+          alert("You are not logged in. Please login")
+            navigate("/employer-login")
         }
         else{
             const data = await response.json();

@@ -65,6 +65,17 @@ function CompanyDashboard(){
                console.log(`There was an issue getting the company Data: ${response}`)
                return;
           }
+          if(response.status === 401){
+               alert("You are not logged in. Please login")
+               localStorage.removeItem("username")
+               localStorage.removeItem("active_role")
+               window.location.href= "/staff-login"
+          }
+          if(response.status === 403){
+               alert("You do not have permissions to visit this page")
+
+               window.location.href= "/"
+          }
           const companyData = await response.json();
           setCompany(companyData);
      }
