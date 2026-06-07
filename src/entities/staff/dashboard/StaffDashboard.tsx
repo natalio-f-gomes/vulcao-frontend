@@ -32,26 +32,20 @@ function StaffDashboard() {
   const [company, setCompany] = useState<CompanyModel | null>(null);
   const [activeView, setActiveView] = useState<StaffDashView>("overview");
   const [productList, setProductList] =  useState<ProductModel[]>([]);
-
+const [loadError, setLoadError] = useState<string | null>(null);
   useEffect(() => {
     const loadStaff = async () => {
+  try {
+       const response = await getStaffProfile();
+    if (response.status === 403) { alert("You do not have permission to view this page"); navigate("/"); return; }
+    if (response.status === 401) { alert("You are not logged in"); navigate("/staff-login"); return; }
+    if (!response.ok) { setLoadError(`Request failed (${response.status})`); return; }
 
-        const response = await getStaffProfile();
-        console.log("RESPONSE STAFF DASHBOARD: ", response)
-        if (response.status === 403) {
-          alert("You do not have permission to view this page");
-          navigate("/");
-          return;
-        }
-        if(response.status === 401){
-          alert("You are not logged in");
-          navigate("/staff-login");
-          return;
-        }
-        if (!response.ok) {
-          console.log("Error fetching staff profile", response);
-          return;
-        }
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      setLoadError("Server returned a non-JSON response — API routing issue.");
+      return;
+    }
 
         const data: StaffModel = await response.json();
         localStorage.setItem("username", data.username);
@@ -73,6 +67,10 @@ function StaffDashboard() {
           }
 
         }
+         } catch (err) {
+    console.error("Failed to load staff profile:", err);
+    setLoadError("Could not load your profile.");
+  }
      
     };
     loadStaff();
