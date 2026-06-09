@@ -20,7 +20,7 @@ function GetOfferingsSection(){
         // 2. If we have a user, proceed to add to cart
         try {
             console.log(product)
-            const response = await addProductToCart(product.id!,1);
+            const response = await addProductToCart(product.id!,1, "dummy");
             if (response.ok) {
     
                 console.log("Item added:");

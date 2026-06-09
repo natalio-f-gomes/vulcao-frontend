@@ -19,7 +19,8 @@ import CompanyDashboard from "./entities/company/company-dashboard";
 import StaffLoginPage from "./entities/staff/staff-login";
 import StaffDashboard from "./entities/staff/dashboard/StaffDashboard";
 import GetBusinessesSection from "./components/Businesses";
-import BusinessPublicPage from "./ public/BusinessPublicPage";
+import BusinessPublicOverView from "./ public/PublicBusinessesPage/BusinessPublicOverView";
+
 
 
 
@@ -46,7 +47,7 @@ function App(){
             <Route path="company-dashboard/:id" element={<CompanyDashboard/>}/>
             <Route path="/staff-login" element={<StaffLoginPage/>}/>
             <Route path="/staff-dashboard" element={<StaffDashboard/>}/>
-            <Route path="/business/public/:id" element={<BusinessPublicPage/>}/>
+            <Route path="/business/public/:id" element={<BusinessPublicOverView/>}/>
         </Routes>
     </AuthProvider>
 

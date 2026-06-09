@@ -48,12 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    
       try {
         const response = await fetchAPIWithCredentials(`/v1/${savedRole}/get/my-profile`);
-        console.log(`Response Getting profile: ${response}`)
+        console.log(`Response Getting profile: `, response)
         if (response.ok) {
             setEntity(savedRole)
         }
         } catch (error) {
-            localStorage.removeItem("`active_role`")
+            localStorage.removeItem("active_role")
             setEntity(null);
         } finally {
             setIsLoading(false);

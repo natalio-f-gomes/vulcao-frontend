@@ -311,3 +311,6 @@ export const ALL_PERMISSIONS: { value: Permissions; label: string; description: 
   
 ];
 export const addressFields = ["island", "city", "zone", "street", "postalCode"];
+
+
+export type OrderStatus = "PENDING" | "PROCESSING" | "CANCELLED" | "COMPLETED" | "RECEIVED" | "SENT"

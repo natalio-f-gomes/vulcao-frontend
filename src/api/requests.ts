@@ -283,8 +283,8 @@ export async function getStaffByCompanyId(companyId: string) {
 }
 
 
-export async function addProductToCart(productId:string, quantity: number) {
-    const endpoint =  `/v1/user/cart/add/product/${productId}/${quantity}`
+export async function addProductToCart(productId:string, quantity: number, companyId: string) {
+    const endpoint =  `/v1/user/cart/add/product/${productId}/${quantity}/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"POST"})
 }
 
@@ -303,6 +303,16 @@ export async function getStaffProfile(){
 export async function getUserCartItems(userId: string){
     const endpoint: string = `/v1/user/get/cart/${userId}`;
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function getCompanyCartItems(userId: string, companyId: string){
+    const endpoint: string = `/v1/user/get/cart/${userId}/${companyId}`;
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function removeItemFromCart(itemId: string, companyId: string){
+    const endpoint:string = `/v1/user/delete/cart/item/${itemId}/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"DELETE"})
 }
 
 

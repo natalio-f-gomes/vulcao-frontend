@@ -1,5 +1,5 @@
 import { ImageMetadata } from "./ImageValidatorService";
-import { OfferingType } from "./categories";
+import { OfferingType, OrderStatus } from "./categories";
 
 export interface UserLoginModel{
   username: string,
@@ -66,6 +66,7 @@ export interface ProductModel extends AddProductModel{
     updatedAt?:string;
     imgS3UrlKeys?: string[]
 }
+
 
 
 export interface ReviewModel{
@@ -424,4 +425,16 @@ export interface OfferingImageUploadRequest {
 export interface CompanyImageUploadRequest {
   companyId: string,
   s3PresignKeys: string[]
+}
+
+export interface PlaceOrderModel{
+  
+}
+export interface OrderModel{
+  userId: string,
+  items: CartItem[],
+  status: OrderStatus,
+  totalCost: number;
+  trackId: number;
+  companyId: number
 }

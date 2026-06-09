@@ -234,7 +234,7 @@ function UserCartView({ products }: Props) {
   const incrementCartItem = async (itemId: string) => {
     applyDelta(itemId, +1); // optimistic update -> UI reflects change immediately
     try {
-      const response = await addProductToCart(itemId, 1);
+      const response = await addProductToCart(itemId, 1, "dummy");
       if (!response.ok) {
         applyDelta(itemId, -1); // rollback
         if (response.status === 401 || response.status === 403) {
