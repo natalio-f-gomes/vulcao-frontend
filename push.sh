@@ -1,4 +1,6 @@
 #!/bin/bash
+npm install
+
 echo "Committing new changes"
 USER_NAME="natalio-f-gomes"
 USER_EMAIL="natalio.f.gomes@proton.me"
