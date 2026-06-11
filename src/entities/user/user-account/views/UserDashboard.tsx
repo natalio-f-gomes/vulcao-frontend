@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { UserProfileModel, AddressModel } from "../../../../api/interfaces";
+import { UserProfileModel, AddressModel, CartItem } from "../../../../api/interfaces";
 import {
   getUserProfileData, 
   updateUserAddress,
   updateUserProfile,
   updateUserContact } from "../../../../api/requests";
 import { useUserAuthManager } from "../../../../api/authentication-handler";
-import { CartItem } from "../../../../api/interfaces";
+
 import {  useNavigate } from "react-router-dom";
+
 
 
 interface UserProfile {

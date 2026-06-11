@@ -1,24 +1,48 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CompanyModel, ProductModel, UserProfileModel } from "../../api/interfaces";
-import { getProductById, removeItemFromCart } from "../../api/requests";
+import { CartItem, CompanyModel, OrderModel, PlaceOrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
+import { getProductById, placeOrder, removeItemFromCart } from "../../api/requests";
 import { imageUrlFromKey } from "../../components/ImageCarousel";
-import { CartItem } from "./publicView.types";
+
 
 interface CartViewProps {
   company: CompanyModel;
   currentUser: UserProfileModel | null;
   cartItems: CartItem[];
-  // Tip: If your parent component updates cartItems prop after delete, this will sync perfectly.
 }
 
 export default function CartView({ company, currentUser, cartItems }: CartViewProps) {
   const navigate = useNavigate();
   const [productList, setProductList] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [order,setOrder]= useState<PlaceOrderModel>({
+
+      userId: "",
+      cartItems: [],
+      status: "SENT",
+      totalCost: 0,
+      trackId: "",
+      companyId: ""
+
+  });
   
   // We use this to track exactly WHICH item is currently being deleted
   const [productIdToBeDeleted, setProductIdToBeDeleted] = useState<string | null>(null);
+
+  const placeOrderRequest =  async () => {
+    if(order === null || productList === null){
+      alert("Your storre cart is empty!")
+      return;
+    }
+    const response = await placeOrder(order);
+    console.log("RESPONSE PLACING ORDER: ", response);
+    if(!response.ok){console.log("There was an isseu with your request"); return}
+    if(response.status === 201){
+      alert("Order sucessfully placed");
+      return;
+    }
+
+  }
 
   useEffect(() => {
     const loadCartProducts = async () => {
@@ -45,6 +69,9 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
         console.error("There was an issue loading cart products:", err);
       } finally {
         setLoading(false);
+        if(company.id && currentUser?.id && cartItems){
+          setOrder({...order, companyId: company.id, userId: currentUser.id, cartItems: cartItems, totalCost: 0})
+        }
       }
     };
 
@@ -223,9 +250,9 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
             </div>
             <button
               className="btn-primary-custom cart-checkout-btn"
-              onClick={() => navigate("/user-cart")}
+              onClick={() => placeOrderRequest()}
             >
-              Go to checkout
+              Place Order
             </button>
           </div>
         </div>

@@ -5,19 +5,21 @@ import {
   getProductsByCompanyId,
   getUserProfileData,
   getCompanyCartItems,
+  getAllUserOrders,
 } from "../../api/requests";
-import { CompanyModel, ProductModel, UserProfileModel } from "../../api/interfaces";
+import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
 import GetFooterSection from "../../components/footer";
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
 import { ResponsiveSidebar } from "../../hooks/ResponsiveSidebar";
 
-import { PublicView, CartItem, OrderSummary } from "./publicView.types";
 import PublicCompanySidebar from "./PublicCompanySidebar";
 import PublicTopBar from "./PublicTopBar";
 import OverviewView from "./OverviewView";
 import ProductsView from "./ProductsView";
 import CartView from "./CartView";
 import OrdersView from "./OrdersView";
+
+export type PublicView = "overview" | "products" | "cart" | "orders";
 
 function BusinessPublicOverView() {
   const { id } = useParams<{ id: string }>();
@@ -29,9 +31,12 @@ function BusinessPublicOverView() {
   const [products, setProducts] = useState<ProductModel[]>([]);
   const [currentUser, setCurrentUser] = useState<UserProfileModel | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [orders, setOrders] = useState<OrderSummary[]>([]);
+  const [orders, setOrders] = useState<OrderModel[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -90,15 +95,33 @@ function BusinessPublicOverView() {
   };
 
   const loadOrders = async () => {
-    setOrders([]);
-  };
+    console.log("LOAD ORDERS ACHIEVED")
+    if(currentUser?.id && company?.id){
+      setLoading(true);
+        const response = await getAllUserOrders(currentUser.id, company.id);
+        console.log("Response Getting User Orders: ", response);
+        setLoading(false);
+        if(!response){
+          console.log("There was an issue with your request.");
+          return;
+        }
+        if(response.status === 200){
+          const data = await response.json();
+          console.log("Order data: ", data);
+          setOrders(data);
+          return;
+        }
+    }
+  }
+    
+    
 
   useEffect(() => {
-    if (!id || !currentUser || !company) return;
-    loadCart();
-    loadOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, currentUser, company]);
+  if (!currentUser || !company) return;
+  if (activeView === "orders") loadOrders();
+  if (activeView === "cart") loadCart();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [activeView]);
 
   const cartCount = cartItems.reduce((sum, line) => sum + line.quantity, 0);
 

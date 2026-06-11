@@ -248,8 +248,9 @@ export const PRODUCT_TYPES: string[] = [
 
 
 export const CURRENCIES: string[] = [
-  "USD", "CVE", "EUR"
+"CVE"
 ];
+ // for now lets just deal with the CVE and not the others
 
 
 export const UNIT_TYPES: string[] = [

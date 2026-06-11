@@ -1,7 +1,8 @@
 
+import { json } from "stream/consumers";
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, OrderModel, PlaceOrderModel } from "./interfaces";
 
 //const URL = "http://localhost:8080";
 const URL = "";
@@ -375,5 +376,30 @@ export async function updateCompanyImage(company: CompanyRegistrationModel){
 
 export async function getAllCompanies(){
     const endpoint: string = "/v1/public/company/get/all";
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function placeOrder(newOrder: PlaceOrderModel) {
+    const endpoint: string = `/v1/user/order/create`;
+    return await fetchAPIWithCredentials(endpoint, {method:"POST", body:JSON.stringify(newOrder) })
+}
+
+export async function getCartItem(itemId: string, companyId: string){
+    const endpoint: string  = `/v1/user/get/cart/item/${itemId}/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function getAllUserOrders(userId: string, companyId: string){
+    const endpoint: string  = `/v1/user/order/get/all/${userId}/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function getOrder(userId: string, companyId: string, orderId: string){
+    const endpoint: string  = `/v1/user/order/get/${userId}/${companyId}${orderId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function getOrderItemById(itemId: string) {
+    const endpoint: string  = `/v1/user/order/get/item/${itemId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }

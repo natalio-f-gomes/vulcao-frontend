@@ -20,6 +20,7 @@ import {
 } from "../../../api/requests";
 import "../../../css/dashboard.css";
 
+
 export type UserDashView = "overview" | "cart" | "orders" | "security";
 
 export interface CartProductModel extends ProductModel {
@@ -56,7 +57,7 @@ function GetUserAccountPage() {
 
           const productItems = data.filter((item) => item.itemType === "PRODUCT");
           const productPromises = productItems.map(async (item) => {
-            const response = await getProductById(item.itemId);
+            const response = await getProductById(item!.id!);
             if (response.ok) {
               const productData = await response.json();
               return { ...productData, quantity: item.quantity };

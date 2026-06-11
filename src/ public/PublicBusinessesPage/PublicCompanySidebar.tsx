@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { CompanyModel, UserProfileModel } from "../../api/interfaces";
-import { CartItem, PublicView } from "./publicView.types";
+import { PublicView } from "./BusinessPublicOverView";
+
 
 const sidebarStyles: Record<string, React.CSSProperties> = {
   sidebar: {
