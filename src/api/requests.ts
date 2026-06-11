@@ -1,8 +1,8 @@
 
-import { json } from "stream/consumers";
+
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, OrderModel, PlaceOrderModel } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel } from "./interfaces";
 
 //const URL = "http://localhost:8080";
 const URL = "";
