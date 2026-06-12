@@ -1,4 +1,6 @@
 #!/bin/bash
+rm -rf node_modules
+rm -rf package-lock.json
 npm install
 
 echo "Committing new changes"
