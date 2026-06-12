@@ -5,7 +5,7 @@ import {
   getProductsByCompanyId,
   getUserProfileData,
   getCompanyCartItems,
-  getAllUserOrders,
+  getAllCompanyOrders,
 } from "../../api/requests";
 import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
 import GetFooterSection from "../../components/footer";
@@ -69,6 +69,7 @@ function BusinessPublicOverView() {
     const loadUser = async () => {
       try {
         const data = await getUserProfileData();
+        console.log("UserData: ", data)
         if (data) setCurrentUser(data);
       } catch {
         /* anonymous visitors are fine */
@@ -98,7 +99,7 @@ function BusinessPublicOverView() {
     console.log("LOAD ORDERS ACHIEVED")
     if(currentUser?.id && company?.id){
       setLoading(true);
-        const response = await getAllUserOrders(currentUser.id, company.id);
+        const response = await getAllCompanyOrders(currentUser.id, company.id);
         console.log("Response Getting User Orders: ", response);
         setLoading(false);
         if(!response){
@@ -146,10 +147,9 @@ function BusinessPublicOverView() {
       default: return <OverviewView company={company} productCount={products.length} />;
     }
   };
-
-  return (
+return (
     <>
-      <div className="profile-page" style={{ display: "flex" }}>
+      <div className="profile-page" style={{ display: "flex", minHeight: "100vh", background: "var(--cream)" }}>
         <ResponsiveSidebar
           isOpen={sidebar.isOpen}
           isMobile={sidebar.isMobile}
@@ -166,14 +166,25 @@ function BusinessPublicOverView() {
           />
         </ResponsiveSidebar>
 
-        <div style={{ flex: 1, display: "flex", minWidth: 0, flexDirection: "column" }} className="main-content-area">
+        {/* Added gap and overflow handling here */}
+        <div 
+          className="main-content-area"
+          style={{ 
+            flex: 1, 
+            display: "flex", 
+            minWidth: 0, 
+            flexDirection: "column",
+            gap: "1rem" /* This creates the small gap between topbar/sidebar and content */
+          }} 
+        >
           <PublicTopBar
             companyName={company.name}
             cartCount={cartCount}
             onCartClick={() => setActiveView("cart")}
           />
 
-          <div className="view active" style={{ background: "var(--cream)", minHeight: "100vh" }}>
+          {/* Removed min-height duplication and massive layout shifts */}
+          <div className="view active" style={{ flex: 1, width: "100%" }}>
             {renderView()}
           </div>
         </div>
@@ -182,8 +193,9 @@ function BusinessPublicOverView() {
       <GetFooterSection />
 
       <style>{`
-        @media (max-width: 991px) {
-          .business-about-grid { grid-template-columns: 1fr !important; }
+        /* Quick fixes to clean up double margins on smaller viewports too */
+        @media (max-width: 1000px) {
+          .business-about-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
         }
       `}</style>
     </>

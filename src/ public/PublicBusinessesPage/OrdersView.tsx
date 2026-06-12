@@ -26,19 +26,26 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
     // snapshot (name, quantity, priceAtPurchase), so no extra product
     // lookups are needed — one fetch per item is enough.
     const loadItemsForOrder = async (order: OrderModel): Promise<OrderItemModel[]> => {
-      const responses = await Promise.all(
-        order.cartItems.map((item) => getOrderItemById(item.id!))
-      );
+        const responses = await Promise.all(
+          order.cartItems
+            .filter((item) => item?.id)
+            .map((item) => getOrderItemById(item.id!))
+        );
 
       const orderItems: OrderItemModel[] = [];
-      for (const res of responses) {
-        if (!res || !res.ok) {
-          console.log("There was an issue loading one of the order items");
-          continue;
+        for (const res of responses) {
+          if (!res || !res.ok) {
+            console.log("There was an issue loading one of the order items");
+            continue;
+          }
+          const data = await res.json().catch(() => null);
+          if (!data) {
+            console.log("Order item response was empty, skipping");
+            continue;
+          }
+          orderItems.push(data);
         }
-        orderItems.push(await res.json());
-      }
-      return orderItems;
+        return orderItems;
     };
 
     const loadAllOrders = async () => {

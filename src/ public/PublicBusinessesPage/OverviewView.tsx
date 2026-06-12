@@ -20,6 +20,7 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
             position: "relative",
             overflow: "hidden",
             background: "var(--ink)",
+            
           }}
         >
           <img
@@ -44,7 +45,7 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
       )}
 
       {/* dark banner */}
-      <header style={{ background: "var(--ink)", color: "var(--cream)", padding: "3rem 2.5rem 2.5rem", position: "relative", overflow: "hidden" }}>
+      <header style={{ background: "var(--ink)", color: "var(--cream)", padding: "3rem 2.5rem 2.5rem",  position: "relative", overflow: "hidden" }}>
         <div
           style={{
             position: "absolute",
@@ -125,7 +126,8 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
       </header>
 
       {/* about + contact */}
-      <section style={{ padding: "3rem 2.5rem", display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "2rem" }} className="business-about-grid">
+
+<section style={{ padding: "3rem 2.5rem 3rem 0", display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "2rem" }} className="business-about-grid">
         <div style={{ background: "#fff", border: "1px solid #e8e4de", padding: "2rem" }}>
           <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>About</div>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 800, marginBottom: 12 }}>Who we are</h2>

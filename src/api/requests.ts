@@ -389,10 +389,16 @@ export async function getCartItem(itemId: string, companyId: string){
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
-export async function getAllUserOrders(userId: string, companyId: string){
+export async function getAllCompanyOrders(userId: string, companyId: string){
     const endpoint: string  = `/v1/user/order/get/all/${userId}/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
+
+export async function getAllUserOrders(userId: string){
+    const endpoint: string  = `/v1/user/order/get/all/${userId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
 
 export async function getOrder(userId: string, companyId: string, orderId: string){
     const endpoint: string  = `/v1/user/order/get/${userId}/${companyId}${orderId}`

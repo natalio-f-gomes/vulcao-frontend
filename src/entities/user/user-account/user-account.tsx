@@ -10,10 +10,12 @@ import GetHeader from "../../../components/header";
 import GetFooterSection from "../../../components/footer";
 import {
   CartItem,
+  OrderModel,
   ProductModel,
   UserProfileModel,
 } from "../../../api/interfaces";
 import {
+  getAllUserOrders,
   getProductById,
   getUserCartItems,
   getUserProfileData,
@@ -32,6 +34,7 @@ function GetUserAccountPage() {
   const [currentUser, setCurrentUser] = useState<UserProfileModel | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<CartProductModel[]>([]);
+  const [orders, setOrders] = useState<OrderModel[]>([]);
   const navigate = useNavigate();
   const sidebar = useResponsiveSidebar(768);
 
@@ -71,6 +74,16 @@ function GetUserAccountPage() {
           ) as CartProductModel[];
           setProducts(validProducts);
         }
+        const ordersResponse = await getAllUserOrders(userData.id)
+        console.log("Orders response: ", ordersResponse)
+        if(!ordersResponse || !ordersResponse.ok){
+            console.log("There was an issue with your order");
+            return;
+        }
+        if(ordersResponse.status===200){
+          const orderData = await ordersResponse.json();
+          setOrders(orderData)
+        }
       } catch (error) {
         console.error("Network or API error ", error);
       }
@@ -86,7 +99,7 @@ function GetUserAccountPage() {
       case "cart":
         return <UserCartView products={products} />;
       case "orders":
-        return <UserOrderView />;
+        return <UserOrderView orders={orders} />;
       case "security":
         return <div>Security settings coming soon</div>;
       default:

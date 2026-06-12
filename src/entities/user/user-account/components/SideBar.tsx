@@ -97,13 +97,14 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
               <i className="bi bi-geo-alt"></i> Address
             </a>
 
-            {/* Cart - Switches View */}
+            {/* Cart - Switches View
             <a
               className={`sidebar-nav-item ${currentView === "cart" ? "active" : ""}`}
               onClick={() => goToView("cart")}
             >
               <i className="bi bi-cart-fill"></i> Cart
             </a>
+             */}
 
             {/* Orders - Switches View */}
             <a
