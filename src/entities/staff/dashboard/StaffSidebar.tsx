@@ -41,23 +41,29 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
             <span style={styles.brandAccent}>{companyName}</span>
           </a>
         </div>
+        
         <span style={styles.brandSub}>{company?.name ?? ""} -  Dashboard</span>
-
+       
         <nav style={styles.nav}>
+           {/* 
           <div style={styles.sectionLabel}>Overview</div>
           <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
             <i className="bi bi-grid-1x2" /> Dashboard
           </a>
+          */}
 
            <a style={itemStyle("staffview")} onClick={() => onNavigate("staffview")}>
             <i className="bi bi-people" /> Staff Members
           </a>
 
           <div style={styles.sectionLabel} >Offerings</div>
+          
 
           <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
             <i className="bi bi-box-seam" /> Products
           </a>
+
+          {/* 
           <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
             <i className="bi bi-box-seam" /> Electronics
           </a>
@@ -70,11 +76,13 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
           <a style={itemStyle("bookView")} onClick={() => onNavigate("bookView")}>
             <i className="bi bi-box-seam" /> Books
           </a>
+          */}
 
           <div style={styles.sectionLabel}>Store</div>
-          <a style={itemStyle("orderView")}>
+          <a style={itemStyle("orderView")} onClick={()=> onNavigate("orderView")}>
             <i className="bi bi-bag-check" /> Orders
           </a>
+          {/* 
           <a  style={itemStyle("customerView")}>
             <i className="bi bi-people" /> Customers
           </a>
@@ -86,6 +94,7 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
           <a style={itemStyle("productView")}>
             <i className="bi bi-gear" /> Settings
           </a>
+          */}
           <div style={styles.sectionLabel}>Account</div>
           <a style={itemStyle("profileView")} onClick={()=> onNavigate("profileView")}>
             <i className="bi bi-person" /> Profile

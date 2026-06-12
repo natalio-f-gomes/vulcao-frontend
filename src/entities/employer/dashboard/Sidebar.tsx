@@ -142,15 +142,19 @@ return (
 
         <nav style={styles.nav}>
           <div style={styles.sectionLabel}>Overview</div>
-          <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+              <a style={itemStyle("profile")} onClick={() => onNavigate("profile")}>
+            <i className="bi bi-grid-1x2" /> Profile
+          </a>
+          {/*           <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
             <i className="bi bi-grid-1x2" /> Dashboard
           </a>
+          */}
+
           <a style={itemStyle("businesses")} onClick={() => onNavigate("businesses")}>
             <i className="bi bi-building" /> My Businesses
           </a>
-          <a style={styles.navItem} onClick={() => onNavigate("businesses")}>
-            <i className="bi bi-plus-circle" /> Register Business
-          </a>
+            
+            {/* 
 
           <div style={styles.sectionLabel}>Store</div>
           <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
@@ -162,6 +166,7 @@ return (
           <a style={itemStyle("customers")} onClick={() => onNavigate("customers")}>
             <i className="bi bi-people" /> Customers
           </a>
+          */}
 
           <div style={styles.sectionLabel}>System</div>
           <a style={itemStyle("settings")} onClick={() => onNavigate("settings")}>

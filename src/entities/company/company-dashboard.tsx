@@ -1,9 +1,9 @@
 
 import { useNavigate, useParams } from "react-router-dom";
 import CompanyTopBar from "./CompanyTopBar";
-import { CompanyModel, CompanyStats, ProductModel, RegisterStaffModel, StaffModel } from "../../api/interfaces";
+import { CompanyModel, CompanyStats, EmployerModel, OrderModel, ProductModel, RegisterStaffModel, StaffModel } from "../../api/interfaces";
 import CompanySidebar, { CompanyView } from "./companySideBar";
-import { getCompanyDashboard, getProductsByCompanyId, getStaffByCompanyId, logoutEntity, registerStaff } from "../../api/requests";
+import { getAllCompanyOrders, getCompanyDashboard, getEmployerProfile, getProductsByCompanyId, getStaffByCompanyId, logoutEntity, registerStaff } from "../../api/requests";
 import { useEffect, useRef, useState } from "react";
 
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
@@ -15,11 +15,12 @@ import CompanyOverView from "./views/OverviewView";
 import CompanyStaffView from "./views/StaffView";
 import ProductView from "./views/ProductsView";
 import ElectronicView from "./views/ElectronicsView";
+import CompanyOrderView from "./views/OrdersView";
 
 function CompanyDashboard(){
     const navigate = useNavigate();
-  const {id} = useParams();
-  console.log(id)
+     const {id} = useParams();
+     console.log("Company Id: ",id)
      const [activeView, setActiveView]  = useState<CompanyView>("overview");
      const [staffList, setStaffList] = useState<RegisterStaffModel[]>([]);
      const [productList, setProductList] = useState<ProductModel[]>([]);
@@ -53,14 +54,55 @@ function CompanyDashboard(){
      const [deletingStaff, setDeletingStaff]   = useState<RegisterStaffModel | null>(null);
      const staffSectionReference = useRef<HTMLDivElement>(null);
      const sidebar = useResponsiveSidebar(768);
-     
+     const [companyOrders, setCompanyOrders] = useState<OrderModel[] >([])
+     const [currentEmployer, setCurrentEmployer] = useState<EmployerModel | null>(null);
      const handleLogout = (entityType: string) =>{
      logoutEntity(entityType)
      navigate("/")
      };
+
+     const loadCompanyOrders = async (id: string) => {
+ 
+          const response = await getAllCompanyOrders(id);
+          console.log("Response getting the employer company", response)
+          if(!response.ok){
+               alert("There was an isseu with your request")
+          }
+          if(response.status === 200){
+               const data = await response.json();
+               setCompanyOrders(data);
+          }
+          else if(response.status === 403){
+               alert("You do not have access to access this type of data")
+          }else{
+               alert(`Therenwas an issue: ${response.text}`,)
+          }
      
-     const getCompanyData = async (companyId: string)=>{
-          const response = await getCompanyDashboard(companyId);
+
+        
+
+     }
+
+     const loadEmployerProfile = async () => {
+          try {
+               const employer = await getEmployerProfile();
+               console.log("Employer profile: ", employer)
+               setCurrentEmployer(employer);
+               return;
+               } catch (error: any) {
+               if (error.status === 403) {
+               alert("You do not have the permissions to view this page.");
+               navigate("/");
+               } else if (error.status === 401) {
+               navigate("/employer-login");
+               } else {
+               console.log("There was an issue with your request.", error);
+               }
+          }
+     }
+     
+     const getCompanyData = async (id: string)=>{
+          const response = await getCompanyDashboard(id);
           if(!response.ok){
                console.log(`There was an issue getting the company Data: ${response}`)
                return;
@@ -78,6 +120,8 @@ function CompanyDashboard(){
           }
           const companyData = await response.json();
           setCompany(companyData);
+         
+
      }
 
      const renderView = () => {
@@ -87,8 +131,7 @@ function CompanyDashboard(){
                case "staffview": return <CompanyStaffView company={company}/>
                case "productView": return <ProductView company={company}/>
                case "electronicView": return <ElectronicView/>
-               default:
-                    return <CompanyOverviewView company={company}/>;
+               case "orderView": return <CompanyOrderView orders={companyOrders} employer={currentEmployer} company={company}/>
           }
      }
 
@@ -96,11 +139,13 @@ function CompanyDashboard(){
      useEffect(() => {
           if(id){
           getCompanyData(id);
+          loadEmployerProfile();
+          loadCompanyOrders(id);
           }
      }, [id]);
      
      useEffect(() => {
-    if(id && productList && staffList){
+          if(id && productList && staffList){
      setStats((prev) => ({ ...prev, staffList: staffList.length, products: productList.length}));
      }
   }, [staffList]);
@@ -123,7 +168,7 @@ function CompanyDashboard(){
                          onNavigate={(view) => setActiveView(view)}
                     />
                </ResponsiveSidebar>
-               <div style={{ flex: 1, display: 'flex', minWidth: 0, flexDirection: 'column' }} className="main-content-area">
+               <div style={{ flex: 1, display: 'flex', minWidth: 0, flexDirection: 'column'}} className="main-content-area">
                     <CompanyHeader
                     companyName={company.name}
                     onBack={() => (navigate("/employer-dashboard"))}

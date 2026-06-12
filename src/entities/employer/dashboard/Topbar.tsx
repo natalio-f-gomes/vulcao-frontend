@@ -10,6 +10,7 @@ const VIEW_TITLES: Record<EmployerDashView, { title: string; sub: string }> = {
   staffs:  { title: "Employees",     sub: "Manage your team members." },
   customers:  { title: "Customers",     sub: "View and manage your customer base." },
   settings:   { title: "Settings",      sub: "Configure your dashboard preferences." },
+  profile:  { title: "Hello.",       sub: "Manage your account" },
 };
 
 interface TopbarProps {
@@ -30,6 +31,7 @@ function Topbar({ activeView }: TopbarProps) {
           <i className="bi bi-calendar3"></i>
           <span>{new Date().toDateString()}</span>
         </div>
+        {/* 
         <button className="topbar-icon-btn" >
           <i className="bi bi-bell"></i>
           <span className="notif-dot"></span>
@@ -37,6 +39,7 @@ function Topbar({ activeView }: TopbarProps) {
         <button className="topbar-icon-btn">
           <i className="bi bi-search"></i>
         </button>
+        */}
       </div>
     </div>
   );

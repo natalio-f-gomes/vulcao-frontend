@@ -3,7 +3,8 @@ import { CompanyModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import { companyName } from "../../api/global";
 
-export type CompanyView = "overview" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
+export type CompanyView = "overview" | "staffview" | "productView" | "electronicView" | "tvShowView" | 
+                          "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
 
 
 interface Parameters {
@@ -173,12 +174,14 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
           */}
 
           <div style={styles.sectionLabel}>Store</div>
-          <a style={itemStyle("orderView")}>
+          <a style={itemStyle("orderView")} onClick={() => onNavigate("orderView")}>
             <i className="bi bi-bag-check" /> Orders
           </a>
+          {/*
           <a  style={itemStyle("customerView")}>
             <i className="bi bi-people" /> Customers
           </a>
+           */}
           {/*
             <a  style={itemStyle("reviewsView")}>
             <i className="bi bi-people" /> Reviews

@@ -136,6 +136,31 @@ export default function UserOrderView({ orders }: OrderProps) {
     return computed > 0 ? computed : order.totalCost ?? 0;
   };
 
+  const getOrderStatusMessage = (status: OrderStatus) => {
+  switch (status) {
+    case "PENDING":
+      return "Your order has been received and is waiting to be processed.";
+
+    case "PROCESSING":
+      return "We are preparing your items.";
+
+    case "SENT":
+      return "Your order has been shipped.";
+
+    case "RECEIVED":
+      return "Your order has been delivered.";
+
+    case "COMPLETED":
+      return "This order is completed. Thank you!";
+
+    case "CANCELLED":
+      return "This order was cancelled.";
+
+    default:
+      return "Status unknown.";
+  }
+};
+
   const formatDate = (iso?: string): string =>
     iso
       ? new Date(iso).toLocaleDateString(undefined, {
@@ -202,7 +227,13 @@ export default function UserOrderView({ orders }: OrderProps) {
                         </div>
                         <h3 style={styles.orderTitle}>Order #{order.id}</h3>
                       </div>
-                      <span style={getStatusBadgeStyle(order.status)}>{order.status}</span>
+                    <span style={getStatusBadgeStyle(order.status)}>
+                      {order.status}
+                    </span>
+
+                    <div style={{ fontSize: "0.85rem", color: "var(--mid)", marginTop: 4 }}>
+                      {getOrderStatusMessage(order.status)}
+                    </div>
                     </div>
 
                     {/* Order info summary */}

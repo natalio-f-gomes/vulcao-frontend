@@ -23,7 +23,7 @@ import {
 import "../../../css/dashboard.css";
 
 
-export type UserDashView = "overview" | "cart" | "orders" | "security";
+export type UserDashView = "overview" | "cart" | "orders" | "security" | "contact" | "personalInfo" | "address";
 
 export interface CartProductModel extends ProductModel {
   quantity: number;
@@ -52,28 +52,6 @@ function GetUserAccountPage() {
         localStorage.setItem("username", userData.username);
         setCurrentUser(userData);
 
-        const cartItemResponse = await getUserCartItems(userData.id);
-
-        if (cartItemResponse && cartItemResponse.ok) {
-          const data: CartItem[] = await cartItemResponse.json();
-          setCartItems(data);
-
-          const productItems = data.filter((item) => item.itemType === "PRODUCT");
-          const productPromises = productItems.map(async (item) => {
-            const response = await getProductById(item!.id!);
-            if (response.ok) {
-              const productData = await response.json();
-              return { ...productData, quantity: item.quantity };
-            }
-            return null;
-          });
-
-          const resolvedProducts = await Promise.all(productPromises);
-          const validProducts = resolvedProducts.filter(
-            (p) => p !== null
-          ) as CartProductModel[];
-          setProducts(validProducts);
-        }
         const ordersResponse = await getAllUserOrders(userData.id)
         console.log("Orders response: ", ordersResponse)
         if(!ordersResponse || !ordersResponse.ok){

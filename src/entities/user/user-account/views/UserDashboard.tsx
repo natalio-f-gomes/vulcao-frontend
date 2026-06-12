@@ -11,12 +11,12 @@ import {  useNavigate } from "react-router-dom";
 
 
 
-interface UserProfile {
+export interface UserProfile {
   firstName:    string;
   lastName:     string;
 }
 
-interface UserContact {
+export interface UserContact {
   email:    string;
   phoneNumber:     string;
 }

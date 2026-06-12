@@ -80,6 +80,11 @@ export async function getUserProfileData() {
   return text ? JSON.parse(text) : null;
 }
 
+export async function getUserById(userId: string){
+    const endpoint:string = `/v1/public/user/get/${userId}`;
+    return fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+
 export async function updateUserProfile(user_id: string,userProfile: {firstName: string, lastName: string}){
     const response = await fetchAPIWithCredentials(`/v1/user/update/${user_id}/profile`,
          {method: "PUT", body: JSON.stringify(userProfile)})
@@ -240,10 +245,19 @@ export async function updateProduct(id:string, product: ProductModel){
     })
 }
 
-export async function getEmployerProfile(){
-    const endpoint:string = "/v1/employer/get/my-profile";
-    return await fetchAPIWithCredentials(endpoint, {method: "GET"})
 
+export async function getEmployerProfile() {
+  const response = await fetchAPIWithCredentials("/v1/employer/get/my-profile");
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    const error = new Error(errorText || `Server returned status ${response.status}`);
+    (error as any).status = response.status;  // attach status
+    throw error;
+  }
+
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
 
 export async function deleteProductById(id:string){
@@ -389,10 +403,17 @@ export async function getCartItem(itemId: string, companyId: string){
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
-export async function getAllCompanyOrders(userId: string, companyId: string){
+export async function getAllCompanyAndUserOrders(userId: string, companyId: string){
     const endpoint: string  = `/v1/user/order/get/all/${userId}/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
+
+export async function getAllCompanyOrders(companyId: string){
+    const endpoint: string  = `/v1/company/get/all/orders/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+
 
 export async function getAllUserOrders(userId: string){
     const endpoint: string  = `/v1/user/order/get/all/${userId}`
@@ -408,4 +429,31 @@ export async function getOrder(userId: string, companyId: string, orderId: strin
 export async function getOrderItemById(itemId: string) {
     const endpoint: string  = `/v1/user/order/get/item/${itemId}`
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+
+export async function updateEmplyerProfile(username: string, profile: {firstName: string, lastName: string}){
+    const response = await fetchAPIWithCredentials(`/v1/employer/update/${username}/profile`,
+         {method: "PUT", body: JSON.stringify(profile)})
+    return response;
+
+}
+
+export async function updateEmployerContact(username: string, contact: {email: string, phoneNumber: string}){
+    const response =  await fetchAPIWithCredentials(`/v1/employer/update/${username}/contact`,
+        {method: "PUT", body: JSON.stringify(contact)})
+    return response;
+      
+}
+
+export async function updateEmployerAddress(username: string, address: AddressModel){
+   const response =await fetchAPIWithCredentials(`/v1/employer/update/${username}/address`, {method: "PUT", body: JSON.stringify(address)})
+    return response;
+       
+}
+
+export async function updateOrderStatus(orderId: string, status: string) {
+  return fetchAPIWithCredentials(`/v1/user/order/update/${orderId}/status?status=${status}`, {
+    method: "PUT"
+  });
 }

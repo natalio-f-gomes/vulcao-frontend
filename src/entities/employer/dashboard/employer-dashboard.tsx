@@ -16,6 +16,7 @@ import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";
 import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
 import GetHeader from "../../../components/header";
 import GetFooterSection from "../../../components/footer";
+import EmployerProfileView from "./views/EmployerProfileView";
 
 
 export type EmployerDashView =
@@ -23,6 +24,7 @@ export type EmployerDashView =
   | "businesses"
   | "orders"
   | "products"
+  | "profile"
   | "services"
   | "staffs"
   | "customers"
@@ -34,7 +36,7 @@ function EmployerDashboard(){
 
     const navigate = useNavigate();
     const [employer, setEmployer] = useState<EmployerModel | null> (null);
-    const [activeView, setActiveView] = useState<EmployerDashView>("overview")
+    const [activeView, setActiveView] = useState<EmployerDashView>("profile")
     const sidebar = useResponsiveSidebar(768);
 
       const handleNavigate = (view: EmployerDashView) => {
@@ -45,22 +47,19 @@ function EmployerDashboard(){
 
     useEffect( () => {
     const getEmployer = async () => {
-        const response = await getEmployerProfile();
-        if(!response.ok){
-            console.log("There was an issue with your request. ", response)
-        }else if(response.status === 403){
-            alert("You do not have the permissions to view this page.")
-            navigate("/")
-        }
-        else if(response.status === 401){
-          alert("You are not logged in. Please login")
-            navigate("/employer-login")
-        }
-        else{
-            const data = await response.json();
-            localStorage.setItem("username", data.username)
-            setEmployer(data)
-            console.log(data)
+              try {
+          const employer = await getEmployerProfile();
+          setEmployer(employer)
+        } catch (error: any) {
+          if (error.status === 403) {
+            alert("You do not have the permissions to view this page.");
+            navigate("/");
+          } else if (error.status === 401) {
+            navigate("/login");
+          } else {
+            console.log("There was an issue with your request.", error);
+          }
+
         }
     };
     getEmployer();
@@ -76,6 +75,8 @@ function EmployerDashboard(){
       case "staffs":      return <EmployeesView />;
       case "customers":   return <CustomersView />;
       case "settings":    return <SettingsView />;
+      case "profile":    return <EmployerProfileView />;
+  
     }
   };
    return (

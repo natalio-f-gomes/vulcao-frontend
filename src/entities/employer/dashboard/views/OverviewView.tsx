@@ -8,15 +8,15 @@ function OverviewView() {
     <>
    
 
-      <KpiGrid />
+      {/*<KpiGrid /> */}
 
       <div className="mid-row">
-        <RevenueOverview />
-        <TopProducts />
+       {/* <RevenueOverview /> */} {/* TO IMPLEMENT LATER ON */}
+        {/*<TopProducts />*/} {/* TO IMPLEMENT LATER ON */}
       </div>
 
       <div className="mid-row">
-        <ActivityFeed />
+        {/*<ActivityFeed />*/}
       </div>
     </>
   );

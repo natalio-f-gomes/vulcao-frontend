@@ -5,7 +5,7 @@ import {
   getProductsByCompanyId,
   getUserProfileData,
   getCompanyCartItems,
-  getAllCompanyOrders,
+  getAllCompanyAndUserOrders,
 } from "../../api/requests";
 import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
 import GetFooterSection from "../../components/footer";
@@ -99,7 +99,7 @@ function BusinessPublicOverView() {
     console.log("LOAD ORDERS ACHIEVED")
     if(currentUser?.id && company?.id){
       setLoading(true);
-        const response = await getAllCompanyOrders(currentUser.id, company.id);
+        const response = await getAllCompanyAndUserOrders(currentUser.id, company.id);
         console.log("Response Getting User Orders: ", response);
         setLoading(false);
         if(!response){

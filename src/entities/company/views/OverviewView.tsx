@@ -150,7 +150,7 @@ function CompanyOverView({ company }: Parameters) {
   return (
     <>
       {/* ---- header: name + status, dashboard heading style ---- */}
-      <div className="view-heading" style={{ marginTop: "40px" }}>{company.name}</div>
+      <div className="view-heading" style={{ marginTop: "1px" }}>{company.name}</div>
       <div className="view-sub" style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span className={companyStatus}>{company.status}</span>
         <span>{company.category?.replaceAll("_", " ")}</span>

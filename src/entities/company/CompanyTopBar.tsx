@@ -1,35 +1,35 @@
-interface Props {
+
+
+import { useNavigate } from "react-router-dom";
+
+interface PublicTopBarProps {
   companyName: string;
-  onBack:      () => void;
+  onBack: () => void;
 }
+function CompanyHeader({ companyName, onBack }: PublicTopBarProps) {
+  const navigate = useNavigate();
 
-const styles: Record<string, React.CSSProperties> ={
-  overviewHeader: {
-    width: "100vh",
-    marginBottom: -25
-  },
-}
-
-function CompanyHeader({ companyName, onBack }: Props) {
   return (
-    <>
-      <div style={styles.overviewHeader}>
-        <div className="row">
-          <div className="col-8">
-              <div className="page-header">
-                  <p className="page-eyebrow">Company Dashboard</p>
-                  <h1 className="page-title">{companyName}</h1>
-              </div>
-            </div>
-              <div className="col-3 me-2 d-flex justify-content-between align-items-center mb-3" >
-                <button onClick={onBack} className="btn btn-primary mt-4" style={{fontSize:14}}>
-                      <i className="bi bi-arrow-left" ></i> Back
-                </button>
-          </div>
-          </div>
-      </div> 
-    </>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "0.85rem 1.5rem",
+        borderBottom: "1px solid #e8e4de",
+        background: "var(--cream)",
+      }}
+    >
+      <button
+        onClick={() => navigate("/")}
+        style={{ background: "transparent", border: "1px solid #d8d2c8", borderRadius: 6, padding: "1x 12px", cursor: "pointer", fontSize: "0.85rem" }}
+      >
+        <i className="bi bi-arrow-left" /> Home
+      </button>
+      <span style={{ fontWeight: 600 }}>{companyName}</span>
+
+    </div>
   );
 }
 
-export default CompanyHeader;
+export default CompanyHeader

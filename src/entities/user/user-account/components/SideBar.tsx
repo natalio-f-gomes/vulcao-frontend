@@ -66,7 +66,7 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
             {/* Overview Sections - Scroll within Overview */}
             <a
               href="#section-personal"
-              className={`sidebar-nav-item ${currentView === "overview" ? "active" : ""}`}
+              className={`sidebar-nav-item ${currentView === "personalInfo" ? "active" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 goToSection("section-personal");
@@ -77,7 +77,7 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
 
             <a
               href="#section-contact"
-              className={`sidebar-nav-item ${currentView === "overview" ? "active" : ""}`}
+              className={`sidebar-nav-item ${currentView === "overview" ? "contact" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 goToSection("section-contact");
@@ -88,7 +88,7 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
 
             <a
               href="#section-address"
-              className={`sidebar-nav-item ${currentView === "overview" ? "active" : ""}`}
+              className={`sidebar-nav-item ${currentView === "overview" ? "address" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 goToSection("section-address");
@@ -117,7 +117,7 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
             {/* Security - Scroll within Overview */}
             <a
               href="#section-security"
-              className={`sidebar-nav-item ${currentView === "overview" ? "active" : ""}`}
+              className={`sidebar-nav-item ${currentView === "security" ? "active" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 goToSection("section-security");

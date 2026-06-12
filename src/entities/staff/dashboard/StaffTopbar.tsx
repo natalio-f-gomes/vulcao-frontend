@@ -42,6 +42,7 @@ function StaffTopbar({ activeView, staff }: StaffTopbarProps) {
           <i className="bi bi-calendar3"></i>
           <span>{new Date().toDateString()}</span>
         </div>
+        {/*
         <button className="topbar-icon-btn">
           <i className="bi bi-bell"></i>
           <span className="notif-dot"></span>
@@ -49,6 +50,7 @@ function StaffTopbar({ activeView, staff }: StaffTopbarProps) {
         <button className="topbar-icon-btn">
           <i className="bi bi-search"></i>
         </button>
+         */}
       </div>
     </div>
   );

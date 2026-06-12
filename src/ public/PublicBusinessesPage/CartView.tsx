@@ -22,7 +22,8 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
       status: "SENT",
       totalCost: 0,
       trackId: "",
-      companyId: ""
+      companyId: "",
+      note: ""
 
   });
   
@@ -117,6 +118,14 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
     }
   };
 
+    const handleInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const fieldName = e.target.id as keyof PlaceOrderModel; // not keyof FormData
+      setOrder((prev) => ({ ...prev, [fieldName]: e.target.value }));
+    };
+  
+
   if (!currentUser) {
     return (
       <div style={{ padding: "3rem 2.5rem", textAlign: "center", color: "var(--mid)" }}>
@@ -199,6 +208,7 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
                     <i className="bi bi-box-seam" style={{ fontSize: "1.4rem", color: "#aaa", margin: 16 }} />
                   )}
                 </div>
+               
 
                 {/* Product Info */}
                 <div style={{ flex: 1 }}>
@@ -242,6 +252,44 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
               </div>
             );
           })}
+
+          <div
+              style={{
+                margin: "12px",
+                width: "calc(100% - 24px)"
+              }}
+            >
+              <textarea
+                id="note"
+                name="note"
+                placeholder="Add a note to your order..."
+                onChange={handleInputChange}
+                maxLength={5000}
+                style={{
+                  width: "100%",
+                  minHeight: "140px",
+                  padding: "12px",
+                  border: "1px solid #d8d3cc",
+                  borderRadius: "4px",
+                  resize: "vertical",
+                  fontSize: "0.95rem",
+                  fontFamily: "inherit",
+                  lineHeight: "1.5",
+                  boxSizing: "border-box",
+                  backgroundColor: "#fff"
+                }}
+              />
+              <div
+                style={{
+                  textAlign: "right",
+                  fontSize: "0.75rem",
+                  color: "#888",
+                  marginTop: "4px"
+                }}
+              >
+                Maximum 5000 characters
+              </div>
+          </div>
 
           {/* Stacks on small/medium (button at the bottom), row on large */}
           <div className="cart-checkout-bar">

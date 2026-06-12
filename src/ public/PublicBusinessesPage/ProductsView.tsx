@@ -45,12 +45,19 @@ export default function ProductsView({ products, user, company, onLoadCart }: Pr
     const selectedQuantity = quantities[product.id] || 1;
 
     try {
+      if(!user.username){
+         alert("Failed to add item to cart. Please login as a user.");
+         return;
+      }
       const response = await addProductToCart(product.id, selectedQuantity, company.id);
       console.log("RESPONSE ADDING ITEM TO CART: ", response);
       if (response.ok) {
         alert("Product added to cart!");
         onLoadCart(); 
-      } else {
+      }else if(response.status === 403){
+        alert("Please login as a user to be able to add to cart")
+      }
+       else {
         alert("Failed to add item to cart.");
       }
     } catch (error) {

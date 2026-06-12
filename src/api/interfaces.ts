@@ -29,7 +29,7 @@ export interface UserProfileModel{
     username:string;
     firstName:string;
     lastName:string;
-    address:string;
+    address:AddressModel;
     phoneNumber:string;
     email:string;
     createdAt:string;
@@ -38,8 +38,6 @@ export interface UserProfileModel{
 
 export interface EmployerModel extends UserProfileModel{
   companiesRegistered: CompanyModel[];
-  staffList: StaffModel[];
-  products: ProductModel[];
   
 }
 
@@ -298,6 +296,7 @@ export interface CompanyModel extends CompanyRegistrationModel{
     createdAt: string;
     updatedAt: string;
     imgS3UrlKeys?: string[]
+    orderList?: OrderModel[]
 }
 
 export interface CompanyRegistrationModel{
@@ -393,7 +392,8 @@ export interface PlaceOrderModel{
   status: OrderStatus,
   totalCost: number;
   trackId: string;
-  companyId: string
+  companyId: string,
+  note: string
 }
 
 

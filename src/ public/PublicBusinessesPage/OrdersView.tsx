@@ -210,6 +210,41 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
                     </tbody>
                   </table>
                 )}
+                   <div
+              style={{
+                margin: "12px",
+                width: "calc(100% - 24px)"
+              }}
+            >
+              <textarea
+                maxLength={5000}
+                readOnly
+                value={order.note}
+                style={{
+                  width: "100%",
+                  minHeight: "140px",
+                  padding: "12px",
+                  border: "1px solid #d8d3cc",
+                  borderRadius: "4px",
+                  resize: "vertical",
+                  fontSize: "0.95rem",
+                  fontFamily: "inherit",
+                  lineHeight: "1.5",
+                  boxSizing: "border-box",
+                  backgroundColor: "#fff"
+                }}
+              />
+              <div
+                style={{
+                  textAlign: "right",
+                  fontSize: "0.75rem",
+                  color: "#888",
+                  marginTop: "4px"
+                }}
+              >
+                Maximum 5000 characters
+              </div>
+          </div>
 
                 {/* Per-order aggregate footer */}
                 <div style={styles.footerSummary}>
@@ -225,6 +260,7 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
                   </div>
                 </div>
               </div>
+           
             </article>
           );
         })

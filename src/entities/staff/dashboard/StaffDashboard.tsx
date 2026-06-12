@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StaffModel, CompanyModel, ProductModel } from "../../../api/interfaces";
+import { StaffModel, CompanyModel, ProductModel, OrderModel } from "../../../api/interfaces";
 import {
   getStaffProfile,
   getCompanyDashboard,
   getProductsByCompanyId,
   logoutEntity,
+  getAllCompanyOrders,
 } from "../../../api/requests";
 
 import StaffSidebar from "./StaffSidebar";
@@ -20,9 +21,11 @@ import GetFooterSection from "../../../components/footer";
 import EmployeeStaffView from "./views/StaffView";
 import ProductView from "../../company/views/ProductsView";
 import StaffProfileView from "./views/StaffProfileView";
+import OrdersView from "../../../ public/PublicBusinessesPage/OrdersView";
+import CompanyOrderView from "../../company/views/OrdersView";
 
 
-export type StaffDashView = "overview" | "profileView" |"companyView" | "settinhgsView" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
+export type StaffDashView = "overview" | "profileView" |"companyView" | "orderView" | "settinhgsView" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
 
 
 function StaffDashboard() {
@@ -30,9 +33,11 @@ function StaffDashboard() {
 
   const [staff, setStaff] = useState<StaffModel | null>(null);
   const [company, setCompany] = useState<CompanyModel | null>(null);
-  const [activeView, setActiveView] = useState<StaffDashView>("overview");
+  const [activeView, setActiveView] = useState<StaffDashView>("profileView");
   const [productList, setProductList] =  useState<ProductModel[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [companyOrders, setCompanyOrders] = useState<OrderModel[]>([]);
+
   useEffect(() => {
     const loadStaff = async () => {
   try {
@@ -66,6 +71,12 @@ function StaffDashboard() {
             setProductList(products);
           }
 
+          const ordersResponse = await getAllCompanyOrders(data.companyId);
+          if (ordersResponse.ok) {
+            const orders = await ordersResponse.json();
+            setCompanyOrders(orders);
+          }
+
         }
          } catch (err) {
     console.error("Failed to load staff profile:", err);
@@ -90,6 +101,7 @@ function StaffDashboard() {
       case "staffview": return <EmployeeStaffView company={company}/>
       case "productView": return <ProductView company={company!}/>
       case "profileView": return <StaffProfileView staff={staff!}/>
+      case "orderView" : return <CompanyOrderView company={company!} orders={companyOrders} staff={staff}/>
     }
   };
 
