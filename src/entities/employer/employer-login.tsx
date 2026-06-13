@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
 import { Link } from "react-router-dom"; 
-import { loginEmployer, loginUser } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
-import { getUserProfileData } from "../../api/requests";
+import MFAComponent from "../../components/MFAComponent";
+import { confirmEmployerLogin, loginUserRequest, requestEmployerLogin } from "../../api/requests";
 
 function EmployerLoginPage() {
   const {login} = useUserAuthManager();
@@ -15,7 +15,8 @@ function EmployerLoginPage() {
       username: "",
       password: ""
     }
-  )
+  );
+  const [showMFA, setShowMFA] = useState<boolean>(false);
   const [error, setError] = useState<string|null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,12 +31,49 @@ function EmployerLoginPage() {
     );
   };
 
-  const handleApiCall = async ( event: React.SyntheticEvent<HTMLFormElement>) =>{
-    event.preventDefault();
-    setError(null)
-    setLoading(true)
-    try{
-      const response = await loginEmployer(loginForm);
+      const sendMfACode = async () => {
+        if(!loginForm){return;}
+          setError(null)
+          setShowMFA(true)
+           try{
+              const response = await requestEmployerLogin(loginForm.username)
+              console.log('MFA CODE REQUEST RESPONSE: ' , response)
+            if(response.status === 100){
+                alert("Employer Logged in Successfully")
+                setShowMFA(false);
+                window.location.href="/"
+            }
+            setShowMFA(false);
+            if(response.status === 401){
+                alert("Invalid authentiation data. The email must have at least 7 characters")
+            }
+            if(response.status === 409){
+                alert("There is an entity with this credentials already")
+            }
+             if(response.status === 403){
+                alert("Wrong Code. Please verify your inbox or your spam folder")
+            }
+             if(response.status === 400){
+                alert("Please ensure the input fields are filled with valid data only.")
+            }
+            else{
+                console.log(`Unexpected Error ${response}`)
+            }
+          }catch(exception){
+              setError( `Registration Failed ${exception}`)
+          }finally{
+              setLoading(false)
+          }
+      }
+  
+  
+      const registerRequest = async(code: string) => {
+          if(!loginForm){return;}
+          setError(null)
+          setLoading(true)
+
+            try{
+      const response = await confirmEmployerLogin (code, loginForm)
       console.log(response)
       if(!response.ok){
         console.log("Registration Failed")
@@ -60,8 +98,12 @@ function EmployerLoginPage() {
     }finally{setLoading(false)}
 
     console.log(error)
-} 
+
+         
+  }
+
   return (
+      <>
     <div className="d-flex flex-column min-vh-100">
       <GetHeader />
       {loading && (
@@ -110,7 +152,6 @@ function EmployerLoginPage() {
       <main className="login-wrapper">
         <div className="auth-card shadow-lg">
           <h2 className="auth-title">Welcome Back Employer.</h2>
-          <form id="loginForm" onSubmit={handleApiCall}>
             <div className="mb-3">
               <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
               <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
@@ -120,19 +161,27 @@ function EmployerLoginPage() {
               <input type="password" className="form-control-custom" name="password" value={loginForm.password} onChange={handleUserInputChange} required />
             </div>
             
-            <button type="submit" className="btn-auth mb-3">Sign In</button>
+            <button type="submit" className="btn-auth mb-3" onClick={()=> sendMfACode()}>Sign In</button>
             
             <div className="text-center">
               <Link to="/employer-register" className="text-secondary text-decoration-none small">
                 New to ShopLane? <span style={{color: '#c8452a'}}>Create Account</span>
               </Link>
             </div>
-          </form>
         </div>
       </main>
 
       <GetFooterSection />
     </div>
+  
+      {showMFA && (
+        <MFAComponent
+          username={loginForm.username}
+          onVerify={(code) => registerRequest(code)}
+          onClose={() => setShowMFA(false)}
+        />
+      )}
+    </>
   );
 }
 

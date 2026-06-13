@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { UserRegistrationModel } from "../../api/interfaces";
-import { registerUser } from "../../api/requests";
+import { registerUser, userRegisterRequest } from "../../api/requests";
 import GetHeader from "../../components/header";
 import { Link } from "react-router-dom";
 import GetFooterSection from "../../components/footer";
+import MFAComponent from "../../components/MFAComponent";
 
 function UserRegistrationPage(){
     const [userRegistrationForm, setUserRegistrationForm] = useState<UserRegistrationModel>({
@@ -15,9 +16,11 @@ function UserRegistrationPage(){
     })
 
     const [confirmPassword, setConfirmPassword] = useState<string>("")
+    const [showMFA, setShowMFA] = useState<boolean>(false);
 
     const [error, setError] = useState<String|null>(null)
     const [loading, setLoading] = useState(false)
+
     console.log(userRegistrationForm.email)
     console.log(userRegistrationForm.lastName)
     console.log(userRegistrationForm.password)
@@ -36,19 +39,57 @@ function UserRegistrationPage(){
 
     }
 
-    const registerRequest = async(event: React.SyntheticEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const sendMfACode = async () => {
+      if(!userRegistrationForm){return;}
+        setError(null)
+        setLoading(true)
+        setShowMFA(true)
+         try{
+            const response = await userRegisterRequest(userRegistrationForm.email, userRegistrationForm.username)
+            console.log('MFA CODE REQUEST RESPONSE: ' , response)
+          if(response.status === 100){
+              alert("User Registered Successfully")
+              setShowMFA(false);
+              window.location.href="/"
+          }
+          setShowMFA(false);
+          if(response.status === 401){
+              alert("Invalid authentiation data. The email must have at least 7 characters")
+          }
+          if(response.status === 409){
+              alert("There is an entity with this credentials already")
+          }
+           if(response.status === 403){
+              alert("Wrong Code. Please verify your inbox or your spam folder")
+          }
+           if(response.status === 400){
+              alert("Please ensure the input fields are filled with valid data only.")
+          }
+          else{
+              console.log(`Unexpected Error ${response}`)
+          }
+        }catch(exception){
+            setError( `Registration Failed ${exception}`)
+        }finally{
+            setLoading(false)
+        }
+    }
+
+
+    const registerRequest = async(code: string) => {
+        if(!userRegistrationForm){return;}
         setError(null)
         setLoading(true)
         if(confirmPassword === userRegistrationForm.password){
         try{
-            const response = await registerUser(userRegistrationForm)
+            const response = await registerUser(code, userRegistrationForm)
             if(!response.ok){
                 console.log(response)
                 alert("There was an issue with your request")
             }
             if(response.status === 201){
                 alert("User Registered Successfully")
+                setShowMFA(false);
                 window.location.href="/"
             }
             if(response.status === 401){
@@ -85,7 +126,7 @@ function UserRegistrationPage(){
               Join ShopLane.
             </h2>
             
-            <form id="userRegistrationForm" onSubmit={registerRequest}>
+
               <div className="row mb-3">
                 <div className="col">
                   <label className="form-label">First Name</label>
@@ -121,19 +162,27 @@ function UserRegistrationPage(){
 
               
          
-              <button type="submit" className="btn btn-dark w-100 py-2 text-uppercase fw-bold" style={{ borderRadius: '0' }}>
+              <button type="submit" className="btn btn-dark w-100 py-2 text-uppercase fw-bold" style={{ borderRadius: '0' }} onClick={() => sendMfACode()}>
                 Create Account
               </button>
               
               <p className="text-center mt-3 small">
                 Already have an account? <Link to="/user-login" className="text-dark fw-bold">Login</Link>
               </p>
-            </form>
+
           </div>
         </div>
       </main>
 
       <GetFooterSection />
+
+    {showMFA && (
+        <MFAComponent
+          email={userRegistrationForm.email}
+          onVerify={(code) => registerRequest(code)}
+          onClose={() => setShowMFA(false)}
+        />
+      )}
     </>
   );
 

@@ -7,19 +7,15 @@ import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel
 //const URL = "http://localhost:8080";
 const URL = "";
 
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  return match ? decodeURIComponent(match[2]) : null;
-}
+
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
-     const csrfToken = getCookie("XSRF-TOKEN");
+
      return await fetch(`${URL}/api${endpoint}`,{
         ...options,
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
-              ...(csrfToken ? { "X-XSRF-TOKEN": csrfToken } : {}),
             ...options.headers
         }
 
@@ -39,8 +35,17 @@ export async function fetchAPIWithoutCredentials(endpoint: string, options: Requ
     });
 }
 
-export async function loginUser(userData: UserLoginModel){
-    const endpoint: string = `/v1/auth/user/login`
+export async function loginUserRequest(username: string){
+    const endpoint: string = `/v1/auth/user/login/request/${username}`
+    return await fetchAPIWithoutCredentials(
+        endpoint,{
+        method: "POST"
+        }
+    )
+}
+
+export async function loginUserConfirm(mfaCode: string,userData: UserLoginModel){
+    const endpoint: string = `/v1/auth/user/login/confirm/${mfaCode}`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST",
@@ -49,8 +54,15 @@ export async function loginUser(userData: UserLoginModel){
     )
 }
 
-export async function registerUser(userData: UserRegistrationModel){
-    const endpoint: string = `/v1/auth/user/register`
+export async function userRegisterRequest(email: string, username: string){
+    const endpoint: string = `/v1/auth/user/register/request/${email}/${username}`
+    return await fetchAPIWithoutCredentials(
+        endpoint,{ method: "POST"}
+    )
+}
+
+export async function registerUser(mfaCode: string,userData: UserRegistrationModel){
+    const endpoint: string = `/v1/auth/user/request/confirm/${mfaCode}`
     return await fetchAPIWithoutCredentials(
         endpoint,{
         method: "POST",
@@ -111,8 +123,27 @@ export async function registeremployer(employer: UserRegistrationModel){
          {method: "POST", body: JSON.stringify(employer)})
 }
 
-export async function loginEmployer(userData: UserLoginModel){
-    const endpoint: string = `/v1/auth/employer/login`
+export async function confirmRegisterEmployer(code: string, employer: UserRegistrationModel){
+    return await fetchAPIWithoutCredentials(`/v1/auth/employer/confirm/register/${code}`,
+         {method: "POST", body: JSON.stringify(employer)})
+}
+
+export async function registerEmployerRequest(email: string, username: string){
+    return await fetchAPIWithoutCredentials(`/v1/auth/employer/request/register/${email}/${username}`,
+         {method: "POST" })
+}
+
+export async function requestEmployerLogin(username: string){
+    const endpoint: string = `/v1/auth/employer/request/login/${username}`
+    return await fetchAPIWithCredentials(
+        endpoint,{
+        method: "POST"
+        }
+    )
+}
+
+export async function confirmEmployerLogin(code: string,userData: UserLoginModel){
+    const endpoint: string = `/v1/auth/employer/confirm/login/${code}`
     return await fetchAPIWithCredentials(
         endpoint,{
         method: "POST",
@@ -130,6 +161,27 @@ export async function loginStaff(userData: UserLoginModel){
         }
     )
 }
+
+
+export async function requestStaffLogin(username: string){
+    const endpoint: string = `/v1/auth/staff/request/login/${username}`
+    return await fetchAPIWithCredentials(
+        endpoint,{
+        method: "POST"
+        }
+    )
+}
+
+export async function confirmStaffLogin(code: string,userData: UserLoginModel){
+    const endpoint: string = `/v1/auth/staff/confirm/login/${code}`
+    return await fetchAPIWithCredentials(
+        endpoint,{
+        method: "POST",
+        body: JSON.stringify(userData)
+        }
+    )
+}
+
 
 export async function registerCompany(newBusiness: CompanyRegistrationModel ): Promise<Response>{
     const endpoint: string = `/v1/company/register`;

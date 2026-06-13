@@ -2,13 +2,15 @@ import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
 import { Link } from "react-router-dom"; 
-import { loginUser } from "../../api/requests";
+import { loginUserConfirm, loginUserRequest } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
+import MFAComponent from "../../components/MFAComponent";
 
 function UserLoginPage() {
   const {login} = useUserAuthManager();
 
+  const [showMFA, setShowMFA] = useState<boolean>(false);
   const [userLoginForm, setUserLoginForm] = useState<UserLoginModel>(
     {
       username: "",
@@ -29,37 +31,81 @@ function UserLoginPage() {
     );
   };
 
-  const handleApiCall = async ( event: React.SyntheticEvent<HTMLFormElement>) =>{
-    event.preventDefault();
-    setError(null)
-    setLoading(true)
-    try{
-      const response = await loginUser(userLoginForm);
-      console.log(response)
-      if(!response.ok){
-        console.log("Registration Failed")
-        console.log(response)
-        
-      }
-      if(response.status === 200){
-        alert("User Login Successfully")
-        await login("user");
-        window.location.href = "/"
-      }
-      else if(response.status === 401 || response.status === 400){
-        alert("Invalid Credentials")
+  const sendMfACode = async () => {
+        if(!userLoginForm){return;}
+          setError(null)
+          setLoading(true)
+          setShowMFA(true)
+           try{
+              const response = await loginUserRequest(userLoginForm.username)
+              console.log('MFA CODE REQUEST RESPONSE: ' , response)
+            if(response.status === 100){
+                alert("User Loggin Successfully")
+                setShowMFA(false);
+                window.location.href="/"
+            }
+            setShowMFA(false);
+            if(response.status === 401){
+                alert("Invalid authentiation data. The email must have at least 7 characters")
+            }
+            if(response.status === 409){
+                alert("There is an entity with this credentials already")
+            }
+             if(response.status === 403){
+                alert("Wrong Code. Please verify your inbox or your spam folder")
+            }
+             if(response.status === 400){
+                alert("Please ensure the input fields are filled with valid data only.")
+            }
+            else{
+                console.log(`Unexpected Error ${response}`)
+            }
+          }catch(exception){
+              setError( `Registration Failed ${exception}`)
+          }finally{
+              setLoading(false)
+          }
       }
 
-      else{
-        console.log(response)
-      }
-    }catch(error){
-        setError(`An expected error Occured ${error}`)
-    }finally{setLoading(false)}
 
-    console.log(error)
-} 
+          const userLoginRequest = async(code: string) => {
+              if(!userLoginForm){return;}
+              setError(null)
+              setLoading(true)
+              try{
+                  const response = await loginUserConfirm(code, userLoginForm)
+                    console.log(response)
+                if(response.status === 200){
+                  alert("User Login Successfully")
+                  setShowMFA(false)
+                  await login("user");
+                  window.location.href = "/"
+                }
+                 else if(response.status === 403){
+                  alert("Wrong MFA data. Please try again")
+                }
+
+                else if(response.status === 401 || response.status === 400){
+                   setShowMFA(false)
+                  alert("Wrong Credentials")
+                }
+
+                else{
+                  console.log(response)
+                }
+              }catch(exception){
+                  setError( `Registration Failed ${exception}`)
+              }finally{
+                  setLoading(false)
+              }
+         
+      }
+  
+  
+
+ 
   return (
+    <>
     <div className="d-flex flex-column min-vh-100">
       <GetHeader />
       
@@ -104,7 +150,7 @@ function UserLoginPage() {
       <main className="login-wrapper">
         <div className="auth-card shadow-lg">
           <h2 className="auth-title">Welcome Back dear Customer.</h2>
-          <form id="userLoginForm" onSubmit={handleApiCall}>
+
             <div className="mb-3">
               <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
               <input type="text" className="form-control-custom" name="username" value={userLoginForm.username} onChange={handleUserInputChange} required />
@@ -114,19 +160,28 @@ function UserLoginPage() {
               <input type="password" className="form-control-custom" name="password" value={userLoginForm.password} onChange={handleUserInputChange} required />
             </div>
             
-            <button type="submit" className="btn-auth mb-3">Sign In</button>
+            <button type="submit" className="btn-auth mb-3" onClick={()=> sendMfACode()}>Sign In</button>
             
             <div className="text-center">
               <Link to="/user-register" className="text-secondary text-decoration-none small">
                 New to ShopLane? <span style={{color: '#c8452a'}}>Create Account</span>
               </Link>
             </div>
-          </form>
         </div>
       </main>
 
       <GetFooterSection />
     </div>
+
+
+        {showMFA && (
+        <MFAComponent
+          username={userLoginForm.username}
+          onVerify={(code) => userLoginRequest(code)}
+          onClose={() => setShowMFA(false)}
+        />
+      )}
+      </>
   );
 }
 

@@ -16,8 +16,6 @@ import {
 } from "../../../api/interfaces";
 import {
   getAllUserOrders,
-  getProductById,
-  getUserCartItems,
   getUserProfileData,
 } from "../../../api/requests";
 import "../../../css/dashboard.css";
