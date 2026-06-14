@@ -43,24 +43,30 @@ function EmployerLoginPage() {
                 return;
             }
             setShowMFA(false);
-          if(response.status === 401){
-                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
+            if(response.status === 401){
+                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.");
+                return;
             }
             if(response.status === 404){
-                alert("Credenciais incorretas.")
+                alert("Credenciais incorretas.");
+                  return;
             }
             if(response.status === 409){
-                alert("Já existe uma entidade com estas credenciais.")
+                alert("Já existe uma entidade com estas credenciais.");
+                  return;
             }
             if(response.status === 403){
-                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
+                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
+                  return;
             }
             if(response.status === 400){
-                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
+                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
+                  return;
             }
             else{
                alert("Erro inesperado. Por favor volte mais tarde")
-                console.log(`Erro inesperado: ${response}`)
+                console.log(`Erro inesperado: ${response}`);
+                  return;
             }
           }catch(exception){
               setError( `Registration Failed ${exception}`)

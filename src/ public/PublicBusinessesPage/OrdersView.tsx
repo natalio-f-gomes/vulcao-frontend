@@ -97,14 +97,14 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
 
   if (!currentUser) {
     return (
-      <div style={{ padding: "3rem 2.5rem", textAlign: "center", color: "var(--mid)" }}>
-        <p style={{ marginBottom: "1.25rem" }}>
-          Sign in to see your orders from {company.name}.
-        </p>
-        <button className="btn-primary-custom" onClick={() => navigate("/user-login")}>
-          Sign in
-        </button>
-      </div>
+    <div style={{ padding: "3rem 2.5rem", textAlign: "center", color: "var(--mid)" }}>
+      <p style={{ marginBottom: "1.25rem" }}>
+        Inicie sessão para ver as suas encomendas da {company.name}.
+      </p>
+      <button className="btn-primary-custom" onClick={() => navigate("/user-login")}>
+        Iniciar Sessão
+      </button>
+    </div>
     );
   }
 
@@ -118,150 +118,151 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
       <div style={styles.pageHeader}>
         <div style={styles.pageEyebrow}>
           <span style={styles.eyebrowLine} />
-          {company.name} · Order History
+          {company.name} · Histórico de Encomendas
         </div>
-        <h1 style={styles.pageTitle}>My Orders</h1>
+        <h1 style={styles.pageTitle}>As Minhas Encomendas</h1>
       </div>
 
       {orderList.length === 0 ? (
         <div style={styles.emptyState}>
-          You haven't ordered from {company.name} yet.
+          Ainda não encomendou de {company.name}.
         </div>
+
       ) : (
         orderList.map((order: OrderModel, orderIdx: number) => {
           const orderItems = orderItemsMap[order.id!] ?? [];
 
           return (
-            // Each order is its own self-contained block,
-            // separated by an accent top bar and generous spacing
-            <article key={order.id} style={styles.orderBlock}>
-              {/* Order header strip */}
-              <div style={styles.orderHeaderStrip}>
-                <div>
-                  <div style={styles.orderIndexLabel}>
-                    Order {String(orderIdx + 1).padStart(2, "0")} / {orderList.length}
-                  </div>
-                  <h2 style={styles.orderTitle}>Order #{order.id}</h2>
+           // Cada encomenda é o seu próprio bloco independente,
+          // separado por uma barra superior de destaque e espaçamento generoso
+          <article key={order.id} style={styles.orderBlock}>
+            {/* Faixa de cabeçalho da encomenda */}
+            <div style={styles.orderHeaderStrip}>
+              <div>
+                <div style={styles.orderIndexLabel}>
+                  Encomenda {String(orderIdx + 1).padStart(2, "0")} / {orderList.length}
                 </div>
-                <span style={getStatusBadgeStyle(order.status)}>{order.status}</span>
+                <h2 style={styles.orderTitle}>Encomenda #{order.id}</h2>
               </div>
+              <span style={getStatusBadgeStyle(order.status)}>{order.status}</span>
+            </div>
 
-              {/* Order info summary */}
-              <div style={styles.orderInfoGrid}>
-                <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Tracking ID</div>
-                  <div style={styles.infoValue}>{order.trackId}</div>
-                </div>
-                <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Date placed</div>
-                  <div style={styles.infoValue}>{formatDate(order.createdAt)}</div>
-                </div>
-                <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Last updated</div>
-                  <div style={styles.infoValue}>{formatDate(order.updatedAt)}</div>
-                </div>
-                <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Items</div>
-                  <div style={styles.infoValue}>{order.cartItems.length} line(s)</div>
-                </div>
+            {/* Resumo da informação da encomenda */}
+            <div style={styles.orderInfoGrid}>
+              <div style={styles.infoBox}>
+                <div style={styles.infoLabel}>ID de Rastreio</div>
+                <div style={styles.infoValue}>{order.trackId}</div>
               </div>
+              <div style={styles.infoBox}>
+                <div style={styles.infoLabel}>Data do pedido</div>
+                <div style={styles.infoValue}>{formatDate(order.createdAt)}</div>
+              </div>
+              <div style={styles.infoBox}>
+                <div style={styles.infoLabel}>Última atualização</div>
+                <div style={styles.infoValue}>{formatDate(order.updatedAt)}</div>
+              </div>
+              <div style={styles.infoBox}>
+                <div style={styles.infoLabel}>Itens</div>
+                <div style={styles.infoValue}>{order.cartItems.length} linha(s)</div>
+              </div>
+            </div>
 
-              {/* Ordered items table */}
-              <div style={styles.tableWrap}>
-                {loading ? (
-                  <div style={styles.tableState}>Loading order items…</div>
-                ) : orderItems.length === 0 ? (
-                  <div style={styles.tableState}>
-                    No item details available for this order.
-                  </div>
-                ) : (
-                  <table className="responsive-table" style={styles.table}>
-                    <thead>
-                      <tr>
-                        <th style={styles.th}>Item</th>
-                        <th style={styles.th}>Type</th>
-                        <th style={styles.th}>Quantity</th>
-                        <th style={{ ...styles.th, textAlign: "right" }}>Price at Purchase</th>
-                        <th style={{ ...styles.th, textAlign: "right" }}>Total</th>
+            {/* Tabela de itens encomendados */}
+            <div style={styles.tableWrap}>
+              {loading ? (
+                <div style={styles.tableState}>A carregar itens da encomenda…</div>
+              ) : orderItems.length === 0 ? (
+                <div style={styles.tableState}>
+                  Não há detalhes de itens disponíveis para esta encomenda.
+                </div>
+              ) : (
+                <table className="responsive-table" style={styles.table}>
+                  <thead>
+                    <tr>
+                      <th style={styles.th}>Item</th>
+                      <th style={styles.th}>Tipo</th>
+                      <th style={styles.th}>Quantidade</th>
+                      <th style={{ ...styles.th, textAlign: "right" }}>Preço na Compra</th>
+                      <th style={{ ...styles.th, textAlign: "right" }}>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orderItems.map((item) => (
+                      <tr key={`${order.id}-${item.id}`}>
+                        <td style={styles.td} data-label="Item">
+                          <div style={styles.productName}>{item.itemName}</div>
+                        </td>
+                        <td style={styles.td} data-label="Tipo">
+                          <span style={styles.typeTag}>{item.itemType}</span>
+                        </td>
+                        <td style={styles.td} data-label="Quantidade">
+                          {item.quantity ?? 1}
+                        </td>
+                        <td style={{ ...styles.td, ...styles.moneyCell }} data-label="Preço na Compra">
+                          ${(item.priceAtPurchase ?? 0).toFixed(2)}
+                        </td>
+                        <td style={{ ...styles.td, ...styles.moneyCell }} data-label="Total">
+                          <span style={styles.price}>
+                            ${((item.quantity ?? 1) * (item.priceAtPurchase ?? 0)).toFixed(2)}
+                          </span>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {orderItems.map((item) => (
-                        <tr key={`${order.id}-${item.id}`}>
-                          <td style={styles.td} data-label="Item">
-                            <div style={styles.productName}>{item.itemName}</div>
-                          </td>
-                          <td style={styles.td} data-label="Type">
-                            <span style={styles.typeTag}>{item.itemType}</span>
-                          </td>
-                          <td style={styles.td} data-label="Quantity">
-                            {item.quantity ?? 1}
-                          </td>
-                          <td style={{ ...styles.td, ...styles.moneyCell }} data-label="Price at Purchase">
-                            ${(item.priceAtPurchase ?? 0).toFixed(2)}
-                          </td>
-                          <td style={{ ...styles.td, ...styles.moneyCell }} data-label="Total">
-                            <span style={styles.price}>
-                              ${((item.quantity ?? 1) * (item.priceAtPurchase ?? 0)).toFixed(2)}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                   <div
-              style={{
-                margin: "12px",
-                width: "calc(100% - 24px)"
-              }}
-            >
-              <textarea
-                maxLength={5000}
-                readOnly
-                value={order.note}
-                style={{
-                  width: "100%",
-                  minHeight: "140px",
-                  padding: "12px",
-                  border: "1px solid #d8d3cc",
-                  borderRadius: "4px",
-                  resize: "vertical",
-                  fontSize: "0.95rem",
-                  fontFamily: "inherit",
-                  lineHeight: "1.5",
-                  boxSizing: "border-box",
-                  backgroundColor: "#fff"
-                }}
-              />
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              
               <div
                 style={{
-                  textAlign: "right",
-                  fontSize: "0.75rem",
-                  color: "#888",
-                  marginTop: "4px"
+                  margin: "12px",
+                  width: "calc(100% - 24px)"
                 }}
               >
-                Maximum 5000 characters
+                <textarea
+                  maxLength={5000}
+                  readOnly
+                  value={order.note}
+                  style={{
+                    width: "100%",
+                    minHeight: "140px",
+                    padding: "12px",
+                    border: "1px solid #d8d3cc",
+                    borderRadius: "4px",
+                    resize: "vertical",
+                    fontSize: "0.95rem",
+                    fontFamily: "inherit",
+                    lineHeight: "1.5",
+                    boxSizing: "border-box",
+                    backgroundColor: "#fff"
+                  }}
+                />
+                <div
+                  style={{
+                    textAlign: "right",
+                    fontSize: "0.75rem",
+                    color: "#888",
+                    marginTop: "4px"
+                  }}
+                >
+                  Máximo 5000 caracteres
+                </div>
               </div>
-          </div>
 
-                {/* Per-order aggregate footer */}
-                <div style={styles.footerSummary}>
-                  <div style={styles.summaryItem}>
-                    <div style={styles.summaryLabel}>Items</div>
-                    <div style={styles.summaryValue}>{getItemCount(orderItems)}</div>
-                  </div>
-                  <div style={styles.summaryItem}>
-                    <div style={styles.summaryLabel}>Total Cost</div>
-                    <div style={{ ...styles.summaryValue, color: "var(--accent)" }}>
-                      ${getOrderTotal(order, orderItems).toFixed(2)}
-                    </div>
+              {/* Rodapé de resumo por encomenda */}
+              <div style={styles.footerSummary}>
+                <div style={styles.summaryItem}>
+                  <div style={styles.summaryLabel}>Itens</div>
+                  <div style={styles.summaryValue}>{getItemCount(orderItems)}</div>
+                </div>
+                <div style={styles.summaryItem}>
+                  <div style={styles.summaryLabel}>Custo Total</div>
+                  <div style={{ ...styles.summaryValue, color: "var(--accent)" }}>
+                    ${getOrderTotal(order, orderItems).toFixed(2)}
                   </div>
                 </div>
               </div>
-           
-            </article>
+            </div>
+          </article>
           );
         })
       )}

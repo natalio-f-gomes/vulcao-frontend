@@ -107,15 +107,15 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
             }}
           >
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "currentColor" }} />
-            {company.status === "OPERATING" ? "Open for business" : company.status?.toLowerCase()}
+            {company.status === "OPERATING" ? "Aberto ao público" : company.status?.toLowerCase()}
           </span>
         </div>
 
         <div style={{ display: "flex", gap: "3rem", marginTop: "2.5rem", paddingTop: "1.5rem", borderTop: "1px solid #1e1e1e", flexWrap: "wrap", position: "relative" }}>
           {[
-            { label: "Products listed", value: String(productCount) },
-            { label: "Based in", value: company.address?.island || "—" },
-            { label: "Member since", value: sinceYear ? String(sinceYear) : "—" },
+          { label: "Produtos", value: String(productCount) },
+          { label: "Sede", value: company.address?.island || "—" },
+          { label: "Membro desde", value: sinceYear ? String(sinceYear) : "—" },
           ].map((stat) => (
             <div key={stat.label}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem", fontWeight: 800 }}>{stat.value}</div>
@@ -126,34 +126,33 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
       </header>
 
       {/* about + contact */}
-
-<section style={{ padding: "3rem 2.5rem 3rem 0", display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "2rem" }} className="business-about-grid">
-        <div style={{ background: "#fff", border: "1px solid #e8e4de", padding: "2rem" }}>
-          <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>About</div>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 800, marginBottom: 12 }}>Who we are</h2>
-          <p style={{ fontSize: "0.92rem", color: "var(--mid)", lineHeight: 1.7, margin: 0 }}>
-            {company.description || "This business hasn't written a description yet."}
-          </p>
-        </div>
-        <div style={{ background: "var(--ink)", color: "var(--cream)", padding: "2rem", borderTop: "4px solid var(--accent)" }}>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.05rem", fontWeight: 700, marginBottom: 16 }}>Get in touch</h3>
-          {[
-            { icon: "bi-envelope-fill", label: "Email", value: company.email },
-            { icon: "bi-telephone-fill", label: "Phone", value: company.phoneNumber },
-            { icon: "bi-printer-fill", label: "Fax", value: company.faxNumber },
-          ]
-            .filter((row) => row.value)
-            .map((row) => (
-              <div key={row.label} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid #1f1c1a" }}>
-                <i className={`bi ${row.icon}`} style={{ color: "var(--accent)", fontSize: "0.9rem", marginTop: 2 }}></i>
-                <div>
-                  <div style={{ fontSize: "0.62rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888" }}>{row.label}</div>
-                  <div style={{ fontSize: "0.88rem", wordBreak: "break-word" }}>{row.value}</div>
+        <section style={{ padding: "3rem 2.5rem 3rem 0", display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "2rem" }} className="business-about-grid">
+          <div style={{ background: "#fff", border: "1px solid #e8e4de", padding: "2rem" }}>
+            <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>Sobre</div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 800, marginBottom: 12 }}>Quem somos</h2>
+            <p style={{ fontSize: "0.92rem", color: "var(--mid)", lineHeight: 1.7, margin: 0 }}>
+              {company.description || "Esta empresa ainda não escreveu uma descrição."}
+            </p>
+          </div>
+          <div style={{ background: "var(--ink)", color: "var(--cream)", padding: "2rem", borderTop: "4px solid var(--accent)" }}>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.05rem", fontWeight: 700, marginBottom: 16 }}>Entre em contacto</h3>
+            {[
+              { icon: "bi-envelope-fill", label: "Email", value: company.email },
+              { icon: "bi-telephone-fill", label: "Telefone", value: company.phoneNumber },
+              { icon: "bi-printer-fill", label: "Fax", value: company.faxNumber },
+            ]
+              .filter((row) => row.value)
+              .map((row) => (
+                <div key={row.label} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "9px 0", borderBottom: "1px solid #1f1c1a" }}>
+                  <i className={`bi ${row.icon}`} style={{ color: "var(--accent)", fontSize: "0.9rem", marginTop: 2 }}></i>
+                  <div>
+                    <div style={{ fontSize: "0.62rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888" }}>{row.label}</div>
+                    <div style={{ fontSize: "0.88rem", wordBreak: "break-word" }}>{row.value}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-        </div>
-      </section>
+              ))}
+          </div>
+        </section>
     </>
   );
 }

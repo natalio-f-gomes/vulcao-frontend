@@ -52,7 +52,7 @@ function ProductView({ company }: Paramaters) {
 
   return (
 <>
-  <div>
+  <div style={{marginLeft:15}}>
     <div className="view-heading">Inventário de Produtos</div>
     <div className="view-sub">Gerir e monitorizar todos os produtos da sua empresa.</div>
 

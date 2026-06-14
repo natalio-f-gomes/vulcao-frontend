@@ -1,39 +1,49 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
 function GetHeroSection() {
+    const onNavigate = useNavigate();
     return (
+<section className="hero">
+  <div className="hero-text">
+    <p className="hero-eyebrow">Clientes · Empresários · Tudo num só lugar</p>
 
-        <section className="hero">
-            <div className="hero-text">
-                <p className="hero-eyebrow">New Season Arrivals</p>
-                <h1 className="display">
-                Find What<br/><em>Moves</em>You.
-                </h1>
-                <p className="hero-sub">
-                Curated collections across fashion, home, and lifestyle.
-                Built for people who know what they want — and aren't afraid to get it.
-                </p>
-                <div className="d-flex flex-wrap gap-2">
-                <a href="#" className="btn-primary-custom">Shop Now</a>
-                <a href="#" className="btn-outline-custom">Explore</a>
-                </div>
-            </div>
+    <h1 className="display">
+      Para quem compra.<br />
+      <em>Para quem gere.</em>
+    </h1>
 
-            <div className="hero-image">
-                <div className="hero-image-inner">
-                <div className="hero-card">
-                    <div className="card-label">Featured</div>
-                    <div className="card-title-sm">Merino Wool Coat</div>
-                    <div className="card-price">From <strong>$189.00</strong></div>
-                </div>
-                <div className="hero-card">
-                    <div className="card-label">New Drop</div>
-                    <div className="card-title-sm">Canvas Tote Set</div>
-                    <div className="card-price">From <strong>$54.00</strong></div>
-                </div>
-                </div>
-            </div>
-    </section>
+    <p className="hero-sub">
+      Os clientes fazem encomendas de forma simples. Os empresários gerem funcionários,
+      produtos e operações. Uma plataforma que serve ambos.
+    </p>
+
+    <div className="d-flex flex-wrap gap-2">
+      <a className="btn-primary-custom" onClick={() => onNavigate("/user-register")}>Sou Cliente</a>
+      <a className="btn-outline-custom" onClick={() => onNavigate("/employer-register")}>Sou Empresário</a>
+    </div>
+  </div>
+
+  <div className="hero-image">
+    <div className="hero-image-inner">
+      <div className="hero-card">
+        <div className="card-label">Clientes</div>
+        <div className="card-title-sm">Encomendar</div>
+        <div className="card-price">
+          Navegue por produtos e faça pedidos em minutos.
+        </div>
+      </div>
+
+      <div className="hero-card">
+        <div className="card-label">Empresários</div>
+        <div className="card-title-sm">Gerir</div>
+        <div className="card-price">
+          Funcionários, produtos, encomendas e permissões.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
     )

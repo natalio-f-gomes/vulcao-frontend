@@ -31,17 +31,20 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
   const [productIdToBeDeleted, setProductIdToBeDeleted] = useState<string | null>(null);
 
   const placeOrderRequest =  async () => {
-    if(order === null || productList === null){
-      alert("Your storre cart is empty!")
-      return;
-    }
-    const response = await placeOrder(order);
-    console.log("RESPONSE PLACING ORDER: ", response);
-    if(!response.ok){console.log("There was an isseu with your request"); return}
-    if(response.status === 201){
-      alert("Order sucessfully placed");
-      return;
-    }
+      if(order === null || productList === null){
+          alert("O seu carrinho está vazio!");
+          return;
+      }
+      const response = await placeOrder(order);
+      console.log("RESPOSTA AO COLOCAR ENCOMENDA: ", response);
+      if(!response.ok){
+          console.log("Ocorreu um problema com o seu pedido");
+          return;
+      }
+      if(response.status === 201){
+          alert("Encomenda realizada com sucesso");
+          return;
+      }
 
   }
 
@@ -99,13 +102,14 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
           const response = await removeItemFromCart(itemId, company.id);
           console.log("delete item from cart response ", response);
           
-          if (!response.ok) {
-            alert("There was an issue with your request");
-            return;
+            if (!response.ok) {
+              alert("Ocorreu um problema com o seu pedido");
+              return;
           }
-          
+
           if (response.status === 200) {
-            alert("Product was successfully removed from the user cart");
+              alert("Produto removido do carrinho do utilizador com sucesso");
+
             // Optimistically update local state so it vanishes immediately 
             setProductList(prev => prev.filter(product => product.id !== itemId));
           }

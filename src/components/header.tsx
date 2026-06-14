@@ -48,9 +48,9 @@ const GetHeader: React.FC = () => {
               <i className="bi bi-person me-1"></i>Iniciar Sessão
             </a>
             <ul className="dropdown-menu">
-              <li><Link className="dropdown-item" to="/user-login"><i className="bi bi-person-fill"></i> Utilizador</Link></li>
-              <li><Link className="dropdown-item" to="/staff-login"><i className="bi bi-briefcase-fill"></i> Funcionário</Link></li>
-              <li><Link className="dropdown-item" to="/employer-login"><i className="bi bi-shield-lock-fill"></i> Empresário(a)</Link></li>
+              <li><Link className="dropdown-item" to="/user-login"><i className="bi bi-person-fill"></i> Cliente</Link></li>
+              <li><Link className="dropdown-item" to="/staff-login"><i className="bi bi-briefcase-fill"></i>Funcionário(a)</Link></li>
+              <li><Link className="dropdown-item" to="/employer-login"><i className="bi bi-shield-lock-fill"></i>Empresária(o)</Link></li>
             </ul>
           </li>
           <li className="nav-item dropdown" style={{marginRight:100}}>
@@ -59,7 +59,7 @@ const GetHeader: React.FC = () => {
               <i className="bi bi-person me-1"></i>Registar
             </a>
             <ul className="dropdown-menu" >
-              <li><Link className="dropdown-item" to="/user-register"><i className="bi bi-person-fill"></i> Registar Utilizador</Link></li>
+              <li><Link className="dropdown-item" to="/user-register"><i className="bi bi-person-fill"></i> Registar Cliente</Link></li>
               <li><Link className="dropdown-item" to="/employer-register"><i className="bi bi-shield-lock-fill"></i> Registar Empresário</Link></li>
             </ul>
           </li>

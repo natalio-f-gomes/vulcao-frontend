@@ -42,26 +42,28 @@ function UserLoginPage() {
             if(response.status === 100){
                 alert("User Loggin Successfully")
                 setShowMFA(false);
-                window.location.href="/"
+                window.location.href="/";
+                return;
             }
             setShowMFA(false);
             if(response.status === 401){
-                alert("Invalid authentiation data. The email must have at least 7 characters")
+                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
             }
-             if(response.status === 404){
-                alert("Wrong credentials")
+            if(response.status === 404){
+                alert("Credenciais incorretas.")
             }
             if(response.status === 409){
-                alert("There is an entity with this credentials already")
+                alert("Já existe uma entidade com estas credenciais.")
             }
-             if(response.status === 403){
-                alert("Wrong Code. Please verify your inbox or your spam folder")
+            if(response.status === 403){
+                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
             }
-             if(response.status === 400){
-                alert("Please ensure the input fields are filled with valid data only.")
+            if(response.status === 400){
+                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
             }
             else{
-                console.log(`Unexpected Error ${response}`)
+              alert("Erro inesperado")
+                console.log(`Erro inesperado: ${response}`)
             }
           }catch(exception){
               setError( `Registration Failed ${exception}`)
@@ -79,22 +81,22 @@ function UserLoginPage() {
                   const response = await loginUserConfirm(code, userLoginForm)
                     console.log(response)
                 if(response.status === 200){
-                  alert("User Login Successfully")
-                  setShowMFA(false)
-                  await login("user");
-                  window.location.href = "/"
+                    alert("Sessão do Utilizador iniciada com sucesso.")
+                    setShowMFA(false)
+                    await login("user");
+                    window.location.href = "/";
+                    return;
                 }
-                 else if(response.status === 403){
-                  alert("Wrong MFA data. Please try again")
+                else if(response.status === 403){
+                    alert("Dados MFA incorretos. Por favor, tente novamente.")
                 }
-
                 else if(response.status === 401 || response.status === 400){
-                   setShowMFA(false)
-                  alert("Wrong Credentials")
+                    setShowMFA(false)
+                    alert("Credenciais incorretas.")
                 }
-
                 else{
-                  console.log(response)
+                   alert("Teve um erro com o servidor. Por favor retorne mais tarde")
+                    console.log(response)
                 }
               }catch(exception){
                   setError( `Registration Failed ${exception}`)
@@ -152,24 +154,24 @@ function UserLoginPage() {
 
       <main className="login-wrapper">
         <div className="auth-card shadow-lg">
-          <h2 className="auth-title">Welcome Back dear Customer.</h2>
+          <h2 className="auth-title">Bem-vindo de volta, caro Cliente.</h2>
 
-            <div className="mb-3">
-              <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
-              <input type="text" className="form-control-custom" name="username" value={userLoginForm.username} onChange={handleUserInputChange} required />
-            </div>
-            <div className="mb-4">
-              <label className="form-label small text-uppercase fw-bold text-secondary"  >Password</label>
-              <input type="password" className="form-control-custom" name="password" value={userLoginForm.password} onChange={handleUserInputChange} required />
-            </div>
-            
-            <button type="submit" className="btn-auth mb-3" onClick={()=> sendMfACode()}>Sign In</button>
-            
-            <div className="text-center">
-              <Link to="/user-register" className="text-secondary text-decoration-none small">
-                New to ShopLane? <span style={{color: '#c8452a'}}>Create Account</span>
-              </Link>
-            </div>
+          <div className="mb-3">
+            <label className="form-label small text-uppercase fw-bold text-secondary">Nome de Utilizador</label>
+            <input type="text" className="form-control-custom" name="username" value={userLoginForm.username} onChange={handleUserInputChange} required />
+          </div>
+          <div className="mb-4">
+            <label className="form-label small text-uppercase fw-bold text-secondary">Palavra-passe</label>
+            <input type="password" className="form-control-custom" name="password" value={userLoginForm.password} onChange={handleUserInputChange} required />
+          </div>
+          
+          <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
+          
+          <div className="text-center">
+            <Link to="/user-register" className="text-secondary text-decoration-none small">
+              Novo na ShopLane? <span style={{color: '#c8452a'}}>Criar Conta</span>
+            </Link>
+          </div>
         </div>
       </main>
 

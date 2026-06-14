@@ -9,19 +9,19 @@ interface StaffTopbarProps {
 }
 
 const VIEW_TITLES: Record<StaffDashView, { title: string; sub: string }> = {
-  overview:  { title: "Hello.",      sub: "Here's what's happening at work today." },
-  companyView:   { title: "My Company",  sub: "Details about the company you work for." },
-  orderView:    { title: "Orders",      sub: "Track and process customer orders." },
-  productView:  { title: "Products",    sub: "Manage product listings." },
-  electronicView:  { title: "Electronics",    sub: "Manage Electronic Product listings." },
-  filmView:  { title: "Films",    sub: "Manage your films listings." },
-  tvShowView:  { title: "TV Show",    sub: "Manage your TV Show listings." },
-  bookView:  { title: "Books",    sub: "Manage your Bookslistings." },
-  staffview:  { title: "Co Workers",    sub: "Your Co workers List" },
-  customerView: { title: "Customers",   sub: "Help and follow up with customers." },
-  profileView:   { title: "My Profile",  sub: "Your personal information and permissions." },
-  settinhgsView:  { title: "Settings",    sub: "Configure your dashboard preferences." },
-  reviewsView:  { title: "Reviews",    sub: "Check the reviews of your company and co workers" },
+  overview:       { title: "Olá.",                    sub: "Aqui está o que se passa no trabalho hoje." },
+  companyView:    { title: "A Minha Empresa",         sub: "Detalhes sobre a empresa onde trabalha." },
+  orderView:      { title: "Encomendas",              sub: "Acompanhar e processar encomendas de clientes." },
+  productView:    { title: "Produtos",                sub: "Gerir listagens de produtos." },
+  electronicView: { title: "Eletrónicos",             sub: "Gerir listagens de produtos eletrónicos." },
+  filmView:       { title: "Filmes",                  sub: "Gerir as suas listagens de filmes." },
+  tvShowView:     { title: "Programas TV",            sub: "Gerir as suas listagens de programas de TV." },
+  bookView:       { title: "Livros",                  sub: "Gerir as suas listagens de livros." },
+  staffview:      { title: "Colegas",                 sub: "Lista dos seus colegas de trabalho." },
+  customerView:   { title: "Clientes",                sub: "Ajudar e acompanhar os clientes." },
+  profileView:    { title: "O Meu Perfil",            sub: "As suas informações pessoais e permissões." },
+  settinhgsView:  { title: "Definições",              sub: "Configurar as preferências do seu painel de controlo." },
+  reviewsView:    { title: "Avaliações",              sub: "Verificar as avaliações da sua empresa e colegas." },
 };
 
 function StaffTopbar({ activeView, staff }: StaffTopbarProps) {
@@ -38,10 +38,18 @@ function StaffTopbar({ activeView, staff }: StaffTopbarProps) {
         <div className="topbar-sub">{sub}</div>
       </div>
       <div className="topbar-right">
-        <div className="date-chip">
-          <i className="bi bi-calendar3"></i>
-          <span>{new Date().toDateString()}</span>
-        </div>
+      <div className="date-chip">
+        <i className="bi bi-calendar3"></i>
+        <span>
+          {new Date().toLocaleDateString('pt-PT', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+          })}
+        </span>
+      </div>
+
+
         {/*
         <button className="topbar-icon-btn">
           <i className="bi bi-bell"></i>

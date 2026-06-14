@@ -62,7 +62,7 @@ export async function userRegisterRequest(email: string, username: string){
 }
 
 export async function registerUser(mfaCode: string,userData: UserRegistrationModel){
-    const endpoint: string = `/v1/auth/user/request/confirm/${mfaCode}`
+    const endpoint: string = `/v1/auth/user/register/confirm/${mfaCode}`
     return await fetchAPIWithoutCredentials(
         endpoint,{
         method: "POST",

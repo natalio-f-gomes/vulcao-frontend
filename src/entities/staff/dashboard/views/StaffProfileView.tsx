@@ -18,18 +18,18 @@ interface Parameters {
 }
 
 const PERMISSION_LABELS: Record<string, string> = {
-  ADD_PRODUCT:     "Add Product",
-  UPDATE_PRODUCT:  "Update Product",
-  DELETE_PRODUCT:  "Delete Product",
-  ADD_EMPLOYEE:    "Add Employee",
-  UPDATE_EMPLOYEE: "Update Employee",
-  FIRE_EMPLOYEE:   "Terminate Employee",
-  ADD_COMPANY:     "Add Company",
-  UPDATE_COMPANY:  "Update Company",
-  DELETE_COMPANY:  "Delete Company",
-  ADD_SERVICE:     "Add Service",
-  UPDATE_SERVICE:  "Update Service",
-  DELETE_SERVICE:  "Delete Service",
+  ADD_PRODUCT:     "Adicionar Produto",
+  UPDATE_PRODUCT:  "Atualizar Produto",
+  DELETE_PRODUCT:  "Eliminar Produto",
+  ADD_EMPLOYEE:    "Adicionar Funcionário",
+  UPDATE_EMPLOYEE: "Atualizar Funcionário",
+  FIRE_EMPLOYEE:   "Despedir Funcionário",
+  ADD_COMPANY:     "Adicionar Empresa",
+  UPDATE_COMPANY:  "Atualizar Empresa",
+  DELETE_COMPANY:  "Eliminar Empresa",
+  ADD_SERVICE:     "Adicionar Serviço",
+  UPDATE_SERVICE:  "Atualizar Serviço",
+  DELETE_SERVICE:  "Eliminar Serviço",
 };
 
 interface FormData {
@@ -163,37 +163,37 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
   }
 
   return (
-    <main className="profile-main">
-      <div className="page-header">
-        <p className="page-eyebrow">Account</p>
-        <h1 className="page-title">My Profile</h1>
+   <main className="profile-main" style={{marginLeft:15}}>
+      <div className="page-header" >
+        <p className="page-eyebrow">Conta</p>
+        <h1 className="page-title">O Meu Perfil</h1>
       </div>
 
-      {/* ── Personal Info (editable) ─────────────────────────────────────── */}
+      {/* ── Informação Pessoal (editável) ─────────────────────────────────────── */}
       <div className="profile-section" id="section-personal">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-person-fill"></i>
-            <span className="section-head-title">Personal Information</span>
+            <span className="section-head-title">Informação Pessoal</span>
           </div>
           <button
             className={`btn-edit ${isEditing("personal") ? "editing" : ""}`}
             onClick={() => isEditing("personal") ? cancelEditing() : startEditing("personal")}
           >
-            <i className="bi bi-pencil"></i> {isEditing("personal") ? "Cancel" : "Edit"}
+            <i className="bi bi-pencil"></i> {isEditing("personal") ? "Cancelar" : "Editar"}
           </button>
         </div>
 
         <div className="fields-grid">
           <div className={`field-group ${isEditing("personal") ? "is-editing" : ""}`}>
-            <span className="field-label">First Name</span>
-            <span className="field-value">{formData.firstName || "Not Set"}</span>
+            <span className="field-label">Primeiro Nome</span>
+            <span className="field-value">{formData.firstName || "Não definido"}</span>
             <input className="field-input" id="inp-firstName" type="text"
               value={formData.firstName} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("personal") ? "is-editing" : ""}`}>
-            <span className="field-label">Last Name</span>
-            <span className="field-value">{formData.lastName || "Not Set"}</span>
+            <span className="field-label">Último Nome</span>
+            <span className="field-value">{formData.lastName || "Não definido"}</span>
             <input className="field-input" id="inp-lastName" type="text"
               value={formData.lastName} onChange={handleInputChange} />
           </div>
@@ -201,39 +201,39 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
 
         {isEditing("personal") && (
           <div className="save-bar visible">
-            <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+            <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
             <button className="btn-save" onClick={() => saveSection("personal")}>
-              <i className="bi bi-check2"></i> Save Changes
+              <i className="bi bi-check2"></i> Guardar Alterações
             </button>
           </div>
         )}
       </div>
 
-      {/* ── Contact (editable) ───────────────────────────────────────────── */}
+      {/* ── Contacto (editável) ───────────────────────────────────────────── */}
       <div className="profile-section" id="section-contact">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-envelope-fill"></i>
-            <span className="section-head-title">Contact Details</span>
+            <span className="section-head-title">Detalhes de Contacto</span>
           </div>
           <button
             className={`btn-edit ${isEditing("contact") ? "editing" : ""}`}
             onClick={() => isEditing("contact") ? cancelEditing() : startEditing("contact")}
           >
-            <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancel" : "Edit"}
+            <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancelar" : "Editar"}
           </button>
         </div>
 
         <div className="fields-grid">
           <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-            <span className="field-label">Email Address</span>
-            <span className="field-value">{formData.email || "Not Set"}</span>
+            <span className="field-label">Endereço de Email</span>
+            <span className="field-value">{formData.email || "Não definido"}</span>
             <input className="field-input" id="inp-email" type="email"
               value={formData.email} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-            <span className="field-label">Phone Number</span>
-            <span className="field-value">{formData.phoneNumber || "Not Set"}</span>
+            <span className="field-label">Número de Telefone</span>
+            <span className="field-value">{formData.phoneNumber || "Não definido"}</span>
             <input className="field-input" id="inp-phoneNumber" type="tel"
               value={formData.phoneNumber} onChange={handleInputChange} />
           </div>
@@ -241,57 +241,57 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
 
         {isEditing("contact") && (
           <div className="save-bar visible">
-            <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+            <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
             <button className="btn-save" onClick={() => saveSection("contact")}>
-              <i className="bi bi-check2"></i> Save Changes
+              <i className="bi bi-check2"></i> Guardar Alterações
             </button>
           </div>
         )}
       </div>
 
-      {/* ── Address (editable) ───────────────────────────────────────────── */}
+      {/* ── Morada (editável) ───────────────────────────────────────────── */}
       <div className="profile-section" id="section-address">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-geo-alt-fill"></i>
-            <span className="section-head-title">Address</span>
+            <span className="section-head-title">Morada</span>
           </div>
           <button
             className={`btn-edit ${isEditing("address") ? "editing" : ""}`}
             onClick={() => isEditing("address") ? cancelEditing() : startEditing("address")}
           >
-            <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancel" : "Edit"}
+            <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancelar" : "Editar"}
           </button>
         </div>
 
         <div className="fields-grid triple">
           <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-            <span className="field-label">Island</span>
-            <span className="field-value">{formData.island || "Not Set"}</span>
+            <span className="field-label">Ilha</span>
+            <span className="field-value">{formData.island || "Não definido"}</span>
             <input className="field-input" id="inp-island" type="text"
               value={formData.island} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-            <span className="field-label">City</span>
-            <span className="field-value">{formData.city || "Not Set"}</span>
+            <span className="field-label">Cidade</span>
+            <span className="field-value">{formData.city || "Não definido"}</span>
             <input className="field-input" id="inp-city" type="text"
               value={formData.city} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-            <span className="field-label">Zone</span>
-            <span className="field-value">{formData.zone || "Not Set"}</span>
+            <span className="field-label">Zona</span>
+            <span className="field-value">{formData.zone || "Não definido"}</span>
             <input className="field-input" id="inp-zone" type="text"
               value={formData.zone} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-            <span className="field-label">Postal Code</span>
-            <span className="field-value">{formData.postalCode || "Not Set"}</span>
+            <span className="field-label">Código Postal</span>
+            <span className="field-value">{formData.postalCode || "Não definido"}</span>
             <input className="field-input" id="inp-postalCode" type="text"
               value={formData.postalCode} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-            <span className="field-label">Street</span>
-            <span className="field-value">{formData.street || "Not Set"}</span>
+            <span className="field-label">Rua</span>
+            <span className="field-value">{formData.street || "Não definido"}</span>
             <input className="field-input" id="inp-street" type="text"
               value={formData.street} onChange={handleInputChange} />
           </div>
@@ -299,105 +299,105 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
 
         {isEditing("address") && (
           <div className="save-bar visible">
-            <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+            <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
             <button className="btn-save" onClick={() => saveSection("address")}>
-              <i className="bi bi-check2"></i> Save Changes
+              <i className="bi bi-check2"></i> Guardar Alterações
             </button>
           </div>
         )}
       </div>
 
-      {/* ── Security (editable: username + password) ───────────────────────
+      {/* ── Segurança (editável: nome de utilizador + palavra-passe) ───────────────────────
       <div className="profile-section" id="section-security">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-shield-lock-fill"></i>
-            <span className="section-head-title">Security</span>
+            <span className="section-head-title">Segurança</span>
           </div>
           <button
             className={`btn-edit ${isEditing("security") ? "editing" : ""}`}
             onClick={() => isEditing("security") ? cancelEditing() : startEditing("security")}
           >
-            <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancel" : "Edit"}
+            <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancelar" : "Editar"}
           </button>
         </div>
 
         <div className="fields-grid">
           <div className={`field-group ${isEditing("security") ? "is-editing" : ""}`}>
-            <span className="field-label">Username</span>
-            <span className="field-value">{formData.username || "Not Set"}</span>
+            <span className="field-label">Nome de Utilizador</span>
+            <span className="field-value">{formData.username || "Não definido"}</span>
             <input className="field-input" id="inp-username" type="text"
               value={formData.username} onChange={handleInputChange} />
           </div>
           <div className={`field-group ${isEditing("security") ? "is-editing" : ""}`}>
-            <span className="field-label">Password</span>
+            <span className="field-label">Palavra-passe</span>
             <span className="field-value"><span className="pwd-dots">●●●●●●●●●●●●</span></span>
             <input className="field-input" id="inp-password" type="password"
-              placeholder="New password" value={formData.password} onChange={handleInputChange} />
+              placeholder="Nova palavra-passe" value={formData.password} onChange={handleInputChange} />
           </div>
         </div>
 
         {isEditing("security") && (
           <div className="save-bar visible">
-            <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+            <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
             <button className="btn-save" onClick={() => saveSection("security")}>
-              <i className="bi bi-check2"></i> Update Credentials
+              <i className="bi bi-check2"></i> Atualizar Credenciais
             </button>
           </div>
         )}
       </div> */}
 
-      {/* ── Employment (READ-ONLY: managed by employer) ──────────────────── */}
+      {/* ── Emprego (APENAS LEITURA: gerido pelo empregador) ──────────────────── */}
       <div className="profile-section" id="section-employment">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-briefcase-fill"></i>
-            <span className="section-head-title">Employment</span>
+            <span className="section-head-title">Emprego</span>
           </div>
           <span
             className="biz-status-badge inactive"
             style={{ fontSize: "0.6rem", padding: "3px 10px", borderRadius: "12px" }}
           >
-            <i className="bi bi-lock-fill" style={{ marginRight: 5 }}></i> Managed by employer
+            <i className="bi bi-lock-fill" style={{ marginRight: 5 }}></i> Gerido pelo empregador
           </span>
         </div>
 
         <div className="fields-grid triple">
           <div className="field-group">
-            <span className="field-label">Job Title</span>
+            <span className="field-label">Cargo</span>
             <span className="field-value">{staff.jobTitle || "—"}</span>
           </div>
           <div className="field-group">
-            <span className="field-label">Department</span>
+            <span className="field-label">Departamento</span>
             <span className="field-value">{staff.department || "—"}</span>
           </div>
           <div className="field-group">
-            <span className="field-label">Salary</span>
+            <span className="field-label">Salário</span>
             <span className="field-value">{staff.salary != null ? staff.salary : "—"}</span>
           </div>
           <div className="field-group">
-            <span className="field-label">Hired At</span>
+            <span className="field-label">Contratado a</span>
             <span className="field-value">{formatDate(staff.hiredAt)}</span>
           </div>
         </div>
       </div>
 
-      {/* ── Assigned Permissions (READ-ONLY) ─────────────────────────────── */}
+      {/* ── Permissões Atribuídas (APENAS LEITURA) ─────────────────────────────── */}
       <div className="profile-section" id="section-permissions">
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-lock-fill"></i>
-            <span className="section-head-title">Assigned Permissions</span>
+            <span className="section-head-title">Permissões Atribuídas</span>
           </div>
           <span
             className="biz-status-badge inactive"
             style={{ fontSize: "0.6rem", padding: "3px 10px", borderRadius: "12px" }}
           >
-            <i className="bi bi-lock-fill" style={{ marginRight: 5 }}></i> Managed by employer
+            <i className="bi bi-lock-fill" style={{ marginRight: 5 }}></i> Gerido pelo empregador
           </span>
         </div>
 
-        <div style={{ padding: "16px 0", display: "flex", flexWrap: "wrap", gap: "8px", marginLeft:10}}>
+        <div style={{ padding: "16px 0", display: "flex", flexWrap: "wrap", gap: "8px", marginLeft: 10 }}>
           {staff.assignedPermissions && staff.assignedPermissions.length > 0 ? (
             staff.assignedPermissions.map((perm) => (
               <span
@@ -410,7 +410,7 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
             ))
           ) : (
             <span className="field-value" style={{ color: "#9b9b95" }}>
-              No permissions assigned.
+              Nenhuma permissão atribuída.
             </span>
           )}
         </div>

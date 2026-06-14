@@ -102,59 +102,60 @@ export default function PublicCompanySidebar({
     activeView === view ? { ...sidebarStyles.navItem, ...sidebarStyles.navItemActive } : sidebarStyles.navItem;
 
   return (
-    <aside style={sidebarStyles.sidebar}>
-      <div style={sidebarStyles.brand}>
-        <a style={sidebarStyles.brandLogo} href="/">
-          <span style={sidebarStyles.brandAccent}>{company.name?.charAt(0).toUpperCase()}</span>
-          {company.name?.slice(1)}
-        </a>
-      </div>
-      <span style={sidebarStyles.brandSub}>{company.category?.replaceAll("_", " ") || "Storefront"}</span>
 
-      <nav style={sidebarStyles.nav}>
-        <div style={sidebarStyles.sectionLabel}>Browse</div>
-        <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
-          <i className="bi bi-shop" /> Overview
-        </a>
-        <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
-          <i className="bi bi-box-seam" /> Products
-        </a>
+<aside style={sidebarStyles.sidebar}>
+  <div style={sidebarStyles.brand}>
+    <a style={sidebarStyles.brandLogo} href="/">
+      <span style={sidebarStyles.brandAccent}>{company.name?.charAt(0).toUpperCase()}</span>
+      {company.name?.slice(1)}
+    </a>
+  </div>
+  <span style={sidebarStyles.brandSub}>{company.category?.replaceAll("_", " ") || "Loja"}</span>
 
-        <div style={sidebarStyles.sectionLabel}>Your Account</div>
-        <a style={itemStyle("cart")} onClick={() => onNavigate("cart")}>
-          <i className="bi bi-bag" /> My Cart
-          {cartCount > 0 && <span style={sidebarStyles.badge}>{cartCount}</span>}
-        </a>
-        <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
-          <i className="bi bi-receipt" /> My Orders
-        </a>
-      </nav>
+  <nav style={sidebarStyles.nav}>
+    <div style={sidebarStyles.sectionLabel}>Navegar</div>
+    <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+      <i className="bi bi-shop" /> Visão Geral
+    </a>
+    <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+      <i className="bi bi-box-seam" /> Produtos
+    </a>
 
-      <div style={sidebarStyles.footer}>
-        <div style={sidebarStyles.userInfo}>
-          <div className="owner-avatar"><i className="bi bi-person" /></div>
-          {currentUser ? (
-            <div>
-              <div style={sidebarStyles.userName}>{`@${currentUser.username}`}</div>
-              <div style={sidebarStyles.userRole}>Customer</div>
-            </div>
-          ) : (
-            <button
-              style={{
-                ...sidebarStyles.userName,
-                background: "transparent",
-                border: "1px solid #2a2a2a",
-                borderRadius: 6,
-                padding: "6px 12px",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/user-login")}
-            >
-              Sign in
-            </button>
-          )}
+    <div style={sidebarStyles.sectionLabel}>A Sua Conta</div>
+    <a style={itemStyle("cart")} onClick={() => onNavigate("cart")}>
+      <i className="bi bi-bag" /> O Meu Carrinho
+      {cartCount > 0 && <span style={sidebarStyles.badge}>{cartCount}</span>}
+    </a>
+    <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
+      <i className="bi bi-receipt" /> As Minhas Encomendas
+    </a>
+  </nav>
+
+  <div style={sidebarStyles.footer}>
+    <div style={sidebarStyles.userInfo}>
+      <div className="owner-avatar"><i className="bi bi-person" /></div>
+      {currentUser ? (
+        <div>
+          <div style={sidebarStyles.userName}>{`@${currentUser.username}`}</div>
+          <div style={sidebarStyles.userRole}>Cliente</div>
         </div>
-      </div>
-    </aside>
+      ) : (
+        <button
+          style={{
+            ...sidebarStyles.userName,
+            background: "transparent",
+            border: "1px solid #2a2a2a",
+            borderRadius: 6,
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/user-login")}
+        >
+          Iniciar Sessão
+        </button>
+      )}
+    </div>
+  </div>
+</aside>
   );
 }

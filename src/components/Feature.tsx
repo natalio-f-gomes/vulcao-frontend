@@ -5,19 +5,33 @@ function GetFeatureSection(){
 
 <section className="features">
   <div className="feature-item">
-    <div className="feature-icon"><i className="bi bi-truck"></i></div>
-    <div className="feature-title">Free Shipping</div>
-    <p className="feature-desc">On all orders over $75. Fast, tracked delivery straight to your door.</p>
+    <div className="feature-icon">
+      <i className="bi bi-clipboard-data"></i>
+    </div>
+    <div className="feature-title">Rastreamento Digital de Encomendas</div>
+    <p className="feature-desc">
+      Monitorize e atualize encomendas em tempo real a partir de uma única plataforma.
+    </p>
   </div>
+
   <div className="feature-item">
-    <div className="feature-icon"><i className="bi bi-arrow-counterclockwise"></i></div>
-    <div className="feature-title">Easy Returns</div>
-    <p className="feature-desc">30-day hassle-free returns. No questions asked, no hidden fees.</p>
+    <div className="feature-icon">
+      <i className="bi bi-person-workspace"></i>
+    </div>
+    <div className="feature-title">Controlos do Empregador</div>
+    <p className="feature-desc">
+      Gerir funcionários, atribuir responsabilidades e manter registos da equipa.
+    </p>
   </div>
+
   <div className="feature-item">
-    <div className="feature-icon"><i className="bi bi-shield-check"></i></div>
-    <div className="feature-title">Secure Checkout</div>
-    <p className="feature-desc">Bank-grade encryption on every transaction. Shop with confidence.</p>
+    <div className="feature-icon">
+      <i className="bi bi-cloud-check"></i>
+    </div>
+    <div className="feature-title">Fluxo de Trabalho Totalmente Digital</div>
+    <p className="feature-desc">
+      Gerir encomendas, carrinhos e funcionários online sem papelada.
+    </p>
   </div>
 </section>
     )

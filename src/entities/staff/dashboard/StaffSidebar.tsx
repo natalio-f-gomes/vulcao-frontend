@@ -36,84 +36,83 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
 
   return (
 <aside style={styles.sidebar}>
-        <div style={styles.brand}>
-          <a style={styles.brandLogo} href="/">
-            <span style={styles.brandAccent}>{companyName}</span>
-          </a>
-        </div>
-        
-        <span style={styles.brandSub}>{company?.name ?? ""} -  Dashboard</span>
-       
-        <nav style={styles.nav}>
-           {/* 
-          <div style={styles.sectionLabel}>Overview</div>
-          <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
-            <i className="bi bi-grid-1x2" /> Dashboard
-          </a>
-          */}
+  <div style={styles.brand}>
+    <a style={styles.brandLogo} href="/">
+      <span style={styles.brandAccent}>{companyName}</span>
+    </a>
+  </div>
+  
+  <span style={styles.brandSub}>{company?.name ?? ""} - Painel de Controlo</span>
+   
+  <nav style={styles.nav}>
+    {/* 
+    <div style={styles.sectionLabel}>Visão Geral</div>
+    <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+      <i className="bi bi-grid-1x2" /> Painel de Controlo
+    </a>
+    */}
 
-           <a style={itemStyle("staffview")} onClick={() => onNavigate("staffview")}>
-            <i className="bi bi-people" /> Staff Members
-          </a>
+    <a style={itemStyle("staffview")} onClick={() => onNavigate("staffview")}>
+      <i className="bi bi-people" /> Funcionários
+    </a>
 
-          <div style={styles.sectionLabel} >Offerings</div>
-          
+    <div style={styles.sectionLabel}>Ofertas</div>
 
-          <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
-            <i className="bi bi-box-seam" /> Products
-          </a>
+    <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
+      <i className="bi bi-box-seam" /> Produtos
+    </a>
 
-          {/* 
-          <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
-            <i className="bi bi-box-seam" /> Electronics
-          </a>
-          <a style={itemStyle("tvShowView")} onClick={() => onNavigate("tvShowView")}>
-            <i className="bi bi-box-seam" /> TV Shows
-          </a>
-          <a style={itemStyle("filmView")} onClick={() => onNavigate("filmView")}>
-            <i className="bi bi-box-seam" /> Films
-          </a>
-          <a style={itemStyle("bookView")} onClick={() => onNavigate("bookView")}>
-            <i className="bi bi-box-seam" /> Books
-          </a>
-          */}
+    {/* 
+    <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
+      <i className="bi bi-box-seam" /> Eletrónicos
+    </a>
+    <a style={itemStyle("tvShowView")} onClick={() => onNavigate("tvShowView")}>
+      <i className="bi bi-box-seam" /> Programas TV
+    </a>
+    <a style={itemStyle("filmView")} onClick={() => onNavigate("filmView")}>
+      <i className="bi bi-box-seam" /> Filmes
+    </a>
+    <a style={itemStyle("bookView")} onClick={() => onNavigate("bookView")}>
+      <i className="bi bi-box-seam" /> Livros
+    </a>
+    */}
 
-          <div style={styles.sectionLabel}>Store</div>
-          <a style={itemStyle("orderView")} onClick={()=> onNavigate("orderView")}>
-            <i className="bi bi-bag-check" /> Orders
-          </a>
-          {/* 
-          <a  style={itemStyle("customerView")}>
-            <i className="bi bi-people" /> Customers
-          </a>
-            <a  style={itemStyle("reviewsView")}>
-            <i className="bi bi-people" /> Reviews
-          </a>
+    <div style={styles.sectionLabel}>Loja</div>
+    <a style={itemStyle("orderView")} onClick={() => onNavigate("orderView")}>
+      <i className="bi bi-bag-check" /> Encomendas
+    </a>
+    {/* 
+    <a style={itemStyle("customerView")}>
+      <i className="bi bi-people" /> Clientes
+    </a>
+    <a style={itemStyle("reviewsView")}>
+      <i className="bi bi-people" /> Avaliações
+    </a>
 
-          <div style={styles.sectionLabel}>System</div>
-          <a style={itemStyle("productView")}>
-            <i className="bi bi-gear" /> Settings
-          </a>
-          */}
-          <div style={styles.sectionLabel}>Account</div>
-          <a style={itemStyle("profileView")} onClick={()=> onNavigate("profileView")}>
-            <i className="bi bi-person" /> Profile
-          </a>
-        </nav>
+    <div style={styles.sectionLabel}>Sistema</div>
+    <a style={itemStyle("productView")}>
+      <i className="bi bi-gear" /> Definições
+    </a>
+    */}
+    <div style={styles.sectionLabel}>Conta</div>
+    <a style={itemStyle("profileView")} onClick={() => onNavigate("profileView")}>
+      <i className="bi bi-person" /> Perfil
+    </a>
+  </nav>
 
-        <div style={styles.footer}>
-          <div style={styles.ownerInfo}>
-            <div className="owner-avatar"><i className="bi bi-person" /></div>
-            <div>
-              <div style={styles.ownerName}>{`@${staff?.username ?? ""} `}</div>
-              <div style={styles.ownerRole}>Staff Member</div>
-            </div>
-            <button style={styles.signoutBtn} onClick={handleLogout} title="Logout">
-              <i className="bi bi-box-arrow-right" />
-            </button>
-          </div>
-        </div>
-      </aside>
+  <div style={styles.footer}>
+    <div style={styles.ownerInfo}>
+      <div className="owner-avatar"><i className="bi bi-person" /></div>
+      <div>
+        <div style={styles.ownerName}>{`@${staff?.username ?? ""} `}</div>
+        <div style={styles.ownerRole}>Funcionário</div>
+      </div>
+      <button style={styles.signoutBtn} onClick={handleLogout} title="Terminar Sessão">
+        <i className="bi bi-box-arrow-right" />
+      </button>
+    </div>
+  </div>
+</aside>
   );
 }
 

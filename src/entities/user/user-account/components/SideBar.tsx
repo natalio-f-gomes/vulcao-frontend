@@ -54,85 +54,85 @@ function UserDashSideBar({ currentUser, currentView, onNavigate }: SideBarParama
   return (
     <>
       {currentUser && (
-        <aside className="profile-sidebar" style={{color:"white"}}>
-          <div className="avatar-ring">
-            <i className="bi bi-person"></i>
-          </div>
-          <p className="sidebar-name">{currentUser.username || "Guest"}</p>
-          <p className="sidebar-id">ID: {currentUser.id || "N/A"}</p>
-          <div className="sidebar-divider"></div>
+       <aside className="profile-sidebar" style={{ color: "white" }}>
+  <div className="avatar-ring">
+    <i className="bi bi-person"></i>
+  </div>
+  <p className="sidebar-name">{currentUser.username || "Convidado"}</p>
+  <p className="sidebar-id">ID: {currentUser.id || "N/A"}</p>
+  <div className="sidebar-divider"></div>
 
-          <nav className="sidebar-nav">
-            {/* Overview Sections - Scroll within Overview */}
-            <a
-              href="#section-personal"
-              className={`sidebar-nav-item ${currentView === "personalInfo" ? "active" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                goToSection("section-personal");
-              }}
-            >
-              <i className="bi bi-person"></i> Personal Info
-            </a>
+  <nav className="sidebar-nav">
+    {/* Secções de Visão Geral - Scroll dentro de Visão Geral */}
+    <a
+      href="#section-personal"
+      className={`sidebar-nav-item ${currentView === "personalInfo" ? "active" : ""}`}
+      onClick={(e) => {
+        e.preventDefault();
+        goToSection("section-personal");
+      }}
+    >
+      <i className="bi bi-person"></i> Informação Pessoal
+    </a>
 
-            <a
-              href="#section-contact"
-              className={`sidebar-nav-item ${currentView === "overview" ? "contact" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                goToSection("section-contact");
-              }}
-            >
-              <i className="bi bi-envelope"></i> Contact
-            </a>
+    <a
+      href="#section-contact"
+      className={`sidebar-nav-item ${currentView === "overview" ? "contact" : ""}`}
+      onClick={(e) => {
+        e.preventDefault();
+        goToSection("section-contact");
+      }}
+    >
+      <i className="bi bi-envelope"></i> Contacto
+    </a>
 
-            <a
-              href="#section-address"
-              className={`sidebar-nav-item ${currentView === "overview" ? "address" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                goToSection("section-address");
-              }}
-            >
-              <i className="bi bi-geo-alt"></i> Address
-            </a>
+    <a
+      href="#section-address"
+      className={`sidebar-nav-item ${currentView === "overview" ? "address" : ""}`}
+      onClick={(e) => {
+        e.preventDefault();
+        goToSection("section-address");
+      }}
+    >
+      <i className="bi bi-geo-alt"></i> Morada
+    </a>
 
-            {/* Cart - Switches View
-            <a
-              className={`sidebar-nav-item ${currentView === "cart" ? "active" : ""}`}
-              onClick={() => goToView("cart")}
-            >
-              <i className="bi bi-cart-fill"></i> Cart
-            </a>
-             */}
+    {/* Carrinho - Altera a Visualização
+    <a
+      className={`sidebar-nav-item ${currentView === "cart" ? "active" : ""}`}
+      onClick={() => goToView("cart")}
+    >
+      <i className="bi bi-cart-fill"></i> Carrinho
+    </a>
+    */}
 
-            {/* Orders - Switches View */}
-            <a
-              className={`sidebar-nav-item ${currentView === "orders" ? "active" : ""}`}
-              onClick={() => goToView("orders")}
-            >
-              <i className="bi bi-bag-fill"></i> Orders
-            </a>
+    {/* Encomendas - Altera a Visualização */}
+    <a
+      className={`sidebar-nav-item ${currentView === "orders" ? "active" : ""}`}
+      onClick={() => goToView("orders")}
+    >
+      <i className="bi bi-bag-fill"></i> Encomendas
+    </a>
 
-            {/* Security - Scroll within Overview */}
-            <a
-              href="#section-security"
-              className={`sidebar-nav-item ${currentView === "security" ? "active" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                goToSection("section-security");
-              }}
-            >
-              <i className="bi bi-shield-lock"></i> Security
-            </a>
-          </nav>
+    {/* Segurança - Scroll dentro de Visão Geral */}
+    <a
+      href="#section-security"
+      className={`sidebar-nav-item ${currentView === "security" ? "active" : ""}`}
+      onClick={(e) => {
+        e.preventDefault();
+        goToSection("section-security");
+      }}
+    >
+      <i className="bi bi-shield-lock"></i> Segurança
+    </a>
+  </nav>
 
-          <div className="sidebar-logout">
-            <button className="btn-logout" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right"></i> Sign Out
-            </button>
-          </div>
-        </aside>
+  <div className="sidebar-logout">
+    <button className="btn-logout" onClick={handleLogout}>
+      <i className="bi bi-box-arrow-right"></i> Terminar Sessão
+    </button>
+  </div>
+</aside>
       )}
     </>
   );
