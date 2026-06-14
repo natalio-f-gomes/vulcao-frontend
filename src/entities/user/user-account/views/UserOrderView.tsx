@@ -238,7 +238,7 @@ switch (status) {
                 {/* Resumo da informação da encomenda */}
                 <div style={styles.orderInfoGrid}>
                   <div style={styles.infoBox}>
-                    <div style={styles.infoLabel}>ID de Rastreio</div>
+                    <div style={styles.infoLabel}>ID de Encomenda</div>
                     <div style={styles.infoValue}>{order.trackId}</div>
                   </div>
                   <div style={styles.infoBox}>

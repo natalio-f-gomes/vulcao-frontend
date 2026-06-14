@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import { loginUserConfirm, loginUserRequest } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
+import { companyName } from "../../api/global";
+import GetTermsSection from "../../components/TermsSection";
 
 function UserLoginPage() {
   const {login} = useUserAuthManager();
@@ -22,6 +24,7 @@ function UserLoginPage() {
 
   console.log(userLoginForm.username)
   console.log(userLoginForm.password)
+  const onNavigate = useNavigate();
 
   const handleUserInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserLoginForm(
@@ -166,6 +169,7 @@ function UserLoginPage() {
           </div>
           
           <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
+         <GetTermsSection/>
           
           <div className="text-center">
             <Link to="/user-register" className="text-secondary text-decoration-none small">

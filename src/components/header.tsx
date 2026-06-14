@@ -31,7 +31,7 @@ const GetHeader: React.FC = () => {
         */}
       </ul>
 
-      <form className="d-flex search-wrapper me-lg-3" role="search">
+      {/* <form className="d-flex search-wrapper me-lg-3" role="search">
         <div className="input-group">
           <span className="input-group-text bg-transparent border-end-0 border-secondary">
             <i className="bi bi-search text-secondary"></i>
@@ -39,7 +39,7 @@ const GetHeader: React.FC = () => {
           <input className="form-control bg-transparent border-start-0 border-secondary text-cream shadow-none"
             type="search" placeholder="Pesquisar itens..." aria-label="Pesquisar" />
         </div>
-      </form>
+      </form> */}
 
       {/* Desconectado — mostrar menus suspensos de login/registo */}
       {!isEntityLoggedIn && (

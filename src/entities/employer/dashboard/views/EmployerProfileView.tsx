@@ -193,7 +193,7 @@ function EmployerProfileView(){
               <div className="save-bar visible">
                 <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
                 <button className="btn-save" onClick={() => saveSection("personal")}>
-                 <i className="bi bi-check2"></i> Guardar Alterações
+                 <i className="bi bi-check2"></i> Salvar Alterações
                 </button>
               </div>
             )}
@@ -233,7 +233,7 @@ function EmployerProfileView(){
               <div className="save-bar visible">
                 <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
                 <button className="btn-save" onClick={() => saveSection("contact")}>
-                  <i className="bi bi-check2"></i> Guardar Alterações
+                  <i className="bi bi-check2"></i> Salvar Alterações
                 </button>
               </div>
             )}
@@ -291,7 +291,7 @@ function EmployerProfileView(){
               <div className="save-bar visible">
                 <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
                 <button className="btn-save" onClick={() => saveSection("address")}>
-                   <i className="bi bi-check2"></i> Guardar Alterações
+                   <i className="bi bi-check2"></i> Salvar Alterações
                 </button>
               </div>
             )}

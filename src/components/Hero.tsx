@@ -15,7 +15,7 @@ function GetHeroSection() {
 
     <p className="hero-sub">
       Os clientes fazem encomendas de forma simples. Os empresários gerem funcionários,
-      produtos e operações. Uma plataforma que serve ambos.
+      produtos e operações. Uma plataforma que serve para ambos.
     </p>
 
     <div className="d-flex flex-wrap gap-2">

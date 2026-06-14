@@ -2,10 +2,11 @@ import { useState } from "react";
 import { UserRegistrationModel } from "../../api/interfaces";
 import { confirmRegisterEmployer, registeremployer, registerEmployerRequest, registerUser } from "../../api/requests";
 import GetHeader from "../../components/header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GetFooterSection from "../../components/footer";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
+import GetTermsSection from "../../components/TermsSection";
 
 function EmployerRegistrationPage(){
     const [registrationForm, setRegistrationForm] = useState<UserRegistrationModel>({
@@ -15,6 +16,7 @@ function EmployerRegistrationPage(){
         email:"",
         username:""
     })
+    const onNavigate = useNavigate();
 
     const [confirmPassword, setConfirmPassword] = useState<string>("")
 
@@ -181,6 +183,7 @@ function EmployerRegistrationPage(){
           <p className="text-center mt-3 small">
             Já tem uma conta? <Link to="/employer-login" className="text-dark fw-bold">Iniciar Sessão</Link>
           </p>
+            <GetTermsSection/>
 
         </div>
       </div>

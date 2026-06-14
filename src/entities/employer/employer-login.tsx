@@ -1,14 +1,17 @@
 import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
 import { confirmEmployerLogin, loginUserRequest, requestEmployerLogin } from "../../api/requests";
+import { companyName } from "../../api/global";
+import GetTermsSection from "../../components/TermsSection";
 
 function EmployerLoginPage() {
   const {login} = useUserAuthManager();
+  const onNavigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<UserLoginModel>(
     {
@@ -177,6 +180,7 @@ function EmployerLoginPage() {
             Novo na ShopLane? <span style={{color: '#c8452a'}}>Criar Conta</span>
           </Link>
         </div>
+        <GetTermsSection/>
       </div>
     </main>
 

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { UserRegistrationModel } from "../../api/interfaces";
 import { registerUser, userRegisterRequest } from "../../api/requests";
 import GetHeader from "../../components/header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GetFooterSection from "../../components/footer";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
+import GetTermsSection from "../../components/TermsSection";
 
 function UserRegistrationPage(){
     const [userRegistrationForm, setUserRegistrationForm] = useState<UserRegistrationModel>({
@@ -16,6 +17,7 @@ function UserRegistrationPage(){
         username:""
     })
 
+    const onNavigate = useNavigate();
     const [confirmPassword, setConfirmPassword] = useState<string>("")
     const [showMFA, setShowMFA] = useState<boolean>(false);
 
@@ -166,7 +168,9 @@ function UserRegistrationPage(){
       <button type="submit" className="btn btn-dark w-100 py-2 text-uppercase fw-bold" style={{ borderRadius: '0' }} onClick={() => sendMfACode()}>
         Criar Conta
       </button>
-      
+    <GetTermsSection/>
+
+
       <p className="text-center mt-3 small">
         Já tem uma conta? <Link to="/user-login" className="text-dark fw-bold">Iniciar Sessão</Link>
       </p>

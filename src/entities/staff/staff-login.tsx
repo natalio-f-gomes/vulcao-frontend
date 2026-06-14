@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import { confirmStaffLogin, loginStaff, requestStaffLogin } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
+import { companyName } from "../../api/global";
 
 function StaffLoginPage() {
   const {login} = useUserAuthManager();
+  const onNavigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<UserLoginModel>(
     {
@@ -162,12 +164,21 @@ function StaffLoginPage() {
             </div>
             
             <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Sign In</button>
+                           <span>
+                                Ao continuar, concordas com os {companyName}{" "}
+                                <a 
+                                  href="#" 
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    onNavigate("/terms");
+                                  }}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  termos de uso
+                                </a>
+                              </span>
             
-            <div className="text-center">
-              <Link to="/employer-register" className="text-secondary text-decoration-none small">
-                New to ShopLane? <span style={{color: '#c8452a'}}>Create Account</span>
-              </Link>
-            </div>
+           
         </div>
       </main>
 
