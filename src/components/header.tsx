@@ -1,10 +1,11 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserAuthManager } from "../api/authentication-handler";
 import { companyName } from "../api/global";
 
 const GetHeader: React.FC = () => {
   const { isEntityLoggedIn, entityType, login,logoutHandler } = useUserAuthManager();
+  const onNavigate = useNavigate();
 
   return (
    <nav className="navbar navbar-expand-lg">
@@ -22,8 +23,9 @@ const GetHeader: React.FC = () => {
     <div className="collapse navbar-collapse" id="mainNav">
       <ul className="navbar-nav me-auto align-items-lg-center">
         <li className="nav-item"><Link className="nav-link active" to="/">Início</Link></li>
-        {/* 
-        <li className="nav-item"><a className="nav-link" href="#">Sobre</a></li>
+  
+        <li className="nav-item"><a className="nav-link" onClick={()=> onNavigate("/about")}>Sobre</a></li>
+              {/* 
         <li className="nav-item"><a className="nav-link" href="#">Contacte-nos</a></li>
         <li className="nav-item"><a className="nav-link" href="#">Sugerir Funcionalidade</a></li>
         */}

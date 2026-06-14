@@ -136,7 +136,7 @@ function EmployerRegistrationPage(){
         <div className="reg-box" style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem' }}>
 
           <h2 className="mb-4 fw-bold" style={{ fontFamily: "Playfair Display" }}>
-            Junte-se à {companyName}.
+            Junte-se à {companyName}. E registre o teu negócio.
           </h2>
 
           <div className="row mb-3">

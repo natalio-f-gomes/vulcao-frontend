@@ -20,6 +20,7 @@ import StaffLoginPage from "./entities/staff/staff-login";
 import StaffDashboard from "./entities/staff/dashboard/StaffDashboard";
 import GetBusinessesSection from "./components/Businesses";
 import BusinessPublicOverView from "./ public/PublicBusinessesPage/BusinessPublicOverView";
+import AboutPage from "./ public/AboutPage";
 
 
 
@@ -48,6 +49,7 @@ function App(){
             <Route path="/staff-login" element={<StaffLoginPage/>}/>
             <Route path="/staff-dashboard" element={<StaffDashboard/>}/>
             <Route path="/business/public/:id" element={<BusinessPublicOverView/>}/>
+            <Route path="/about" element={<AboutPage/>}/>
         </Routes>
     </AuthProvider>
 
