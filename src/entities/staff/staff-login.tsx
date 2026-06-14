@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { confirmStaffLogin, loginStaff, requestStaffLogin } from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
+import MFAComponent from "../../components/MFAComponent";
 
 function StaffLoginPage() {
   const {login} = useUserAuthManager();
@@ -67,7 +68,7 @@ function StaffLoginPage() {
        }
    
    
-       const registerRequest = async(code: string) => {
+       const loginRequest = async(code: string) => {
            if(!loginForm){return;}
            setError(null)
            setLoading(true)
@@ -83,8 +84,11 @@ function StaffLoginPage() {
  
        if(response.status === 200){
          alert("Employer Login Successfully")
-         await login("employer");
+         await login("staff");
          window.location.href = "/"
+       }
+         else if(response.status === 403){
+         alert("Wrong MFA Code")
        }
        else if(response.status === 401 || response.status === 400){
          alert("Invalid Credentials")
@@ -102,6 +106,7 @@ function StaffLoginPage() {
           
    }
   return (
+    <>
     <div className="d-flex flex-column min-vh-100">
       <GetHeader />
       
@@ -168,6 +173,14 @@ function StaffLoginPage() {
 
       <GetFooterSection />
     </div>
+     {showMFA && (
+        <MFAComponent
+          username={loginForm.username}
+          onVerify={(code) => loginRequest(code)}
+          onClose={() => setShowMFA(false)}
+        />
+      )}
+      </>
   );
 }
 

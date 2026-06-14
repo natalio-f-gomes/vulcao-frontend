@@ -267,47 +267,47 @@ export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONI
 
 
 export const ALL_PERMISSIONS: { value: Permissions; label: string; description: string }[] = [
-  // Product Management
+  // Gestão de Produtos
   { 
     value: "ADD_PRODUCT",  
-    label: "Add Product",  
-    description: "Allows the user to create new product entries in the system." 
+    label: "Adicionar Produto",  
+    description: "Permite ao utilizador criar novas entradas de produto no sistema." 
   },
   { 
     value: "UPDATE_PRODUCT",    
-    label: "Update Product",    
-    description: "Allows the user to edit existing product details and inventory." 
+    label: "Atualizar Produto",    
+    description: "Permite ao utilizador editar detalhes de produtos existentes e inventário." 
   },
   { 
     value: "DELETE_PRODUCT", 
-    label: "Delete Product", 
-    description: "Allows the user to permanently remove products from the catalog." 
+    label: "Eliminar Produto", 
+    description: "Permite ao utilizador remover permanentemente produtos do catálogo." 
   },
 
-  // Task Management
+  // Gestão de Tarefas
   { 
     value: "ASSIGN_TASKS", 
-    label: "Assign Tasks", 
-    description: "Allows the user to delegate, track, and assign tasks to staff members." 
+    label: "Atribuir Tarefas", 
+    description: "Permite ao utilizador delegar, acompanhar e atribuir tarefas aos membros da equipa." 
   },
   
   { 
     value: "CREATE_TASK", 
-    label: "Create Tasks", 
-    description: "Allows the staff to cretae tasks for itself or others." 
+    label: "Criar Tarefas", 
+    description: "Permite ao funcionário criar tarefas para si próprio ou para outros." 
   },
   
   { 
     value: "DELETE_TASK", 
-    label: "Delete Tasks", 
-    description: "Allows the staff to delete tasks for itself or others." 
+    label: "Eliminar Tarefas", 
+    description: "Permite ao funcionário eliminar tarefas para si próprio ou para outros." 
   },
 
-  // Analytics & Reporting
+  // Analítica e Relatórios
   { 
     value: "VIEW_REPORTS", 
-    label: "View Reports", 
-    description: "Allows the user to access operational dashboards and system analytical summaries." 
+    label: "Visualizar Relatórios", 
+    description: "Permite ao utilizador aceder a painéis operacionais e resumos analíticos do sistema." 
   }
   
 ];

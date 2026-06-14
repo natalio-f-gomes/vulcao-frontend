@@ -138,204 +138,204 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
 
   if (!isOpen) return null;
   return (
-    <>
-   {loading && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
-          Loading ...
-        </div>
-      )}
-    <div className="m-overlay open">
-      <div className="m-box">
-        <div className="m-head">
-          <span className="m-head-title">Add a New Product</span>
-          <button className="m-close" onClick={() => onClose()}>&times;</button>
-        </div>
-        <form id="productRegistrationForm" onSubmit={handleAddProduct} >
-          <div className="m-body">
+  <>
+  {loading && (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
+      A carregar ...
+    </div>
+  )}
+  <div className="m-overlay open">
+    <div className="m-box">
+      <div className="m-head">
+        <span className="m-head-title">Adicionar Novo Produto</span>
+        <button className="m-close" onClick={() => onClose()}>&times;</button>
+      </div>
+      <form id="productRegistrationForm" onSubmit={handleAddProduct}>
+        <div className="m-body">
 
-            {/* Product Images Field */}
-            <div className="m-field">
-              <label className="m-label">Product Images</label>
+          {/* Campo de Imagens do Produto */}
+          <div className="m-field">
+            <label className="m-label">Imagens do Produto</label>
+            
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
               
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                
-                {/* Image Previews Wrapper */}
-                {imagePreviews.map((url, index) => (
-                  <div 
-                    key={index} 
-                    style={{ 
-                      position: "relative", 
-                      width: "80px", 
-                      height: "80px", 
-                      borderRadius: "6px", 
-                      overflow: "hidden", 
-                      border: "1px solid #ccc" 
-                    }}
-                  >
-                    <img 
-                      src={url} 
-                      alt={`Preview ${index}`} 
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      style={{
-                        position: "absolute",
-                        top: "2px",
-                        right: "2px",
-                        background: "rgba(0,0,0,0.6)",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "50%",
-                        width: "18px",
-                        height: "18px",
-                        cursor: "pointer",
-                        fontSize: "12px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        lineHeight: "1"
-                      }}
-                    >
-                      &times;
-                    </button>
-                  </div>
-                ))}
-
-                {/* Upload Trigger Square */}
-                <label 
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    border: "2px dashed #ccc",
-                    borderRadius: "6px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    backgroundColor: "#f9f9f9",
-                    color: "#666",
-                    fontSize: "0.8rem"
+              {/* Contentor de Pré-visualizações */}
+              {imagePreviews.map((url, index) => (
+                <div 
+                  key={index} 
+                  style={{ 
+                    position: "relative", 
+                    width: "80px", 
+                    height: "80px", 
+                    borderRadius: "6px", 
+                    overflow: "hidden", 
+                    border: "1px solid #ccc" 
                   }}
                 >
-                  <i className="bi bi-camera" style={{ fontSize: "1.2rem", marginBottom: "2px" }}></i>
-                  <span>Add</span>
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    multiple 
-                    onChange={handleImageChange} 
-                    style={{ display: "none" }} 
+                  <img 
+                    src={url} 
+                    alt={`Pré-visualização ${index}`} 
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }} 
                   />
-                </label>
-              </div>
-            </div>
-
-            {/* Basic Product Info */}
-            <div className="m-row">
-              <div className="m-field">
-                <label className="m-label">Product Name *</label>
-                <input className="m-input" type="text" placeholder="e.g. Fresh Salmon" name="name" onChange={handleInputChange} required />
-              </div>
-              <div className="m-field">
-                <label className="m-label">Product Type *</label>
-                <select className="m-input" name="productType" onChange={handleInputChange} required>
-                  <option value="">Select Type</option>
-                  {ProductCategories.map((category: string) => {
-                    const label = category.replaceAll("_", " ").toUpperCase();
-                    return (
-                      <option key={category} value={category}>
-                        {label}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-
-            {/* Pricing and Stock */}
-            <div className="m-row">
-              <div className="m-field">
-                <label className="m-label">Price Per Unit *</label>
-                <div style={{ display: "flex", gap: "5px" }}>
-                  <input className="m-input" type="number" step="0.01" placeholder="0.00" name="pricePerUnit" onChange={handleInputChange} required />
-                  <select className="m-input" name="currency" style={{ width: "80px" }} onChange={handleInputChange} required>
-                    {CURRENCIES.map((currency: string) => {
-                      return (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    style={{
+                      position: "absolute",
+                      top: "2px",
+                      right: "2px",
+                      background: "rgba(0,0,0,0.6)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "18px",
+                      height: "18px",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      lineHeight: "1"
+                    }}
+                  >
+                    &times;
+                  </button>
                 </div>
-              </div>
-              <div className="m-field">
-                <label className="m-label">Unit Type *</label>
-                <select className="m-input" name="unitType" onChange={handleInputChange} required>
-                  <option value="">Select Unit</option>
-                  {UNIT_TYPES.map((unit: string) => {
-                    return (
-                      <option key={unit} value={unit}>
-                        {unit}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
+              ))}
 
-            {/* Inventory Details */}
-            <div className="m-row">
-              <div className="m-field">
-                <label className="m-label">Initial Stock *</label>
-                <input className="m-input" type="number" placeholder="e.g. 100" name="stock" onChange={handleInputChange} required />
-              </div>
-              <div className="m-field">
-                <label className="m-label">Expiration Date</label>
-                <input className="m-input" type="date" name="expirationDate" onChange={handleInputChange} required />
-              </div>
-            </div>
-
-            {/* Description */}
-            <div className="m-field">
-              <label className="m-label">Description</label>
-              <textarea
-                className="m-input"
-                rows={4}
-                placeholder="Describe the product features, quality, or notes..."
-                name="description"
-                onChange={handleInputChange}
-                style={{ resize: "none" }}
-                required
-              ></textarea>
-            </div>
-
-            {/* Meta Data (Hidden or Read-only visual indicators) */}
-            <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
-              <div className="m-field">
-                <label className="m-label">Added By</label>
-                <input className="m-input" type="text" value={`@${localStorage.getItem("username")}`} readOnly disabled />
-              </div>
-              <div className="m-field">
-                <label className="m-label">Company</label>
-                <input className="m-input" type="text" value={companyName || "N/A"} readOnly disabled />
-              </div>
-            </div>
-
-            <div className="m-footer" style={{ marginTop: "20px" }}>
-              <button className="m-btn-cancel" type="button" onClick={() => onClose()}>Cancel</button>
-              <button className="m-btn-save" type="submit" disabled={loading}>
-                <i className="bi bi-check2"></i> {loading ? "Saving..." : "Save Product"}
-              </button>
+              {/* Quadrado para Carregar Imagem */}
+              <label 
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  border: "2px dashed #ccc",
+                  borderRadius: "6px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backgroundColor: "#f9f9f9",
+                  color: "#666",
+                  fontSize: "0.8rem"
+                }}
+              >
+                <i className="bi bi-camera" style={{ fontSize: "1.2rem", marginBottom: "2px" }}></i>
+                <span>Adicionar</span>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  multiple 
+                  onChange={handleImageChange} 
+                  style={{ display: "none" }} 
+                />
+              </label>
             </div>
           </div>
-        </form>
-      </div>
+
+          {/* Informação Básica do Produto */}
+          <div className="m-row">
+            <div className="m-field">
+              <label className="m-label">Nome do Produto *</label>
+              <input className="m-input" type="text" placeholder="ex: Salmão Fresco" name="name" onChange={handleInputChange} required />
+            </div>
+            <div className="m-field">
+              <label className="m-label">Tipo de Produto *</label>
+              <select className="m-input" name="productType" onChange={handleInputChange} required>
+                <option value="">Selecionar Tipo</option>
+                {ProductCategories.map((category: string) => {
+                  const label = category.replaceAll("_", " ").toUpperCase();
+                  return (
+                    <option key={category} value={category}>
+                      {label}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+
+          {/* Preço e Stock */}
+          <div className="m-row">
+            <div className="m-field">
+              <label className="m-label">Preço por Unidade *</label>
+              <div style={{ display: "flex", gap: "5px" }}>
+                <input className="m-input" type="number" step="0.01" placeholder="0.00" name="pricePerUnit" onChange={handleInputChange} required />
+                <select className="m-input" name="currency" style={{ width: "80px" }} onChange={handleInputChange} required>
+                  {CURRENCIES.map((currency: string) => {
+                    return (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+            <div className="m-field">
+              <label className="m-label">Tipo de Unidade *</label>
+              <select className="m-input" name="unitType" onChange={handleInputChange} required>
+                <option value="">Selecionar Unidade</option>
+                {UNIT_TYPES.map((unit: string) => {
+                  return (
+                    <option key={unit} value={unit}>
+                      {unit}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+
+          {/* Detalhes de Inventário */}
+          <div className="m-row">
+            <div className="m-field">
+              <label className="m-label">Stock Inicial *</label>
+              <input className="m-input" type="number" placeholder="ex: 100" name="stock" onChange={handleInputChange} required />
+            </div>
+            <div className="m-field">
+              <label className="m-label">Data de Validade</label>
+              <input className="m-input" type="date" name="expirationDate" onChange={handleInputChange} required />
+            </div>
+          </div>
+
+          {/* Descrição */}
+          <div className="m-field">
+            <label className="m-label">Descrição</label>
+            <textarea
+              className="m-input"
+              rows={4}
+              placeholder="Descreva as características do produto, qualidade ou notas..."
+              name="description"
+              onChange={handleInputChange}
+              style={{ resize: "none" }}
+              required
+            ></textarea>
+          </div>
+
+          {/* Metadados (Indicadores visuais apenas leitura) */}
+          <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
+            <div className="m-field">
+              <label className="m-label">Adicionado por</label>
+              <input className="m-input" type="text" value={`@${localStorage.getItem("username")}`} readOnly disabled />
+            </div>
+            <div className="m-field">
+              <label className="m-label">Empresa</label>
+              <input className="m-input" type="text" value={companyName || "N/A"} readOnly disabled />
+            </div>
+          </div>
+
+          <div className="m-footer" style={{ marginTop: "20px" }}>
+            <button className="m-btn-cancel" type="button" onClick={() => onClose()}>Cancelar</button>
+            <button className="m-btn-save" type="submit" disabled={loading}>
+              <i className="bi bi-check2"></i> {loading ? "A guardar..." : "Guardar Produto"}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-        </>
-  );
+  </div>
+</>
+)
 }
 export default AddProductModal;

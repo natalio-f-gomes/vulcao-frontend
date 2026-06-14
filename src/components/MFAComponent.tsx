@@ -178,24 +178,24 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
           
         >
             {/*    onMouseDown={(e) => e.stopPropagation()} */}
-          <div className="mfa-head">
-            <h2 id="mfa-title" className="mfa-title">Verify your identity</h2>
-             <button className="mfa-close"  aria-label="Close" type="button" onClick={onClose}>x</button>
-          </div>
+              <div className="mfa-head">
+                <h2 id="mfa-title" className="mfa-title">Verifique a sua identidade</h2>
+                <button className="mfa-close" aria-label="Fechar" type="button" onClick={onClose}>x</button>
+              </div>
 
-          <div className="mfa-body">
-             {email && email.trim() !== "" && (
-                <p className="mfa-intro">
-                  Enter the 6-digit code we sent to <strong>{email}</strong> to continue.
-                </p>
-              )}
-               {username && username.trim() !== "" && (
-                <p className="mfa-intro">
-                  Enter the 6-digit code we sent to the email attached to user <strong>{username}</strong> to continue.
-                </p>
-              )}
-            
-            <label className="mfa-label" htmlFor="mfa-code">Verification code</label>
+              <div className="mfa-body">
+                {email && email.trim() !== "" && (
+                  <p className="mfa-intro">
+                    Introduza o código de 6 dígitos que enviámos para <strong>{email}</strong> para continuar.
+                  </p>
+                )}
+                {username && username.trim() !== "" && (
+                  <p className="mfa-intro">
+                    Introduza o código de 6 dígitos que enviámos para o email associado ao utilizador <strong>{username}</strong> para continuar.
+                  </p>
+                )}
+                
+                <label className="mfa-label" htmlFor="mfa-code">Código de verificação</label>
             <input
               id="mfa-code"
               ref={inputRef}
@@ -209,7 +209,7 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
               value={code}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-              aria-label="6-digit verification code"
+             aria-label="código de verificação de 6 dígitos"
               aria-invalid={error ? true : undefined}
             />
 
@@ -217,7 +217,7 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
 
             <div className="mfa-footer">
               <button className="mfa-btn-cancel" type="button" onClick={onClose}>
-                Cancel
+                Cancelar
               </button>
               <button
                 className="mfa-btn-verify"
@@ -225,7 +225,7 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
                 onClick={handleSubmit}
                 disabled={code.length < maxCodeLength || submitting}
               >
-                {submitting ? "Verifying…" : "Verify code"}
+                {submitting ? "Verificando…" : "Verificar Código"}
               </button>
             </div>
 

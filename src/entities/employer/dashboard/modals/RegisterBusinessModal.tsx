@@ -96,73 +96,89 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
 
       const response = await registerCompany(companyRegistrationRequest);
 
-      if (response.status === 201 || response.status === 204) {
-        // registered with no images attached (or backend chose not to presign)
-        alert("Company Successfully Registered");
-        onSuccess();
-        onClose();
-        return;
+      // Validações:
+      // - NIF pode estar vazio, mas se preenchido deve ter 9 dígitos
+      // - Nome e descrição não podem estar vazios
+      // - Descrição não pode exceder 5000 caracteres
+      // - Nome não pode exceder 500 caracteres
+      // - Email deve ter entre 5 e 50 caracteres
+      // - Ilha, cidade e zona são obrigatórios
+
+      if (response.status === 201) {
+          alert("Empresa registada com sucesso");
+          onSuccess();
+          onClose();
+          return;
+      }
+      if (response.status === 204) {
+          alert("Empresa registada com sucesso. Poderá adicionar imagens mais tarde.");
+          onSuccess();
+          onClose();
+          return;
+      }
+      if (response.status === 409) {
+          alert("Já existe uma empresa com este nome. Por favor, escolha um nome diferente.");
+          return;
       }
 
       if (response.status === 200) {
-        // registered + presigned URLs returned for the images
-        const payload = await response.json();
-        const companyId: string = payload.companyId;
-        const preSignResult: Array<{ url: string; key: string }> = payload.uploadResult;
+          // registada + URLs pré-assinadas devolvidas para as imagens
+          const payload = await response.json();
+          const companyId: string = payload.companyId;
+          const preSignResult: Array<{ url: string; key: string }> = payload.uploadResult;
 
-        try {
-          // upload each file to its matching URL (order is preserved)
-          await Promise.all(
-            selectedImages.map((file, i) => uploadFileToS3(preSignResult[i].url, file))
-          );
+          try {
+              // enviar cada ficheiro para o seu URL correspondente (a ordem é preservada)
+              await Promise.all(
+                  selectedImages.map((file, i) => uploadFileToS3(preSignResult[i].url, file))
+              );
 
-          // confirm so the backend verifies, promotes, and persists the keys
-          const uploadData: CompanyImageUploadRequest = {
-            s3PresignKeys: preSignResult.map((p) => p.key),
-            companyId: companyId,
-          };
-          const confirmResponse = await postCompanyImageKeys(uploadData);
-          if (confirmResponse.ok) {
-            alert("Company and all images successfully registered.");
-          } else {
-            alert("Company registered, but image confirmation failed.");
+              // confirmar para que o backend verifique, promova e persista as chaves
+              const uploadData: CompanyImageUploadRequest = {
+                  s3PresignKeys: preSignResult.map((p) => p.key),
+                  companyId: companyId,
+              };
+              const confirmResponse = await postCompanyImageKeys(uploadData);
+              if (confirmResponse.ok) {
+                  alert("Empresa e todas as imagens registadas com sucesso.");
+              } else {
+                  alert("Empresa registada, mas a confirmação das imagens falhou.");
+              }
+          } catch (uploadError) {
+              console.error("Erro durante a transferência de imagens para o S3:", uploadError);
+              setError("Empresa registada, mas algumas imagens falharam o upload.");
           }
-        } catch (uploadError) {
-          console.error("Error during image transfer to S3:", uploadError);
-          setError("Company registered, but some images failed to upload.");
-        }
 
-        onSuccess();
-        onClose();
-        return;
+          onSuccess();
+          onClose();
+          return;
       }
 
       if (response.status === 409) {
-        alert("A Company with the same Tax ID Number or email already exists");
+          alert("Já existe uma empresa com o mesmo NIF ou email.");
       } else if (response.status === 403) {
-        alert("ACCESS DENIED");
+          alert("ACESSO NEGADO");
       } else if (response.status === 400) {
-        alert("Please make sure to fill in all of the values and select the company status");
+          alert("Por favor, preencha todos os campos obrigatórios e selecione o estado da empresa.");
       } else {
-        setError(`Registration failed (${response.status})`);
+          setError(`Registo falhou (${response.status})`);
       }
-    } catch (err) {
-      setError(`Registration failed: ${err}`);
+      } catch (err) {
+      setError(`Registo falhou: ${err}`);
       console.error(err);
-    } finally {
+      } finally {
       setLoading(false);
-    }
-  };
+      }
+      };
 
   if (!isOpen) return null;
 
   const atLimit = selectedImages.length >= MAX_IMAGES;
-
-  return (
+return (
     <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
-          <span className="m-head-title">Register a New Business</span>
+          <span className="m-head-title">Registar Nova Empresa</span>
           <button className="m-close" onClick={onClose}>&times;</button>
         </div>
         <form id="companyRegistrationForm" onSubmit={handleApiCall}>
@@ -174,16 +190,16 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
               </div>
             )}
 
-            {/* ---------- Business Images ---------- */}
+            {/* ---------- Imagens da Empresa ---------- */}
             <div className="m-field">
-              <label className="m-label">Business Images (max {MAX_IMAGES})</label>
+              <label className="m-label">Imagens da Empresa (máx. {MAX_IMAGES})</label>
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
                 {imagePreviews.map((url, index) => (
                   <div
                     key={index}
                     style={{ position: "relative", width: "80px", height: "80px", borderRadius: "6px", overflow: "hidden", border: "1px solid #ccc" }}
                   >
-                    <img src={url} alt={`Preview ${index}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={url} alt={`Pré-visualização ${index}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
@@ -212,7 +228,7 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
                     }}
                   >
                     <i className="bi bi-camera" style={{ fontSize: "1.2rem", marginBottom: "2px" }}></i>
-                    <span>Add</span>
+                    <span>Adicionar</span>
                     <input
                       type="file"
                       accept="image/png, image/jpeg, image/webp"
@@ -225,16 +241,16 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
               </div>
             </div>
 
-            {/* ---------- Business Info ---------- */}
+            {/* ---------- Informação da Empresa ---------- */}
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Business Name *</label>
-                <input className="m-input" type="text" placeholder="e.g. ShopLane Boutique" name="name" value={companyRegistrationForm.name} onChange={handleInputChange} />
+                <label className="m-label">Nome da Empresa *</label>
+                <input className="m-input" type="text" placeholder="ex: ShopLane Boutique" name="name" value={companyRegistrationForm.name} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">Category *</label>
+                <label className="m-label">Categoria *</label>
                 <select className="form-select" id="type" name="category" value={companyRegistrationForm.category ?? ""} onChange={handleInputChange}>
-                  <option value="">Select Category</option>
+                  <option value="">Selecionar Categoria</option>
                   {BUSINESS_CATEGORIES.map((cat: string) => {
                     const formattedLabel = cat
                       .toLowerCase()
@@ -249,80 +265,80 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
             </div>
 
             <div className="m-field">
-              <label className="m-label">Description</label>
-              <textarea className="m-textarea" name="description" placeholder="Brief description..." required value={companyRegistrationForm.description} onChange={handleInputChange}></textarea>
+              <label className="m-label">Descrição</label>
+              <textarea className="m-textarea" name="description" placeholder="Breve descrição..." required value={companyRegistrationForm.description} onChange={handleInputChange}></textarea>
             </div>
 
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Tax Identification Number</label>
-                <input className="m-input" type="tel" name="taxIdNumber" placeholder="123-232434233" required value={companyRegistrationForm.taxIdNumber} onChange={handleInputChange} />
+                <label className="m-label">Número de Identificação Fiscal</label>
+                <input className="m-input" type="tel" name="taxIdNumber" placeholder="123-232434233"  value={companyRegistrationForm.taxIdNumber} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">Fax Number</label>
-                <input className="m-input" type="tel" name="faxNumber" placeholder="123-232434233" required value={companyRegistrationForm.faxNumber} onChange={handleInputChange} />
+                <label className="m-label">Número de Fax</label>
+                <input className="m-input" type="tel" name="faxNumber" placeholder="123-232434233"  value={companyRegistrationForm.faxNumber} onChange={handleInputChange} />
               </div>
             </div>
 
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Phone</label>
+                <label className="m-label">Telefone</label>
                 <input className="m-input" type="tel" name="phoneNumber" placeholder="+1 (555) 000-0000" required value={companyRegistrationForm.phoneNumber} onChange={handleInputChange} />
               </div>
               <div className="m-field">
                 <label className="m-label">Email</label>
-                <input className="m-input" type="email" name="email" placeholder="business@example.com" value={companyRegistrationForm.email} onChange={handleInputChange} />
+                <input className="m-input" type="email" name="email" placeholder="empresa@exemplo.com" value={companyRegistrationForm.email} onChange={handleInputChange} />
               </div>
             </div>
 
             <div className="m-field row">
               <div className="m-field col-6">
-                <label className="m-label">Revenue</label>
-                <input className="m-input" type="number" name="revenue" placeholder="e.g. 100000" required value={companyRegistrationForm.revenue} onChange={handleInputChange} />
+                <label className="m-label">Receita</label>
+                <input className="m-input" type="number" name="revenue" placeholder="ex: 100000" required value={companyRegistrationForm.revenue} onChange={handleInputChange} />
               </div>
               <div className="col-6">
-                <label className="m-label">Status *</label>
+                <label className="m-label">Estado *</label>
                 <select className="m-select form-select" name="status" id="status" value={companyRegistrationForm.status ?? ""} onChange={handleInputChange}>
-                  <option value="">STATUS</option>
-                  <option value={"OPERATING"}>OPERATING</option>
-                  <option value={"INACTIVE"}>INACTIVE</option>
-                  <option value={"CLOSED"}>CLOSED</option>
+                  <option value="">ESTADO</option>
+                  <option value={"OPERATING"}>EM FUNCIONAMENTO</option>
+                  <option value={"INACTIVE"}>INATIVO</option>
+                  <option value={"CLOSED"}>FECHADO</option>
                 </select>
               </div>
             </div>
 
             <div className="m-field">
-              <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Address</label>
+              <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Morada</label>
             </div>
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Island</label>
-                <input className="m-input" type="text" name="island" placeholder="e.g. Santiago" required value={companyRegistrationForm.address.island} onChange={handleInputChange} />
+                <label className="m-label">Ilha</label>
+                <input className="m-input" type="text" name="island" placeholder="ex: Santiago" required value={companyRegistrationForm.address.island} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">City</label>
-                <input className="m-input" type="text" name="city" placeholder="e.g. Praia" required value={companyRegistrationForm.address.city} onChange={handleInputChange} />
+                <label className="m-label">Cidade</label>
+                <input className="m-input" type="text" name="city" placeholder="ex: Praia" required value={companyRegistrationForm.address.city} onChange={handleInputChange} />
               </div>
             </div>
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Zone</label>
-                <input className="m-input" type="text" name="zone" placeholder="e.g. Plateau" required value={companyRegistrationForm.address.zone} onChange={handleInputChange} />
+                <label className="m-label">Zona</label>
+                <input className="m-input" type="text" name="zone" placeholder="ex: Plateau" required value={companyRegistrationForm.address.zone} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">Postal Code</label>
-                <input className="m-input" type="text" name="postalCode" placeholder="e.g. 7600" value={companyRegistrationForm.address.postalCode} onChange={handleInputChange} />
+                <label className="m-label">Código Postal</label>
+                <input className="m-input" type="text" name="postalCode" placeholder="ex: 7600" value={companyRegistrationForm.address.postalCode} onChange={handleInputChange} />
               </div>
             </div>
             <div className="m-field">
-              <label className="m-label">Street</label>
-              <input className="m-input" type="text" name="street" placeholder="e.g. Rua do Município" value={companyRegistrationForm.address.street} onChange={handleInputChange} />
+              <label className="m-label">Rua</label>
+              <input className="m-input" type="text" name="street" placeholder="ex: Rua do Município" value={companyRegistrationForm.address.street} onChange={handleInputChange} />
             </div>
 
             <div className="m-footer">
-              <button className="m-btn-cancel" type="button" onClick={onClose} disabled={loading}>Cancel</button>
+              <button className="m-btn-cancel" type="button" onClick={onClose} disabled={loading}>Cancelar</button>
               <button className="m-btn-save" type="submit" disabled={loading}>
-                <i className="bi bi-check2"></i> {loading ? "Saving..." : "Save Business"}
+                <i className="bi bi-check2"></i> {loading ? "A guardar..." : "Guardar Empresa"}
               </button>
             </div>
           </div>

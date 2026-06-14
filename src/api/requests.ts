@@ -124,7 +124,7 @@ export async function registeremployer(employer: UserRegistrationModel){
 }
 
 export async function confirmRegisterEmployer(code: string, employer: UserRegistrationModel){
-    return await fetchAPIWithoutCredentials(`/v1/auth/employer/confirm/register/${code}`,
+    return await fetchAPIWithCredentials(`/v1/auth/employer/confirm/register/${code}`,
          {method: "POST", body: JSON.stringify(employer)})
 }
 
@@ -255,7 +255,7 @@ export async function getCompanyDashboard(companyID: string) {
 }
 
 export async function updateStaff(staffID: string, staff: RegisterStaffModel){
-    const endpoint: string = `/v1/staff/update/${staffID}/byEmployer`
+    const endpoint: string = `/v1/staff/update/${staffID}`
     return await fetchAPIWithCredentials(endpoint,
         {method:"PUT", body: JSON.stringify(staff)}
     )

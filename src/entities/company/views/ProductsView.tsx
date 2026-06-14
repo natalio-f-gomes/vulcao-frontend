@@ -51,118 +51,118 @@ function ProductView({ company }: Paramaters) {
   }, [company?.id]);
 
   return (
-    <>
-      <div>
-        <div className="view-heading">Products Inventory</div>
-        <div className="view-sub">Manage and monitor all your company products.</div>
+<>
+  <div>
+    <div className="view-heading">Inventário de Produtos</div>
+    <div className="view-sub">Gerir e monitorizar todos os produtos da sua empresa.</div>
 
-        <div className="quick-actions">
-          <button className="qa-btn primary" onClick={() => setShowAddModal(true)}>
-            <i className="bi bi-plus-lg"></i> Add New Product
-          </button>
-        </div>
+    <div className="quick-actions">
+      <button className="qa-btn primary" onClick={() => setShowAddModal(true)}>
+        <i className="bi bi-plus-lg"></i> Adicionar Novo Produto
+      </button>
+    </div>
 
-        <div className="biz-grid">
-          {productList.map((product) => (
-            <div className="biz-card" key={product.id}>
-              <div className="biz-banner">
-                {/* Status dynamically determined by stock */}
-                <span className={`biz-status-badge ${product.stock > 0 ? "active" : "inactive"}`}>
-                  {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
-                </span>
-              </div>
-
-              <div
-                className="biz-body"
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
-              > 
-                {/* Product image header — first image shown, arrows when multiple */}
-                {product.imgS3UrlKeys && (
-                  <div style={{ marginTop: "12px", marginBottom: "15px" }}>
-                    <div className="biz-actions" style={{ width: "100%", marginBottom: "5px" }}>
-                      <button 
-                        className="biz-btn edit" 
-                        onClick={()=> setProductImageUpload(product)}
-                      >
-                        <i className="bi bi-pencil"></i>
-                        {(product.imgS3UrlKeys?.length ?? 0) > 0 ? " Edit Images" : " Upload Images"}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                <ProductImageCarousel
-                  imageKeys={product.imgS3UrlKeys}
-                  width={200}
-                  height={140}
-                  altText={product.name}
-                />
-
-                {/* Product Name and Type */}
-                <div className="biz-name" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{product.name}</div>
-                <div className="biz-cat" style={{ color: "#6c757d", fontSize: "0.85rem", marginBottom: "10px" }}>{product.productType}</div>
-
-                {/* Price tag */}
-                <div className="product-price" style={{ fontWeight: "600", color: "#198754", fontSize: "1.1rem", marginBottom: "15px" }}>
-                  {product.pricePerUnit} {product.currency} / {product.unitType}
-                </div>
-
-                {/* Product Meta Details */}
-                <div className="product-details" style={{ width: "100%", textAlign: "left", fontSize: "0.85rem", color: "#495057", marginBottom: "15px", padding: "0 10px" }}>
-                  <div style={{ marginBottom: "4px", fontStyle: "italic" }}>
-                    <i className="bi bi-card-text" style={{ marginRight: "8px" }}></i>
-                    {product.description || "No description provided."}
-                  </div>
-                  <div style={{ marginBottom: "4px" }}>
-                    <i className="bi bi-calendar-event" style={{ marginRight: "8px" }}></i>
-                    Expires: {product.expirationDate || "N/A"}
-                  </div>
-                  {product.companyName && (
-                    <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>{product.companyName}</div>
-                  )}
-                </div>
-
-                {/* Product Inventory Stats */}
-                <div className="biz-stats" style={{ width: "100%" }}>
-                  <div>
-                    <div className="biz-stat-val" style={{ fontSize: 15 }}>{product.stock}</div>
-                    <div className="biz-stat-label">Stock ({product.unitType}s)</div>
-                  </div>
-                  <div>
-                    <div className="biz-stat-val" style={{ fontSize: 15 }}>
-                      {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "YYYY-MM-DD"}
-                    </div>
-                    <div className="biz-stat-label">Added On</div>
-                  </div>
-                  <div>
-                    <div className="biz-stat-val" style={{ fontSize: 15 }}>@{product.creatorUsername}</div>
-                    <div className="biz-stat-label">Added by</div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="biz-actions" style={{ width: "100%", marginTop: "15px" }}>
-                  <button className="biz-btn view" onClick={() => setProductToView(product)}>
-                    <i className="bi bi-eye"></i> View
-                  </button>
-                  <button className="biz-btn edit" onClick={() => setProductToEdit(product)}>
-                    <i className="bi bi-pencil"></i> Edit
-                  </button>
-                  <button className="biz-btn del">
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div> {/* Safely closed .biz-body here at the end of the card contents */}
-            </div>
-          ))}
-
-          {/* Add New Product Card — inside the grid so it lines up */}
-          <div className="biz-card-new" onClick={() => setShowAddModal(true)}>
-            <i className="bi bi-plus-circle"></i>
-            <span> Add a new Product</span>
+    <div className="biz-grid">
+      {productList.map((product) => (
+        <div className="biz-card" key={product.id}>
+          <div className="biz-banner">
+            {/* Estado determinado dinamicamente pelo stock */}
+            <span className={`biz-status-badge ${product.stock > 0 ? "active" : "inactive"}`}>
+              {product.stock > 0 ? "EM STOCK" : "ESGOTADO"}
+            </span>
           </div>
+
+          <div
+            className="biz-body"
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
+          > 
+            {/* Cabeçalho da imagem do produto — primeira imagem mostrada, setas quando há várias */}
+            {product.imgS3UrlKeys && (
+              <div style={{ marginTop: "12px", marginBottom: "15px" }}>
+                <div className="biz-actions" style={{ width: "100%", marginBottom: "5px" }}>
+                  <button 
+                    className="biz-btn edit" 
+                    onClick={()=> setProductImageUpload(product)}
+                  >
+                    <i className="bi bi-pencil"></i>
+                    {(product.imgS3UrlKeys?.length ?? 0) > 0 ? " Editar Imagens" : " Carregar Imagens"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <ProductImageCarousel
+              imageKeys={product.imgS3UrlKeys}
+              width={200}
+              height={140}
+              altText={product.name}
+            />
+
+            {/* Nome e Tipo do Produto */}
+            <div className="biz-name" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{product.name}</div>
+            <div className="biz-cat" style={{ color: "#6c757d", fontSize: "0.85rem", marginBottom: "10px" }}>{product.productType}</div>
+
+            {/* Etiqueta de preço */}
+            <div className="product-price" style={{ fontWeight: "600", color: "#198754", fontSize: "1.1rem", marginBottom: "15px" }}>
+              {product.pricePerUnit} {product.currency} / {product.unitType}
+            </div>
+
+            {/* Detalhes do Produto */}
+            <div className="product-details" style={{ width: "100%", textAlign: "left", fontSize: "0.85rem", color: "#495057", marginBottom: "15px", padding: "0 10px" }}>
+              <div style={{ marginBottom: "4px", fontStyle: "italic" }}>
+                <i className="bi bi-card-text" style={{ marginRight: "8px" }}></i>
+                {product.description || "Nenhuma descrição fornecida."}
+              </div>
+              <div style={{ marginBottom: "4px" }}>
+                <i className="bi bi-calendar-event" style={{ marginRight: "8px" }}></i>
+                Expira: {product.expirationDate || "N/A"}
+              </div>
+              {product.companyName && (
+                <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>{product.companyName}</div>
+              )}
+            </div>
+
+            {/* Estatísticas de Inventário do Produto */}
+            <div className="biz-stats" style={{ width: "100%" }}>
+              <div>
+                <div className="biz-stat-val" style={{ fontSize: 15 }}>{product.stock}</div>
+                <div className="biz-stat-label">Stock ({product.unitType}s)</div>
+              </div>
+              <div>
+                <div className="biz-stat-val" style={{ fontSize: 15 }}>
+                  {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "AAAA-MM-DD"}
+                </div>
+                <div className="biz-stat-label">Adicionado a</div>
+              </div>
+              <div>
+                <div className="biz-stat-val" style={{ fontSize: 15 }}>@{product.creatorUsername}</div>
+                <div className="biz-stat-label">Adicionado por</div>
+              </div>
+            </div>
+
+            {/* Botões de Ação */}
+            <div className="biz-actions" style={{ width: "100%", marginTop: "15px" }}>
+              <button className="biz-btn view" onClick={() => setProductToView(product)}>
+                <i className="bi bi-eye"></i> Ver
+              </button>
+              <button className="biz-btn edit" onClick={() => setProductToEdit(product)}>
+                <i className="bi bi-pencil"></i> Editar
+              </button>
+              {/* <button className="biz-btn del">
+                <i className="bi bi-trash"></i>
+              </button> */}
+            </div>
+          </div> {/* .biz-body fechado corretamente no final do conteúdo do cartão */}
         </div>
+      ))}
+
+      {/* Cartão Adicionar Novo Produto — dentro da grelha para alinhamento */}
+      <div className="biz-card-new" onClick={() => setShowAddModal(true)}>
+        <i className="bi bi-plus-circle"></i>
+        <span> Adicionar Novo Produto</span>
       </div>
+    </div>
+  </div>
 
       <AddProductModal
         isOpen={showAddModal}

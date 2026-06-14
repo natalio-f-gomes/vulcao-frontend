@@ -64,14 +64,14 @@ function BusinessesView() {
     navigate(`/company-dashboard/${businessId}`);
   };
 
-  return (
+return (
     <>
-      <div className="view-heading" style={{ marginTop: "40px" }}>My Businesses</div>
-      <div className="view-sub">Manage and monitor all your registered businesses.</div>
+      <div className="view-heading" style={{ marginTop: "40px" }}>As Minhas Empresas</div>
+      <div className="view-sub">Gerir e monitorizar todas as suas empresas registadas.</div>
 
       <div className="quick-actions">
         <button className="qa-btn primary" onClick={() => setShowRegisterModal(true)}>
-          <i className="bi bi-plus-lg"></i> Register New Business
+          <i className="bi bi-plus-lg"></i> Registar Nova Empresa
         </button>
       </div>
 
@@ -80,10 +80,10 @@ function BusinessesView() {
           const hasImages = (company.imgS3UrlKeys?.length ?? 0) > 0;
           return (
             <div className="biz-card" key={company.id}>
-              {/* ---- banner: status badge only ---- */}
+              {/* ---- banner: apenas distintivo de estado ---- */}
               <div className="biz-banner">
                 <span className={`biz-status-badge ${company.status === "OPERATING" ? "active" : "inactive"}`}>
-                  {company.status}
+                  {company.status === "OPERATING" ? "EM FUNCIONAMENTO" : company.status}
                 </span>
               </div>
 
@@ -103,33 +103,33 @@ function BusinessesView() {
                 <div className="biz-stats">
                   <div>
                     <div className="biz-stat-val">{company.revenue}</div>
-                    <div className="biz-stat-label">Revenue</div>
+                    <div className="biz-stat-label">Receita</div>
                   </div>
                   <div>
                     <div className="biz-stat-val">—</div>
-                    <div className="biz-stat-label">Orders</div>
+                    <div className="biz-stat-label">Encomendas</div>
                   </div>
                   <div>
                     <div className="biz-stat-val">—</div>
-                    <div className="biz-stat-label">Products</div>
+                    <div className="biz-stat-label">Produtos</div>
                   </div>
                 </div>
 
                 <div className="biz-actions">
                   {company.id && (
                     <button className="biz-btn view" onClick={() => visitCompanyDashboardHandler(company.id!)}>
-                      <i className="bi bi-eye"></i> View
+                      <i className="bi bi-eye"></i> Ver
                     </button>
                   )}
                   <button className="biz-btn edit" onClick={() => setEditingBusiness(company)}>
-                    <i className="bi bi-pencil"></i> Edit
+                    <i className="bi bi-pencil"></i> Editar
                   </button>
-                  <button className="biz-btn del">
+                  {/* <button className="biz-btn del">
                     <i className="bi bi-trash"></i>
-                  </button>
+                  </button> */}
                 </div>
 
-                {/* image management — always available, label adapts */}
+                {/* gestão de imagens — sempre disponível, rótulo adapta-se */}
                 <div className="biz-actions" style={{ marginTop: 6 }}>
                   <button
                     className="biz-btn edit"
@@ -137,7 +137,7 @@ function BusinessesView() {
                     onClick={() => setEditingImagesFor(company)}
                   >
                     <i className="bi bi-images"></i>{" "}
-                    {hasImages ? "Edit Images" : "Upload Images"}
+                    {hasImages ? "Editar Imagens" : "Carregar Imagens"}
                   </button>
                 </div>
               </div>
@@ -147,7 +147,7 @@ function BusinessesView() {
 
         <div className="biz-card-new" onClick={() => setShowRegisterModal(true)}>
           <i className="bi bi-plus-circle"></i>
-          <span>Register a Business</span>
+          <span>Register a Empresa</span>
         </div>
       </div>
 

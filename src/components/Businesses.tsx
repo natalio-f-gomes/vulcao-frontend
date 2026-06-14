@@ -13,14 +13,14 @@ function GetBusinessesSection() {
     try {
       const response = await getAllCompanies();
       if (!response.ok) {
-        setLoadError(`Could not load businesses (${response.status})`);
+        setLoadError(`Não foi possível carregar as empresas (${response.status})`);
         return;
       }
       const data = await response.json();
       setCompanies(data);
     } catch (err) {
-      console.error("Failed to load businesses:", err);
-      setLoadError("Could not load businesses.");
+      console.error("Erro ao carregar empresas:", err);
+      setLoadError("Não foi possível carregar as empresas.");
     }
   };
 
@@ -28,15 +28,15 @@ function GetBusinessesSection() {
     loadData();
   }, []);
 
-  // "Since 2023" from createdAt
+  // "Desde 2023" a partir do createdAt
   const sinceYear = (dateStr?: string) =>
     dateStr ? new Date(dateStr).getFullYear() : null;
 
   return (
     <section className="products-section" id="businesses">
       <div className="section-header">
-        <h2 className="section-title">Businesses</h2>
-        <a href="#" className="section-link">View all →</a>
+        <h2 className="section-title">Empresas</h2>
+        {/* <a href="#" className="section-link">Ver todas →</a> */}
       </div>
 
       {loadError && (
@@ -51,11 +51,11 @@ function GetBusinessesSection() {
             onClick={() => navigate(`/business/public/${company.id}`)}
           >
 
-            {/* ---- banner: image carousel (or initial), status badge on top ---- */}
+            {/* ---- banner: carrossel de imagens (ou inicial), distintivo de estado no topo ---- */}
             <div className="product-thumb" style={{ height: 150, background: "var(--ink)", position: "relative" }}>
 
               {(company.imgS3UrlKeys?.length ?? 0) > 0 ? (
-                /* fill the whole thumb with the carousel */
+                /* preencher toda a miniatura com o carrossel */
                 <div style={{ position: "absolute", inset: 0 }}>
                   <ImageCarousel
                     imageKeys={company.imgS3UrlKeys}
@@ -65,7 +65,7 @@ function GetBusinessesSection() {
                   />
                 </div>
               ) : (
-                /* fallback: the Playfair initial, as before */
+                /* fallback: a inicial Playfair, como antes */
                 <span
                   style={{
                     fontFamily: "'Playfair Display', serif",
@@ -78,10 +78,10 @@ function GetBusinessesSection() {
                 </span>
               )}
 
-              {/* badge LAST in DOM + zIndex so it always sits above the image */}
+              {/* distintivo ÚLTIMO no DOM + zIndex para ficar sempre acima da imagem */}
               {company.status === "OPERATING" ? (
                 <span className="product-badge" style={{ background: "#2d6a4f", zIndex: 2 }}>
-                  Open
+                  Aberto
                 </span>
               ) : (
                 <span className="product-badge" style={{ background: "#888", zIndex: 2 }}>
@@ -91,17 +91,17 @@ function GetBusinessesSection() {
             </div>
 
             <div className="product-info">
-              {/* category + since */}
+              {/* categoria + desde */}
               <div className="product-category">
                 {company.category?.replaceAll("_", " ")}
                 {sinceYear(company.createdAt) && (
-                  <span style={{ color: "#bbb" }}> · since {sinceYear(company.createdAt)}</span>
+                  <span style={{ color: "#bbb" }}> · desde {sinceYear(company.createdAt)}</span>
                 )}
               </div>
 
               <div className="product-name">{company.name}</div>
 
-              {/* short description */}
+              {/* descrição curta */}
               <p
                 style={{
                   fontSize: "0.82rem",
@@ -114,10 +114,10 @@ function GetBusinessesSection() {
                   overflow: "hidden",
                 }}
               >
-                {company.description || "No description provided."}
+                {company.description || "Nenhuma descrição fornecida."}
               </p>
 
-              {/* location + contact strip */}
+              {/* localização + contacto */}
               <div
                 style={{
                   fontSize: "0.76rem",
@@ -134,11 +134,11 @@ function GetBusinessesSection() {
                 </span>
                 <span>
                   <i className="bi bi-telephone" style={{ color: "var(--accent)", marginRight: 6 }}></i>
-                  {  `+1 ${company.phoneNumber}` || "—"}
+                  {`+1 ${company.phoneNumber}` || "—"}
                 </span>
               </div>
 
-              {/* footer: visit button */}
+              {/* rodapé: botão visitar */}
               <div className="product-footer">
                 <span style={{ fontSize: "0.72rem", color: "#aaa", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                   @{company.creatorUsername}
@@ -147,11 +147,11 @@ function GetBusinessesSection() {
                   className="add-btn"
                   style={{ width: "auto", padding: "0 12px", fontSize: "0.72rem", letterSpacing: "0.06em", textTransform: "uppercase" }}
                   onClick={(e) => {
-                    e.stopPropagation(); // don't double-trigger the card click
+                    e.stopPropagation(); // evitar acionar duplo clique no cartão
                     navigate(`/business/public/${company.id}`);
                   }}
                 >
-                  Visit <i className="bi bi-arrow-right" style={{ marginLeft: 4 }}></i>
+                  Visitar <i className="bi bi-arrow-right" style={{ marginLeft: 4 }}></i>
                 </button>
               </div>
             </div>
@@ -160,7 +160,7 @@ function GetBusinessesSection() {
 
         {companies.length === 0 && !loadError && (
           <p style={{ color: "var(--mid)", gridColumn: "1 / -1" }}>
-            No businesses registered yet.
+            Nenhuma empresa registada ainda.
           </p>
         )}
       </div>

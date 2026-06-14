@@ -2,17 +2,16 @@ import { EmployerDashView } from "./employer-dashboard";
 
 // Maps each view to a human-readable title — like a Map<DashView, String> in Java
 const VIEW_TITLES: Record<EmployerDashView, { title: string; sub: string }> = {
-  overview:   { title: "Hello.",       sub: "Here's what's happening in your store today." },
-  businesses: { title: "My Businesses", sub: "Manage and monitor all your registered businesses." },
-  orders:     { title: "Orders",        sub: "Track and manage incoming orders." },
-  products:   { title: "Products",      sub: "Manage your product listings." },
-  services:   { title: "Services",      sub: "Manage your service offerings." },
-  staffs:  { title: "Employees",     sub: "Manage your team members." },
-  customers:  { title: "Customers",     sub: "View and manage your customer base." },
-  settings:   { title: "Settings",      sub: "Configure your dashboard preferences." },
-  profile:  { title: "Hello.",       sub: "Manage your account" },
+  overview:   { title: "Olá.",       sub: "Aqui está o que se passa na sua loja hoje." },
+  businesses: { title: "As Minhas Empresas", sub: "Gerir e monitorizar todas as suas empresas registadas." },
+  orders:     { title: "Encomendas",        sub: "Acompanhar e gerir encomendas recebidas." },
+  products:   { title: "Produtos",      sub: "Gerir as suas listagens de produtos." },
+  services:   { title: "Serviços",      sub: "Gerir as suas ofertas de serviços." },
+  staffs:     { title: "Funcionários",     sub: "Gerir os membros da sua equipa." },
+  customers:  { title: "Clientes",     sub: "Visualizar e gerir a sua base de clientes." },
+  settings:   { title: "Definições",      sub: "Configurar as preferências do seu painel de controlo." },
+  profile:    { title: "Olá.",       sub: "Gerir a sua conta" },
 };
-
 interface TopbarProps {
   activeView: EmployerDashView;
 }

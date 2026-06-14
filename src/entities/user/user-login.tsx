@@ -48,6 +48,9 @@ function UserLoginPage() {
             if(response.status === 401){
                 alert("Invalid authentiation data. The email must have at least 7 characters")
             }
+             if(response.status === 404){
+                alert("Wrong credentials")
+            }
             if(response.status === 409){
                 alert("There is an entity with this credentials already")
             }

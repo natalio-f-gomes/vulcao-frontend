@@ -175,27 +175,27 @@ const loadUsers = async (): Promise<Record<string, UserProfileModel | null>> => 
 const currentStatus = (order: OrderModel): OrderStatus =>
   statusOverrides[order.id!] ?? order.status;
 
-  return (
+return (
     <div style={styles.container}>
       <style dangerouslySetInnerHTML={{ __html: mobileResponsiveMediaQuery }} />
 
-      {/* Page header — profile eyebrow + Playfair title */}
+      {/* Cabeçalho da página — sobrancelha do perfil + título Playfair */}
       <div style={styles.pageHeader}>
         <div style={styles.pageEyebrow}>
           <span style={styles.eyebrowLine} />
-          Order History
+          Histórico de Encomendas
         </div>
-        <h1 style={styles.pageTitle}>{companyName} Orders</h1>
+        <h1 style={styles.pageTitle}>Encomendas {companyName}</h1>
         {orderList.length > 0 && (
           <p style={styles.pageSubtitle}>
-            {orderList.length} order{orderList.length === 1 ? "" : "s"}
+            {orderList.length} encomenda{orderList.length === 1 ? "" : "s"}
           </p>
         )}
       </div>
 
       {orderList.length === 0 ? (
         <div style={styles.emptyState}>
-          {companyName} hasn't received any orders yet.
+          {companyName} ainda não recebeu nenhuma encomenda.
         </div>
       ) : (
         orderList.map((order: OrderModel, orderIdx: number) => {
@@ -204,113 +204,111 @@ const currentStatus = (order: OrderModel): OrderStatus =>
           const customer = order.userId ? usersMap[order.userId] ?? null : null;
 
           return (
-            // Each order is its own self-contained block,
-            // separated by an accent top bar and generous spacing
+            // Cada encomenda é o seu próprio bloco independente,
+            // separado por uma barra superior de destaque e espaçamento generoso
             <article key={order.id} style={styles.orderBlock}>
-              {/* Order header strip */}
+              {/* Faixa de cabeçalho da encomenda */}
               <div style={styles.orderHeaderStrip}>
                 <div>
                   <div style={styles.orderIndexLabel}>
-                    Order {String(orderIdx + 1).padStart(2, "0")} / {orderList.length}
+                    Encomenda {String(orderIdx + 1).padStart(2, "0")} / {orderList.length}
                   </div>
-                  <h3 style={styles.orderTitle}>Order #{order.id}</h3>
+                  <h3 style={styles.orderTitle}>Encomenda #{order.id}</h3>
                 </div>
-               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-  <span style={getStatusBadgeStyle(currentStatus(order))}>
-    {currentStatus(order)}
-  </span>
-  <select
-    value={currentStatus(order)}
-    disabled={savingStatusOrderId === order.id}
-    onChange={(e) => handleStatusChange(order, e.target.value as OrderStatus)}
-    style={{
-      padding: "6px 10px",
-      fontSize: "0.72rem",
-      fontWeight: 600,
-      letterSpacing: "0.08em",
-      textTransform: "uppercase",
-      border: "1px solid #d8d3cc",
-      borderRadius: 0,
-      background: "#fff",
-      color: "var(--ink)",
-      cursor: savingStatusOrderId === order.id ? "wait" : "pointer"
-    }}
-  >
-    {ORDER_STATUSES.map((status) => (
-      <option key={status} value={status}>
-        {status}
-      </option>
-    ))}
-  </select>
-  {savingStatusOrderId === order.id && (
-    <span style={{ fontSize: "0.72rem", color: "var(--mid)" }}>Saving…</span>
-  )}
-</div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={getStatusBadgeStyle(currentStatus(order))}>
+                    {currentStatus(order)}
+                  </span>
+                  <select
+                    value={currentStatus(order)}
+                    disabled={savingStatusOrderId === order.id}
+                    onChange={(e) => handleStatusChange(order, e.target.value as OrderStatus)}
+                    style={{
+                      padding: "6px 10px",
+                      fontSize: "0.72rem",
+                      fontWeight: 600,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      border: "1px solid #d8d3cc",
+                      borderRadius: 0,
+                      background: "#fff",
+                      color: "var(--ink)",
+                      cursor: savingStatusOrderId === order.id ? "wait" : "pointer"
+                    }}
+                  >
+                    {ORDER_STATUSES.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                  {savingStatusOrderId === order.id && (
+                    <span style={{ fontSize: "0.72rem", color: "var(--mid)" }}>A guardar…</span>
+                  )}
+                </div>
               </div>
 
-              {/* Order info summary */}
-
+              {/* Resumo da informação da encomenda */}
               <div style={styles.orderInfoGrid}>
-              <div style={styles.infoBox}>
-                    <div style={styles.infoLabel}>Customer</div>
-                    <div style={styles.infoValue}>
-                        {customer
-                        ? `${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() ||
-                            customer.username
-                        : loading
-                        ? "Loading…"
-                        : "Unknown"}
+                <div style={styles.infoBox}>
+                  <div style={styles.infoLabel}>Cliente</div>
+                  <div style={styles.infoValue}>
+                    {customer
+                      ? `${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() ||
+                          customer.username
+                      : loading
+                      ? "A carregar…"
+                      : "Desconhecido"}
+                  </div>
+                  {customer?.email && (
+                    <div style={{ fontSize: "0.78rem", color: "var(--mid)", marginTop: "2px" }}>
+                      Email: {customer.email}
                     </div>
-                    {customer?.email && (
-                        <div style={{ fontSize: "0.78rem", color: "var(--mid)", marginTop: "2px" }}>
-                        Email: {customer.email}
-                        </div>
-                    )}
-                    {customer?.phoneNumber && (
-                        <div style={{ fontSize: "0.78rem", color: "var(--mid)" }}>
-                        Phone: {customer.phoneNumber}
-                        </div>
-                    )}
+                  )}
+                  {customer?.phoneNumber && (
+                    <div style={{ fontSize: "0.78rem", color: "var(--mid)" }}>
+                      Telefone: {customer.phoneNumber}
                     </div>
+                  )}
+                </div>
 
                 <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Tracking ID</div>
+                  <div style={styles.infoLabel}>ID de Rastreio</div>
                   <div style={styles.infoValue}>{order.trackId}</div>
                 </div>
                 <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Date placed</div>
+                  <div style={styles.infoLabel}>Data do pedido</div>
                   <div style={styles.infoValue}>{formatDate(order.createdAt)}</div>
                 </div>
                 <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Last updated</div>
+                  <div style={styles.infoLabel}>Última atualização</div>
                   <div style={styles.infoValue}>{formatDate(order.updatedAt)}</div>
                 </div>
                 <div style={styles.infoBox}>
-                  <div style={styles.infoLabel}>Items</div>
+                  <div style={styles.infoLabel}>Itens</div>
                   <div style={styles.infoValue}>
-                    {(order.cartItems ?? []).length} item(s)
+                    {(order.cartItems ?? []).length} item(ns)
                   </div>
                 </div>
               </div>
-              
 
-              {/* Ordered items table */}
+              {/* Tabela de itens encomendados */}
               <div style={styles.tableWrap}>
                 {loading ? (
-                  <div style={styles.tableState}>Loading order items…</div>
+                  <div style={styles.tableState}>A carregar itens da encomenda…</div>
                 ) : orderItems.length === 0 ? (
                   <div style={styles.tableState}>
-                    No item details available for this order.
+                    Não há detalhes de itens disponíveis para esta encomenda.
                   </div>
                 ) : (
                   <table className="responsive-table" style={styles.table}>
                     <thead>
                       <tr>
                         <th style={styles.th}>Item</th>
-                        <th style={styles.th}>Type</th>
-                        <th style={styles.th}>Quantity</th>
+                        <th style={styles.th}>Tipo</th>
+                        <th style={styles.th}>Quantidade</th>
                         <th style={{ ...styles.th, textAlign: "right" }}>
-                          Price at Purchase
+                          Preço na Compra
                         </th>
                         <th style={{ ...styles.th, textAlign: "right" }}>Total</th>
                       </tr>
@@ -321,15 +319,15 @@ const currentStatus = (order: OrderModel): OrderStatus =>
                           <td style={styles.td} data-label="Item">
                             <div style={styles.productName}>{item.itemName}</div>
                           </td>
-                          <td style={styles.td} data-label="Type">
+                          <td style={styles.td} data-label="Tipo">
                             <span style={styles.typeTag}>{item.itemType}</span>
                           </td>
-                          <td style={styles.td} data-label="Quantity">
+                          <td style={styles.td} data-label="Quantidade">
                             {item.quantity ?? 1}
                           </td>
                           <td
                             style={{ ...styles.td, ...styles.moneyCell }}
-                            data-label="Price at Purchase"
+                            data-label="Preço na Compra"
                           >
                             ${(item.priceAtPurchase ?? 0).toFixed(2)}
                           </td>
@@ -349,63 +347,13 @@ const currentStatus = (order: OrderModel): OrderStatus =>
                     </tbody>
                   </table>
                 )}
-              
-            <div
-              style={{
-                margin: "12px",
-                width: "calc(100% - 24px)"
-              }}
-                >
-                <span>Order Description</span>
-              <textarea
-                maxLength={5000}
-                readOnly
-                value={order.note}
-                style={{
-                  width: "100%",
-                  minHeight: "140px",
-                  padding: "12px",
-                  border: "1px solid #d8d3cc",
-                  borderRadius: "4px",
-                  resize: "vertical",
-                  fontSize: "0.95rem",
-                  fontFamily: "inherit",
-                  lineHeight: "1.5",
-                  boxSizing: "border-box",
-                  backgroundColor: "#fff"
-                }}
-              />
-              <div
-                style={{
-                  textAlign: "right",
-                  fontSize: "0.75rem",
-                  color: "#888",
-                  marginTop: "4px"
-                }}
-              >
-                Maximum 5000 characters
-              </div>
-          </div>
-                {/* Per-order aggregate footer */}
-                <div style={styles.footerSummary}>
-                  <div style={styles.summaryItem}>
-                    <div style={styles.summaryLabel}>Items</div>
-                    <div style={styles.summaryValue}>{getItemCount(orderItems)}</div>
-                  </div>
-                  <div style={styles.summaryItem}>
-                    <div style={styles.summaryLabel}>Total Cost</div>
-                    <div style={{ ...styles.summaryValue, color: "var(--accent)" }}>
-                      ${getOrderTotal(order, orderItems).toFixed(2)}
-                    </div>
-                  </div>
-                </div>
               </div>
             </article>
           );
         })
       )}
     </div>
-  );
+);
 }
 
 // Status badges — semantic colors, squared off and letter-spaced

@@ -307,7 +307,7 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
         )}
       </div>
 
-      {/* ── Security (editable: username + password) ─────────────────────── */}
+      {/* ── Security (editable: username + password) ───────────────────────
       <div className="profile-section" id="section-security">
         <div className="section-head">
           <div className="section-head-left">
@@ -345,7 +345,7 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
             </button>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* ── Employment (READ-ONLY: managed by employer) ──────────────────── */}
       <div className="profile-section" id="section-employment">

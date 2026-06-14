@@ -145,19 +145,18 @@ function EmployerProfileView(){
     await logoutHandler();
     navigate("/");
   };
-  if (loading) return <div>Loading profile...</div>;
-  if (error)   return <div>Error: {error}</div>;
-  if (!employer)   return <div>No Employer data found.</div>;
+  if (loading) return <div>A carregar perfil...</div>;
+  if (error)   return <div>Erro: {error}</div>;
+  if (!employer)   return <div>Nenhum dado de empregador encontrado.</div>;
 
-      
-
+    
     return (
        <div>
 
         <main className="profile-main">
           <div className="page-header">
-            <p className="page-eyebrow">Account</p>
-            <h1 className="page-title">My Profile</h1>
+            <p className="page-eyebrow">Conta</p>
+            <h1 className="page-title">O Meu Perfil</h1>
           </div>
 
           {/* ── Personal Info ──────────────────────────────────────────────── */}
@@ -165,26 +164,26 @@ function EmployerProfileView(){
             <div className="section-head">
               <div className="section-head-left">
                 <i className="bi bi-person-fill"></i>
-                <span className="section-head-title">Personal Information</span>
+                <span className="section-head-title">Informação Pessoal</span>
               </div>
               <button
                 className={`btn-edit ${isEditing("personal") ? "editing" : ""}`}
                 onClick={() => isEditing("personal") ? cancelEditing() : startEditing("personal")}
               >
-                <i className="bi bi-pencil"></i> {isEditing("personal") ? "Cancel" : "Edit"}
+                <i className="bi bi-pencil"></i> {isEditing("personal") ? "Cancelar" : "Editar"}
               </button>
             </div>
 
             <div className="fields-grid">
               <div className={`field-group ${isEditing("personal") ? "is-editing" : ""}`}>
-                <span className="field-label">First Name</span>
-                <span className="field-value">{formData.firstName || "Not Set"}</span>
+                <span className="field-label">Primeiro Nome</span>
+                <span className="field-value">{formData.firstName || "Não definido"}</span>
                 <input className="field-input" id="inp-firstName" type="text"
                   value={formData.firstName} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("personal") ? "is-editing" : ""}`}>
                 <span className="field-label">Last Name</span>
-                <span className="field-value">{formData.lastName || "Not Set"}</span>
+                <span className="field-value">{formData.lastName || "Não definido"}</span>
                 <input className="field-input" id="inp-lastName" type="text"
                   value={formData.lastName} onChange={handleInputChange} />
               </div>
@@ -194,7 +193,7 @@ function EmployerProfileView(){
               <div className="save-bar visible">
                 <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
                 <button className="btn-save" onClick={() => saveSection("personal")}>
-                  <i className="bi bi-check2"></i> Save Changes
+                 <i className="bi bi-check2"></i> Guardar Alterações
                 </button>
               </div>
             )}
@@ -205,26 +204,26 @@ function EmployerProfileView(){
             <div className="section-head">
               <div className="section-head-left">
                 <i className="bi bi-envelope-fill"></i>
-                <span className="section-head-title">Contact Details</span>
+               <span className="section-head-title">Detalhes de Contacto</span>
               </div>
               <button
                 className={`btn-edit ${isEditing("contact") ? "editing" : ""}`}
                 onClick={() => isEditing("contact") ? cancelEditing() : startEditing("contact")}
               >
-                <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancel" : "Edit"}
+                <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancelar" : "Editar"}
               </button>
             </div>
 
             <div className="fields-grid">
               <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-                <span className="field-label">Email Address</span>
-                <span className="field-value">{formData.email || "Not Set"}</span>
+                <span className="field-label">Endereço de Email</span>
+                <span className="field-value">{formData.email || "Não definido"}</span>
                 <input className="field-input" id="inp-email" type="email"
                   value={formData.email} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
                 <span className="field-label">Phone Number</span>
-                <span className="field-value">{formData.phoneNumber || "Not Set"}</span>
+                <span className="field-value">{formData.phoneNumber || "Não definido"}</span>
                 <input className="field-input" id="inp-phoneNumber" type="tel"
                   value={formData.phoneNumber} onChange={handleInputChange} />
               </div>
@@ -232,9 +231,9 @@ function EmployerProfileView(){
 
             {isEditing("contact") && (
               <div className="save-bar visible">
-                <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+                <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
                 <button className="btn-save" onClick={() => saveSection("contact")}>
-                  <i className="bi bi-check2"></i> Save Changes
+                  <i className="bi bi-check2"></i> Guardar Alterações
                 </button>
               </div>
             )}
@@ -245,44 +244,44 @@ function EmployerProfileView(){
             <div className="section-head">
               <div className="section-head-left">
                 <i className="bi bi-geo-alt-fill"></i>
-                <span className="section-head-title">Address</span>
+                <span className="section-head-title">Endereço</span>
               </div>
               <button
                 className={`btn-edit ${isEditing("address") ? "editing" : ""}`}
                 onClick={() => isEditing("address") ? cancelEditing() : startEditing("address")}
               >
-                <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancel" : "Edit"}
+                <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancelar" : "Editar"}
               </button>
             </div>
 
             <div className="fields-grid triple">
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">Island</span>
-                <span className="field-value">{formData.island || "Not Set"}</span>
+                <span className="field-label">Ilha</span>
+                <span className="field-value">{formData.island || "Não definido"}</span>
                 <input className="field-input" id="inp-island" type="text"
                   value={formData.island} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">City</span>
-                <span className="field-value">{formData.city || "Not Set"}</span>
+                <span className="field-label">Cidade</span>
+                <span className="field-value">{formData.city || "Não definido"}</span>
                 <input className="field-input" id="inp-city" type="text"
                   value={formData.city} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">Zone</span>
-                <span className="field-value">{formData.zone || "Not Set"}</span>
+                <span className="field-label">Zona</span>
+                <span className="field-value">{formData.zone || "Não definido"}</span>
                 <input className="field-input" id="inp-zone" type="text"
                   value={formData.zone} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">Postal Code</span>
-                <span className="field-value">{formData.postalCode || "Not Set"}</span>
+                <span className="field-label">Código Postal (opcional)</span>
+                <span className="field-value">{formData.postalCode || "Não definido"}</span>
                 <input className="field-input" id="inp-postalCode" type="text"
                   value={formData.postalCode} onChange={handleInputChange} />
               </div>
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">Street</span>
-                <span className="field-value">{formData.street || "Not Set"}</span>
+                <span className="field-label">Rua (opcional)</span>
+                <span className="field-value">{formData.street || "Não definido"}</span>
                 <input className="field-input" id="inp-street" type="text"
                   value={formData.street} onChange={handleInputChange} />
               </div>
@@ -292,14 +291,14 @@ function EmployerProfileView(){
               <div className="save-bar visible">
                 <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
                 <button className="btn-save" onClick={() => saveSection("address")}>
-                  <i className="bi bi-check2"></i> Save Changes
+                   <i className="bi bi-check2"></i> Guardar Alterações
                 </button>
               </div>
             )}
           </div>
 
           {/* ── Security ───────────────────────────────────────────────────── */}
-          <div className="profile-section" id="section-security">
+          {/* <div className="profile-section" id="section-security">
             <div className="section-head">
               <div className="section-head-left">
                 <i className="bi bi-shield-lock-fill"></i>
@@ -309,14 +308,14 @@ function EmployerProfileView(){
                 className={`btn-edit ${isEditing("security") ? "editing" : ""}`}
                 onClick={() => isEditing("security") ? cancelEditing() : startEditing("security")}
               >
-                <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancel" : "Edit"}
+                <i className="bi bi-pencil"></i> {isEditing("security") ? "Cancelar" : "Editar"}
               </button>
             </div>
 
             <div className="fields-grid">
               <div className={`field-group ${isEditing("security") ? "is-editing" : ""}`}>
                 <span className="field-label">Username</span>
-                <span className="field-value">{formData.username || "Not Set"}</span>
+                <span className="field-value">{formData.username || "Não definido"}</span>
                 <input className="field-input" id="inp-username" type="text"
                   value={formData.username} onChange={handleInputChange} />
               </div>
@@ -337,7 +336,7 @@ function EmployerProfileView(){
                 </button>
               </div>
             )}
-          </div>
+          </div> */}
 
          
 

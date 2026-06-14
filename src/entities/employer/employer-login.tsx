@@ -39,25 +39,28 @@ function EmployerLoginPage() {
               const response = await requestEmployerLogin(loginForm.username)
               console.log('MFA CODE REQUEST RESPONSE: ' , response)
             if(response.status === 100){
-                alert("Employer Logged in Successfully")
                 setShowMFA(false);
-                window.location.href="/"
+                return;
             }
             setShowMFA(false);
-            if(response.status === 401){
-                alert("Invalid authentiation data. The email must have at least 7 characters")
+          if(response.status === 401){
+                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
+            }
+            if(response.status === 404){
+                alert("Credenciais incorretas.")
             }
             if(response.status === 409){
-                alert("There is an entity with this credentials already")
+                alert("Já existe uma entidade com estas credenciais.")
             }
-             if(response.status === 403){
-                alert("Wrong Code. Please verify your inbox or your spam folder")
+            if(response.status === 403){
+                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
             }
-             if(response.status === 400){
-                alert("Please ensure the input fields are filled with valid data only.")
+            if(response.status === 400){
+                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
             }
             else{
-                console.log(`Unexpected Error ${response}`)
+               alert("Erro inesperado. Por favor volte mais tarde")
+                console.log(`Erro inesperado: ${response}`)
             }
           }catch(exception){
               setError( `Registration Failed ${exception}`)
@@ -81,17 +84,17 @@ function EmployerLoginPage() {
         
       }
 
-      if(response.status === 200){
-        alert("Employer Login Successfully")
-        await login("employer");
-        window.location.href = "/"
+    if(response.status === 200){
+    alert("Sessão do Empregador iniciada com sucesso.")
+      await login("employer");
+      window.location.href = "/"
       }
       else if(response.status === 401 || response.status === 400){
-        alert("Invalid Credentials")
+          alert("Credenciais inválidas.")
       }
-
       else{
-        console.log(response)
+         alert("Erro inesperado. Por favor volte mais tarde")
+          console.log(response)
       }
     }catch(error){
         setError(`An expected error Occured ${error}`)
@@ -149,27 +152,27 @@ function EmployerLoginPage() {
         .btn-auth:hover { background: #a83420; }
       `}</style>
 
-      <main className="login-wrapper">
-        <div className="auth-card shadow-lg">
-          <h2 className="auth-title">Welcome Back Employer.</h2>
-            <div className="mb-3">
-              <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
-              <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
-            </div>
-            <div className="mb-4">
-              <label className="form-label small text-uppercase fw-bold text-secondary"  >Password</label>
-              <input type="password" className="form-control-custom" name="password" value={loginForm.password} onChange={handleUserInputChange} required />
-            </div>
-            
-            <button type="submit" className="btn-auth mb-3" onClick={()=> sendMfACode()}>Sign In</button>
-            
-            <div className="text-center">
-              <Link to="/employer-register" className="text-secondary text-decoration-none small">
-                New to ShopLane? <span style={{color: '#c8452a'}}>Create Account</span>
-              </Link>
-            </div>
+     <main className="login-wrapper">
+      <div className="auth-card shadow-lg">
+        <h2 className="auth-title">Bem-vindo de volta, Empresário(a).</h2>
+        <div className="mb-3">
+          <label className="form-label small text-uppercase fw-bold text-secondary">Nome de Utilizador</label>
+          <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
         </div>
-      </main>
+        <div className="mb-4">
+          <label className="form-label small text-uppercase fw-bold text-secondary">Palavra-passe</label>
+          <input type="password" className="form-control-custom" name="password" value={loginForm.password} onChange={handleUserInputChange} required />
+        </div>
+        
+        <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
+        
+        <div className="text-center">
+          <Link to="/employer-register" className="text-secondary text-decoration-none small">
+            Novo na ShopLane? <span style={{color: '#c8452a'}}>Criar Conta</span>
+          </Link>
+        </div>
+      </div>
+    </main>
 
       <GetFooterSection />
     </div>

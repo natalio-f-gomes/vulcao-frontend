@@ -59,13 +59,13 @@ function EmployeeStaffView({company}: StaffViewParameters){
                 <div className="biz-body" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
                     
                     {/* Profile Picture at the Top */}
-                    <div className="staff-pic-container" style={{ marginTop: "1px", marginBottom: "15px", position: "relative" }}>
+                    {/* <div className="staff-pic-container" style={{ marginTop: "1px", marginBottom: "15px", position: "relative" }}>
                     <img 
                         src="https://placeholder.com" 
                         alt="Staff Profile" 
                         style={{ width: "80px", height: "80px", borderRadius: "50%", border: "4px solid white", boxShadow: "0px 2px 10px rgba(0,0,0,0.1)", objectFit: "cover" }}
                     />
-                    </div>
+                    </div> */}
 
                     {/* Name and Username */}
                     <div className="biz-name" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{member.firstName} {member.lastName}</div>
