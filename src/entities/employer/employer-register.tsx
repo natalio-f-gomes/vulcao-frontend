@@ -43,10 +43,7 @@ function EmployerRegistrationPage(){
         if(confirmPassword === registrationForm.password || confirmPassword.length >=8){
         try{
             const response = await confirmRegisterEmployer(code, registrationForm)
-            if(!response.ok){
-            console.log(response)
-            alert("Ocorreu um problema com o seu pedido.")
-            }
+           
             if(response.status === 201){
                 alert("Empresário(a) registado com sucesso.")
                 setShowMFA(false);
@@ -55,6 +52,9 @@ function EmployerRegistrationPage(){
             }
             if(response.status === 401){
                 alert("Dados de autenticação inválidos.")
+            }
+            if(response.status === 403){
+                alert("Dados de autenticação incorretos.")
             }
             if(response.status === 409){
                 alert("Já existe uma entidade com estas credenciais.")
