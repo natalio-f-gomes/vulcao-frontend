@@ -366,7 +366,7 @@ function AboutPage() {
               <div className="member-name">{creatorName}</div>
               <div className="member-role">Fundador &amp; Programador</div>
               <p className="member-bio">Estudante de Engenharia Informática em Cabo Verde. Criou a {companyName} sozinho, convicto de que qualquer negócio merece estar online e que encomendar devia ser simples e rápido.</p>
-              <div className="member-socials"><a href="#"><i className="bi bi-linkedin"></i></a><a href="#"><i className="bi bi-github"></i></a></div>
+              {/* <div className="member-socials"><a href="#"><i className="bi bi-linkedin"></i></a><a href="#"><i className="bi bi-github"></i></a></div> */}
             </div>
           </div>
         </div>
