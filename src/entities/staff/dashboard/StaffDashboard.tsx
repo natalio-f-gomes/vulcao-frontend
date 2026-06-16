@@ -23,9 +23,11 @@ import ProductView from "../../company/views/ProductsView";
 import StaffProfileView from "./views/StaffProfileView";
 import OrdersView from "../../../ public/PublicBusinessesPage/OrdersView";
 import CompanyOrderView from "../../company/views/OrdersView";
+import WearableView from "../../company/views/WearableViews";
 
 
-export type StaffDashView = "overview" | "profileView" |"companyView" | "orderView" | "settinhgsView" | "staffview" | "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
+export type StaffDashView = "overview" | "profileView" |"companyView" | "orderView" | "settinhgsView" | "staffview" |
+ "productView" | "electronicView" | "tvShowView" | "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" | "wearableView";
 
 
 function StaffDashboard() {
@@ -95,6 +97,7 @@ function StaffDashboard() {
   };
 
   const renderView = () => {
+    if(!company && !staff ){return;}
     switch (activeView) {
       case "overview":
           return <StaffOverviewView staff={staff} company={company} onNavigate={navigate}/>
@@ -102,6 +105,7 @@ function StaffDashboard() {
       case "productView": return <ProductView company={company!}/>
       case "profileView": return <StaffProfileView staff={staff!}/>
       case "orderView" : return <CompanyOrderView company={company!} orders={companyOrders} staff={staff}/>
+      case "wearableView": return <WearableView company={company!} currentEntity={staff?.username!} />
     }
   };
 

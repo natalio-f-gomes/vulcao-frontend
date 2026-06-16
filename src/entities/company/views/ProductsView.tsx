@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { CompanyModel, ProductModel } from "../../../api/interfaces";
-import { updateProduct, getProductsByCompanyId } from "../../../api/requests";
+import { updateProduct, getProductsByCompanyId, deleteProductById } from "../../../api/requests";
 import AddProductModal from "../modals/products/AddProductModal";
 import ViewProductModal from "../modals/products/ViewProductModal";
 import EditProductModal from "../modals/products/EditProductModal";
 import { hanldeResponseStatus } from "./StaffView";
 import ProductImageCarousel from "../../../components/ImageCarousel"; // adjust path
 import UploadImageModal from "../modals/ProductUpdateImageModal";
+import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
 
 interface Paramaters {
   company: CompanyModel;
@@ -18,18 +19,61 @@ function ProductView({ company }: Paramaters) {
   const [productToEdit, setProductToEdit] = useState<ProductModel | null>(null);
   const [productImageUpload, setProductImageUpload] = useState<ProductModel| null>(null);
 
+  
+  const [productToDelete, setProductToDelete] = useState<ProductModel | null>(null);
+  const [isDeleting,setIsDeleting] = useState<boolean>(false);
+  const [error,setError] = useState<string | null>(null);
+  const [showConfirm, setShowConfirm] = useState<boolean>(false);
+
+
+
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
   const updateProductRequest = async (product: ProductModel) => {
     const response = await updateProduct(product.id!, product);
     console.log("RESPONSE: ", response);
     if (response.status === 200) {
-      alert("Product Successfully Updated");
+      alert("Producto Atualizada");
       await getProducts();
       setProductToEdit(null);
       return;
     }
     hanldeResponseStatus(response.status);
+  };
+
+   const handleDeleteProduct = async () => {
+    if(!productToDelete){return }
+    setIsDeleting(true);
+    setError(null);
+    try {
+      const response = await deleteProductById(productToDelete.id!);
+      if(response.status === 200){
+        alert("Produto apagada. Atualiza a pagina.");
+        setProductToDelete(null);
+        return;
+      }
+      if(response.status === 403){
+        alert("Nao tens permissao para apagar esse produto");
+        setProductToDelete(null);
+        return;
+      }
+      if(response.status === 404){
+        alert("Esse produto nao existe");
+        setProductToDelete(null);
+        return;
+      }
+      else{
+        alert("Occoreu um erro com o seu pedido");
+        setProductToDelete(null);
+      
+      }
+      setShowConfirm(false);
+      getProducts();
+    } catch (e: any) {
+      setError(e.message || "Failed to delete the product");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
 
@@ -148,9 +192,9 @@ function ProductView({ company }: Paramaters) {
               <button className="biz-btn edit" onClick={() => setProductToEdit(product)}>
                 <i className="bi bi-pencil"></i> Editar
               </button>
-              {/* <button className="biz-btn del">
+              <button className="biz-btn del"   onClick={() => setProductToDelete(product)}>
                 <i className="bi bi-trash"></i>
-              </button> */}
+              </button>
             </div>
           </div> {/* .biz-body fechado corretamente no final do conteúdo do cartão */}
         </div>
@@ -175,6 +219,7 @@ function ProductView({ company }: Paramaters) {
           isOpen={productToView !== null}
           onClose={() => setProductToView(null)}
           productToView={productToView}
+          companyName={company.name}
         />
       )}
       {productToEdit && (
@@ -183,6 +228,7 @@ function ProductView({ company }: Paramaters) {
           isOpen={productToEdit !== null}
           productToEdit={productToEdit}
           onSave={updateProductRequest}
+          companyName={company.name}
         />
       )}
       { productImageUpload && (
@@ -190,6 +236,17 @@ function ProductView({ company }: Paramaters) {
         onClose={()=> setProductImageUpload(null)}
         isOpen={productImageUpload !== null}
         productToEdit={productImageUpload}
+        />
+      )}
+
+        { productToDelete && (
+        <ConfirmDeleteModal
+        isOpen={productToDelete !== null}
+        itemName={productToDelete.name}
+        itemType="PRODUTO"
+        onConfirm={handleDeleteProduct}
+        onCancel={() => setProductToDelete(null)}
+        isDeleting={isDeleting}
         />
       )}
 

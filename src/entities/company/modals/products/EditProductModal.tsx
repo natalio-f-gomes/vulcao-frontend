@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { AddProductModel, CompanyModel, ProductModel, RegisterStaffModel } from "../../../../api/interfaces";
-import { addressFields, ALL_PERMISSIONS, CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
-
-import { companyName } from "../../../../api/global";
-import ProductImageCarousel from "../../../../components/ImageCarousel";
+import { AddProductModel, ProductModel } from "../../../../api/interfaces";
+import { CURRENCIES, ProductCategories } from "../../../../api/categories";
 
 interface Parameters{
     isOpen: boolean;
     onClose: ()  => void;
     onSave: (updated: ProductModel) => void;
-    productToEdit: ProductModel
+    productToEdit: ProductModel,
+    companyName: string
 }
 
-function EditProductModal({isOpen, onClose, onSave, productToEdit}:Parameters){
+function EditProductModal({isOpen, onClose, onSave, productToEdit, companyName}:Parameters){
     const [error, setError] = useState<string | null>(null);
     const [loading,setLoading] = useState<boolean>(false);
     const [product, setProduct] = useState<ProductModel>({

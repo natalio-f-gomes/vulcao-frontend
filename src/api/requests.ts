@@ -2,7 +2,7 @@
 
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel } from "./interfaces";
 
 //const URL = "http://localhost:8080";
 const URL = "";
@@ -283,6 +283,20 @@ export async function addProduct(newProduct: ProductModel){
     })
 }
 
+export async function addWearable(newItem: WearableModel){ 
+    const entityType: string | null= localStorage.getItem("active_role");
+    let endpoint: string = '';
+    switch(entityType){
+        case "staff": endpoint = `/v1/offering/wearable/staff/add`;break;
+        case "employer": endpoint = `/v1/offering/wearable/employer/add`;break;
+        default: window.location.href = "/"
+    }
+    return await fetchAPIWithCredentials(endpoint, {
+        method:"POST",
+        body: JSON.stringify(newItem)
+    })
+}
+
 export async function updateProduct(id:string, product: ProductModel){
       const entityType: string | null= localStorage.getItem("active_role");
     let endpoint: string = '';
@@ -297,6 +311,19 @@ export async function updateProduct(id:string, product: ProductModel){
     })
 }
 
+export async function updateWearable(id:string, item: WearableModel){
+      const entityType: string | null= localStorage.getItem("active_role");
+    let endpoint: string = '';
+    switch(entityType){
+        case "staff": endpoint = `/v1/offering/wearable/staff/update/${id}`;break;
+        case "employer": endpoint = `/v1/offering/wearable/employer/update/${id}`;break;
+        default: window.location.href = "/"
+    }
+    return await fetchAPIWithCredentials(endpoint, {
+        method:"PUT",
+        body: JSON.stringify(item)
+    })
+}
 
 export async function getEmployerProfile() {
   const response = await fetchAPIWithCredentials("/v1/employer/get/my-profile");
@@ -313,11 +340,33 @@ export async function getEmployerProfile() {
 }
 
 export async function deleteProductById(id:string){
-    const endpoint = `/v1/product/delete/${id}`;
+    const entityType: string | null= localStorage.getItem("active_role");
+      let endpoint: string = '';
+        switch(entityType){
+            case "staff": endpoint = `/v1/offering/product/staff/delete/${id}`;break;
+            case "employer": endpoint = `/v1/offering/product/employer/delete/${id}`;break;
+            default: window.location.href = "/"
+        }
+        
     return await fetchAPIWithCredentials(endpoint, {
         method:"DELETE"
     })
 }
+
+export async function deleteWearableById(id:string){
+    const entityType: string | null= localStorage.getItem("active_role");
+      let endpoint: string = '';
+        switch(entityType){
+            case "staff": endpoint = `/v1/offering/wearable/staff/delete/${id}`;break;
+            case "employer": endpoint = `/v1/offering/wearable/employer/delete/${id}`;break;
+            default: window.location.href = "/"
+        }
+        
+    return await fetchAPIWithCredentials(endpoint, {
+        method:"DELETE"
+    })
+}
+
 
 export async function getAllProducts() {
     const endpoint =  "/v1/public/offering/product/get/all"
@@ -421,6 +470,11 @@ export async function updateProductImage(product: ProductModel){
     return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(product)})
 }
 
+export async function updateWearableImage(item: WearableModel){
+    const endpoint: string = `/v1/offering/wearable/update/image`;
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body:JSON.stringify(item)})
+}
+
 // Part 3 — After we upload the pictures to the S3 bucket, if everything goes well, we need to post the presign key to backend
 export async function postOfferingImageKeys(requestData: OfferingImageUploadRequest) {
     console.log("Request Data", requestData);
@@ -509,3 +563,19 @@ export async function updateOrderStatus(orderId: string, status: string) {
     method: "PUT"
   });
 }
+
+export async function getAllWearables() {
+    const endpoint =  "/v1/public/offering/wearable/get/all"
+    return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+
+export async function getWearableByCompanyId(companyId: string) {
+    const endpoint =  `/v1/public/offering/get/wearable/company/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+export async function getWearableById(id: string) {
+    const endpoint =  `/v1/public/offering/wearable/get/${id}`
+    return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
+}
+

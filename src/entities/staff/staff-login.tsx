@@ -7,6 +7,7 @@ import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
+import GetTermsSection from "../../components/TermsSection";
 
 function StaffLoginPage() {
   const {login} = useUserAuthManager();
@@ -85,20 +86,21 @@ function StaffLoginPage() {
        }
  
        if(response.status === 200){
-         alert("Employer Login Successfully")
+         alert("Sessão do Utilizador iniciada com sucesso.")
          await login("staff");
          window.location.href = "/"
        }
-         else if(response.status === 403){
-         alert("Wrong MFA Code")
-       }
-       else if(response.status === 401 || response.status === 400){
-         alert("Invalid Credentials")
-       }
- 
-       else{
-         console.log(response)
-       }
+        else if(response.status === 403){
+          alert("Dados MFA incorretos. Por favor, tente novamente.")
+        }
+        else if(response.status === 401 || response.status === 400){
+            setShowMFA(false)
+            alert("Credenciais incorretas.")
+        }
+        else{
+            alert("Teve um erro com o servidor. Por favor retorne mais tarde")
+            console.log(response)
+        }
      }catch(error){
          setError(`An expected error Occured ${error}`)
      }finally{setLoading(false)}
@@ -164,19 +166,7 @@ function StaffLoginPage() {
             </div>
             
             <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Sign In</button>
-                           <span>
-                                Ao continuar, concordas com os {companyName}{" "}
-                                <a 
-                                  href="#" 
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onNavigate("/terms");
-                                  }}
-                                  style={{ cursor: 'pointer' }}
-                                >
-                                  termos de uso
-                                </a>
-                              </span>
+             <GetTermsSection/>
             
            
         </div>

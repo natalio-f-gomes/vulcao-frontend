@@ -16,6 +16,7 @@ import CompanyStaffView from "./views/StaffView";
 import ProductView from "./views/ProductsView";
 import ElectronicView from "./views/ElectronicsView";
 import CompanyOrderView from "./views/OrdersView";
+import WearableView from "./views/WearableViews";
 
 function CompanyDashboard(){
     const navigate = useNavigate();
@@ -125,11 +126,12 @@ function CompanyDashboard(){
      }
 
      const renderView = () => {
-          if(!company) return <div>Loading Company ....</div>
+          if(!company || !currentEmployer) return <div>Loading Company ....</div>
           switch (activeView) {
                case "overview": return <CompanyOverView company={company}/>;
                case "staffview": return <CompanyStaffView company={company}/>
                case "productView": return <ProductView company={company}/>
+               case "wearableView": return <WearableView company={company} currentEntity={currentEmployer?.username}/>
                case "electronicView": return <ElectronicView/>
                case "orderView": return <CompanyOrderView orders={companyOrders} employer={currentEmployer} company={company}/>
           }

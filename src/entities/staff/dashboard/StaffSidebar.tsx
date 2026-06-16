@@ -61,6 +61,9 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
     <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
       <i className="bi bi-box-seam" /> Produtos
     </a>
+     <a style={itemStyle("orderView")} onClick={() => onNavigate("wearableView")}>
+      <i className="bi bi-bag-check" /> Vestíveis
+    </a>
 
     {/* 
     <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
@@ -81,6 +84,7 @@ function StaffSidebar({activeView, onBack, onNavigate, onLogout, staff, company}
     <a style={itemStyle("orderView")} onClick={() => onNavigate("orderView")}>
       <i className="bi bi-bag-check" /> Encomendas
     </a>
+    
     {/* 
     <a style={itemStyle("customerView")}>
       <i className="bi bi-people" /> Clientes

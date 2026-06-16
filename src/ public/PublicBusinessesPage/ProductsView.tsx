@@ -190,6 +190,7 @@ const handleAddItemToCart = async (product: ProductModel) => {
         isOpen={productToView!== null}
         productToView={productToView}
         onClose={()=>setProductToView(null)}
+        companyName={company?.name!}
       />
     )}
     </>

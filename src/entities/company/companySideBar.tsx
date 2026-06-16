@@ -4,7 +4,7 @@ import { useUserAuthManager } from "../../api/authentication-handler";
 import { companyName } from "../../api/global";
 
 export type CompanyView = "overview" | "staffview" | "productView" | "electronicView" | "tvShowView" | 
-                          "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" ;
+                          "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" | "wearableView" ;
 
 
 interface Parameters {
@@ -157,6 +157,9 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
 
     <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
       <i className="bi bi-box-seam" /> Produtos
+    </a>
+     <a style={itemStyle("wearableView")} onClick={() => onNavigate("wearableView")}>
+      <i className="bi bi-box-seam" /> Vestíveis
     </a>
     {/* 
     <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>

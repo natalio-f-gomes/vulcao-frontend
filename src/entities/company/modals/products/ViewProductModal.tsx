@@ -4,13 +4,13 @@ import { addressFields, ALL_PERMISSIONS, CURRENCIES, ProductCategories, UNIT_TYP
 import { Permissions } from "../../../../api/interfaces";
 import { addProduct, registerStaff } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
-import { hanldeResponseStatus } from "../../views/StaffView";
 import ProductImageCarousel from "../../../../components/ImageCarousel";
 
 interface Parameters{
     isOpen: boolean;
     onClose: ()  => void;
-    productToView: ProductModel
+    productToView: ProductModel,
+    companyName: string
 }
 
 function ViewProductModal({isOpen, onClose, productToView}:Parameters){

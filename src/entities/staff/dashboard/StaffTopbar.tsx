@@ -22,6 +22,7 @@ const VIEW_TITLES: Record<StaffDashView, { title: string; sub: string }> = {
   profileView:    { title: "O Meu Perfil",            sub: "As suas informações pessoais e permissões." },
   settinhgsView:  { title: "Definições",              sub: "Configurar as preferências do seu painel de controlo." },
   reviewsView:    { title: "Avaliações",              sub: "Verificar as avaliações da sua empresa e colegas." },
+  wearableView: { title: "Vestiveis",             sub: "Consultar, editar e organizar os artigos de vestuário." },
 };
 
 function StaffTopbar({ activeView, staff }: StaffTopbarProps) {

@@ -1,4 +1,4 @@
-import { Permissions } from "./interfaces";
+import { Permissions, WearablesCategory } from "./interfaces";
 
 export const BUSINESS_CATEGORIES: string[] = [
   // ===== COMÉRCIO E RETALHO (Supermercados, Lojas e Eletrónica) =====
@@ -118,7 +118,7 @@ export const UNIT_TYPES: string[] = [
   "TIRA"
 ]
 
-export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONIC"|  "MUSIC";
+export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONIC"|  "MUSIC" | "WEARABLE";
 
 
 
@@ -138,6 +138,22 @@ export const ALL_PERMISSIONS: { value: Permissions; label: string; description: 
     value: "DELETE_PRODUCT", 
     label: "Eliminar Produto", 
     description: "Permite ao utilizador remover permanentemente produtos do catálogo." 
+  },
+
+   { 
+    value: "ADD_WEARABLE",  
+    label: "Adicionar Vestuário",  
+    description: "Permite ao utilizador criar novas entradas de vestuário no sistema." 
+  },
+  { 
+    value: "UPDATE_WEARABLE",    
+    label: "Atualizar Vestuário",    
+    description: "Permite ao utilizador editar detalhes de vestuário existente e inventário." 
+  },
+  { 
+    value: "DELETE_WEARABLE", 
+    label: "Eliminar Vestuário", 
+    description: "Permite ao utilizador remover permanentemente artigos de vestuário do catálogo." 
   },
 
   // Gestão de Tarefas
@@ -171,3 +187,82 @@ export const addressFields = ["island", "city", "zone", "street", "postalCode"];
 
 
 export type OrderStatus = "PENDING" | "PROCESSING" | "CANCELLED" | "COMPLETED" | "RECEIVED" | "SENT"
+
+
+export const WEARABLES_CATEGORY_LIST: WearablesCategory[] = [
+  // ===== PARTE DE CIMA (Tops) =====
+  "TSHIRT",
+  "CAMISA",
+  "POLO",
+  "BLUSA",
+  "TOP_DE_ALÇAS",
+  "CROP_TOP",
+  "CAMISOLA",
+  "HOODIE",
+  "SWEATSHIRT",
+  "CARDIGAN",
+
+  // ===== PARTE DE BAIXO (Bottoms) =====
+  "JEANS",
+  "CALÇAS",
+  "CHINOS",
+  "CALÇÕES",
+  "SAIA",
+  "LEGGINGS",
+  "JOGGERS",
+
+  // ===== PEÇA ÚNICA (One-piece) =====
+  "VESTIDO",
+  "FATO_MACACO",
+  "ROMPER",
+  "JARDINEIRAS",
+
+  // ===== CASACOS E REVESTIMENTOS (Outerwear) =====
+  "CASACO_CURTO",
+  "CASACO_COMPRIDO",
+  "BLAZER",
+  "COLETE",
+  "IMPERMEÁVEL",
+
+  // ===== CALÇADO (Footwear) =====
+  "SNEAKERS",
+  "SAPATILHAS_CORRIDA",
+  "BOTAS",
+  "SANDÁLIAS",
+  "SAPATOS_DE_SALTO",
+  "SAPATOS_RASOS",
+  "MOCASSINS",
+  "CHINELOS_DE_QUARTO",
+
+  // ===== ACESSÓRIOS DE CABEÇA (Headwear) =====
+  "CHAPÉU",
+  "BONÉ",
+  "GORRO",
+
+  // ===== ACESSÓRIOS (Accessories) =====
+  "CINTO",
+  "CACHECOL",
+  "LUVAS",
+  "GRAVATA",
+  "LAÇO",
+  "ÓCULOS_DE_SOL",
+  "RELÓGIO",
+  "JOALHARIA",
+  "MALA",
+  "MOCHILA",
+
+  // ===== ROUPA DESPORTIVA (Activewear) =====
+  "SUTIÃ_DESPORTIVO",
+  "CALÇÕES_DE_TREINO",
+  "FATO_DE_TREINO",
+  "ROUPA_DE_COMPRESSÃO",
+
+  // ===== ROUPA DE DORMIR (Sleepwear) =====
+  "PIJAMA",
+  "ROUPÃO",
+
+  // ===== ROUPA INTERIOR (Underwear) =====
+  "ROUPA_INTERIOR",
+  "MEIAS",
+  "OUTROS"
+];

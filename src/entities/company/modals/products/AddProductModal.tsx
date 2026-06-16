@@ -4,7 +4,7 @@ import {  CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/cate
 import { addProduct, postOfferingImageKeys } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
 import { hanldeResponseStatus } from "../../views/StaffView";
-import { buildImageMetadata, Dimensions, getImageDimensions, PresignBatchRequest, uploadFileToS3 } from "../../../../api/ImageValidatorService";
+import { buildImageMetadata , getImageDimensions, uploadFileToS3 } from "../../../../api/ImageValidatorService";
 import { OfferingImageUploadRequest } from "../../../../api/interfaces";
 
 interface Parameters {

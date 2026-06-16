@@ -82,17 +82,21 @@ function UploadImageModal({ isOpen, onClose, productToEdit }: Parameters) {
                 const keys = preSignResult.map((p) => p.key);
                 const uploadData: OfferingImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
                 const postImgDataResponse =  await postOfferingImageKeys(uploadData);  
-                console.log("postImgDataResponse: ",postImgDataResponse);
-                  alert("Product and all images successfully added.");
-                   setLoading(false);
+                  console.log("postImgDataResponse: ", postImgDataResponse);
+                  alert("Oferta e todas as imagens adicionadas com sucesso.");
+                  setLoading(false);
                 } catch (uploadError) {
+                   alert("Produto guardado, mas ocorreu uma falha ao carregar algumas imagens.");
                   console.error("Error during image transfer to S3:", uploadError);
-                  setError("Product saved, but some images failed to upload.");
+                  setError("Produto guardado, mas ocorreu uma falha ao carregar algumas imagens.");
                 }
+
         
           } catch (uploadError) {
-            console.error("Error during image transfer to S3:", uploadError);
-            setError("Failed to upload images. Please check connection.");
+           console.error("Error during image transfer to S3:", uploadError);
+            setError("Falha ao carregar as imagens. Por favor, verifique a sua ligação.");
+              alert("Falha ao carregar as imagens. Por favor, verifique a sua ligação.");
+
           }
     }
     onClose();

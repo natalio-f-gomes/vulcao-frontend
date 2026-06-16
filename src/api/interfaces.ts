@@ -203,8 +203,8 @@ export interface CompanyRegistrationModel{
 }
 
 
-export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | "ASSIGN_TASKS" | "VIEW_REPORTS" | "CREATE_TASK" | "DELETE_TASK";
-
+export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | "ASSIGN_TASKS" | "VIEW_REPORTS" | "CREATE_TASK" | "DELETE_TASK" 
+|"ADD_WEARABLE" | "UPDATE_WEARABLE" | "DELETE_WEARABLE" 
 
 
 export type UnitTypes = "LIQUID" | "SOLID" | "SINGULAR" | "BOX" |
@@ -309,4 +309,107 @@ export interface OrderItemModel {
   quantity: number,
   priceAtPurchase: number
   itemType: OfferingType
+}
+
+export type WearablesCategory =
+  // ===== PARTE DE CIMA (Tops) =====
+  | "TSHIRT"
+  | "CAMISA"
+  | "POLO"
+  | "BLUSA"
+  | "TOP_DE_ALÇAS"
+  | "CROP_TOP"
+  | "CAMISOLA"
+  | "HOODIE"
+  | "SWEATSHIRT"
+  | "CARDIGAN"
+
+  // ===== PARTE DE BAIXO (Bottoms) =====
+  | "JEANS"
+  | "CALÇAS"
+  | "CHINOS"
+  | "CALÇÕES"
+  | "SAIA"
+  | "LEGGINGS"
+  | "JOGGERS"
+
+  // ===== PEÇA ÚNICA (One-piece) =====
+  | "VESTIDO"
+  | "FATO_MACACO"
+  | "ROMPER"
+  | "JARDINEIRAS"
+
+  // ===== CASACOS E REVESTIMENTOS (Outerwear) =====
+  | "CASACO_CURTO"
+  | "CASACO_COMPRIDO"
+  | "BLAZER"
+  | "COLETE"
+  | "IMPERMEÁVEL"
+
+  // ===== CALÇADO (Footwear) =====
+  | "SNEAKERS"
+  | "SAPATILHAS_CORRIDA"
+  | "BOTAS"
+  | "SANDÁLIAS"
+  | "SAPATOS_DE_SALTO"
+  | "SAPATOS_RASOS"
+  | "MOCASSINS"
+  | "CHINELOS_DE_QUARTO"
+
+  // ===== ACESSÓRIOS DE CABEÇA (Headwear) =====
+  | "CHAPÉU"
+  | "BONÉ"
+  | "GORRO"
+
+  // ===== ACESSÓRIOS (Accessories) =====
+  | "CINTO"
+  | "CACHECOL"
+  | "LUVAS"
+  | "GRAVATA"
+  | "LAÇO"
+  | "ÓCULOS_DE_SOL"
+  | "RELÓGIO"
+  | "JOALHARIA"
+  | "MALA"
+  | "MOCHILA"
+
+  // ===== ROUPA DESPORTIVA (Activewear) =====
+  | "SUTIÃ_DESPORTIVO"
+  | "CALÇÕES_DE_TREINO"
+  | "FATO_DE_TREINO"
+  | "ROUPA_DE_COMPRESSÃO"
+
+  // ===== ROUPA DE DORMIR (Sleepwear) =====
+  | "PIJAMA"
+  | "ROUPÃO"
+
+  // ===== ROUPA INTERIOR (Underwear) =====
+  | "ROUPA_INTERIOR"
+  | "MEIAS"
+  | "OUTROS";
+
+export interface AddWearableModel{
+  name: string;
+  brand: string;
+  description: string;
+  color: string;
+  price: number;
+  material: string;
+  category: WearablesCategory;
+  size: string;
+  stock: number;
+  offeringType: OfferingType;
+  currency: Currency;
+  companyId: string;
+  creatorId: string | undefined;
+  imagesMetadata: ImageMetadata[];
+
+}
+
+export interface WearableModel extends AddWearableModel{
+    id?:string;
+    updatedBy?: string;
+    createdAt?:string;
+    updatedAt?:string;
+    imgS3UrlKeys?: string[]
 }
