@@ -7,8 +7,6 @@ import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel
 //const URL = "http://localhost:8080";
 const URL = "";
 
-
-
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
 
      return await fetch(`${URL}/api${endpoint}`,{
@@ -21,7 +19,6 @@ export async function fetchAPIWithCredentials(endpoint: string, options: Request
 
     });
 }
-
 
 export async function fetchAPIWithoutCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
     return await fetch(`${URL}/api${endpoint}`,{

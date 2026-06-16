@@ -180,7 +180,7 @@ function EmployerLoginPage() {
         
         <div className="text-center">
           <Link to="/employer-register" className="text-secondary text-decoration-none small">
-            Novo na ShopLane? <span style={{color: '#c8452a'}}>Criar Conta</span>
+            Novo no {companyName}.net? <span style={{color: '#c8452a'}}>Criar Conta</span>
           </Link>
         </div>
         <GetTermsSection/>
