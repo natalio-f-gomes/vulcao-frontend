@@ -4,10 +4,11 @@ import {
   getUserProfileData, 
   updateUserAddress,
   updateUserProfile,
-  updateUserContact } from "../../../../api/requests";
+  updateUserContact, 
+  updateCredentials} from "../../../../api/requests";
 import { useUserAuthManager } from "../../../../api/authentication-handler";
 
-import {  useNavigate } from "react-router-dom";
+import {  data, useNavigate } from "react-router-dom";
 
 
 
@@ -33,6 +34,7 @@ interface FormData {
   postalCode:   string;
   street:       string;
   username:     string;
+  password: string
 }
 
 
@@ -61,6 +63,8 @@ function GetUserDashBoard() {
     postalCode:  "",
     street:      "",
     username:    "",
+    password: ""
+
   });
 
 
@@ -88,6 +92,7 @@ function GetUserDashBoard() {
           postalCode:  data?.address?.postalCode  || "",
           street:      data?.address?.street      || "",
           username:    data?.username    || "",
+          password: ""
         });
       })
       .catch((err) => setError(err.message || "Failed to load profile"))
@@ -117,60 +122,77 @@ function GetUserDashBoard() {
 
     let dataToUpdate: any = {};
 
-    try {
-      if (section === "personal") {
-        dataToUpdate = { firstName: formData.firstName, lastName: formData.lastName };
-        const response = await updateUserProfile(user.id, dataToUpdate);
-        
-        if (response.status === 200) {
-          setUserProfile({ firstName: formData.firstName, lastName: formData.lastName });
-          setUser(prev => prev ? { ...prev, ...dataToUpdate } : null);
-          
-          closeEditingSection("Profile updated successfully!");
-        } else {
-          alert("Failed to update profile info.");
-        }
-
-      } else if (section === "contact") {
-        dataToUpdate = { email: formData.email, phoneNumber: formData.phoneNumber };
-        const response = await updateUserContact(user.id, dataToUpdate);
-        
-        if (response.status === 200) {
-          setUserContact({ email: formData.email, phoneNumber: formData.phoneNumber });
-          setUser(prev => prev ? { ...prev, ...dataToUpdate } : null);
-          
-          closeEditingSection("User Contact updated successfully!");
-        } else {
-          alert("Failed to update contact info.");
-        }
-
-      } else if (section === "address") {
-        dataToUpdate = {
-          island:     formData.island,
-          city:       formData.city,
-          zone:       formData.zone,
-          postalCode: formData.postalCode,
-          street:     formData.street,
-        };
-        const response = await updateUserAddress(user.id, dataToUpdate);
-        
-        if (response.status === 200) {
-          setUserAddress({ ...dataToUpdate });
-          setUser(prev => prev ? { ...prev, address: { ...dataToUpdate } } : null);
-          
-          closeEditingSection("User Address updated successfully!");
-        } else {
-          alert("Failed to update address info.");
-        }
-
-      } else if (section === "security") {
-        dataToUpdate = { username: formData.username };
-        //todo later when deploying
-      }
-    } catch (err) {
-      console.error("Error updating profile section:", err);
-      alert("An unexpected error occurred while saving.");
+try {
+  if (section === "personal") {
+    dataToUpdate = { firstName: formData.firstName, lastName: formData.lastName };
+    const response = await updateUserProfile(user.id, dataToUpdate);
+    
+    if (response.status === 200) {
+      setUserProfile({ firstName: formData.firstName, lastName: formData.lastName });
+      setUser(prev => prev ? { ...prev, ...dataToUpdate } : null);
+      
+      closeEditingSection("Perfil atualizado com sucesso!");
+    } else {
+      alert("Falha ao atualizar as informações do perfil.");
     }
+
+  } else if (section === "contact") {
+    dataToUpdate = { email: formData.email, phoneNumber: formData.phoneNumber };
+    const response = await updateUserContact(user.id, dataToUpdate);
+    
+    if (response.status === 200) {
+      setUserContact({ email: formData.email, phoneNumber: formData.phoneNumber });
+      setUser(prev => prev ? { ...prev, ...dataToUpdate } : null);
+      
+      closeEditingSection("Contacto atualizado com sucesso!");
+    } else {
+      alert("Falha ao atualizar as informações de contacto.");
+    }
+
+  } else if (section === "address") {
+    dataToUpdate = {
+      island:     formData.island,
+      city:       formData.city,
+      zone:       formData.zone,
+      postalCode: formData.postalCode,
+      street:     formData.street,
+    };
+    const response = await updateUserAddress(user.id, dataToUpdate);
+    
+    if (response.status === 200) {
+      setUserAddress({ ...dataToUpdate });
+      setUser(prev => prev ? { ...prev, address: { ...dataToUpdate } } : null);
+      
+      closeEditingSection("Morada atualizada com sucesso!");
+    } else {
+      alert("Falha ao atualizar as informações de morada.");
+    }
+
+  } else if (section === "security") {
+    dataToUpdate = { username: formData.username, password: formData.password };
+    const response = await updateCredentials(user.id, dataToUpdate);
+    
+    if (response.status === 200) {
+      setUser({ ...dataToUpdate });
+      setUser(prev => prev ? { ...prev, username: { ...dataToUpdate.username } } : null);
+      dataToUpdate.password = ""
+      closeEditingSection("Credenciais atualizadas com sucesso!Por causa de segurança tens que iniciar sessão mais uma vez!");
+      handleLogout()
+      
+    }
+    else if(response.status === 409 || response.status === 403 || response.status === 400){
+       alert("Este nome do usuario não está disponivel. E o nome do usuario e a palavra passe tem que ter pelo menos 8 letras");
+        dataToUpdate.password = ""
+    }
+    else {
+      alert("Falha ao atualizar as credenciais. Por favor contacta o administrador do website!");
+    }
+
+  }
+} catch (err) {
+  console.error("Erro ao atualizar a secção do perfil:", err);
+  alert("Ocorreu um erro inesperado ao guardar as alterações.");
+}
   };
 
   // ── Handle logout button in sidebar ───────────────────────────────────────
@@ -331,7 +353,7 @@ function GetUserDashBoard() {
     </div>
 
     {/* ── Segurança ───────────────────────────────────────────────────── */}
-    {/* <div className="profile-section" id="section-security">
+    <div className="profile-section" id="section-security">
       <div className="section-head">
         <div className="section-head-left">
           <i className="bi bi-shield-lock-fill"></i>
@@ -368,7 +390,7 @@ function GetUserDashBoard() {
           </button>
         </div>
       )}
-    </div> */}
+    </div>
   </main>
 </div>
   );

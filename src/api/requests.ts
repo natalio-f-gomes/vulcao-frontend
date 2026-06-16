@@ -579,3 +579,17 @@ export async function getWearableById(id: string) {
     return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
 }
 
+export async function updateCredentials(id:string, newCredentials: {username: string, password: string}){
+      const entityType: string | null= localStorage.getItem("active_role");
+    let endpoint: string = '';
+    switch(entityType){
+        case "user": endpoint = `/v1/user/update/${id}/credentials`;break;
+        case "employer": endpoint =`/v1/employer/update/${id}/credentials`;break;
+        case "staff": endpoint =`/v1/staff/update/${id}/credentials`;break;
+        default: window.location.href = "/"
+    }
+    return await fetchAPIWithCredentials(endpoint, {
+        method:"PUT",
+        body: JSON.stringify(newCredentials)
+    })
+}

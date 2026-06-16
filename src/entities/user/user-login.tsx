@@ -48,26 +48,28 @@ function UserLoginPage() {
                 window.location.href="/";
                 return;
             }
-            setShowMFA(false);
-            if(response.status === 401){
+            
+            else if(response.status === 401){
                 alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
             }
-            if(response.status === 404){
+            else if(response.status === 404){
                 alert("Credenciais incorretas.")
             }
-            if(response.status === 409){
+            else if(response.status === 409){
                 alert("Já existe uma entidade com estas credenciais.")
             }
-            if(response.status === 403){
+            else if(response.status === 403){
                 alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
             }
-            if(response.status === 400){
+            else if(response.status === 400){
                 alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
             }
+           
+            
             else{
-              alert("Erro inesperado")
-                console.log(`Erro inesperado: ${response}`)
+                console.log(`Erro inesperado: `, response)
             }
+             setShowMFA(false);
           }catch(exception){
               setError( `Registration Failed ${exception}`)
           }finally{
@@ -93,7 +95,7 @@ function UserLoginPage() {
                 else if(response.status === 403){
                     alert("Dados MFA incorretos. Por favor, tente novamente.")
                 }
-                else if(response.status === 401 || response.status === 400){
+                else if(response.status === 401 || response.status === 400 || response.status === 404){
                     setShowMFA(false)
                     alert("Credenciais incorretas.")
                 }

@@ -50,19 +50,19 @@ function EmployerLoginPage() {
                 alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.");
                 return;
             }
-            if(response.status === 404){
+            else if(response.status === 404){
                 alert("Credenciais incorretas.");
                   return;
             }
-            if(response.status === 409){
+            else if(response.status === 409){
                 alert("Já existe uma entidade com estas credenciais.");
                   return;
             }
-            if(response.status === 403){
+            else if(response.status === 403){
                 alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
                   return;
             }
-            if(response.status === 400){
+            else if(response.status === 400){
                 alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
                   return;
             }
@@ -72,7 +72,7 @@ function EmployerLoginPage() {
                   return;
             }
           }catch(exception){
-              setError( `Registration Failed ${exception}`)
+              setError( `Login Failed ${exception}`)
           }finally{
               setLoading(false)
           }
@@ -100,6 +100,9 @@ function EmployerLoginPage() {
       }
       else if(response.status === 401 || response.status === 400){
           alert("Credenciais inválidas.")
+      }
+      else if(response.status === 403){
+          alert("Codigo incorreto.")
       }
       else{
          alert("Erro inesperado. Por favor volte mais tarde")

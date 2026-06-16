@@ -55,7 +55,7 @@ function WearableView({ company, currentEntity}: Paramaters) {
           return;
         }
         if(response.status === 403){
-          alert("Nao tens permissao para apagar esse produto");
+         alert("Não tens permissão para eliminar este vestuário. Contacta o teu chefe para obteres permissão para eliminar vestuários.");
           setWearableToDelete(null);
           return;
         }

@@ -3,7 +3,7 @@ import { useUserAuthManager } from "../../../../api/authentication-handler";
 import { AddressModel, CompanyModel, EmployerModel, StaffModel, UserProfileModel } from "../../../../api/interfaces";
 import { useEffect, useState } from "react";
 import { UserContact, UserProfile } from "../../../user/user-account/views/UserDashboard";
-import { getEmployerProfile, updateEmployerAddress, updateEmployerContact, updateEmplyerProfile } from "../../../../api/requests";
+import { getEmployerProfile, updateCredentials, updateEmployerAddress, updateEmployerContact, updateEmplyerProfile } from "../../../../api/requests";
 
 
 
@@ -19,12 +19,14 @@ interface EmployerAccountForm {
   street:       string;
   username:     string;
   companiesRegistered: CompanyModel[];
+  password: string;
 }
 
 
 
 function EmployerProfileView(){
     const {isEntityLoggedIn, logoutHandler} = useUserAuthManager();
+
     const navigate = useNavigate();
     const [employer, setEmployer]                     = useState<EmployerModel | null>(null);
     const [employerProfile, setEmployerProfile]       = useState<UserProfile>({firstName: "", lastName:""});
@@ -46,7 +48,8 @@ function EmployerProfileView(){
         postalCode:  "",
         street:      "",
         username:    "",
-        companiesRegistered: []
+        companiesRegistered: [],
+        password: ""
     });
 
     useEffect(()=> {
@@ -71,6 +74,7 @@ function EmployerProfileView(){
               street:      data?.address?.street      || "",
               username:    data?.username    || "",
               companiesRegistered: data?.companiesRegistered || [],
+              password: ""
             });
           })
           .catch((err) => setError(err.message || "Failed to load profile"))
@@ -132,8 +136,25 @@ function EmployerProfileView(){
 
 
     }else if (section === "security") {
-        dataToUpdate = { username: formData.username };
-        //todo later when deploying
+           dataToUpdate = { username: formData.username, password: formData.password };
+           console.log("new credentials: " , dataToUpdate.username)
+           const response = await updateCredentials(employer.id, dataToUpdate);
+           
+           if (response.status === 200) {
+            localStorage.removeItem("username");
+            localStorage.removeItem("active_role");
+             setEmployer(prev => prev ? { ...prev, username: { ...dataToUpdate.username } } : null);
+             dataToUpdate.password = ""
+              closeEditingSection("Credenciais atualizadas com sucesso!Por causa de segurança tens que iniciar sessão mais uma vez!");
+              handleLogout()
+           }
+           else if(response.status === 409 || response.status === 403 || response.status === 400){
+              alert("Este nome do usuario não está disponivel. E o nome do usuario e a palavra passe tem que ter pelo menos 8 letras");
+               dataToUpdate.password = ""
+           }
+           else {
+             alert("Falha ao atualizar as credenciais. Por favor contacta o administrador do website!");
+           }
       }
         }catch(exception){
              console.error("Error updating profile section:", exception);
@@ -298,7 +319,7 @@ function EmployerProfileView(){
           </div>
 
           {/* ── Security ───────────────────────────────────────────────────── */}
-          {/* <div className="profile-section" id="section-security">
+          <div className="profile-section" id="section-security">
             <div className="section-head">
               <div className="section-head-left">
                 <i className="bi bi-shield-lock-fill"></i>
@@ -336,7 +357,7 @@ function EmployerProfileView(){
                 </button>
               </div>
             )}
-          </div> */}
+          </div>
 
          
 

@@ -41,8 +41,6 @@ function EmployeeStaffView({company}: StaffViewParameters){
     return (
         <>
             <div style={{marginLeft:20}}>
-            <div className="view-heading" >Co workers</div>
-            <div className="view-sub" >List of all of your co-workers</div>
 
             
            

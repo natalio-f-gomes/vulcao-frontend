@@ -6,7 +6,10 @@ import {
   updateStaffContact,
   updateStaffAddress,
   updateStaffSecurity,
+  updateCredentials,
 } from "../../../../api/requests";
+import { useUserAuthManager } from "../../../../api/authentication-handler";
+import { useNavigate } from "react-router-dom";
 
 interface Parameters {
   staff: StaffModel | null;
@@ -53,6 +56,8 @@ const EMPTY_FORM: FormData = {
 };
 
 function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
+  const navigate = useNavigate();
+    const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [formData, setFormData]             = useState<FormData>(EMPTY_FORM);
 
@@ -131,23 +136,35 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
         }
 
       } else if (section === "security") {
-        /*
-        const payload: { username: string; password?: string } = { username: formData.username };
-        if (formData.password) payload.password = formData.password;
-        const res = await updateStaffSecurity(staff.id, payload);
-        if (res.status === 200) {
-          onStaffUpdated?.({ username: formData.username });
-          setFormData((prev) => ({ ...prev, password: "" }));
-          closeEditingSection("Credentials updated successfully!");
-        } else {
-          alert("Failed to update credentials.");
-        }
-          */
+          let payload = { username: formData.username, password: formData.password };
+          console.log("Payload: ", payload)
+          console.log("id: ", staff.id)
+           const response = await updateCredentials(staff.id, payload);
+           
+           if (response.status === 200) {
+             setFormData({ ...formData });
+             payload.password = ""
+             closeEditingSection("Credenciais atualizadas com sucesso!Por causa de segurança tens que iniciar sessão mais uma vez!");
+             handleLogout()
+             
+           }
+           else if(response.status === 409 || response.status === 403 || response.status === 400){
+              alert("Este nome do usuario não está disponivel. E o nome do usuario e a palavra passe tem que ter pelo menos 8 letras");
+               payload.password = ""
+           }
+           else {
+             alert("Falha ao atualizar as credenciais. Por favor contacta o administrador do website!");
+           }
       }
     } catch (err) {
       console.error("Error updating staff section:", err);
       alert("An unexpected error occurred while saving.");
     }
+  };
+
+    const handleLogout = async () => {
+    await logoutHandler();
+    navigate("/");
   };
 
   if (!staff) {
@@ -307,7 +324,7 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
         )}
       </div>
 
-      {/* ── Segurança (editável: nome de utilizador + palavra-passe) ───────────────────────
+      {/* ── Segurança (editável: nome de utilizador + palavra-passe) ───────────────────────*/}
       <div className="profile-section" id="section-security">
         <div className="section-head">
           <div className="section-head-left">
@@ -345,7 +362,7 @@ function StaffProfileView({ staff, onStaffUpdated }: Parameters) {
             </button>
           </div>
         )}
-      </div> */}
+      </div> 
 
       {/* ── Emprego (APENAS LEITURA: gerido pelo empregador) ──────────────────── */}
       <div className="profile-section" id="section-employment">

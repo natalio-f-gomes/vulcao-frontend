@@ -47,22 +47,27 @@ function StaffLoginPage() {
                  setShowMFA(false);
                  window.location.href="/"
              }
+         
+            else if(response.status === 401){
+                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
+            }
+            else if(response.status === 404){
+                alert("Credenciais incorretas.")
+            }
+            else if(response.status === 409){
+                alert("Já existe uma entidade com estas credenciais.")
+            }
+            else if(response.status === 403){
+                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
+            }
+            else if(response.status === 400){
+                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
+            }
+           
+            else{
+                console.log(`Erro inesperado: `, response)
+            }
              setShowMFA(false);
-             if(response.status === 401){
-                 alert("Invalid authentiation data. The email must have at least 7 characters")
-             }
-             if(response.status === 409){
-                 alert("There is an entity with this credentials already")
-             }
-              if(response.status === 403){
-                 alert("Wrong Code. Please verify your inbox or your spam folder")
-             }
-              if(response.status === 400){
-                 alert("Please ensure the input fields are filled with valid data only.")
-             }
-             else{
-                 console.log(`Unexpected Error ${response}`)
-             }
            }catch(exception){
                setError( `Registration Failed ${exception}`)
            }finally{
@@ -154,7 +159,7 @@ function StaffLoginPage() {
 
       <main className="login-wrapper">
         <div className="auth-card shadow-lg">
-          <h2 className="auth-title">Welcome Back Staff.</h2>
+          <h2 className="auth-title">Bem-vindo de volta, caro empragado(a).</h2>
 
             <div className="mb-3">
               <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
