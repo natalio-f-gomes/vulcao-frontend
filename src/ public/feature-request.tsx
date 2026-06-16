@@ -1,3 +1,6 @@
+import GetFooterSection from "../components/footer";
+import GetHeader from "../components/header";
+
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css');
@@ -109,6 +112,7 @@ section{padding:60px 0;}
 function FeatureRequestPage() {
   return (
     <>
+    <GetHeader/>
       <style>{STYLES}</style>
 
 
@@ -249,9 +253,7 @@ function FeatureRequestPage() {
         </div>
       </section>
 
-      <footer className="foot">
-        &copy; 2025 Meridian Marketplace &nbsp;·&nbsp; Built on the islands<span>.</span> &nbsp;·&nbsp; Your votes shape the roadmap
-      </footer>
+      <GetFooterSection/>
     </>
   );
 }

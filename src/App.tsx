@@ -22,6 +22,7 @@ import GetBusinessesSection from "./components/Businesses";
 import BusinessPublicOverView from "./ public/PublicBusinessesPage/BusinessPublicOverView";
 import AboutPage from "./ public/AboutPage";
 import TermsPage from "./ public/terms";
+import FeatureRequestPage from "./ public/feature-request";
 
 
 
@@ -52,6 +53,8 @@ function App(){
             <Route path="/business/public/:id" element={<BusinessPublicOverView/>}/>
             <Route path="/about" element={<AboutPage/>}/>
             <Route path="/terms" element={<TermsPage/>}/>
+            <Route path="/feature-request" element={<FeatureRequestPage/>}/>
+            
         </Routes>
     </AuthProvider>
 

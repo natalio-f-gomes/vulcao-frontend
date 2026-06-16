@@ -30,7 +30,7 @@ function GetFeatureSection(){
     </div>
     <div className="feature-title">Fluxo de Trabalho Totalmente Digital</div>
     <p className="feature-desc">
-      Gerir encomendas, carrinhos e funcionários online sem papelada.
+      Gerir encomendas, carrinhos e funcionários online sem papeladas.
     </p>
   </div>
 </section>

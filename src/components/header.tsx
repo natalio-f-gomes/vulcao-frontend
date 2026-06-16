@@ -8,15 +8,23 @@ const GetHeader: React.FC = () => {
   const onNavigate = useNavigate();
 
   return (
-   <nav className="navbar navbar-expand-lg">
+<nav className="navbar navbar-expand-lg navbar-dark">
+
   <div className="container-fluid px-0 align-items-center">
 
-    <Link className="navbar-brand me-4 d-flex align-items-center" to="/">
+    <Link className="navbar-brand me-4 d-flex align-items-center ms-3" to="/">
       <span>{companyName}</span>
     </Link>
 
-    <button className="navbar-toggler ms-auto me-3" type="button"
-      data-bs-toggle="collapse" data-bs-target="#mainNav">
+    <button
+      className="navbar-toggler navbar-toggler-white ms-auto me-3"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+      aria-controls="mainNav"
+      aria-expanded="false"
+      aria-label="Alternar navegação"
+    >
       <span className="navbar-toggler-icon"></span>
     </button>
 
@@ -25,6 +33,7 @@ const GetHeader: React.FC = () => {
         <li className="nav-item"><Link className="nav-link active" to="/">Início</Link></li>
   
         <li className="nav-item"><a className="nav-link" onClick={()=> onNavigate("/about")}>Sobre</a></li>
+        {/* <li className="nav-item"><a className="nav-link" onClick={()=> onNavigate("/feature-request")}>Pedido de Funcionalidade</a></li> */}
               {/* 
         <li className="nav-item"><a className="nav-link" href="#">Contacte-nos</a></li>
         <li className="nav-item"><a className="nav-link" href="#">Sugerir Funcionalidade</a></li>
