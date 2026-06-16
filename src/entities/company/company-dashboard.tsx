@@ -30,7 +30,7 @@ function CompanyDashboard(){
         createdAt: "",
         updatedAt:  "",
           name: "",
-        category: null,
+        category: "OUTROS",
         taxIdNumber: "",
         description: "",
         phoneNumber: "",

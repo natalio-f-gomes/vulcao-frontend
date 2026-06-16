@@ -24,7 +24,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
 
   const [product, setProduct] = useState<AddProductModel>({
     name: "",
-    productType: "UNKNOWN",
+    productType: "OUTROS",
     expirationDate: "",
     description: "",
     stock: 0,
@@ -234,26 +234,31 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
           </div>
 
           {/* Informação Básica do Produto */}
-          <div className="m-row">
-            <div className="m-field">
-              <label className="m-label">Nome do Produto *</label>
-              <input className="m-input" type="text" placeholder="ex: Salmão Fresco" name="name" onChange={handleInputChange} required />
-            </div>
-            <div className="m-field">
-              <label className="m-label">Tipo de Produto *</label>
-              <select className="m-input" name="productType" onChange={handleInputChange} required>
-                <option value="">Selecionar Tipo</option>
-                {ProductCategories.map((category: string) => {
-                  const label = category.replaceAll("_", " ").toUpperCase();
-                  return (
-                    <option key={category} value={category}>
-                      {label}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
+     <div className="m-row">
+  <div className="m-field">
+    <label className="m-label">Nome do Produto *</label>
+    <input className="m-input" type="text" placeholder="ex: Salmão Fresco" name="name" onChange={handleInputChange} required />
+  </div>
+  <div className="m-field">
+    <label className="m-label">Tipo de Produto *</label>
+    <select className="m-input" name="productType" onChange={handleInputChange} required>
+      <option value="">Selecionar Tipo</option>
+      {ProductCategories.map((category: string) => {
+        const label = category
+          .replaceAll("_", " ")
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        return (
+          <option key={category} value={category}>
+            {label}
+          </option>
+        );
+      })}
+    </select>
+  </div>
+</div>
 
           {/* Preço e Stock */}
           <div className="m-row">

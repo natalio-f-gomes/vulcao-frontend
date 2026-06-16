@@ -70,8 +70,8 @@ const GetHeader: React.FC = () => {
               <i className="bi bi-person me-1"></i>Registar
             </a>
             <ul className="dropdown-menu" >
-              <li><Link className="dropdown-item" to="/user-register"><i className="bi bi-person-fill"></i> Registar Cliente</Link></li>
-              <li><Link className="dropdown-item" to="/employer-register"><i className="bi bi-shield-lock-fill"></i> Registar Empresário</Link></li>
+              <li><Link className="dropdown-item" to="/user-register"><i className="bi bi-person-fill"></i>Cliente</Link></li>
+              <li><Link className="dropdown-item" to="/employer-register"><i className="bi bi-shield-lock-fill"></i>Empresário(a)</Link></li>
             </ul>
           </li>
         </>

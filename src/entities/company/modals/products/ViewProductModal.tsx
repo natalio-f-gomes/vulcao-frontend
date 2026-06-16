@@ -16,7 +16,7 @@ interface Parameters{
 function ViewProductModal({isOpen, onClose, productToView}:Parameters){
     const [product, setProduct] = useState<ProductModel>({
       name: "",
-      productType: "UNKNOWN",
+      productType: "OUTROS",
       expirationDate:"",
       description:"",
       stock:0,

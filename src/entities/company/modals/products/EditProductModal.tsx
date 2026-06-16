@@ -18,7 +18,7 @@ function EditProductModal({isOpen, onClose, onSave, productToEdit}:Parameters){
     const [product, setProduct] = useState<ProductModel>({
       id:"",
       name: "",
-      productType: "UNKNOWN",
+      productType: "OUTROS",
       expirationDate:"",
       description:"",
       stock:0,
@@ -101,19 +101,32 @@ return (
                 </select>
               </div>
             </div>
-            <div className="m-field">
-              <label className="m-label">Tipo de Unidade *</label>
-              <select className="m-input" name="unitType" onChange={handleInputChange} required>
-                <option value={product.unitType}>{product.unitType}</option>
-                {UNIT_TYPES.map((unit: string) => {
-                  return (
-                    <option key={unit} value={unit}>
-                      {unit}
-                    </option>
-                  )
-                })}
-              </select>
-            </div>
+           
+            <div className="m-row">
+  <div className="m-field">
+    <label className="m-label">Nome do Produto *</label>
+    <input className="m-input" type="text" placeholder="ex: Salmão Fresco" name="name" onChange={handleInputChange} required />
+  </div>
+  <div className="m-field">
+    <label className="m-label">Tipo de Produto *</label>
+    <select className="m-input" name="productType" onChange={handleInputChange} required>
+      <option value="">Selecionar Tipo</option>
+      {ProductCategories.map((category: string) => {
+        const label = category
+          .replaceAll("_", " ")
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        return (
+          <option key={category} value={category}>
+            {label}
+          </option>
+        );
+      })}
+    </select>
+  </div>
+</div>
           </div>
 
           {/* Detalhes de Inventário */}

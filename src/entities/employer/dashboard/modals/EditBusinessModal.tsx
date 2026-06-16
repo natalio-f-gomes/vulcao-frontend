@@ -18,7 +18,7 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
   const [formData, setFormData] = useState<CompanyModel>({
     id:                      "",
     name:                    "",
-    category:                 null,
+    category:                 "OUTROS",
     taxIdNumber: "",
     description:             "",
     phoneNumber:             "",

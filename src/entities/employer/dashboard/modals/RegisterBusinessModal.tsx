@@ -22,7 +22,7 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
 
   const [companyRegistrationForm, setCompanyRegistrationForm] = useState<CompanyRegistrationModel>({
     name: "",
-    category: null,
+    category: "OUTROS",
     taxIdNumber: "",
     description: "",
     phoneNumber: "",
@@ -253,9 +253,7 @@ return (
                   <option value="">Selecionar Categoria</option>
                   {BUSINESS_CATEGORIES.map((cat: string) => {
                     const formattedLabel = cat
-                      .toLowerCase()
                       .replace(/_/g, " ")
-                      .replace(/\b\w/g, (char) => char.toUpperCase());
                     return (
                       <option key={cat} value={cat}>{formattedLabel}</option>
                     );
@@ -271,11 +269,11 @@ return (
 
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Número de Identificação Fiscal</label>
+                <label className="m-label">Número de Identificação Fiscal(Opcional)</label>
                 <input className="m-input" type="tel" name="taxIdNumber" placeholder="123-232434233"  value={companyRegistrationForm.taxIdNumber} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">Número de Fax</label>
+                <label className="m-label">Número de Fax(Opcional)</label>
                 <input className="m-input" type="tel" name="faxNumber" placeholder="123-232434233"  value={companyRegistrationForm.faxNumber} onChange={handleInputChange} />
               </div>
             </div>
@@ -283,7 +281,7 @@ return (
             <div className="m-row">
               <div className="m-field">
                 <label className="m-label">Telefone</label>
-                <input className="m-input" type="tel" name="phoneNumber" placeholder="+1 (555) 000-0000" required value={companyRegistrationForm.phoneNumber} onChange={handleInputChange} />
+                <input className="m-input" type="tel" name="phoneNumber" placeholder="974 1234" required value={companyRegistrationForm.phoneNumber} onChange={handleInputChange} />
               </div>
               <div className="m-field">
                 <label className="m-label">Email</label>
@@ -326,12 +324,12 @@ return (
                 <input className="m-input" type="text" name="zone" placeholder="ex: Plateau" required value={companyRegistrationForm.address.zone} onChange={handleInputChange} />
               </div>
               <div className="m-field">
-                <label className="m-label">Código Postal</label>
+                <label className="m-label">Código Postal(Opcional)</label>
                 <input className="m-input" type="text" name="postalCode" placeholder="ex: 7600" value={companyRegistrationForm.address.postalCode} onChange={handleInputChange} />
               </div>
             </div>
             <div className="m-field">
-              <label className="m-label">Rua</label>
+              <label className="m-label">Rua(Opcional)</label>
               <input className="m-input" type="text" name="street" placeholder="ex: Rua do Município" value={companyRegistrationForm.address.street} onChange={handleInputChange} />
             </div>
 
