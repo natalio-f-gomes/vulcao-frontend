@@ -65,7 +65,6 @@ function UserLoginPage() {
                 alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
             }
            
-            
             else{
                 console.log(`Erro inesperado: `, response)
             }
@@ -175,7 +174,7 @@ function UserLoginPage() {
           
           <div className="text-center">
             <Link to="/user-register" className="text-secondary text-decoration-none small">
-              Novo na ShopLane? <span style={{color: '#c8452a'}}>Criar Conta</span>
+              Novo no {companyName}.net? <span style={{color: '#c8452a'}}>Criar Conta</span>
             </Link>
           </div>
         </div>
