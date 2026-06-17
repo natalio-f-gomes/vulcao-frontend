@@ -17,7 +17,7 @@ function UserRegistrationPage(){
         username:""
     })
 
-    const onNavigate = useNavigate();
+
     const [confirmPassword, setConfirmPassword] = useState<string>("")
     const [showMFA, setShowMFA] = useState<boolean>(false);
 
@@ -31,10 +31,18 @@ function UserRegistrationPage(){
         return emailRegex.test(email);
     }
 
-    // Username validation function (no spaces)
-    const isValidUsername = (username: string): boolean => {
-        return !username.includes(' ') && username.length >= 8 && username.length <= 50;
-    }
+
+   const isValidUsername = (username: string): boolean => {
+    return (
+        !username.includes(' ') && 
+        !username.includes('\'') && 
+        !username.includes('/') && 
+        !username.includes('\\') && 
+        username.length >= 8 && 
+        username.length <= 50
+    );
+}
+
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
         if(event.target.name === "confirmPassword"){
@@ -66,11 +74,16 @@ function UserRegistrationPage(){
         if (!isValidUsername(userRegistrationForm.username)) {
             if (userRegistrationForm.username.includes(' ')) {
                 alert("O nome de utilizador não pode conter espaços.");
+            } else if (userRegistrationForm.username.includes('\'')) {
+                alert("O nome de utilizador não pode conter aspas simples.");
+            } else if (userRegistrationForm.username.includes('/') || userRegistrationForm.username.includes('\\')) {
+                alert("O nome de utilizador não pode conter barras (/ ou \\).");
             } else if (userRegistrationForm.username.length < 8 || userRegistrationForm.username.length > 50) {
                 alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
             }
             return;
         }
+
 
         if (!isValidEmail(userRegistrationForm.email)) {
             alert("Por favor, insira um endereço de email válido.");
@@ -89,57 +102,90 @@ function UserRegistrationPage(){
 
         if (response.status === 202) {
             setShowMFA(true);           
-        } else if (response.status === 409) {
+        }
+        else if (response.status === 409) {
             alert("Já existe uma entidade com estas credenciais.");
-        } else if (response.status === 401) {
+        } else  if (response.status === 401) {
             alert("Dados de autenticação inválidos.");
         } else if (response.status === 400) {
-            alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
+           const data = await response.text();
+          console.log("Data: " , data)
+          const errorMessage = JSON.parse(data)
+            alert(errorMessage.error);
         } else {
             alert("Erro inesperado. Por favor volte mais tarde.");
             console.log("Unexpected error", response);
         }
         setLoading(false);
     };
+    
 
-    const registerRequest = async(code: string) => {
-        if(!userRegistrationForm){return;}
-        setError(null)
-        setLoading(true)
-        if(confirmPassword === userRegistrationForm.password){
-        try{
-            const response = await registerUser(code, userRegistrationForm)
-            if(response.status === 201){
-                alert("Utilizador registado com sucesso.")
-                setShowMFA(false);
-                window.location.href = "/";
-                return;
-            }
-            if(response.status === 401){
-                alert("Dados de autenticação inválidos.")
-            }
-            if(response.status === 409){
-                alert("Já existe uma entidade com estas credenciais.")
-            }
-            if(response.status === 400){
-                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
-            }
-             if(response.status === 403){
-                alert("Dados MFA incorretos. Por favor, tente novamente.")
-            }
-            else{
-               alert("Erro inesperado.")
-                console.log(`Erro inesperado: ${response}`)
-            }
-        }catch(exception){
-            setError( `Registration Failed ${exception}`)
-        }finally{
-            setLoading(false)
-        }
-    }else{
-        alert("The passwords do not match")
+const registerRequest = async (code: string) => {
+    if (!userRegistrationForm) { return; }
+    setError(null);
+    setLoading(true);
+    
+    if (confirmPassword !== userRegistrationForm.password) {
+        alert("As palavras-passe não coincidem");
+        setLoading(false);
+        return;
     }
-}
+    
+    try {
+        const response = await registerUser(code, userRegistrationForm);
+        
+        if (response.status === 201) {
+            alert("Utilizador registado com sucesso.");
+            setShowMFA(false);
+            window.location.href = "/";
+            return;
+        }
+        
+        // Handle error responses - try to get message from response
+        let errorMessage = "";
+        try {
+            const data = await response.json();
+            errorMessage = data.message || data.error || "";
+        } catch (e) {
+            // If JSON parsing fails, try text
+            try {
+                errorMessage = await response.text();
+            } catch (e2) {
+                errorMessage = "";
+            }
+        }
+        
+        // If no message was extracted, use default messages based on status code
+        if (!errorMessage || errorMessage.trim() === "") {
+            switch (response.status) {
+                case 400:
+                    errorMessage = "Certifique-se de que os campos estão preenchidos apenas com dados válidos.";
+                    break;
+                case 401:
+                    errorMessage = "Dados de autenticação inválidos.";
+                    break;
+                case 403:
+                    errorMessage = "Dados MFA incorretos. Por favor, tente novamente.";
+                    break;
+                case 409:
+                    errorMessage = "Este nome de utilizador já está em uso. Por favor, escolhe outro nome de utilizador.";
+                    break;
+                default:
+                    errorMessage = "Erro inesperado. Por favor, tente novamente.";
+            }
+        }
+        
+        alert(errorMessage);
+        console.log(`Error ${response.status}:`, errorMessage);
+        
+    } catch (exception) {
+        console.error("Registration error:", exception);
+        alert("Erro ao registar. Por favor, tente novamente.");
+        setError(`Registration Failed: ${exception}`);
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <>
@@ -173,7 +219,7 @@ function UserRegistrationPage(){
                             <input 
                                 type="text" 
                                 className="form-control" 
-                                placeholder="joao" 
+                                placeholder="Edwin" 
                                 name="username" 
                                 value={userRegistrationForm.username} 
                                 minLength={8} 

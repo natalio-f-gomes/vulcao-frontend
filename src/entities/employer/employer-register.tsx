@@ -16,21 +16,29 @@ function EmployerRegistrationPage(){
         email:"",
         username:""
     })
-    const onNavigate = useNavigate();
+
 
     const [confirmPassword, setConfirmPassword] = useState<string>("")
     const [error, setError] = useState<String|null>(null);
     const [loading, setLoading] = useState(false);
     const [showMFA, setShowMFA] = useState<boolean>(false);
 
-    const isValidEmail = (email: string): boolean => {
+        const isValidEmail = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    const isValidUsername = (username: string): boolean => {
-        return !username.includes(' ') && username.length >= 8 && username.length <= 50;
-    }
+
+   const isValidUsername = (username: string): boolean => {
+    return (
+        !username.includes(' ') && 
+        !username.includes('\'') && 
+        !username.includes('/') && 
+        !username.includes('\\') && 
+        username.length >= 8 && 
+        username.length <= 50
+    );
+}
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
         if(event.target.name === "confirmPassword"){
@@ -45,98 +53,135 @@ function EmployerRegistrationPage(){
         }
     }
 
-    const registerRequest = async(code: string) => {
-        if(!registrationForm){return;}
-        setError(null)
-        setLoading(true)
-        setShowMFA(true);
-        
-        if(confirmPassword === registrationForm.password || confirmPassword.length >=8){
-        try{
-            const response = await confirmRegisterEmployer(code, registrationForm)
-           
-            if(response.status === 201){
-                alert("Empresário(a) registado com sucesso.")
-                setShowMFA(false);
-                window.location.href="/";
+        const sendMfACode = async () => {
+            if (!registrationForm) return;
+            setError(null);
+    
+            if (registrationForm.password.length < 8) {
+                alert("O comprimento das palavras-passe deve ter, pelo menos, 8 caracteres.");
                 return;
             }
-            if(response.status === 401){
-                alert("Dados de autenticação inválidos.")
+    
+    
+            if (confirmPassword !== registrationForm.password) {
+                alert("As palavras-passe não coincidem.");
+                return;
             }
-            if(response.status === 403){
-                alert("Dados de autenticação incorretos.")
+            if (!isValidUsername(registrationForm.username)) {
+                if (registrationForm.username.includes(' ')) {
+                    alert("O nome de utilizador não pode conter espaços.");
+                } else if (registrationForm.username.includes('\'')) {
+                    alert("O nome de utilizador não pode conter aspas simples.");
+                } else if (registrationForm.username.includes('/') || registrationForm.username.includes('\\')) {
+                    alert("O nome de utilizador não pode conter barras (/ ou \\).");
+                } else if (registrationForm.username.length < 8 || registrationForm.username.length > 50) {
+                    alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+                }
+                return;
             }
-            if(response.status === 409){
-                alert("Já existe uma entidade com estas credenciais.")
+    
+    
+            if (!isValidEmail(registrationForm.email)) {
+                alert("Por favor, insira um endereço de email válido.");
+                return;
             }
-            if(response.status === 400){
-                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
+    
+            // Validate first name and last name (optional - no spaces)
+            if (registrationForm.firstName.trim() === "" || registrationForm.lastName.trim() === "") {
+                alert("Por favor, preencha o primeiro nome e último nome.");
+                return;
             }
-            else{
-              alert(`Erro inesperado. Por favor volte mais tarde.`)
-              console.log(`Erro inesperado: ${response}`)
+    
+            setLoading(true);
+    
+            const response = await registerEmployerRequest(registrationForm.email, registrationForm.username);
+    
+            if (response.status === 202) {
+                setShowMFA(true);           
             }
-        }catch(exception){
-            setError( `Registration Failed ${exception}`)
-        }finally{
-            setLoading(false)
-        }
-    }else{
-        alert("As palavras-passe não coincidem")
-    }
-}
-
-    const sendMfACode = async () => {
-        if (!registrationForm) return;
-        setError(null);
-
-        if (registrationForm.password.length < 8) {
-            alert("O comprimento das palavras-passe deve ter, pelo menos, 8 caracteres.");
-            return;
-        }
-
-     if (confirmPassword !== registrationForm.password) {
-            alert("As palavras-passe não coincidem.");
-            return;
-        }
-
-        if (!isValidUsername(registrationForm.username)) {
-            if (registrationForm.username.includes(' ')) {
-                alert("O nome de utilizador não pode conter espaços.");
-            } else if (registrationForm.username.length < 8 || registrationForm.username.length > 50) {
-                alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+            else if (response.status === 409) {
+                alert("Já existe uma entidade com estas credenciais.");
+            } else  if (response.status === 401) {
+                alert("Dados de autenticação inválidos.");
+            } else if (response.status === 400) {
+               const data = await response.text();
+              console.log("Data: " , data)
+              //const errorMessage = JSON.parse(data)
+                alert(data);
+            } else {
+                alert("Erro inesperado. Por favor volte mais tarde.");
+                console.log("Unexpected error", response);
             }
-            return;
-        }
+            setLoading(false);
+        };
 
-        if (!isValidEmail(registrationForm.email)) {
-            alert("Por favor, insira um endereço de email válido.");
-            return;
-        }
-
-        if (registrationForm.firstName.trim() === "" || registrationForm.lastName.trim() === "") {
-            alert("Por favor, preencha o primeiro nome e último nome.");
-            return;
-        }
-
-        setLoading(true);
-        const response = await registerEmployerRequest(registrationForm.email, registrationForm.username);
-
-        if (response.status === 202) {
-            setShowMFA(true);           
-        } else if (response.status === 409) {
-            alert("Já existe uma entidade com estas credenciais.");
-        } else if (response.status === 401) {
-            alert("Dados de autenticação inválidos.");
-        } else if (response.status === 400) {
-            alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
-        } else {
-            alert("Erro inesperado. Por favor volte mais tarde.");
-            console.log("Unexpected error", response);
-        }
+const registerRequest = async (code: string) => {
+    if (!registrationForm) { return; }
+    setError(null);
+    setLoading(true);
+    
+    if (confirmPassword !== registrationForm.password) {
+        alert("As palavras-passe não coincidem");
         setLoading(false);
-    };
+        return;
+    }
+    
+    try {
+        const response = await confirmRegisterEmployer(code, registrationForm);
+        
+        if (response.status === 201) {
+            alert("Empresário(a) registado com sucesso.");
+            setShowMFA(false);
+            window.location.href = "/";
+            return;
+        }
+        
+        // Handle error responses - try to get message from response
+        let errorMessage = "";
+        try {
+            const data = await response.json();
+            errorMessage = data.message || data.error || "";
+        } catch (e) {
+            // If JSON parsing fails, try text
+            try {
+                errorMessage = await response.text();
+            } catch (e2) {
+                errorMessage = "";
+            }
+        }
+        
+        // If no message was extracted, use default messages based on status code
+        if (!errorMessage || errorMessage.trim() === "") {
+            switch (response.status) {
+                case 400:
+                    errorMessage = "Certifique-se de que os campos estão preenchidos apenas com dados válidos.";
+                    break;
+                case 401:
+                    errorMessage = "Dados de autenticação inválidos.";
+                    break;
+                case 403:
+                    errorMessage = "Dados MFA incorretos. Por favor, tente novamente.";
+                    break;
+                case 409:
+                    errorMessage = "Este nome de utilizador já está em uso. Por favor, escolhe outro nome de utilizador.";
+                    break;
+                default:
+                    errorMessage = "Erro inesperado. Por favor, tente novamente.";
+            }
+        }
+        
+        alert(errorMessage);
+        console.log(`Error ${response.status}:`, errorMessage);
+        
+    } catch (exception) {
+        console.error("Registration error:", exception);
+        alert("Erro ao registar. Por favor, tente novamente.");
+        setError(`Registration Failed: ${exception}`);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <>

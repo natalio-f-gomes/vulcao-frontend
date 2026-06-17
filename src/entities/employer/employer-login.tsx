@@ -53,7 +53,10 @@ const sendMfACode = async () => {
     } else if (response.status === 403) {
       alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
     } else if (response.status === 400) {
-      alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
+        const data = await response.text();
+              console.log("Data: " , data)
+              //const errorMessage = JSON.parse(data)
+                alert(data);
     } else {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
@@ -62,7 +65,7 @@ const sendMfACode = async () => {
 };
   
   
-      const registerRequest = async(code: string) => {
+      const LoginRequest = async(code: string) => {
           if(!loginForm){return;}
           setError(null)
           setLoading(true)
@@ -81,8 +84,15 @@ const sendMfACode = async () => {
       await login("employer");
       window.location.href = "/"
       }
-      else if(response.status === 401 || response.status === 400){
+      else if(response.status === 401){
           alert("Credenciais inválidas.")
+      }
+        else if(response.status === 400){
+             const data = await response.text();
+              console.log("Data: " , data)
+              //const errorMessage = JSON.parse(data)
+                alert(data);
+        
       }
       else if(response.status === 403){
           alert("Codigo incorreto.")
@@ -176,7 +186,7 @@ const sendMfACode = async () => {
       {showMFA && (
         <MFAComponent
           username={loginForm.username}
-          onVerify={(code) => registerRequest(code)}
+          onVerify={(code) => LoginRequest(code)}
           onClose={() => setShowMFA(false)}
         />
       )}

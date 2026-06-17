@@ -42,6 +42,7 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
     try {
       await onVerify(code);
     } catch (err) {
+      console.log(err)
       setError(
         err instanceof Error && err.message
           ? err.message

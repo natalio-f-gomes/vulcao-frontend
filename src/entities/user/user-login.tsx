@@ -40,7 +40,6 @@ const sendMfACode = async () => {
   setLoading(true);
 
     const response = await loginUserRequest(userLoginForm.username);
-    console.log('MFA CODE REQUEST RESPONSE:', response);
 
     if (response.status === 202) {
       setShowMFA(true);          // code sent → show the popup
@@ -68,6 +67,7 @@ const sendMfACode = async () => {
               setLoading(true)
               try{
                   const response = await loginUserConfirm(code, userLoginForm)
+                
                     console.log(response)
                 if(response.status === 200){
                     alert("Sessão do Utilizador iniciada com sucesso.")
