@@ -96,9 +96,10 @@ function EmployerRegistrationPage(){
 
   setLoading(true);
     const response = await registerEmployerRequest(registrationForm.email, registrationForm.username);
-    
+
     if (response.status === 202) {
-      setShowMFA(true);           
+
+        setShowMFA(true);           
     } else if (response.status === 409) {
       alert("Já existe uma entidade com estas credenciais.");
     } else if (response.status === 401) {
@@ -109,6 +110,7 @@ function EmployerRegistrationPage(){
       alert("Erro inesperado. Por favor volte mais tarde.");
       console.log("Unexpected error", response);
     }
+           setLoading(false);
 
 
 };

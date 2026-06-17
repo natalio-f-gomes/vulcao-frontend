@@ -1,4 +1,6 @@
 #!/bin/bash
+read -p "Enter commit message: " message
+
 rm -rf node_modules
 rm -rf package-lock.json
 npm install
@@ -24,6 +26,6 @@ fi
 
 git init
 git add .
-read -p "Enter commit message: " message
+
 git commit -m "$message"
 git push -u origin main

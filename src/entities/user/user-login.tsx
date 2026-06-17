@@ -38,7 +38,7 @@ const sendMfACode = async () => {
   if (!userLoginForm) return;
   setError(null);
   setLoading(true);
-  try {
+
     const response = await loginUserRequest(userLoginForm.username);
     console.log('MFA CODE REQUEST RESPONSE:', response);
 
@@ -58,11 +58,7 @@ const sendMfACode = async () => {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
     }
-  } catch (exception) {
-    setError(`Login Failed ${exception}`);
-  } finally {
-    setLoading(false);
-  }
+   setLoading(false);
 };
 
 

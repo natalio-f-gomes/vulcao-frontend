@@ -41,7 +41,7 @@ function StaffLoginPage() {
          if (!loginForm) return;
          setError(null);
          setLoading(true);
-         try {
+        
            const response = await requestStaffLogin(loginForm.username);
            console.log('MFA CODE REQUEST RESPONSE:', response);
        
@@ -61,11 +61,7 @@ function StaffLoginPage() {
              alert("Erro inesperado. Por favor volte mais tarde");
              console.log("Unexpected error", response);
            }
-         } catch (exception) {
-           setError(`Login Failed ${exception}`);
-         } finally {
-           setLoading(false);
-         }
+          setLoading(false);
        };
    
        const loginRequest = async(code: string) => {

@@ -61,7 +61,7 @@ function UserRegistrationPage(){
   }
 
   setLoading(true);
-  try {
+
     const response = await userRegisterRequest(userRegistrationForm.email, userRegistrationForm.username);
 
     if (response.status === 202) {
@@ -76,11 +76,8 @@ function UserRegistrationPage(){
       alert("Erro inesperado. Por favor volte mais tarde.");
       console.log("Unexpected error", response);
     }
-  } catch (exception) {
-    setError(`Registration Failed ${exception}`);
-  } finally {
-    setLoading(false);
-  }
+      setLoading(false);
+ 
 };
 
 
