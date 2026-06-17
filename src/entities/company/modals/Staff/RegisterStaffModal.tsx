@@ -101,12 +101,12 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
           {/* Credenciais da Conta */}
           <div className="m-row">
             <div className="m-field">
-              <label className="m-label">Nome de Utilizador *</label>
-              <input className="m-input" type="text" placeholder="ex: jsmith" name="username" onChange={handleInputChange} required/>
+              <label className="m-label">Nome de Utilizador (Mínimo de 8 caracteres)</label>
+              <input className="m-input" type="text" placeholder="ex: jsmith" name="username" min={8} max={50}  onChange={handleInputChange} required/>
             </div>
             <div className="m-field">
-              <label className="m-label">Palavra-passe *</label>
-              <input className="m-input" type="password" placeholder="••••••••" name="password" onChange={handleInputChange} required />
+              <label className="m-label">Palavra-passe (Mínimo de 8 caracteres) </label>
+              <input className="m-input" type="password" placeholder="••••••••" min={8} max={50} name="password" onChange={handleInputChange} required />
             </div>
           </div>
 

@@ -162,7 +162,7 @@ function StaffLoginPage() {
           <h2 className="auth-title">Bem-vindo de volta, caro empragado(a).</h2>
 
             <div className="mb-3">
-              <label className="form-label small text-uppercase fw-bold text-secondary" >Username</label>
+              <label className="form-label small text-uppercase fw-bold text-secondary" >Username (Mínimo de 8 caracteres)</label>
               <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
             </div>
             <div className="mb-4">

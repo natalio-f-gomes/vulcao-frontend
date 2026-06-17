@@ -168,7 +168,7 @@ function EmployerLoginPage() {
       <div className="auth-card shadow-lg">
         <h2 className="auth-title">Bem-vindo de volta, Empresário(a).</h2>
         <div className="mb-3">
-          <label className="form-label small text-uppercase fw-bold text-secondary">Nome de Utilizador</label>
+          <label className="form-label small text-uppercase fw-bold text-secondary">Nome de Utilizador (Mínimo de 8 caracteres)</label>
           <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
         </div>
         <div className="mb-4">

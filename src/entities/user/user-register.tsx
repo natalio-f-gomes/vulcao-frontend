@@ -142,8 +142,8 @@ function UserRegistrationPage(){
       </div>
       
       <div className="mb-3">
-        <label className="form-label">Nome de Utilizador</label>
-        <input type="text" className="form-control" placeholder="joao" name="username" value={userRegistrationForm.username} onChange={handleInputChange} required />
+        <label className="form-label">Nome de Utilizador (Mínimo de 8 caracteres)</label>
+        <input type="text" className="form-control" placeholder="joao" name="username" value={userRegistrationForm.username} min={8} max={50} onChange={handleInputChange} required />
       </div>
       
       <div className="mb-3">
@@ -152,8 +152,8 @@ function UserRegistrationPage(){
       </div>
       
       <div className="mb-3">
-        <label className="form-label">Palavra-passe</label>
-        <input type="password" className="form-control" name="password" placeholder="••••••••" value={userRegistrationForm.password} onChange={handleInputChange} required />
+        <label className="form-label">Palavra-passe (Mínimo de 8 caracteres)</label>
+        <input type="password" className="form-control" name="password" placeholder="••••••••" value={userRegistrationForm.password} min={8} max={50} onChange={handleInputChange} required />
       </div>
       
       <div className="mb-4">
