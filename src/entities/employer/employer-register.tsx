@@ -95,9 +95,8 @@ function EmployerRegistrationPage(){
   }
 
   setLoading(true);
-  try {
     const response = await registerEmployerRequest(registrationForm.email, registrationForm.username);
-
+    
     if (response.status === 202) {
       setShowMFA(true);           
     } else if (response.status === 409) {
@@ -110,11 +109,8 @@ function EmployerRegistrationPage(){
       alert("Erro inesperado. Por favor volte mais tarde.");
       console.log("Unexpected error", response);
     }
-  } catch (exception) {
-    setError(`Registration Failed ${exception}`);
-  } finally {
-    setLoading(false);
-  }
+
+
 };
             
         
