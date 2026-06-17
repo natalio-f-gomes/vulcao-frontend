@@ -497,9 +497,9 @@ function AboutPage() {
         <div className="story">
           <div className="story-text">
             <div className="section-eyebrow">A Nossa História</div>
-            <h2 className="section-title">De um projeto de estudante a uma ferramenta para Portugal.</h2>
+            <h2 className="section-title">De um projeto de estudante a uma ferramenta para Cabo Verde.</h2>
             <p>A {companyName} nasceu da ideia de um estudante de Engenharia Informática que acreditava que comprar e vender devia ser simples, rápido e acessível a qualquer negócio.</p>
-            <p>O objetivo era claro: dar a Portugal uma plataforma onde qualquer empresa — independentemente da dimensão — possa apresentar-se e receber encomendas online.</p>
+            <p>O objetivo era claro: dar a Cabo Verde uma plataforma onde qualquer empresa — independentemente da dimensão — possa apresentar-se e receber encomendas online.</p>
             <p>Para os clientes, significa encomendar de forma muito mais rápida e cómoda. Para os empregadores, significa gerir o negócio e a equipa a partir de um só lugar.</p>
             <p>A visão continua a mesma: tornar a vida de cada utilizador mais fácil, aproximando negócios e clientes através de uma experiência digital simples.</p>
           </div>
