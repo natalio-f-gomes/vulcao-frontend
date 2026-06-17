@@ -34,49 +34,36 @@ function EmployerLoginPage() {
     );
   };
 
-      const sendMfACode = async () => {
-        if(!loginForm){return;}
-          setError(null)
-          setShowMFA(true)
-           try{
-              const response = await requestEmployerLogin(loginForm.username)
-              console.log('MFA CODE REQUEST RESPONSE: ' , response)
-            if(response.status === 100){
-                setShowMFA(false);
-                return;
-            }
-            setShowMFA(false);
-            if(response.status === 401){
-                alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.");
-                return;
-            }
-            else if(response.status === 404){
-                alert("Credenciais incorretas.");
-                  return;
-            }
-            else if(response.status === 409){
-                alert("Já existe uma entidade com estas credenciais.");
-                  return;
-            }
-            else if(response.status === 403){
-                alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
-                  return;
-            }
-            else if(response.status === 400){
-                alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
-                  return;
-            }
-            else{
-               alert("Erro inesperado. Por favor volte mais tarde")
-                console.log(`Erro inesperado: ${response}`);
-                  return;
-            }
-          }catch(exception){
-              setError( `Login Failed ${exception}`)
-          }finally{
-              setLoading(false)
-          }
-      }
+const sendMfACode = async () => {
+  if (!loginForm) return;
+  setError(null);
+  setLoading(true);
+  try {
+    const response = await requestEmployerLogin(loginForm.username);
+    console.log('MFA CODE REQUEST RESPONSE:', response);
+
+    if (response.status === 202) {
+      setShowMFA(true);          // code sent → show the popup
+    } else if (response.status === 401) {
+      alert("Dados de autenticação inválidos.");
+    } else if (response.status === 404) {
+      alert("Credenciais incorretas.");
+    } else if (response.status === 409) {
+      alert("Já existe uma entidade com estas credenciais.");
+    } else if (response.status === 403) {
+      alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
+    } else if (response.status === 400) {
+      alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
+    } else {
+      alert("Erro inesperado. Por favor volte mais tarde");
+      console.log("Unexpected error", response);
+    }
+  } catch (exception) {
+    setError(`Login Failed ${exception}`);
+  } finally {
+    setLoading(false);
+  }
+};
   
   
       const registerRequest = async(code: string) => {

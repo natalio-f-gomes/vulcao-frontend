@@ -42,42 +42,46 @@ function UserRegistrationPage(){
 
     }
 
-    const sendMfACode = async () => {
-      if(!userRegistrationForm){return;}
-        setError(null)
-        setLoading(true)
-        setShowMFA(true)
-         try{
-            const response = await userRegisterRequest(userRegistrationForm.email, userRegistrationForm.username)
-            console.log('MFA CODE REQUEST RESPONSE: ' , response)
-          if(response.status === 100){
-              setShowMFA(false);
-              window.location.href="/";
-              return;
-          }
-          setShowMFA(false);
-       if(response.status === 401){
-          alert("Dados de autenticação inválidos. O email deve ter pelo menos 7 caracteres.")
-          }
-          if(response.status === 409){
-              alert("Já existe uma entidade com estas credenciais.")
-          }
-          if(response.status === 403){
-              alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.")
-          }
-          if(response.status === 400){
-              alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.")
-          }
-          else{
-             alert("Erro inesperado")
-              console.log(`Erro inesperado: ${response}`)
-          }
-        }catch(exception){
-            setError( `Registration Failed ${exception}`)
-        }finally{
-            setLoading(false)
-        }
+
+  const sendMfACode = async () => {
+  if (!userRegistrationForm) return;
+  setError(null);
+
+  if (userRegistrationForm.password.length < 8) {
+    alert("O comprimento das palavras-passe deve ter, pelo menos, 8 caracteres.");
+    return;
+  }
+  if (confirmPassword !== userRegistrationForm.password) {
+    alert("As palavras-passe não coincidem.");
+    return;
+  }
+  if (userRegistrationForm.username.length < 8 || userRegistrationForm.username.length > 50) {
+    alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const response = await userRegisterRequest(userRegistrationForm.email, userRegistrationForm.username);
+
+    if (response.status === 202) {
+      setShowMFA(true);           
+    } else if (response.status === 409) {
+      alert("Já existe uma entidade com estas credenciais.");
+    } else if (response.status === 401) {
+      alert("Dados de autenticação inválidos.");
+    } else if (response.status === 400) {
+      alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
+    } else {
+      alert("Erro inesperado. Por favor volte mais tarde.");
+      console.log("Unexpected error", response);
     }
+  } catch (exception) {
+    setError(`Registration Failed ${exception}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
     const registerRequest = async(code: string) => {
