@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { companyName } from "../api/global";
 import GetFooterSection from "../components/footer";
 import GetHeader from "../components/header";
-
 // TODO: substituir pelos valores reais
 
 const creatorName = "Natalio Gomes";
@@ -59,6 +58,25 @@ body::before{
   text-transform:uppercase;color:var(--mid);text-decoration:none;
   transition:color 0.18s;
 }
+
+/* ---------- hero layout: text + animated logo ---------- */
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0; /* Remove gap so logo fills the entire right side */
+  align-items:center;
+  position:relative;
+  z-index:2;
+  min-height:400px;
+}
+
+
+/* Text stays on the left */
+.hero-copy{
+  text-align:left;
+  padding-right:48px;
+}
+
 .nav-links a:hover{color:var(--accent);}
 /* ---------- shell ---------- */
 .wrap{max-width:1180px;margin:0 auto;padding:0 48px;}
@@ -93,12 +111,19 @@ body::before{
 @keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 /* ---------- stat strip ---------- */
 .stat-strip{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border:1px solid var(--card-border);background:#fff;
-  margin-top:-46px;position:relative;z-index:5;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--card-border);
+  background:#fff;
+  margin-top:-46px;
+  position:relative;
+  z-index:5;
   box-shadow:0 12px 40px rgba(0,0,0,0.08);
 }
-.stat{padding:30px 26px;border-right:1px solid var(--card-border);}
+.stat{
+  padding:30px 26px;
+  border-right:1px solid var(--card-border);
+}
 .stat:last-child{border-right:none;}
 .stat-num{
   font-family:var(--serif);font-size:2.3rem;font-weight:800;
@@ -124,7 +149,12 @@ section{padding:74px 0;}
   max-width:60ch;margin-top:18px;color:var(--mid);font-size:1.02rem;
 }
 /* ---------- story / two-column ---------- */
-.story{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;}
+.story{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:54px;
+  align-items:center;
+}
 .story-text p{margin-bottom:16px;color:var(--mid);}
 .story-text p:first-of-type{
   font-size:1.15rem;color:var(--ink);font-weight:500;
@@ -148,7 +178,10 @@ section{padding:74px 0;}
 .story-card cite b{color:var(--cream);display:block;font-size:0.92rem;}
 /* ---------- values / features grid ---------- */
 .values-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:40px;
 }
 .value-card{
   background:#fff;border:1px solid var(--card-border);
@@ -222,18 +255,170 @@ section{padding:74px 0;}
 /* ---------- footer ---------- */
 .foot{padding:34px 48px;text-align:center;font-size:0.78rem;color:var(--mid);border-top:1px solid var(--card-border);}
 .foot span{color:var(--accent);}
-/* ---------- responsive ---------- */
+
+/* ============================================ */
+/* RESPONSIVE FIXES */
+/* ============================================ */
+
+/* MEDIUM SCREENS (tablets) */
 @media(max-width:991px){
   .wrap,.nav,.cta,.foot{padding-left:28px;padding-right:28px;}
-  .stat-strip{grid-template-columns:repeat(2,1fr);}
+  
+  /* STAT STRIP - 2 columns on tablets */
+  .stat-strip{
+    grid-template-columns:repeat(2,1fr);
+  }
   .stat:nth-child(2){border-right:none;}
-  .story{grid-template-columns:1fr;gap:34px;}
-  .values-grid{grid-template-columns:1fr;}
+  .stat:nth-child(3){border-bottom:none;}
+  .stat:nth-child(4){border-bottom:none;}
+  
+  /* STORY - single column */
+  .story{
+    grid-template-columns:1fr;
+    gap:34px;
+  }
+  
+  /* VALUES & FEATURES - 2 columns on tablets */
+  .values-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+  
   .nav-links{display:none;}
+
+  /* HERO - logo on top, text below */
+  .hero-grid{
+    grid-template-columns:1fr;
+    gap:30px;
+    text-align:center;
+    min-height:auto;
+  }
+  
+  .hero-media{
+    justify-content:center;
+    order:-1; /* Logo on top */
+    min-height:300px;
+    padding:20px;
+    background:transparent;
+  }
+  
+  .hero-media img{
+    max-width:380px;
+    max-height:300px;
+    height:auto;
+    object-fit:contain;
+  }
+  
+  .hero-copy{
+    text-align:center;
+    order:0;
+    padding-right:0;
+  }
+  
+  .hero-title{
+    max-width:100%;
+    margin:0 auto;
+  }
+  
+  .hero-lead{
+    max-width:100%;
+    margin:26px auto 0;
+  }
 }
+
+/* SMALL SCREENS (mobile) */
 @media(max-width:560px){
-  .stat-strip{grid-template-columns:1fr;}
-  .stat{border-right:none;border-bottom:1px solid var(--card-border);}
+  /* STAT STRIP - 1 column on mobile */
+  .stat-strip{
+    grid-template-columns:1fr;
+  }
+  .stat{
+    border-right:none;
+    border-bottom:1px solid var(--card-border);
+    text-align:center;
+  }
+  .stat:last-child{border-bottom:none;}
+  
+  /* HERO - logo on top */
+  .hero-media{
+    min-height:200px;
+    padding:10px;
+  }
+  
+  .hero-media img{
+    max-width:280px;
+    max-height:200px;
+  }
+  
+  /* STORY - single column */
+  .story{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  
+  /* STORY CARD - full width on mobile */
+  .story-card{
+    padding:28px 20px;
+  }
+  .story-card blockquote{
+    font-size:1.1rem;
+  }
+  
+  /* VALUES & FEATURES - 1 column on mobile */
+  .values-grid{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  
+  /* VALUE CARDS - stack vertically */
+  .value-card{
+    padding:24px 20px;
+  }
+  
+  /* CTA - smaller padding */
+  .cta{
+    padding:60px 24px;
+  }
+  
+  .cta-btns{
+    flex-direction:column;
+    align-items:center;
+  }
+  
+  .btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+/* LARGE SCREENS - ensure logo is on the far right filling the entire space */
+@media(min-width:992px){
+  .hero-grid{
+    grid-template-columns:1fr 1fr;
+    gap:0;
+  }
+  
+  .hero-media{
+    justify-content:center;
+    align-items:center;
+    order:2; /* Forces logo to the right */
+    min-height:450px;
+    padding:20px;
+    background:var(--ink);
+  }
+  
+  .hero-media img{
+    width:100%;
+    height:100%;
+    max-height:550px;
+    object-fit:contain;
+  }
+  
+  .hero-copy{
+    order:1;
+    text-align:left;
+    padding-right:48px;
+    padding-left:0;
+  }
 }
 `;
 
@@ -253,14 +438,49 @@ function AboutPage() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <header className="hero">
-        <div className="wrap">
-          <div className="hero-eyebrow">Sobre a {companyName}</div>
-          <h1 className="hero-title">Negócios online, encomendas mais <em>rápidas.</em></h1>
-          <p className="hero-lead">A {companyName} aproxima negócios e clientes em Cabo Verde. Qualquer empresa — independentemente da dimensão — pode estar presente na plataforma, e qualquer cliente pode encomendar online de forma rápida e cómoda.</p>
+    {/* HERO */}
+<header className="hero" style={{ background: 'var(--ink)', color: 'var(--cream)', padding: '60px 0', overflow: 'hidden' }}>
+  <div className="container-fluid px-md-5">
+    <div className="row align-items-center flex-column-reverse flex-lg-row">
+      
+      {/* LADO ESQUERDO: Texto (Em mobile fica abaixo) */}
+      <div className="col-12 col-lg-6 text-center text-lg-start mt-4 mt-lg-0" style={{ paddingRight: 'min(48px, 5%)' }}>
+        <div className="hero-eyebrow" style={{ color: 'var(--accent)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '18px' }}>
+          Sobre a {companyName}
         </div>
-      </header>
+        <h1 className="hero-title" style={{ fontFamily: 'var(--serif)', fontWeight: 900, fontSize: 'clamp(2.3rem, 5vw, 4.2rem)', lineHeight: 1.1, letterSpacing: '-1.5px' }}>
+          Negócios online, encomendas mais <em style={{ color: 'var(--accent)', fontStyle: 'normal' }}>rápidas.</em>
+        </h1>
+        <p className="hero-lead" style={{ marginTop: '24px', fontSize: '1.05rem', color: '#cbc6bf', fontWeight: 400, maxWidth: '54ch', marginInline: 'auto inherit' }}>
+          A {companyName} aproxima negócios e clientes em Cabo Verde. Qualquer empresa — independentemente da dimensão — pode estar presente na plataforma, e qualquer cliente pode encomendar online de forma rápida e cómoda.
+        </p>
+      </div>
+
+      {/* LADO DIREITO: Logótipo (Em mobile fica no topo, 100% de largura e centrado) */}
+    <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center p-0 ">
+  <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <img 
+      src="/logo.png" 
+      alt={`Logótipo animado da ${companyName} em erupção`} 
+      style={{ 
+        // Em ecrãs pequenos ocupa 85% da largura total do dispositivo. 
+        // Em ecrãs grandes (desktop), expande dinamicamente até um máximo ideal.
+        width: '100vw', 
+        maxWidth: '1200px', 
+        marginLeft: "50px",
+        
+        // Mantém a proporção perfeita da imagem sem distorcer
+        height: 'auto', 
+        maxHeight: '70vh',
+        objectFit: 'contain'
+      }} 
+    />
+  </div>
+</div>
+
+    </div>
+  </div>
+</header>
 
       {/* STAT STRIP */}
       <div className="wrap">
@@ -277,9 +497,9 @@ function AboutPage() {
         <div className="story">
           <div className="story-text">
             <div className="section-eyebrow">A Nossa História</div>
-            <h2 className="section-title">De um projeto de estudante a uma ferramenta para Cabo Verde.</h2>
+            <h2 className="section-title">De um projeto de estudante a uma ferramenta para Portugal.</h2>
             <p>A {companyName} nasceu da ideia de um estudante de Engenharia Informática que acreditava que comprar e vender devia ser simples, rápido e acessível a qualquer negócio.</p>
-            <p>O objetivo era claro: dar a Cabo Verde uma plataforma onde qualquer empresa — independentemente da dimensão — possa apresentar-se e receber encomendas online.</p>
+            <p>O objetivo era claro: dar a Portugal uma plataforma onde qualquer empresa — independentemente da dimensão — possa apresentar-se e receber encomendas online.</p>
             <p>Para os clientes, significa encomendar de forma muito mais rápida e cómoda. Para os empregadores, significa gerir o negócio e a equipa a partir de um só lugar.</p>
             <p>A visão continua a mesma: tornar a vida de cada utilizador mais fácil, aproximando negócios e clientes através de uma experiência digital simples.</p>
           </div>

@@ -24,7 +24,7 @@ function CompanyHeader({ companyName, onBack }: PublicTopBarProps) {
         onClick={() => navigate("/")}
         style={{ background: "transparent", border: "1px solid #d8d2c8", borderRadius: 6, padding: "1x 12px", cursor: "pointer", fontSize: "0.85rem" }}
       >
-        <i className="bi bi-arrow-left" /> Home
+        <i className="bi bi-arrow-left" /> Inicio
       </button>
       <span style={{ fontWeight: 600 }}>{companyName}</span>
 
