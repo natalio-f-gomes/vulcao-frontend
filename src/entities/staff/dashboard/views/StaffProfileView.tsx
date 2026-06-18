@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StaffModel } from "../../../../api/interfaces";
+import { Islands, StaffModel } from "../../../../api/interfaces";
 import "../../../../css/staff-profile.css";
 import {
   updateStaffProfile,
@@ -40,7 +40,7 @@ interface FormData {
   lastName:    string;
   email:       string;
   phoneNumber: string;
-  island:      string;
+  island:      Islands;
   city:        string;
   zone:        string;
   postalCode:  string;

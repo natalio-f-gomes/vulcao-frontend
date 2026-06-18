@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CompanyRegistrationModel, CompanyImageUploadRequest } from "../../../../api/interfaces";
 import { postCompanyImageKeys, registerCompany } from "../../../../api/requests";
-import { BUSINESS_CATEGORIES } from "../../../../api/categories";
+import { BUSINESS_CATEGORIES, ISLANDS } from "../../../../api/categories";
 import { buildImageMetadata, uploadFileToS3 } from "../../../../api/ImageValidatorService";
 
 const MAX_IMAGES = 2; // keep in sync with the backend
@@ -28,7 +28,7 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
     phoneNumber: "",
     faxNumber: "",
     email: "",
-    address: { island: "", city: "", zone: "", street: "", postalCode: "" },
+    address: { island: "SANTIAGO", city: "", zone: "", street: "", postalCode: "" },
     status: null,
     imagesMetadata: [],
     creatorUsername: username!,
@@ -155,11 +155,14 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
       }
 
       if (response.status === 409) {
-          alert("Já existe uma empresa com o mesmo NIF ou email.");
+          alert("Já existe uma empresa com o mesmo nome");
       } else if (response.status === 403) {
           alert("ACESSO NEGADO");
       } else if (response.status === 400) {
-          alert("Por favor, preencha todos os campos obrigatórios e selecione o estado da empresa.");
+          const data = await response.text();
+          console.log("Data: " , data)
+          //const errorMessage = JSON.parse(data)
+            alert(data);
       } else {
           setError(`Registo falhou (${response.status})`);
       }
@@ -308,16 +311,36 @@ return (
             <div className="m-field">
               <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Morada</label>
             </div>
-            <div className="m-row">
-              <div className="m-field">
+                <div className="m-row">
+                <div className="m-field">
+                <div className="m-field">
                 <label className="m-label">Ilha</label>
-                <input className="m-input" type="text" name="island" placeholder="ex: Santiago" required value={companyRegistrationForm.address.island} onChange={handleInputChange} />
+                <select
+                  className="m-select form-select"
+                  name="island"
+                  value={companyRegistrationForm.address.island ?? "SANTIAGO"}
+                  onChange={handleInputChange}
+                >
+                  <option value="" disabled>Selecionar ilha</option>
+                  {ISLANDS.map((island) => (
+                    <option key={island} value={island}>{island}</option>
+                  ))}
+                </select>
               </div>
-              <div className="m-field">
-                <label className="m-label">Cidade</label>
-                <input className="m-input" type="text" name="city" placeholder="ex: Praia" required value={companyRegistrationForm.address.city} onChange={handleInputChange} />
+                </div>
+                <div className="m-field">
+                  <label className="m-label">Cidade</label>
+                  <input 
+                    className="m-input" 
+                    type="text" 
+                    name="city" 
+                    placeholder="ex: Praia" 
+                    required 
+                    value={companyRegistrationForm.address.city} 
+                    onChange={handleInputChange} 
+                  />
+                </div>
               </div>
-            </div>
             <div className="m-row">
               <div className="m-field">
                 <label className="m-label">Zona</label>

@@ -17,7 +17,7 @@ export interface UserRegistrationModel{
 }
 
 export interface AddressModel{
-    island:string;
+    island:Islands;
     city:string;
     zone:string;
     street:string;
@@ -205,6 +205,8 @@ export interface CompanyRegistrationModel{
 
 export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | "ASSIGN_TASKS" | "VIEW_REPORTS" | "CREATE_TASK" | "DELETE_TASK" 
 |"ADD_WEARABLE" | "UPDATE_WEARABLE" | "DELETE_WEARABLE" 
+
+export type Islands =  "BOA_VISTA" | "SANTIAGO" | "FOGO" | "MAIO" | "SÃO_NICOLAU" | "SAL" | "SANTO_ANTÃO" | "BRAVA" | "SÃO_VICENTE" | "";
 
 
 export type UnitTypes = "LIQUID" | "SOLID" | "SINGULAR" | "BOX" |

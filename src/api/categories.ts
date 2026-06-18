@@ -1,4 +1,4 @@
-import { Permissions, WearablesCategory } from "./interfaces";
+import { Islands, Permissions, WearablesCategory } from "./interfaces";
 
 export const BUSINESS_CATEGORIES: string[] = [
   // ===== COMÉRCIO E RETALHO (Supermercados, Lojas e Eletrónica) =====
@@ -63,6 +63,10 @@ export const ProductCategories: string[] =
   "OUTROS"
 ]
 
+
+export const ISLANDS: Islands[] = [
+"BOA_VISTA" , "SANTIAGO" , "FOGO" , "MAIO" , "SÃO_NICOLAU" , "SAL" , "SANTO_ANTÃO" , "BRAVA" , "SÃO_VICENTE"
+];
 
 export const CURRENCIES: string[] = [
 "CVE"

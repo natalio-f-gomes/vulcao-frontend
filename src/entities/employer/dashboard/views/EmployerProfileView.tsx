@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useUserAuthManager } from "../../../../api/authentication-handler";
-import { AddressModel, CompanyModel, EmployerModel, StaffModel, UserProfileModel } from "../../../../api/interfaces";
+import { AddressModel, CompanyModel, EmployerModel, Islands, StaffModel, UserProfileModel } from "../../../../api/interfaces";
 import { useEffect, useState } from "react";
 import { UserContact, UserProfile } from "../../../user/user-account/views/UserDashboard";
 import { getEmployerProfile, updateCredentials, updateEmployerAddress, updateEmployerContact, updateEmplyerProfile } from "../../../../api/requests";
+import { ISLANDS } from "../../../../api/categories";
 
 
 
@@ -12,7 +13,7 @@ interface EmployerAccountForm {
   lastName:     string;
   email:        string;
   phoneNumber:  string;
-  island:       string;
+  island:       Islands;
   city:         string;
   zone:         string;
   postalCode:   string;
@@ -82,7 +83,7 @@ function EmployerProfileView(){
     
       }, []);
 
-       const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+       const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
           const fieldName = e.target.id.replace("inp-", "") as keyof FormData;
           setFormData((prev) => ({ ...prev, [fieldName]: e.target.value }));
         };
@@ -129,7 +130,7 @@ function EmployerProfileView(){
                   setemployerAddress({ ...dataToUpdate });
                   setEmployer(prev => prev ? { ...prev, address: { ...dataToUpdate } } : null);
                   
-                  closeEditingSection("Address updated successfully!");
+                  closeEditingSection("Morada atualizada com sucesso!");
                 } else {
                   alert("Failed to update address info.");
                 }
@@ -276,12 +277,21 @@ function EmployerProfileView(){
             </div>
 
             <div className="fields-grid triple">
-              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-                <span className="field-label">Ilha</span>
-                <span className="field-value">{formData.island || "Não definido"}</span>
-                <input className="field-input" id="inp-island" type="text"
-                  value={formData.island} onChange={handleInputChange} />
-              </div>
+               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                        <span className="field-label">Ilha</span>
+                        <span className="field-value">{formData.island || "Não definido"}</span>
+                        <select
+                          className="field-input"
+                          id="inp-island"
+                          value={formData.island}
+                          onChange={handleInputChange}
+                        >
+                          <option value="" disabled>Selecionar ilha</option>
+                          {ISLANDS.map((island) => (
+                            <option key={island} value={island}>{island}</option>
+                          ))}
+                        </select>
+                      </div>
               <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
                 <span className="field-label">Cidade</span>
                 <span className="field-value">{formData.city || "Não definido"}</span>

@@ -9,6 +9,7 @@ import {
 import { useUserAuthManager } from "../../../../api/authentication-handler";
 
 import {  data, useNavigate } from "react-router-dom";
+import { ISLANDS } from "../../../../api/categories";
 
 
 
@@ -46,7 +47,7 @@ function GetUserDashBoard() {
   const [user, setUser]                     = useState<UserProfileModel | null>(null);
   const [userProfile, setUserProfile]       = useState<UserProfile>({firstName: "", lastName:""});
   const [userContact, setUserContact]       = useState<UserContact>({email: "", phoneNumber:""});
-  const [userAddress, setUserAddress]       = useState<AddressModel>({island: "", city:"", zone:"", street:"", postalCode:""});
+  const [userAddress, setUserAddress]       = useState<AddressModel>({island: "SANTIAGO", city:"", zone:"", street:"", postalCode:""});
   const [loading, setLoading]               = useState<boolean>(true);
   const [userCart, setUserCart] = useState<CartItem[]>([]);
   const [error, setError]                   = useState<string | null>(null);
@@ -104,7 +105,7 @@ function GetUserDashBoard() {
   // ── Generic input handler — works for ALL fields ───────────────────────────
   // id format is "inp-fieldName" so we strip the prefix to get the key
   // Like a generic setter: formData.put(fieldName, value)
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const fieldName = e.target.id.replace("inp-", "") as keyof FormData;
     setFormData((prev) => ({ ...prev, [fieldName]: e.target.value }));
   };
@@ -313,8 +314,17 @@ try {
         <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
           <span className="field-label">Ilha</span>
           <span className="field-value">{formData.island || "Não definido"}</span>
-          <input className="field-input" id="inp-island" type="text"
-            value={formData.island} onChange={handleInputChange} />
+          <select
+            className="field-input"
+            id="inp-island"
+            value={formData.island}
+            onChange={handleInputChange}
+          >
+            <option value="" disabled>Selecionar ilha</option>
+            {ISLANDS.map((island) => (
+              <option key={island} value={island}>{island}</option>
+            ))}
+          </select>
         </div>
         <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
           <span className="field-label">Cidade</span>

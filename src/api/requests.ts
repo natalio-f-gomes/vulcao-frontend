@@ -4,8 +4,8 @@ import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel } from "./interfaces";
 
-//const URL = "http://localhost:8080";
-const URL = "";
+const URL = "http://localhost:8080";
+//const URL = "";
 
 export async function fetchAPIWithCredentials(endpoint: string, options: RequestInit ={}): Promise<Response>{
 
