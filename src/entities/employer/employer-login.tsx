@@ -89,9 +89,9 @@ const sendMfACode = async () => {
       }
         else if(response.status === 400){
              const data = await response.text();
-              console.log("Data: " , data)
+              console.log("Data: " , JSON.parse(data))
               //const errorMessage = JSON.parse(data)
-                alert(data);
+              alert(JSON.parse(data).error);
         
       }
       else if(response.status === 403){
