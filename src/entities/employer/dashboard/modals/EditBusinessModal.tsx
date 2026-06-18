@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { CompanyModel, AddressModel } from "../../../../api/interfaces";
 import { registerCompany } from "../../../../api/requests";
-import { BUSINESS_CATEGORIES } from "../../../../api/categories";
+import { BUSINESS_CATEGORIES, ISLANDS } from "../../../../api/categories";
 
 //Business is the brain and passes the edit business modal these properties
 //this component call the onsave, it will call the onsave method on the businessview
@@ -165,11 +165,24 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
           </div>
 
           <div className="m-row">
-            <div className="m-field">
-              <label className="m-label">Island</label>
-              <input className="m-input" type="text" name="island"
-                value={formData.address.island} onChange={handleChange} />
-            </div>
+              </div>
+                <div className="m-row">
+                <div className="m-field">
+                <div className="m-field">
+                <label className="m-label">Ilha</label>
+                  <select
+                    className="m-select form-select"
+                    name="island"
+                    value={formData.address.island ?? "SANTIAGO"}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>Selecionar ilha</option>
+                    {ISLANDS.map((island) => (
+                      <option key={island} value={island}>{island}</option>
+                    ))}
+                  </select>
+              </div>
+                </div>
             <div className="m-field">
               <label className="m-label">City</label>
               <input className="m-input" type="text" name="city"

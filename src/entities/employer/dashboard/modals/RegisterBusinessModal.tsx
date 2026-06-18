@@ -315,17 +315,17 @@ return (
                 <div className="m-field">
                 <div className="m-field">
                 <label className="m-label">Ilha</label>
-                <select
-                  className="m-select form-select"
-                  name="island"
-                  value={companyRegistrationForm.address.island ?? "SANTIAGO"}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>Selecionar ilha</option>
-                  {ISLANDS.map((island) => (
-                    <option key={island} value={island}>{island}</option>
-                  ))}
-                </select>
+                  <select
+                    className="m-select form-select"
+                    name="island"
+                    value={companyRegistrationForm.address.island ?? "SANTIAGO"}
+                    onChange={handleInputChange}
+                  >
+                    <option value="" disabled>Selecionar ilha</option>
+                    {ISLANDS.map((island) => (
+                      <option key={island} value={island}>{island}</option>
+                    ))}
+                  </select>
               </div>
                 </div>
                 <div className="m-field">

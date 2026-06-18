@@ -256,12 +256,12 @@ export interface CompanyContact{
       phoneNumber:string,
       email:string,
       faxNumber:string,
-      taxIdNumber:string
 }
 
 export interface CompanyAboutInfo{
   description: string,
   status: CompanyStatuses
+  taxIdNumber:string
 }
 
 export interface OfferingImageUploadRequest {

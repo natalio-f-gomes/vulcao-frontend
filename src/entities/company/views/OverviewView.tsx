@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { updateCompanyAboutInfo, updateCompanyAddress, updateCompanyContact } from "../../../api/requests";
 import ImageCarousel from "../../../components/ImageCarousel";
 import UpdateCompanyImageModal from "../../employer/dashboard/modals/CompanyUpdateImageModal";
+import { ISLANDS } from "../../../api/categories";
 
 interface Parameters {
   company: CompanyModel;
@@ -37,8 +38,9 @@ function CompanyOverView({ company }: Parameters) {
   const [editingSection, setEditingSection] = useState<string | null>(null);
    const [companyImageUpload, setcompanyImageUpload] = useState<CompanyModel| null>(null);
   const [aboutInfo, setAboutInfo] = useState<CompanyAboutInfo>({
-    description: company.description,
+    description: "",
     status: company.status,
+    taxIdNumber: ""
   });
   const [address, setAddress] = useState<AddressModel>({
     island: company.address.island,
@@ -47,12 +49,11 @@ function CompanyOverView({ company }: Parameters) {
     street: company.address.street,
     zone: company.address.zone,
   });
-
+// taxIdNumber: contact.taxIdNumber,
   const [contact, setContact] = useState<CompanyContact>({
     email: company.email,
     phoneNumber: company.phoneNumber,
-    faxNumber: company.faxNumber,
-    taxIdNumber: company.taxIdNumber,
+    faxNumber: company.faxNumber
   });
   const navigate = useNavigate();
   useEffect(() => {
@@ -63,15 +64,16 @@ function CompanyOverView({ company }: Parameters) {
     const fieldName = e.target.id.replace("inp-", "") as keyof FormData;
     setContact((prev) => ({ ...prev, [fieldName]: e.target.value }));
   };
-  const addressInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const addressInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const fieldName = e.target.id.replace("inp-", "") as keyof FormData;
     setAddress((prev) => ({ ...prev, [fieldName]: e.target.value }));
   };
 
-  const aboutInfoChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setAboutInfo((prev) => ({ ...prev, [name]: value }));
-  };
+ const aboutInfoChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement>) => {
+  const { name, value } = e.target;
+  console.log("Field changed:", name, "Value:", value);
+  setAboutInfo((prev) => ({ ...prev, [name]: value }));
+};
 
   const startEditing = (section: string) => setEditingSection(section);
   const cancelEditing = () => setEditingSection(null);
@@ -85,71 +87,73 @@ function CompanyOverView({ company }: Parameters) {
       if (section === "address") {
         dataToUpdate = { island: address.island, city: address.city, street: address.street, zone: address.zone, postalCode: address.postalCode };
         const response = await updateCompanyAddress(dataToUpdate, company.id!);
-        console.log("Response trying to update the user address: ", response);
+        console.log("Resposta ao tentar atualizar a morada da empresa: ", response);
         if (response.status === 200) {
           setAddress({ island: address.island, city: address.city, street: address.street, zone: address.zone, postalCode: address.postalCode });
-          closeEditingSection("Company Address updated successfully!");
+          closeEditingSection("Morada da empresa atualizada com sucesso!");
         } else if (response.status === 400) {
-          alert("At least 1 field contained Invalid Info!");
+          const data = await response.text();
+            alert(data);
         } else {
-          alert("Failed to update company address");
+          alert("Falha ao atualizar a morada da empresa");
         }
       } else if (section === "contact") {
-        dataToUpdate = { email: contact.email, phoneNumber: contact.phoneNumber, taxIdNumber: contact.taxIdNumber, faxNumber: contact.faxNumber };
+        dataToUpdate = { email: contact.email, phoneNumber: contact.phoneNumber, faxNumber: contact.faxNumber };
         const response = await updateCompanyContact(dataToUpdate, company.id!);
-        console.log("Response trying to update the company contact: ", response);
+        console.log("Resposta ao tentar atualizar o contacto da empresa: ", response);
         if (response.status === 200) {
-          setContact({ email: contact.email, phoneNumber: contact.phoneNumber, taxIdNumber: contact.taxIdNumber, faxNumber: contact.faxNumber });
-          closeEditingSection("Company Contact information updated successfully!");
+          setContact({ email: contact.email, phoneNumber: contact.phoneNumber, faxNumber: contact.faxNumber });
+          closeEditingSection("Contactos da empresa atualizados com sucesso!");
         } else if (response.status === 400) {
-          alert("At least 1 field contained Invalid Info!");
+          const data = await response.text();
+            alert(data);
         } else {
-          alert("Failed to update company Contact Information");
+          alert("Falha ao atualizar os contactos da empresa");
         }
       } else if (section === "about") {
-        dataToUpdate = { description: aboutInfo.description, status: aboutInfo.status };
-        console.log("Data to Update: ", dataToUpdate);
+        dataToUpdate = { description: aboutInfo.description, status: aboutInfo.status, taxIdNumber: aboutInfo.taxIdNumber };
+        console.log("Dados a atualizar: ", dataToUpdate);
         const response = await updateCompanyAboutInfo(company.id!, dataToUpdate);
-        console.log("Response trying to update the company contact: ", response);
+        console.log("Resposta ao tentar atualizar a informação da empresa: ", response);
         if (response.status === 200) {
-          setAboutInfo({ description: aboutInfo.description, status: aboutInfo.status });
-          closeEditingSection("Company About information updated successfully!");
+          setAboutInfo({ description: aboutInfo.description, status: aboutInfo.status , taxIdNumber: aboutInfo.taxIdNumber});
+          closeEditingSection("Informação sobre a empresa atualizada com sucesso!");
         } else if (response.status === 400) {
-          alert("At least 1 field contained Invalid Info!");
+         const data = await response.text();
+         
+            alert(data);
         } else {
-          alert("Failed to update company Contact Information");
+          alert("Falha ao atualizar a informação da empresa");
         }
       }
     } catch (exception) {
-      console.log(`There was an issue updating the company: ${exception}`);
+      console.log(`Ocorreu um problema ao atualizar a empresa: ${exception}`);
     }
   };
 
-  useEffect(() => {
-    if (company) {
-      setAddress({
-        island: company.address.island || "",
-        city: company.address.city || "",
-        postalCode: company.address.postalCode || "",
-        street: company.address.street || "",
-        zone: company.address.zone || "",
-      });
-      setContact({
-        email: company.email || "",
-        phoneNumber: company.phoneNumber || "",
-        faxNumber: company.faxNumber || "",
-        taxIdNumber: company.taxIdNumber || "",
-      });
-      setAboutInfo({
-        description: company.description || "",
-        status: company.status,
-      });
-    }
-  }, [company]);
-
+useEffect(() => {
+  if (!company) return;
+  setAddress({
+    island: company.address.island || "",
+    city: company.address.city || "",
+    postalCode: company.address.postalCode || "",
+    street: company.address.street || "",
+    zone: company.address.zone || "",
+  });
+  setContact({
+    email: company.email || "",
+    phoneNumber: company.phoneNumber || "",
+    faxNumber: company.faxNumber || "",
+  });
+  setAboutInfo({
+    description: company.description || "",
+    status: company.status,
+    taxIdNumber: company.taxIdNumber || "",
+  });
+}, [company.id]);   
   return (
     <>
-      {/* ---- header: name + status, dashboard heading style ---- */}
+      {/* ---- cabeçalho: nome + estado, estilo do painel ---- */}
       <div className="view-heading" style={{ marginTop: "1px" }}>{company.name}</div>
       <div className="view-sub" style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span className={companyStatus}>{company.status}</span>
@@ -164,7 +168,7 @@ function CompanyOverView({ company }: Parameters) {
                         onClick={()=> setcompanyImageUpload(company)}
                       >
                         <i className="bi bi-pencil"></i>
-                        {(company.imgS3UrlKeys?.length ?? 0) > 0 ? " Edit Images" : " Upload Images"}
+                        {(company.imgS3UrlKeys?.length ?? 0) > 0 ? " Editar Imagens" : " Carregar Imagens"}
                       </button>
                     </div>
                   </div>
@@ -178,145 +182,161 @@ function CompanyOverView({ company }: Parameters) {
                 />
       </div>
 
-      {/* ---- contact + address, two columns ---- */}
+      {/* ---- contactos + morada, duas colunas ---- */}
       <div className="company-overview-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <div className="profile-section" style={{ marginBottom: 0 }}>
           <div className="section-head">
             <div className="section-head-left">
               <i className="bi bi-envelope-fill"></i>
-              <span className="section-head-title">Contact</span>
+              <span className="section-head-title">Contactos</span>
             </div>
             <button
               className={`btn-edit ${isEditing("contact") ? "editing" : ""}`}
               onClick={() => (isEditing("contact") ? cancelEditing() : startEditing("contact"))}
             >
-              <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancel" : "Edit"}
+              <i className="bi bi-pencil"></i> {isEditing("contact") ? "Cancelar" : "Editar"}
             </button>
           </div>
 
           <div className="fields-grid">
             <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-              <span className="field-label">Phone Number</span>
-              <span className="field-value">{contact.phoneNumber || "Not Set"}</span>
+              <span className="field-label">Número de Telefone</span>
+              <span className="field-value">{contact.phoneNumber || "Não definido"}</span>
               <input className="field-input" id="inp-phoneNumber" type="text"
                 value={contact.phoneNumber} onChange={contactInputChange} />
             </div>
-            <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-              <span className="field-label">Email</span>
-              <span className="field-value">{contact.email || "Not Set"}</span>
-              <input className="field-input" id="inp-email" type="email"
-                value={contact.email} onChange={contactInputChange} />
-            </div>
-            <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-              <span className="field-label">Fax Number</span>
-              <span className="field-value">{contact.faxNumber || "Not Set"}</span>
+             <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
+              <span className="field-label">Número de Fax</span>
+              <span className="field-value">{contact.faxNumber || "Não definido"}</span>
               <input className="field-input" id="inp-faxNumber" type="text"
                 value={contact.faxNumber} onChange={contactInputChange} />
             </div>
             <div className={`field-group ${isEditing("contact") ? "is-editing" : ""}`}>
-              <span className="field-label">Tax Id Number</span>
-              <span className="field-value">{contact.taxIdNumber || "Not Set"}</span>
-              <input className="field-input" id="inp-taxIdNumber" type="text"
-                value={contact.taxIdNumber} onChange={contactInputChange} />
+              <span className="field-label">Email</span>
+              <span className="field-value">{contact.email || "Não definido"}</span>
+              <input className="field-input" id="inp-email" type="email"
+                value={contact.email} onChange={contactInputChange} />
             </div>
+           
+          
           </div>
 
           {isEditing("contact") && (
             <div className="save-bar visible">
-              <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+              <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
               <button className="btn-save" onClick={() => saveSection("contact")}>
-                <i className="bi bi-check2"></i> Save Changes
+                <i className="bi bi-check2"></i> Guardar Alterações
               </button>
             </div>
           )}
         </div>
 
         <div className="profile-section" style={{ marginBottom: 0 }}>
-          <div className="section-head">
-            <div className="section-head-left">
-              <i className="bi bi-geo-alt-fill"></i>
-              <span className="section-head-title">Address</span>
-            </div>
-            <button
-              className={`btn-edit ${isEditing("address") ? "editing" : ""}`}
-              onClick={() => (isEditing("address") ? cancelEditing() : startEditing("address"))}
-            >
-              <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancel" : "Edit"}
-            </button>
-          </div>
-
-          <div className="fields-grid">
-            <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-              <span className="field-label">Island</span>
-              <span className="field-value">{address.island || "Not Set"}</span>
-              <input className="field-input" id="inp-island" type="text"
-                value={address.island} onChange={addressInputChange} />
-            </div>
-            <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-              <span className="field-label">City</span>
-              <span className="field-value">{address.city || "Not Set"}</span>
-              <input className="field-input" id="inp-city" type="text"
-                value={address.city} onChange={addressInputChange} />
-            </div>
-            <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-              <span className="field-label">Zone</span>
-              <span className="field-value">{address.zone || "Not Set"}</span>
-              <input className="field-input" id="inp-zone" type="text"
-                value={address.zone} onChange={addressInputChange} />
-            </div>
-            <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-              <span className="field-label">Postal Code</span>
-              <span className="field-value">{address.postalCode || "Not Set"}</span>
-              <input className="field-input" id="inp-postalCode" type="text"
-                value={address.postalCode} onChange={addressInputChange} />
-            </div>
-            <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
-              <span className="field-label">Street</span>
-              <span className="field-value">{address.street || "Not Set"}</span>
-              <input className="field-input" id="inp-street" type="text"
-                value={address.street} onChange={addressInputChange} />
-            </div>
-          </div>
-
-          {isEditing("address") && (
-            <div className="save-bar visible">
-              <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
-              <button className="btn-save" onClick={() => saveSection("address")}>
-                <i className="bi bi-check2"></i> Save Changes
+            <div className="section-head">
+              <div className="section-head-left">
+                <i className="bi bi-geo-alt-fill"></i>
+                <span className="section-head-title">Morada</span>
+              </div>
+              <button
+                className={`btn-edit ${isEditing("address") ? "editing" : ""}`}
+                onClick={() => (isEditing("address") ? cancelEditing() : startEditing("address"))}
+              >
+                <i className="bi bi-pencil"></i> {isEditing("address") ? "Cancelar" : "Editar"}
               </button>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* ---- about, full width ---- */}
+            <div className="fields-grid">
+              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                <span className="field-label">Ilha</span>
+                <span className="field-value">{address.island || "Não definido"}</span>
+                <select 
+                  className="field-input" 
+                  id="inp-island"
+                  name="island"
+                  value={address.island ?? "SANTIAGO"}
+                  onChange={addressInputChange}
+                  style={{ width: "100%" }}
+                >
+                  <option value="" disabled>Selecionar ilha</option>
+                  {ISLANDS.map((island) => (
+                    <option key={island} value={island}>{island}</option>
+                  ))}
+                </select>
+              </div>
+                                  
+              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                <span className="field-label">Cidade</span>
+                <span className="field-value">{address.city || "Não definido"}</span>
+                <input className="field-input" id="inp-city" type="text"
+                  value={address.city} onChange={addressInputChange} />
+              </div>
+              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                <span className="field-label">Zona</span>
+                <span className="field-value">{address.zone || "Não definido"}</span>
+                <input className="field-input" id="inp-zone" type="text"
+                  value={address.zone} onChange={addressInputChange} />
+              </div>
+              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                <span className="field-label">Código Postal</span>
+                <span className="field-value">{address.postalCode || "Não definido"}</span>
+                <input className="field-input" id="inp-postalCode" type="text"
+                  value={address.postalCode} onChange={addressInputChange} />
+              </div>
+              <div className={`field-group ${isEditing("address") ? "is-editing" : ""}`}>
+                <span className="field-label">Rua</span>
+                <span className="field-value">{address.street || "Não definido"}</span>
+                <input className="field-input" id="inp-street" type="text"
+                  value={address.street} onChange={addressInputChange} />
+              </div>
+            </div>
+
+            {isEditing("address") && (
+              <div className="save-bar visible">
+                <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
+                <button className="btn-save" onClick={() => saveSection("address")}>
+                  <i className="bi bi-check2"></i> Guardar Alterações
+                </button>
+              </div>
+            )}
+          </div>
+          </div>
+
+
+      {/* ---- sobre, largura total ---- */}
       <div className="profile-section" style={{ marginTop: 16 }}>
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-card-text"></i>
-            <span className="section-head-title">About</span>
+            <span className="section-head-title">Sobre</span>
           </div>
           <button
             className={`btn-edit ${isEditing("about") ? "editing" : ""}`}
             onClick={() => (isEditing("about") ? cancelEditing() : startEditing("about"))}
           >
-            <i className="bi bi-pencil"></i> {isEditing("about") ? "Cancel" : "Edit"}
+            <i className="bi bi-pencil"></i> {isEditing("about") ? "Cancelar" : "Editar"}
           </button>
         </div>
 
         <div className="fields-grid single">
           <div className={`field-group ${isEditing("about") ? "is-editing" : ""}`}>
-            <span className="field-label">Description</span>
+            <span className="field-label">Descrição</span>
             <span className="field-value" style={{ whiteSpace: "pre-wrap" }}>
-              {aboutInfo.description || "No description provided."}
+              {aboutInfo.description || "Nenhuma descrição fornecida."}
             </span>
-            <textarea className="field-input" name="description" style={{ width: "100%" }} id="inp-description" rows={10}
-              value={aboutInfo.description} onChange={aboutInfoChange} />
+            <textarea 
+                className="field-input" 
+                name="description" 
+                style={{ width: "100%" }} 
+                id="inp-description" 
+                rows={10}
+                value={aboutInfo.description} 
+                onChange={aboutInfoChange} 
+/>
           </div>
           <div className={`field-group ${isEditing("about") ? "is-editing" : ""}`}>
-            <span className="field-label">Status</span>
+            <span className="field-label">Estado</span>
             <span className="field-value" style={{ whiteSpace: "pre-wrap" }}>
-              {aboutInfo.status || "No description provided."}
+              {aboutInfo.status || "Nenhuma descrição fornecida."}
             </span>
             <select name="status"
               id="inp-status"
@@ -324,39 +344,45 @@ function CompanyOverView({ company }: Parameters) {
               value={aboutInfo.status as string}
               onChange={aboutInfoChange}
             >
-              <option value="" disabled>Select Status...</option>
-              <option value="OPERATING">OPERATING</option>
-              <option value="INACTIVE">INACTIVE</option>
-              <option value="CLOSED">CLOSED</option>
+              <option value="" disabled>Selecionar Estado...</option>
+              <option value="OPERATING">EM FUNCIONAMENTO</option>
+              <option value="INACTIVE">INATIVA</option>
+              <option value="CLOSED">FECHADA</option>
             </select>
           </div>
+            <div className={`field-group ${isEditing("about") ? "is-editing" : ""}`}>
+              <span className="field-label">NIF</span>
+              <span className="field-value">{aboutInfo.taxIdNumber || "Não definido"}</span>
+              <input className="field-input" id="inp-taxIdNumber" type="text" name="taxIdNumber"
+                value={aboutInfo.taxIdNumber} onChange={aboutInfoChange} />
+            </div>
         </div>
 
         {isEditing("about") && (
           <div className="save-bar visible">
-            <button className="btn-cancel" onClick={cancelEditing}>Cancel</button>
+            <button className="btn-cancel" onClick={cancelEditing}>Cancelar</button>
             <button className="btn-save" onClick={() => saveSection("about")}>
-              <i className="bi bi-check2"></i> Save Changes
+              <i className="bi bi-check2"></i> Guardar Alterações
             </button>
           </div>
         )}
       </div>
 
-      {/* ---- updates, read-only ---- */}
+      {/* ---- atualizações, apenas leitura ---- */}
       <div className="profile-section" style={{ marginTop: 16 }}>
         <div className="section-head">
           <div className="section-head-left">
             <i className="bi bi-clock-history"></i>
-            <span className="section-head-title">Updates</span>
+            <span className="section-head-title">Atualizações</span>
           </div>
         </div>
         <div style={{ padding: "16px 22px" }}>
-          <InfoRow label="Created At" value={company.createdAt} />
-          <InfoRow label="Updated At" value={company.updatedAt} />
+          <InfoRow label="Criado em" value={company.createdAt} />
+          <InfoRow label="Atualizado em" value={company.updatedAt} />
         </div>
       </div>
 
-      {/* collapse the two-column grid on small screens */}
+      {/* colapsar as duas colunas em ecrãs pequenos */}
       <style>{`
         @media (max-width: 991px) {
           .company-overview-grid { grid-template-columns: 1fr !important; }
