@@ -79,10 +79,11 @@ try{
     } else if (response.status === 403) {
       alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
     } else if (response.status === 400) {
-        const data = await response.text();
-              console.log("Data: " , data)
+         console.log(response)
+             const data = await response.json();
+              console.log("Data: " , data.error)
               //const errorMessage = JSON.parse(data)
-                alert(data);
+              alert(data.error);
     } else {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
