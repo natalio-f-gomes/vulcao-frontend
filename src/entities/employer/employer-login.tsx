@@ -34,14 +34,40 @@ function EmployerLoginPage() {
     );
   };
 
+    const isValidUsername = (username: string): boolean => {
+    return (
+        !username.includes(' ') && 
+        !username.includes('\'') && 
+        !username.includes('/') && 
+        !username.includes('\\') && 
+        username.length >= 8 && 
+        username.length <= 50
+    );
+}
+
+
 const sendMfACode = async () => {
   if (!loginForm) return;
   setError(null);
   setLoading(true);
 
+    if (!isValidUsername(loginForm.username)) {
+                if (loginForm.username.includes(' ')) {
+                    alert("O nome de utilizador não pode conter espaços.");
+                } else if (loginForm.username.includes('\'')) {
+                    alert("O nome de utilizador não pode conter aspas simples.");
+                } else if (loginForm.username.includes('/') || loginForm.username.includes('\\')) {
+                    alert("O nome de utilizador não pode conter barras (/ ou \\).");
+                } else if (loginForm.username.length < 8 || loginForm.username.length > 50) {
+                    alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+                }
+                 setLoading(false);
+                return;
+            }
+
     const response = await requestEmployerLogin(loginForm.username);
     console.log('MFA CODE REQUEST RESPONSE:', response);
-
+try{
     if (response.status === 202) {
       setShowMFA(true);          // code sent → show the popup
     } else if (response.status === 401) {
@@ -61,7 +87,12 @@ const sendMfACode = async () => {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
     }
-    setLoading(false);
+    }catch(exception){
+      console.log(exception)
+    }finally{
+ setLoading(false);
+    }
+   
 };
   
   
@@ -87,11 +118,12 @@ const sendMfACode = async () => {
       else if(response.status === 401){
           alert("Credenciais inválidas.")
       }
-        else if(response.status === 400){
-             const data = await response.text();
-              console.log("Data: " , JSON.parse(data))
+      else if(response.status === 400){
+        console.log(response)
+             const data = await response.json();
+              console.log("Data: " , data.error)
               //const errorMessage = JSON.parse(data)
-              alert(JSON.parse(data).error);
+              alert(data.error);
         
       }
       else if(response.status === 403){
