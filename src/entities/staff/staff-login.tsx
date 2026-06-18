@@ -37,74 +37,73 @@ function StaffLoginPage() {
  
 
    
-       const sendMfACode = async () => {
-         if (!loginForm) return;
-         setError(null);
-         setLoading(true);
-        
-           const response = await requestStaffLogin(loginForm.username);
-           console.log('MFA CODE REQUEST RESPONSE:', response);
-       
-           if (response.status === 202) {
-             setShowMFA(true);          // code sent → show the popup
-           } else if (response.status === 401) {
-             alert("Dados de autenticação inválidos.");
-           } else if (response.status === 404) {
-             alert("Credenciais incorretas.");
-           } else if (response.status === 409) {
-             alert("Já existe uma entidade com estas credenciais.");
-           } else if (response.status === 403) {
-             alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
-           } else if (response.status === 400) {
-             const data = await response.text();
-            console.log("Data: " , data)
-            const errorMessage = JSON.parse(data)
-              alert(errorMessage.error);
-           } else {
-             alert("Erro inesperado. Por favor volte mais tarde");
-             console.log("Unexpected error", response);
-           }
-          setLoading(false);
-       };
-   
-       const loginRequest = async(code: string) => {
-           if(!loginForm){return;}
-           setError(null)
-           setLoading(true)
- 
-             try{
-       const response = await confirmStaffLogin (code, loginForm)
-       console.log(response)
-       if(!response.ok){
-         console.log("Registration Failed")
-         console.log(response)
-         
-       }
- 
-       if(response.status === 200){
-         alert("Sessão do Utilizador iniciada com sucesso.")
-         await login("staff");
-         window.location.href = "/"
-       }
-        else if(response.status === 403){
-          alert("Dados MFA incorretos. Por favor, tente novamente.")
-        }
-        else if(response.status === 401 || response.status === 400){
-            setShowMFA(false)
-            alert("Credenciais incorretas.")
-        }
-        else{
-            alert("Teve um erro com o servidor. Por favor retorne mais tarde")
-            console.log(response)
-        }
-     }catch(error){
-         setError(`An expected error Occured ${error}`)
-     }finally{setLoading(false)}
- 
-     console.log(error)
- 
-          
-   }
+  const sendMfACode = async () => {
+    if (!loginForm) return;
+    setError(null);
+    setLoading(true);
+  
+      const response = await requestStaffLogin(loginForm.username);
+      console.log('MFA CODE REQUEST RESPONSE:', response);
+  
+      if (response.status === 202) {
+        setShowMFA(true);          // code sent → show the popup
+      } else if (response.status === 401) {
+        alert("Dados de autenticação inválidos.");
+      } else if (response.status === 404) {
+        alert("Credenciais incorretas.");
+      } else if (response.status === 409) {
+        alert("Já existe uma entidade com estas credenciais.");
+      } else if (response.status === 403) {
+        alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
+      } else if (response.status === 400) {
+        const data = await response.text();
+      console.log("Data: " , data)
+      const errorMessage = JSON.parse(data)
+        alert(errorMessage.error);
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde");
+        console.log("Unexpected error", response);
+      }
+    setLoading(false);
+  };
+
+  const loginRequest = async(code: string) => {
+      if(!loginForm){return;}
+      setError(null)
+      setLoading(true)
+
+        try{
+  const response = await confirmStaffLogin (code, loginForm)
+  console.log(response)
+  if(!response.ok){
+    console.log("Registration Failed")
+    console.log(response)
+    
+  }
+
+  if(response.status === 200){
+    alert("Sessão do Utilizador iniciada com sucesso.")
+    await login("staff");
+    window.location.href = "/"
+  }
+  else if(response.status === 403){
+    alert("Dados MFA incorretos. Por favor, tente novamente.")
+  }
+  else if(response.status === 401 || response.status === 400){
+      setShowMFA(false)
+      alert("Credenciais incorretas.")
+  }
+  else{
+      alert("Teve um erro com o servidor. Por favor retorne mais tarde")
+      console.log(response)
+  }
+}catch(error){
+    setError(`An expected error Occured ${error}`)
+}finally{setLoading(false)}
+
+console.log(error)
+
+}
   return (
     <>
     <div className="d-flex flex-column min-vh-100">

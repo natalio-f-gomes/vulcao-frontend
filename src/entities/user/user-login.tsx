@@ -34,10 +34,35 @@ function UserLoginPage() {
     );
   };
 
+      const isValidUsername = (username: string): boolean => {
+    return (
+        !username.includes(' ') && 
+        !username.includes('\'') && 
+        !username.includes('/') && 
+        !username.includes('\\') && 
+        username.length >= 8 && 
+        username.length <= 50
+    );
+}
+
 const sendMfACode = async () => {
   if (!userLoginForm) return;
   setError(null);
   setLoading(true);
+
+     if (!isValidUsername(userLoginForm.username)) {
+        if (userLoginForm.username.includes(' ')) {
+            alert("O nome de utilizador não pode conter espaços.");
+        } else if (userLoginForm.username.includes('\'')) {
+            alert("O nome de utilizador não pode conter aspas simples.");
+        } else if (userLoginForm.username.includes('/') || userLoginForm.username.includes('\\')) {
+            alert("O nome de utilizador não pode conter barras (/ ou \\).");
+        } else if (userLoginForm.username.length < 8 || userLoginForm.username.length > 50) {
+            alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+        }
+          setLoading(false);
+        return;
+      }
 
     const response = await loginUserRequest(userLoginForm.username);
 
@@ -52,8 +77,10 @@ const sendMfACode = async () => {
     } else if (response.status === 403) {
       alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
     } else if (response.status === 400) {
-      alert("Certifique-se de que os campos estão preenchidos apenas com dados válidos.");
-    } else {
+      console.log(response)
+      const data = await response.json();
+      alert(data.error);
+    }else {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
     }
@@ -61,43 +88,49 @@ const sendMfACode = async () => {
 };
 
 
-          const userLoginRequest = async(code: string) => {
-              if(!userLoginForm){return;}
-              setError(null)
-              setLoading(true)
-              try{
-                  const response = await loginUserConfirm(code, userLoginForm)
-                
-                    console.log(response)
-                if(response.status === 200){
-                    alert("Sessão do Utilizador iniciada com sucesso.")
-                    setShowMFA(false)
-                    await login("user");
-                    window.location.href = "/";
-                    return;
-                }
-                else if(response.status === 403){
-                    alert("Dados MFA incorretos. Por favor, tente novamente.")
-                }
-                else if(response.status === 401 || response.status === 400 || response.status === 404){
-                    setShowMFA(false)
-                    alert("Credenciais incorretas.")
-                }
-                else{
-                   alert("Teve um erro com o servidor. Por favor retorne mais tarde")
-                    console.log(response)
-                }
-              }catch(exception){
-                  setError( `Registration Failed ${exception}`)
-              }finally{
-                  setLoading(false)
-              }
-         
+  const userLoginRequest = async(code: string) => {
+    if(!userLoginForm){return;}
+    setError(null)
+    setLoading(true)
+    try{
+      const response = await loginUserConfirm(code, userLoginForm)
+      
+      console.log(response)
+      if(response.status === 200){
+          alert("Sessão do Utilizador iniciada com sucesso.")
+          setShowMFA(false)
+          await login("user");
+          window.location.href = "/";
+          return;
       }
-  
-  
+      else if(response.status === 403){
+          alert("Dados MFA incorretos. Por favor, tente novamente.")
+      }
+       else if(response.status === 400){
+        console.log(response)
+             const data = await response.json();
+              console.log("Data: " , data.error)
+              alert(data.error);
+        
+      }
+      else if(response.status === 401 || response.status === 404){
+          setShowMFA(false)
+          alert("Credenciais incorretas.")
+      }
+      else{
+          alert("Teve um erro com o servidor. Por favor retorne mais tarde")
+          console.log(response)
+      }
+    }catch(exception){
+        setError( `Registration Failed ${exception}`)
+    }finally{
+        setLoading(false)
+    }
+    
+}
 
- 
+
+
   return (
     <>
     <div className="d-flex flex-column min-vh-100">
