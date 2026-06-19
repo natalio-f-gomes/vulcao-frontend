@@ -9,17 +9,6 @@ interface StaffViewParameters{
     company: CompanyModel
 }
 
-export const hanldeResponseStatus = (status: number)=> {
-    switch(status){
-        case 201: alert("Successgully Registered"); return;
-        case 500: alert("There was a server error"); return;
-        case 403: alert("Access Denied"); return;
-        case 401: alert("You do not have the permissions to do this action"); return;
-        case 409: alert("please choose different email or username"); return;
-        case 202: alert("Accepted"); return;
-        case 400: alert("Please verify the data and ensure to follow the rules"); return;
-    }
-}
 
 
 function CompanyStaffView({company}: StaffViewParameters){
@@ -34,10 +23,29 @@ function CompanyStaffView({company}: StaffViewParameters){
         if(response.status === 200){
             setStaffToEdit(null);
             getStaff();
-            alert("Staff Updated successfully");
+            alert("Funcionário(a) atualizado com sucesso.");
             return;
-        }else{
-            hanldeResponseStatus(response.status);
+        }else {
+            // Try to get error message from response
+            let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
+            
+            try {
+                // Try to parse as JSON first
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || data.error || JSON.stringify(data);
+                } else {
+                    // If not JSON, get as text
+                    errorMessage = await response.text();
+                }
+            } catch (parseError) {
+                console.error("Error parsing response:", parseError);
+                // Fallback to status text
+                errorMessage = response.statusText || `Erro ${response.status}`;
+            }
+            
+            alert(errorMessage);
         }
     }
 

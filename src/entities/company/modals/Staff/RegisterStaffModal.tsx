@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { CompanyModel, RegisterStaffModel } from "../../../../api/interfaces";
-import { addressFields, ALL_PERMISSIONS } from "../../../../api/categories";
+import { addressFields, ALL_PERMISSIONS, ISLANDS } from "../../../../api/categories";
 import { Permissions } from "../../../../api/interfaces";
 import { registerStaff } from "../../../../api/requests";
-import { hanldeResponseStatus } from "../../views/StaffView";
+
 interface Parameters{
     isOpen: boolean;
     onClose: ()  => void;
@@ -13,7 +13,7 @@ interface Parameters{
 
 function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
     const [error, setError] = useState<string | null>(null);
-    const [loading,setLoadiong] = useState<boolean>(false);
+    const [loading,setLoading] = useState<boolean>(false);
     const [staff, setStaff] = useState<RegisterStaffModel>({
             username : "",
             firstName:  "",
@@ -36,41 +36,71 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
             password:""
     });
 
-    const handleInputChange  = (event: React.ChangeEvent<HTMLInputElement, HTMLSelectElement>) => {
-        const {name, value} = event.target;
-        if(addressFields.includes(name)){
-            setStaff( (prev ) => ({
+    // FIXED: Handle both input and select events
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = event.target;
+        
+        if (addressFields.includes(name)) {
+            setStaff((prev) => ({
                 ...prev,
                 address: {
                     ...prev.address,
                     [name]: value
                 }
-                }));
-        }else{
-            setStaff( (prev) => ({
+            }));
+        } else {
+            setStaff((prev) => ({
                 ...prev,
-                [name]: value,
+                [name]: name === "salary" ? Number(value) : value,
             }));
         }
     };
 
-    const handleRegisterStaff = async (event: React.SyntheticEvent<HTMLFormElement>)=>{
-        event.preventDefault();
-        setError(null);
-        setLoadiong(true);
+const handleRegisterStaff = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setLoading(true);
+    
+    
+    try {
         const response = await registerStaff(staff);
-        console.log("Response Registering Staff: ", response)
-        if(response.status === 201){
-            alert("Staff Successfylly Registered")
+        console.log("Response Registering Staff: ", response);
+        
+        if (response.status === 201) {
+            alert("Funcionário(a) registado com sucesso.");
             onSuccess();
             onClose();
-        }else{
-          hanldeResponseStatus(response.status);
+        } else {
+            // Try to get error message from response
+            let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
+            
+            try {
+                // Try to parse as JSON first
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await response.json();
+                    errorMessage = data.message || data.error || JSON.stringify(data);
+                } else {
+                    // If not JSON, get as text
+                    errorMessage = await response.text();
+                }
+            } catch (parseError) {
+                console.error("Error parsing response:", parseError);
+                // Fallback to status text
+                errorMessage = response.statusText || `Erro ${response.status}`;
+            }
+            
+            alert(errorMessage);
         }
-       
-        setLoadiong(false)
-    
+    } catch (error) {
+        console.error("Request error:", error);
+        alert("Erro de conexão. Por favor, verifique sua internet e tente novamente.");
+    } finally {
+        setLoading(false);
     }
+};
 
     const handlePermissionToggle = (permission: Permissions) => {
     console.log(permission)
@@ -165,7 +195,32 @@ function RegisterStaffModal({isOpen, onClose, onSuccess, company}:Parameters){
           <div className="m-row">
             <div className="m-field">
               <label className="m-label">Ilha</label>
-              <input className="m-input" type="text" placeholder="ex: Santiago" name="island" onChange={handleInputChange} required/>
+              <select 
+                className="m-input" 
+                name="island"
+                value={staff.address.island || ""}
+                onChange={handleInputChange}
+                style={{ width: "100%" }}
+                required
+              >
+               <option value="" disabled>Selecionar ilha</option>
+                {ISLANDS.map((island) => {
+                  // 1. Replace underscores with spaces and turn to lowercase: "SÃO_VICENTE" -> "são vicente"
+                  // 2. Split by spaces, capitalize the first letter of each word, and join back together
+                  const formattedName = island
+                    .replace(/_/g, ' ')
+                    .toLowerCase()
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+
+                  return (
+                    <option key={island} value={island}>
+                      {formattedName}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="m-field">
               <label className="m-label">Cidade</label>

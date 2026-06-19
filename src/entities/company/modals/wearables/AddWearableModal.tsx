@@ -2,7 +2,6 @@ import { useState } from "react";
 import {  AddWearableModel, CompanyModel } from "../../../../api/interfaces";
 import {  CURRENCIES, WEARABLES_CATEGORY_LIST } from "../../../../api/categories";
 import {  addWearable, postOfferingImageKeys } from "../../../../api/requests";
-import { hanldeResponseStatus } from "../../views/StaffView";
 import { buildImageMetadata, getImageDimensions, uploadFileToS3 } from "../../../../api/ImageValidatorService";
 import { OfferingImageUploadRequest } from "../../../../api/interfaces";
 
@@ -132,9 +131,6 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
   setLoading(false);
 }
 
-    else {
-      hanldeResponseStatus(response.status);
-    }
     setLoading(false);
   };
 

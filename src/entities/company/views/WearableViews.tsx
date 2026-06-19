@@ -4,7 +4,6 @@ import { updateProduct, getProductsByCompanyId, getWearableByCompanyId, updateWe
 import AddProductModal from "../modals/products/AddProductModal";
 import ViewProductModal from "../modals/products/ViewProductModal";
 import EditProductModal from "../modals/products/EditProductModal";
-import { hanldeResponseStatus } from "./StaffView";
 import ImageCarousel from "../../../components/ImageCarousel";
 import UploadImageModal from "../modals/ProductUpdateImageModal";
 import AddWearableModal from "../modals/wearables/AddWearableModal";
@@ -40,7 +39,6 @@ function WearableView({ company, currentEntity}: Paramaters) {
       setWearableToEdit(null);
       return;
     }
-    hanldeResponseStatus(response.status);
   };
 
      const handleDeleteWearable = async () => {

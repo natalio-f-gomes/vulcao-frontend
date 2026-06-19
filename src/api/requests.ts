@@ -1,6 +1,4 @@
 
-
-import { json } from "stream/consumers";
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
 import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel, ResetPasswordRequest, entityType } from "./interfaces";

@@ -3,7 +3,6 @@ import { AddProductModel, CompanyModel } from "../../../../api/interfaces";
 import {  CURRENCIES, ProductCategories, UNIT_TYPES } from "../../../../api/categories";
 import { addProduct, postOfferingImageKeys } from "../../../../api/requests";
 import { companyName } from "../../../../api/global";
-import { hanldeResponseStatus } from "../../views/StaffView";
 import { buildImageMetadata , getImageDimensions, uploadFileToS3 } from "../../../../api/ImageValidatorService";
 import { OfferingImageUploadRequest } from "../../../../api/interfaces";
 
@@ -130,9 +129,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
   setLoading(false);
 }
 
-    else {
-      hanldeResponseStatus(response.status);
-    }
+    
     setLoading(false);
   };
 

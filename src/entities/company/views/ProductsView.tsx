@@ -4,7 +4,6 @@ import { updateProduct, getProductsByCompanyId, deleteProductById } from "../../
 import AddProductModal from "../modals/products/AddProductModal";
 import ViewProductModal from "../modals/products/ViewProductModal";
 import EditProductModal from "../modals/products/EditProductModal";
-import { hanldeResponseStatus } from "./StaffView";
 import ProductImageCarousel from "../../../components/ImageCarousel"; // adjust path
 import UploadImageModal from "../modals/ProductUpdateImageModal";
 import { ConfirmDeleteModal } from "../components/ConfirmDeleteModal";
@@ -38,7 +37,6 @@ function ProductView({ company }: Paramaters) {
       setProductToEdit(null);
       return;
     }
-    hanldeResponseStatus(response.status);
   };
 
    const handleDeleteProduct = async () => {
