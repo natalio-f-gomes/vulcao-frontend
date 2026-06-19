@@ -446,7 +446,7 @@ function AboutPage() {
       {/* LADO ESQUERDO: Texto (Em mobile fica abaixo) */}
       <div className="col-12 col-lg-6 text-center text-lg-start mt-4 mt-lg-0" style={{ paddingRight: 'min(48px, 5%)' }}>
         <div className="hero-eyebrow" style={{ color: 'var(--accent)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '18px' }}>
-          Sobre a {companyName}
+          Sobre o {companyName}.net
         </div>
         <h1 className="hero-title" style={{ fontFamily: 'var(--serif)', fontWeight: 900, fontSize: 'clamp(2.3rem, 5vw, 4.2rem)', lineHeight: 1.1, letterSpacing: '-1.5px' }}>
           Negócios online, encomendas mais <em style={{ color: 'var(--accent)', fontStyle: 'normal' }}>rápidas.</em>

@@ -51,7 +51,6 @@ export interface AddProductModel{
     pricePerUnit:number;
     companyId?: string;
     currency: Currency;
-    creatorUsername: string;
     offeringType?: OfferingType;
     imagesMetadata?: ImageMetadata[],
 }
@@ -60,7 +59,6 @@ export interface ProductModel extends AddProductModel{
     id?:string;
     creatorId?: string;
     updatedBy?: string;
-    companyName?: string;
     createdAt?:string;
     updatedAt?:string;
     imgS3UrlKeys?: string[]

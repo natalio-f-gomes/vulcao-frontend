@@ -104,8 +104,9 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
         const s3PresignKey = preSignResult[index].key;
         console.log("S3 Signed URL: ", s3PresignUrl)
         console.log("S3 Signed KEY: ", s3PresignKey)
-        return uploadFileToS3(s3PresignUrl, image );
         setLoading(true)
+        return uploadFileToS3(s3PresignUrl, image );
+       
       });
 
      try {
@@ -114,7 +115,7 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
         const uploadData: OfferingImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "WEARABLE" };
         const postImgDataResponse =  await postOfferingImageKeys(uploadData);  
         console.log("postImgDataResponse: ",postImgDataResponse);
-          alert("Product and all images successfully added.");
+          alert("Vestível e todas as imagens adicionados com sucesso.");
            setLoading(false);
         } catch (uploadError) {
           console.error("Error during image transfer to S3:", uploadError);

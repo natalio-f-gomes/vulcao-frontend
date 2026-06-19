@@ -329,7 +329,7 @@ function UserCartView({ products }: Props) {
                 <div style={styles.productDetails}>
                   <div style={styles.productHeader}>
                
-                           <small style={{fontWeight:"bold"}}> Company: {item.companyName}</small>
+                           {/* <small style={{fontWeight:"bold"}}> Company: {item.companyName}</small> */}
               
                     <span style={styles.productBadge}>
                       Type: {item.productType.replaceAll("_", " ").toUpperCase()}

@@ -29,6 +29,7 @@ function ProductView({ company }: Paramaters) {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
   const updateProductRequest = async (product: ProductModel) => {
+     let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
     const response = await updateProduct(product.id!, product);
     console.log("RESPONSE: ", response);
     if (response.status === 200) {
@@ -36,6 +37,40 @@ function ProductView({ company }: Paramaters) {
       await getProducts();
       setProductToEdit(null);
       return;
+    }
+     else if(response.status === 400){
+        try {
+            const contentType = response.headers.get("content-type");
+            
+            if (contentType && contentType.includes("application/json")) {
+                const data = await response.json();
+                
+                // Handle different API response structures
+                if (data.message) {
+                    errorMessage = data.message;
+                } else if (data.error) {
+                    errorMessage = data.error;
+                } else if (data.details) {
+                    errorMessage = data.details;
+                } else if (typeof data === 'string') {
+                    errorMessage = data;
+                } else {
+                    errorMessage = JSON.stringify(data);
+                }
+            } else {
+                // Handle plain text responses
+                const text = await response.text();
+                errorMessage = text || response.statusText || `Erro ${response.status}`;
+            }
+        } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            // Fallback to status text if parsing fails
+            errorMessage = response.statusText || `Erro ${response.status}`;
+        }
+        alert(errorMessage);
+        setError(errorMessage);
+
+    
     }
   };
 
@@ -155,13 +190,6 @@ function ProductView({ company }: Paramaters) {
                 <i className="bi bi-card-text" style={{ marginRight: "8px" }}></i>
                 {product.description || "Nenhuma descrição fornecida."}
               </div>
-              <div style={{ marginBottom: "4px" }}>
-                <i className="bi bi-calendar-event" style={{ marginRight: "8px" }}></i>
-                Expira: {product.expirationDate || "N/A"}
-              </div>
-              {product.companyName && (
-                <div><i className="bi bi-building" style={{ marginRight: "8px" }}></i>{product.companyName}</div>
-              )}
             </div>
 
             {/* Estatísticas de Inventário do Produto */}
@@ -177,8 +205,8 @@ function ProductView({ company }: Paramaters) {
                 <div className="biz-stat-label">Adicionado a</div>
               </div>
               <div>
-                <div className="biz-stat-val" style={{ fontSize: 15 }}>@{product.creatorUsername}</div>
-                <div className="biz-stat-label">Adicionado por</div>
+                <div className="biz-stat-val" style={{ fontSize: 15 }}>@{product.expirationDate}</div>
+                <div className="biz-stat-label">Data de expiração</div>
               </div>
             </div>
 

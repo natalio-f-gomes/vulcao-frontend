@@ -31,7 +31,6 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
     pricePerUnit: 0,
     companyId: company.id,
     currency: "CVE",
-    creatorUsername: "",
     offeringType: "PRODUCT",
     imagesMetadata: []
   });
@@ -68,7 +67,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
     event.preventDefault();
     setError(null);
     setLoading(true);
-
+    let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
     for(const image of selectedImages){
        console.log("Dimesions: ",  getImageDimensions(image));
     }
@@ -78,11 +77,47 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
     const response = await addProduct(productRequest);
     console.log("Response Adding Prodcut: ", response);
     if (response.status === 204) {
-      alert("Product Successfully Added. You can Add images later");
+      alert("Produto adicionado com sucesso. Poderá adicionar as imagens mais tarde.");
       onSuccess();
       onClose();
       return;
-    } else if (response.status === 200) {
+    } 
+    else if(response.status === 400){
+        try {
+            const contentType = response.headers.get("content-type");
+            
+            if (contentType && contentType.includes("application/json")) {
+                const data = await response.json();
+                
+                // Handle different API response structures
+                if (data.message) {
+                    errorMessage = data.message;
+                } else if (data.error) {
+                    errorMessage = data.error;
+                } else if (data.details) {
+                    errorMessage = data.details;
+                } else if (typeof data === 'string') {
+                    errorMessage = data;
+                } else {
+                    errorMessage = JSON.stringify(data);
+                }
+            } else {
+                // Handle plain text responses
+                const text = await response.text();
+                errorMessage = text || response.statusText || `Erro ${response.status}`;
+            }
+        } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            // Fallback to status text if parsing fails
+            errorMessage = response.statusText || `Erro ${response.status}`;
+        }
+        alert(errorMessage);
+        setError(errorMessage);
+
+    
+    }
+    
+    else if (response.status === 200) {
 
       const preSignUrlResponse = await response.json();
       const productId: string = preSignUrlResponse.offeringId;
@@ -111,8 +146,8 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
         const keys = preSignResult.map((p) => p.key);
         const uploadData: OfferingImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "PRODUCT" };
         const postImgDataResponse =  await postOfferingImageKeys(uploadData);  
-        console.log("postImgDataResponse: ",postImgDataResponse);
-          alert("Product and all images successfully added.");
+       
+          alert("Produto e todas as imagens adicionados com sucesso.");
            setLoading(false);
         } catch (uploadError) {
           console.error("Error during image transfer to S3:", uploadError);
@@ -127,6 +162,16 @@ function AddProductModal({ isOpen, onClose, onSuccess, company }: Parameters) {
   onSuccess();
   onClose();
   setLoading(false);
+}
+ // Special handling for specific status codes
+else if (response.status === 401) {
+    errorMessage = "Sessão expirada. Por favor, faça login novamente.";
+} else if (response.status === 403) {
+    errorMessage = "Você não tem permissão para realizar esta ação.";
+} else if (response.status === 404) {
+    errorMessage = "Recurso não encontrado.";
+} else if (response.status === 409) {
+    errorMessage = errorMessage || "Conflito: Este recurso já existe.";
 }
 
     

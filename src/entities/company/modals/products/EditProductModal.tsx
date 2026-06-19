@@ -24,7 +24,6 @@ function EditProductModal({isOpen, onClose, onSave, productToEdit, companyName}:
       pricePerUnit:0,
       companyId : "",
       currency: "CVE",
-      creatorUsername: "",
       imgS3UrlKeys:[]
     });
 
@@ -100,31 +99,7 @@ return (
               </div>
             </div>
            
-            <div className="m-row">
-  <div className="m-field">
-    <label className="m-label">Nome do Produto *</label>
-    <input className="m-input" type="text" placeholder="ex: Salmão Fresco" name="name" onChange={handleInputChange} required />
-  </div>
-  <div className="m-field">
-    <label className="m-label">Tipo de Produto *</label>
-    <select className="m-input" name="productType" onChange={handleInputChange} required>
-      <option value="">Selecionar Tipo</option>
-      {ProductCategories.map((category: string) => {
-        const label = category
-          .replaceAll("_", " ")
-          .toLowerCase()
-          .split(' ')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        return (
-          <option key={category} value={category}>
-            {label}
-          </option>
-        );
-      })}
-    </select>
-  </div>
-</div>
+
           </div>
 
           {/* Detalhes de Inventário */}
@@ -155,10 +130,10 @@ return (
 
           {/* Metadados (Indicadores visuais apenas leitura) */}
           <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem" }}>
-            <div className="m-field">
+            {/* <div className="m-field">
               <label className="m-label">Adicionado por</label>
               <input className="m-input" type="text" value={`@${product.creatorUsername}`} readOnly disabled />
-            </div>
+            </div> */}
             <div className="m-field">
               <label className="m-label">Empresa</label>
               <input className="m-input" type="text" value={companyName || "N/A"} readOnly disabled />

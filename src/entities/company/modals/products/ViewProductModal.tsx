@@ -24,9 +24,10 @@ function ViewProductModal({isOpen, onClose, productToView}:Parameters){
       pricePerUnit:0,
       companyId : "",
       currency: "CVE",
-      creatorUsername: "",
       imgS3UrlKeys:[]
     });
+
+
 
     useEffect(()=>{
         if(productToView){
@@ -115,10 +116,10 @@ return (
 
         {/* Metadados (Indicadores visuais apenas leitura) */}
         <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem", display: 'flex' }}>
-          <div className="m-field">
+          {/* <div className="m-field">
             <label className="m-label">Adicionado por</label>
             <input className="m-input" type="text" value={`@${product.creatorUsername}`} readOnly disabled />
-          </div>
+          </div> */}
           <div className="m-field">
             <label className="m-label">Atualizado por</label>
             <input className="m-input" type="text" value={`@${product.updatedBy ?? "Não atualizado"}`} readOnly disabled />
