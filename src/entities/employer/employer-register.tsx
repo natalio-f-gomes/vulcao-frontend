@@ -7,6 +7,7 @@ import GetFooterSection from "../../components/footer";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
+import { isValidUsername } from "../../api/validators";
 
 function EmployerRegistrationPage(){
     const [registrationForm, setRegistrationForm] = useState<UserRegistrationModel>({
@@ -29,16 +30,6 @@ function EmployerRegistrationPage(){
     }
 
 
-   const isValidUsername = (username: string): boolean => {
-    return (
-        !username.includes(' ') && 
-        !username.includes('\'') && 
-        !username.includes('/') && 
-        !username.includes('\\') && 
-        username.length >= 8 && 
-        username.length <= 50
-    );
-}
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
         if(event.target.name === "confirmPassword"){

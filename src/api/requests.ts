@@ -1,8 +1,9 @@
 
 
+import { json } from "stream/consumers";
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel, ResetPasswordRequest, entityType } from "./interfaces";
 
 //const URL = "http://localhost:8080";
 const URL = "";
@@ -577,7 +578,7 @@ export async function getWearableById(id: string) {
 }
 
 export async function updateCredentials(id:string, newCredentials: {username: string, password: string}){
-      const entityType: string | null= localStorage.getItem("active_role");
+    const entityType: string | null= localStorage.getItem("active_role");
     let endpoint: string = '';
     switch(entityType){
         case "user": endpoint = `/v1/user/update/${id}/credentials`;break;
@@ -590,3 +591,28 @@ export async function updateCredentials(id:string, newCredentials: {username: st
         body: JSON.stringify(newCredentials)
     })
 }
+
+
+export async function resetPasswordRequest(entity:entityType, email:string){
+    let endpoint: string = "";
+    switch(entity){
+        case "employer":  endpoint = `/v1/auth/employer/password/reset/request/${email}`; break;
+        case "staff":  endpoint = `/v1/auth/staff/password/reset/request/${email}`; break;
+        default:  endpoint = `/v1/auth/user/password/reset/request/${email}`; break;
+    }
+    return await fetchAPIWithoutCredentials(endpoint, {method:"POST"})
+}
+
+
+export async function resetPasswordConfirm(entity: entityType, email:string, mfaCode: string, newPassword: ResetPasswordRequest){
+    let endpoint: string = "";
+    switch(entity){
+        case "employer":  endpoint = `/v1/auth/employer/password/reset/confirm/${email}/${mfaCode}`; break;
+        case "staff":  endpoint = `/v1/auth/staff/password/reset/confirm/${email}/${mfaCode}`; break;
+        default:  endpoint = `/v1/auth/user/password/reset/confirm/${email}/${mfaCode}`; break;
+    }
+
+    return await fetchAPIWithoutCredentials(endpoint, {method:"POST", body:JSON.stringify(newPassword)});
+}
+
+

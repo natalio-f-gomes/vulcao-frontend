@@ -7,6 +7,7 @@ import GetFooterSection from "../../components/footer";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
+import { isValidEmail, isValidUsername } from "../../api/validators";
 
 function UserRegistrationPage(){
     const [userRegistrationForm, setUserRegistrationForm] = useState<UserRegistrationModel>({
@@ -25,23 +26,7 @@ function UserRegistrationPage(){
     const [loading, setLoading] = useState(false)
 
 
-    // Email validation function
-    const isValidEmail = (email: string): boolean => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
 
-
-   const isValidUsername = (username: string): boolean => {
-    return (
-        !username.includes(' ') && 
-        !username.includes('\'') && 
-        !username.includes('/') && 
-        !username.includes('\\') && 
-        username.length >= 8 && 
-        username.length <= 50
-    );
-}
 
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>{

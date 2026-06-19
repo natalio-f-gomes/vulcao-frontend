@@ -415,3 +415,9 @@ export interface WearableModel extends AddWearableModel{
     updatedAt?:string;
     imgS3UrlKeys?: string[]
 }
+
+export interface ResetPasswordRequest{
+  newPassword: string;
+}
+
+export type entityType = "user" | "staff" | "employer"

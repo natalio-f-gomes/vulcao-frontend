@@ -8,6 +8,7 @@ import MFAComponent from "../../components/MFAComponent";
 import { confirmEmployerLogin, loginUserRequest, requestEmployerLogin } from "../../api/requests";
 import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
+import { isValidUsername } from "../../api/validators";
 
 function EmployerLoginPage() {
   const {login} = useUserAuthManager();
@@ -34,16 +35,7 @@ function EmployerLoginPage() {
     );
   };
 
-    const isValidUsername = (username: string): boolean => {
-    return (
-        !username.includes(' ') && 
-        !username.includes('\'') && 
-        !username.includes('/') && 
-        !username.includes('\\') && 
-        username.length >= 8 && 
-        username.length <= 50
-    );
-}
+
 
 
 const sendMfACode = async () => {
@@ -203,7 +195,7 @@ try{
         </div>
         
         <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
-        
+           <span><a href="password-reset/employer">Esqueci a senha</a></span> <br />
         <div className="text-center">
           <Link to="/employer-register" className="text-secondary text-decoration-none small">
             Novo no {companyName}.net? <span style={{color: '#c8452a'}}>Criar Conta</span>

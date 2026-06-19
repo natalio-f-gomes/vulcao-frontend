@@ -161,6 +161,7 @@ console.log(error)
             </div>
             
             <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Sign In</button>
+               <span><a href="password-reset/staff">Esqueci a senha</a></span> <br />
              <GetTermsSection/>
             
            

@@ -23,6 +23,7 @@ import BusinessPublicOverView from "./ public/PublicBusinessesPage/BusinessPubli
 import AboutPage from "./ public/AboutPage";
 import TermsPage from "./ public/terms";
 import FeatureRequestPage from "./ public/feature-request";
+import PasswordResetPage from "./ public/PasswordReset";
 
 
 
@@ -54,6 +55,7 @@ function App(){
             <Route path="/about" element={<AboutPage/>}/>
             <Route path="/terms" element={<TermsPage/>}/>
             <Route path="/feature-request" element={<FeatureRequestPage/>}/>
+            <Route path="/password-reset/:entity" element={<PasswordResetPage/>} />
             
         </Routes>
     </AuthProvider>

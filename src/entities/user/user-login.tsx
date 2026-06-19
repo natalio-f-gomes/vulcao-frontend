@@ -8,6 +8,7 @@ import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
 import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
+import { isValidUsername } from "../../api/validators";
 
 function UserLoginPage() {
   const {login} = useUserAuthManager();
@@ -34,16 +35,6 @@ function UserLoginPage() {
     );
   };
 
-      const isValidUsername = (username: string): boolean => {
-    return (
-        !username.includes(' ') && 
-        !username.includes('\'') && 
-        !username.includes('/') && 
-        !username.includes('\\') && 
-        username.length >= 8 && 
-        username.length <= 50
-    );
-}
 
 const sendMfACode = async () => {
   if (!userLoginForm) return;
@@ -188,6 +179,9 @@ const sendMfACode = async () => {
           </div>
           
           <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
+
+
+          <span><a href="password-reset/user">Esqueci a senha</a></span> <br />
          <GetTermsSection/>
           
           <div className="text-center">
