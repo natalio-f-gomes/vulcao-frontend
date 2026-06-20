@@ -229,6 +229,7 @@ return (
                       fontSize: "0.72rem",
                       fontWeight: 600,
                       letterSpacing: "0.08em",
+                      maxWidth: "150px",
                       textTransform: "uppercase",
                       border: "1px solid #d8d3cc",
                       borderRadius: 0,

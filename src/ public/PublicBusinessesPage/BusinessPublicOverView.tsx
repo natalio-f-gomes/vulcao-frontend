@@ -49,7 +49,7 @@ function BusinessPublicOverView() {
         return;
       }
       try {
-        const [companyRes, productsRes] = await Promise.all([
+        const [companyRes, productsRes, wearableRes] = await Promise.all([
           getCompanyDashboard(id),
           getProductsByCompanyId(id),
           getWearableByCompanyId(id)
@@ -61,6 +61,7 @@ function BusinessPublicOverView() {
         }
         setCompany(await companyRes.json());
         if (productsRes.ok) setProducts(await productsRes.json());
+         if (wearableRes.ok) setWearables(await wearableRes.json());
       } catch (err) {
         console.error("Failed to load business page:", err);
         setLoadError("Could not load this business.");
@@ -129,7 +130,6 @@ function BusinessPublicOverView() {
 }, [activeView]);
 
   const cartCount = cartItems.reduce((sum, line) => sum + line.quantity, 0);
-
   if (loading) {
     return <div style={{ padding: "6rem", textAlign: "center", color: "var(--mid)" }}>Loading business…</div>;
   }
@@ -168,6 +168,7 @@ return (
             onNavigate={(view) => { setActiveView(view); sidebar.close(); }}
             currentUser={currentUser}
             cartCount={cartCount}
+            orderCount={orders.length}
           />
         </ResponsiveSidebar>
 

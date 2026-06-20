@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CartItem, CompanyModel, PlaceOrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
-import { getProductById, placeOrder, removeItemFromCart } from "../../api/requests";
+import { CartItem, CompanyModel, PlaceOrderModel, ProductModel, UserProfileModel, WearableModel } from "../../api/interfaces";
+import { getProductById, getWearableById, placeOrder, removeItemFromCart } from "../../api/requests";
 import { imageUrlFromKey } from "../../components/ImageCarousel";
+
+
 
 
 interface CartViewProps {
@@ -14,6 +16,7 @@ interface CartViewProps {
 export default function CartView({ company, currentUser, cartItems }: CartViewProps) {
   const navigate = useNavigate();
   const [productList, setProductList] = useState<ProductModel[]>([]);
+  const [wearableList, setWearableList] = useState<WearableModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [order,setOrder]= useState<PlaceOrderModel>({
       userId: "",
@@ -29,10 +32,12 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
   const [productIdToBeDeleted, setProductIdToBeDeleted] = useState<string | null>(null);
 
   const placeOrderRequest =  async () => {
-      if(order === null || productList === null){
+      if(order === null && productList === null && wearableList === null){
           alert("O seu carrinho está vazio!");
           return;
       }
+    
+
       const response = await placeOrder(order);
       console.log("RESPOSTA AO COLOCAR ENCOMENDA: ", response);
       if(!response.ok){
@@ -47,26 +52,42 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
   }
 
   useEffect(() => {
-    const loadCartProducts = async () => {
+    const loadCartItems = async () => {
       if (cartItems.length === 0) {
         setProductList([]);
+        setWearableList([])
         return;
       }
       setLoading(true);
       try {
-        const responses = await Promise.all(
-          cartItems.map((item) => getProductById(item.id!))
-        );
+       const responses = await Promise.all(
+        cartItems.map((item) => {
+        if (item.itemType === "PRODUCT")  return getProductById(item.id!);
+        if (item.itemType === "WEARABLE") return getWearableById(item.id!);
+        return undefined;
+  })
+);
 
-        const products: ProductModel[] = [];
-        for (const res of responses) {
-          if (!res || !res.ok) {
-            console.log("There was an issue loading one of the cart products");
-            continue; 
-          }
-          products.push(await res.json());
-        }
-        setProductList(products);
+const products: ProductModel[] = [];
+const wearables: WearableModel[] = [];
+
+for (let i = 0; i < responses.length; i++) {
+  const res = responses[i];
+  const item = cartItems[i];            // same index → same item
+  if (!res || !res.ok) {
+    console.log("There was an issue loading one of the cart items");
+    continue;
+  }
+  const data = await res.json();        // a single ProductModel / WearableModel
+  if (item.itemType === "PRODUCT") {
+    products.push(data as ProductModel);
+  } else if (item.itemType === "WEARABLE") {
+    wearables.push(data as WearableModel);
+  }
+}
+
+setProductList(products);
+setWearableList(wearables);
       } catch (err) {
         console.error("There was an issue loading cart products:", err);
       } finally {
@@ -77,22 +98,29 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
       }
     };
 
-    loadCartProducts();
+    loadCartItems();
   }, [cartItems]);
 
-  const totalPrice = useMemo(() => {
-    return productList.reduce((sum, product) => {
-      const quantity = cartItems.find((item) => item.id === product.id)?.quantity ?? 0;
-      return sum + product.pricePerUnit * quantity;
-    }, 0);
-  }, [productList, cartItems]);
+ const totalPrice = useMemo(() => {
+  const productTotal = productList.reduce((sum, product) => {
+    const quantity = cartItems.find((item) => item.id === product.id)?.quantity ?? 0;
+    return sum + product.pricePerUnit * quantity;
+  }, 0);
+
+  const wearableTotal = wearableList.reduce((sum, wearable) => {
+    const quantity = cartItems.find((item) => item.id === wearable.id)?.quantity ?? 0;
+    return sum + wearable.price * quantity;
+  }, 0);
+
+  return productTotal + wearableTotal;
+}, [productList, wearableList, cartItems]);
 
   const quantityFor = (productId?: string) =>
     cartItems.find((ci) => ci.id === productId)?.quantity ?? 0;
 
   const currencySymbol = productList[0]?.currency || "";
 
-  const removeProductFromCart = async (itemId?: string) => {
+  const removeItemsFromCart = async (itemId?: string) => {
     if (itemId && company.id) {
         // Set the specific ID being deleted instead of global loading flag
         setProductIdToBeDeleted(itemId);
@@ -178,25 +206,27 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
         }
       `}</style>
 
-      <div className="section-header"><h2 className="section-title">My Cart</h2></div>
+      <div className="section-header"><h2 className="section-title">Meu carrinho</h2></div>
 
       {loading ? (
-        <p style={{ color: "var(--mid)" }}>Loading your cart…</p>
-      ) : productList.length === 0 ? (
-        <p style={{ color: "var(--mid)" }}>Your cart for this business is empty. Browse the products tab to add items.</p>
+        <p style={{ color: "var(--mid)" }}>Carregando o seu carrinho</p>
+      ) : productList.length === 0 && wearableList.length === 0 ? (
+        <p style={{ color: "var(--mid)" }}>Seu carrinho da empresa {company.name} está vazio.</p>
       ) : (
         <div style={{ background: "#fff", border: "1px solid #e8e4de" }}>
+
+          {/* Products */}
           {productList.map((product) => {
             const isDeletingThisItem = productIdToBeDeleted === product.id;
 
             return (
               <div
                 key={product.id}
-                style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: 16, 
-                  padding: "18px 20px", 
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  padding: "18px 20px",
                   borderBottom: "1px solid #f0ece6",
                   opacity: isDeletingThisItem ? 0.5 : 1, // Visual cue that item is on its way out
                   transition: "opacity 0.2s"
@@ -210,7 +240,6 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
                     <i className="bi bi-box-seam" style={{ fontSize: "1.4rem", color: "#aaa", margin: 16 }} />
                   )}
                 </div>
-               
 
                 {/* Product Info */}
                 <div style={{ flex: 1 }}>
@@ -225,7 +254,7 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
                   <button
                     type="button"
                     disabled={isDeletingThisItem} // Prevent double clicking
-                    onClick={() => removeProductFromCart(product.id)}
+                    onClick={() => removeItemsFromCart(product.id)}
                     style={{
                       background: "none",
                       border: "none",
@@ -255,42 +284,100 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
             );
           })}
 
-          <div
-              style={{
-                margin: "12px",
-                width: "calc(100% - 24px)"
-              }}
-            >
-              <textarea
-                id="note"
-                name="note"
-                placeholder="Adicione instruções ao seu pedido..."
-                onChange={handleInputChange}
-                maxLength={5000}
-                style={{
-                  width: "100%",
-                  minHeight: "140px",
-                  padding: "12px",
-                  border: "1px solid #d8d3cc",
-                  borderRadius: "4px",
-                  resize: "vertical",
-                  fontSize: "0.95rem",
-                  fontFamily: "inherit",
-                  lineHeight: "1.5",
-                  boxSizing: "border-box",
-                  backgroundColor: "#fff"
-                }}
-              />
+          {/* Wearables */}
+          {wearableList.map((item) => {
+            const isDeletingThisItem = productIdToBeDeleted === item.id;
+
+            return (
               <div
+                key={item.id}
                 style={{
-                  textAlign: "right",
-                  fontSize: "0.75rem",
-                  color: "#888",
-                  marginTop: "4px"
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  padding: "18px 20px",
+                  borderBottom: "1px solid #f0ece6",
+                  opacity: isDeletingThisItem ? 0.5 : 1, // Visual cue that item is on its way out
+                  transition: "opacity 0.2s"
                 }}
               >
-                Maximum 5000 characters
+                {/* Wearable Image */}
+                <div style={{ width: 56, height: 56, background: "#f0ece6", flexShrink: 0, overflow: "hidden" }}>
+                  {item.imgS3UrlKeys?.[0] ? (
+                    <img src={imageUrlFromKey(item.imgS3UrlKeys[0])} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ) : (
+                    <i className="bi bi-box-seam" style={{ fontSize: "1.4rem", color: "#aaa", margin: 16 }} />
+                  )}
+                </div>
+
+                {/* Wearable Info */}
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600 }}>{item.name}</div>
+                  <div style={{ fontSize: "0.82rem", color: "var(--mid)" }}>
+                    {item.price} {item.currency} × {quantityFor(item.id)}
+                  </div>
+                </div>
+
+                {/* Inline Delete Button / Loading Loader */}
+                <div>
+                  <button
+                    type="button"
+                    disabled={isDeletingThisItem} // Prevent double clicking
+                    onClick={() => removeItemsFromCart(item.id)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "#dc3545",
+                      cursor: isDeletingThisItem ? "not-allowed" : "pointer",
+                      padding: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "4px",
+                      transition: "background-color 0.2s",
+                      minWidth: "34px",
+                      minHeight: "34px"
+                    }}
+                    onMouseEnter={(e) => !isDeletingThisItem && (e.currentTarget.style.backgroundColor = "#fff5f5")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                    title="Remove item"
+                  >
+                    {isDeletingThisItem ? (
+                      <div className="spinner-mini" />
+                    ) : (
+                      <i className="bi bi-trash" style={{ fontSize: "1.2rem" }} />
+                    )}
+                  </button>
+                </div>
               </div>
+            );
+          })}
+
+          {/* Order note */}
+          <div style={{ margin: "12px", width: "calc(100% - 24px)" }}>
+            <textarea
+              id="note"
+              name="note"
+              placeholder="Adicione instruções ao seu pedido..."
+              onChange={handleInputChange}
+              maxLength={5000}
+              style={{
+                width: "100%",
+                minHeight: "140px",
+                padding: "12px",
+                border: "1px solid #d8d3cc",
+                borderRadius: "4px",
+                resize: "vertical",
+                fontSize: "0.95rem",
+                fontFamily: "inherit",
+                lineHeight: "1.5",
+                boxSizing: "border-box",
+                backgroundColor: "#fff"
+              }}
+            />
+            <div style={{ textAlign: "right", fontSize: "0.75rem", color: "#888", marginTop: "4px" }}>
+              Maximum 5000 characters
+            </div>
           </div>
 
           {/* Stacks on small/medium (button at the bottom), row on large */}
@@ -305,8 +392,10 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
               Place Order
             </button>
           </div>
+
         </div>
       )}
     </section>
   );
+
 }

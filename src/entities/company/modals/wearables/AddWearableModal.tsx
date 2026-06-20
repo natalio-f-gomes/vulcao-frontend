@@ -70,7 +70,7 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
     event.preventDefault();
     setError(null);
     setLoading(true);
-
+    let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
     for(const image of selectedImages){
        console.log("Dimesions: ",  getImageDimensions(image));
     }
@@ -80,11 +80,47 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
     const response = await addWearable(itemRequest);
     console.log("Response Adding Wearable: ", response);
     if (response.status === 204) {
-      alert("Product Successfully Added. You can Add images later");
+    alert("Vestível adicionado com sucesso. Você pode adicionar imagens mais tarde.");
       onSuccess();
       onClose();
       return;
-    } else if (response.status === 200) {
+    } 
+    else if (response.status === 400){
+         try {
+            const contentType = response.headers.get("content-type");
+            
+            if (contentType && contentType.includes("application/json")) {
+                const data = await response.json();
+                
+                // Handle different API response structures
+                if (data.message) {
+                    errorMessage = data.message;
+                } else if (data.error) {
+                    errorMessage = data.error;
+                } else if (data.details) {
+                    errorMessage = data.details;
+                } else if (typeof data === 'string') {
+                    errorMessage = data;
+                } else {
+                    errorMessage = JSON.stringify(data);
+                }
+            } else {
+                // Handle plain text responses
+                const text = await response.text();
+                errorMessage = text || response.statusText || `Erro ${response.status}`;
+            }
+        } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            // Fallback to status text if parsing fails
+            errorMessage = response.statusText || `Erro ${response.status}`;
+        }
+        alert(errorMessage);
+        setError(errorMessage);
+
+    
+    }
+    
+    else if (response.status === 200) {
 
       const preSignUrlResponse = await response.json();
       const productId: string = preSignUrlResponse.offeringId;
@@ -146,7 +182,7 @@ function AddWearableModal({ isOpen, onClose, onSuccess, company }: Parameters) {
   <div className="m-overlay open">
     <div className="m-box">
       <div className="m-head">
-        <span className="m-head-title">Adicionar Novo Produto</span>
+        <span className="m-head-title">Adicionar Novo Vestível</span>
         <button className="m-close" onClick={() => onClose()}>&times;</button>
       </div>
       <form id="productRegistrationForm" onSubmit={handleAddWearableItem}>

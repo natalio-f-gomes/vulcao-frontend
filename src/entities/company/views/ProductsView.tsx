@@ -31,7 +31,7 @@ function ProductView({ company }: Paramaters) {
   const updateProductRequest = async (product: ProductModel) => {
      let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
     const response = await updateProduct(product.id!, product);
-    console.log("RESPONSE: ", response);
+  
     if (response.status === 200) {
       alert("Producto Atualizada");
       await getProducts();
@@ -63,7 +63,7 @@ function ProductView({ company }: Paramaters) {
                 errorMessage = text || response.statusText || `Erro ${response.status}`;
             }
         } catch (parseError) {
-            console.error("Error parsing response:", parseError);
+            //console.error("Error parsing response:", parseError);
             // Fallback to status text if parsing fails
             errorMessage = response.statusText || `Erro ${response.status}`;
         }
@@ -177,11 +177,11 @@ function ProductView({ company }: Paramaters) {
 
             {/* Nome e Tipo do Produto */}
             <div className="biz-name" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{product.name}</div>
-            <div className="biz-cat" style={{ color: "#6c757d", fontSize: "0.85rem", marginBottom: "10px" }}>{product.productType}</div>
+            <div className="biz-cat" style={{ color: "#6c757d", fontSize: "0.85rem", marginBottom: "10px" }}>{product.productType.replaceAll("_", " ")}</div>
 
             {/* Etiqueta de preço */}
             <div className="product-price" style={{ fontWeight: "600", color: "#198754", fontSize: "1.1rem", marginBottom: "15px" }}>
-              {product.pricePerUnit} {product.currency} / {product.unitType}
+              {product.pricePerUnit} {product.currency} / {product.unitType.replaceAll("_", " ")}
             </div>
 
             {/* Detalhes do Produto */}
@@ -196,7 +196,7 @@ function ProductView({ company }: Paramaters) {
             <div className="biz-stats" style={{ width: "100%" }}>
               <div>
                 <div className="biz-stat-val" style={{ fontSize: 15 }}>{product.stock}</div>
-                <div className="biz-stat-label">Stock ({product.unitType}s)</div>
+                <div className="biz-stat-label">Stock ({product.unitType.replaceAll("_", " ")}s)</div>
               </div>
               <div>
                 <div className="biz-stat-val" style={{ fontSize: 15 }}>

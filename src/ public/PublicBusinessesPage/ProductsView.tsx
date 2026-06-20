@@ -107,7 +107,7 @@ const handleAddItemToCart = async (product: ProductModel) => {
                 style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "10px", width: "100%" }}
               >
                 <span className="product-price">
-                  ${product.pricePerUnit} {product.currency} / {product.unitType}
+                  ${product.pricePerUnit} {product.currency} / {product.unitType.replaceAll("_", " ")}
                 </span>
 
                 <div

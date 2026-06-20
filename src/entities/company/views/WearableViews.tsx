@@ -31,6 +31,7 @@ function WearableView({ company, currentEntity}: Paramaters) {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
   const updateWearableRequest = async (wearable: WearableModel) => {
+    let errorMessage = "Ocorreu um erro inesperado. Por favor, tente novamente.";
     const response = await updateWearable(wearable.id!, wearable);
     console.log("RESPONSE: ", response);
     if (response.status === 200) {
@@ -38,7 +39,41 @@ function WearableView({ company, currentEntity}: Paramaters) {
       await getWearables();
       setWearableToEdit(null);
       return;
+    } else if (response.status === 400){
+         try {
+            const contentType = response.headers.get("content-type");
+            
+            if (contentType && contentType.includes("application/json")) {
+                const data = await response.json();
+                
+                // Handle different API response structures
+                if (data.message) {
+                    errorMessage = data.message;
+                } else if (data.error) {
+                    errorMessage = data.error;
+                } else if (data.details) {
+                    errorMessage = data.details;
+                } else if (typeof data === 'string') {
+                    errorMessage = data;
+                } else {
+                    errorMessage = JSON.stringify(data);
+                }
+            } else {
+                // Handle plain text responses
+                const text = await response.text();
+                errorMessage = text || response.statusText || `Erro ${response.status}`;
+            }
+        } catch (parseError) {
+            console.error("Error parsing response:", parseError);
+            // Fallback to status text if parsing fails
+            errorMessage = response.statusText || `Erro ${response.status}`;
+        }
+        alert(errorMessage);
+        setError(errorMessage);
+
+    
     }
+    
   };
 
      const handleDeleteWearable = async () => {

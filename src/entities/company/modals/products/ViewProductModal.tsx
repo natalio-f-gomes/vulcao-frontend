@@ -84,7 +84,7 @@ return (
           <div className="m-field">
             <label className="m-label">Tipo de Unidade *</label>
             <select className="m-input" name="productType" disabled>
-              <option value="">{product.unitType}</option>
+              <option value="">{product.unitType.replaceAll("_", " ")}</option>
             </select>
           </div>
         </div>
@@ -121,7 +121,7 @@ return (
             <input className="m-input" type="text" value={`@${product.creatorUsername}`} readOnly disabled />
           </div> */}
           <div className="m-field">
-            <label className="m-label">Atualizado por</label>
+            <label className="m-label">Atualizado por</label> 
             <input className="m-input" type="text" value={`@${product.updatedBy ?? "Não atualizado"}`} readOnly disabled />
           </div>
           <div className="m-field">

@@ -339,7 +339,7 @@ function UserCartView({ products }: Props) {
                     <p style={styles.productDescription}>{item.description}</p>
                     <span style={styles.productPrice}>
                       ${item.pricePerUnit}{" "}
-                      <span style={styles.unitText}>per {item.unitType}</span>
+                      <span style={styles.unitText}>per {item.unitType.replaceAll("_ ", " ")}</span>
                     </span>
                   </div>
 

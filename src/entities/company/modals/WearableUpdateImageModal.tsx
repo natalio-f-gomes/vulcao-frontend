@@ -83,7 +83,7 @@ function WearableUploadImageModal({ isOpen, onClose, wearableToEdit }: Parameter
                 const uploadData: OfferingImageUploadRequest = { s3PresignKeys: keys, offeringId: productId, offeringType: "WEARABLE" };
                 const postImgDataResponse =  await postOfferingImageKeys(uploadData);  
                 console.log("postImgDataResponse: ",postImgDataResponse);
-                  alert("Vestível e todas as imagens adicionados com sucesso.");
+                  alert("Vestível e todas as imagens adicionados com sucesso. Por favor atualiza a pagina para ver a diferença");
                    setLoading(false);
                 } catch (uploadError) {
                   console.error("Error during image transfer to S3:", uploadError);
@@ -138,7 +138,7 @@ function WearableUploadImageModal({ isOpen, onClose, wearableToEdit }: Parameter
 
           <div style={{ marginBottom: "20px" }}>
             <label style={{ fontWeight: "600", fontSize: "0.9rem", display: "block", marginBottom: "8px" }}>
-              Current Active Images ({existingImages.length})
+                Imagens atuais  ({existingImages.length})
             </label>
             
             {existingImages.length === 0 ? (
@@ -183,7 +183,7 @@ function WearableUploadImageModal({ isOpen, onClose, wearableToEdit }: Parameter
             {/* Product Images Field */}
             <div className="m-field">
               <label className="m-label" style={{ marginBottom: "8px", display: "block", fontWeight: "600" }}>
-                New Images to Upload
+                Novas Imagens para Enviar
               </label>
               
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>

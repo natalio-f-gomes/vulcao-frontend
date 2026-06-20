@@ -83,7 +83,7 @@ function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
                 const uploadData: CompanyImageUploadRequest = { s3PresignKeys: keys, companyId: companyId, };
                 const postImgDataResponse =  await postCompanyImageKeys(uploadData);  
                 console.log("postImgDataResponse: ",postImgDataResponse);
-                  alert("COMPANY and all images successfully added.");
+                  alert("Sua empresa e todas as imagens foram adicionadas com sucesso.");
                    setLoading(false);
                    window.location.reload();
                 } catch (uploadError) {
@@ -134,17 +134,17 @@ function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
         
         <div style={{ padding: "15px 15px 0 15px" }}>
           <span style={{ fontSize: "0.85rem", color: "#6c757d", display: "block", marginBottom: "12px" }}>
-            You can have at most {MAX_OFFERING_PICTURES} pictures per offering.
+           "Você pode ter no máximo {MAX_OFFERING_PICTURES} fotos por oferta."
           </span>
 
           <div style={{ marginBottom: "20px" }}>
             <label style={{ fontWeight: "600", fontSize: "0.9rem", display: "block", marginBottom: "8px" }}>
-              Current Active Images ({existingImages.length})
+                Imagens atuais  ({existingImages.length})
             </label>
             
             {existingImages.length === 0 ? (
               <div style={{ color: "#8c8c8c", fontSize: "0.85rem", fontStyle: "italic", padding: "10px", background: "#f5f5f5", borderRadius: "4px" }}>
-                No active images found for this offering.
+               Nenhuma imagem encontrada para esta oferta.
               </div>
             ) : (
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", background: "#f8f9fa", padding: "10px", borderRadius: "6px", border: "1px solid #e9ecef" }}>
@@ -184,7 +184,7 @@ function UpdateCompanyImageModal({ isOpen, onClose, company }: Parameters) {
             {/* Product Images Field */}
             <div className="m-field">
               <label className="m-label" style={{ marginBottom: "8px", display: "block", fontWeight: "600" }}>
-                New Images to Upload
+                Novas Imagens para Enviar
               </label>
               
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>

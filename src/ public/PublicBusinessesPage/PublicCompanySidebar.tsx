@@ -87,6 +87,7 @@ interface PublicSidebarProps {
   onNavigate: (view: PublicView) => void;
   currentUser: UserProfileModel | null;
   cartCount: number;
+  orderCount: number
 }
 
 export default function PublicCompanySidebar({
@@ -94,7 +95,8 @@ export default function PublicCompanySidebar({
   activeView,
   onNavigate,
   currentUser,
-  cartCount
+  cartCount,
+  orderCount
 }: PublicSidebarProps) {
   const navigate = useNavigate();
 
@@ -131,6 +133,7 @@ export default function PublicCompanySidebar({
     </a>
     <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
       <i className="bi bi-receipt" /> As Minhas Encomendas
+       {orderCount > 0 && <span style={sidebarStyles.badge}>{orderCount}</span>}
     </a>
   </nav>
 
