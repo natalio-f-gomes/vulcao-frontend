@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { CompanyModel, EmployerModel, OrderItemModel, OrderModel, StaffModel, UserProfileModel } from "../../../api/interfaces";
 import { getOrderItemById, getUserById, updateOrderStatus } from "../../../api/requests";
 import { OrderStatus } from "../../../api/categories";
+import { orderStatusTranslations } from "../../../ public/PublicBusinessesPage/OrdersView";
 
 interface OrderProps {
   orders: OrderModel[];
@@ -161,7 +162,7 @@ const loadUsers = async (): Promise<Record<string, UserProfileModel | null>> => 
       alert("Could not update the order status. Please try again.");
     }
     if(res.status === 200){
-        alert("ORDER STATUS SUCESSFULLY UPDATED.")
+       alert("STATUS DO PEDIDO ATUALIZADO COM SUCESSO. Enviamos uma notificação para o e-mail de ambas as partes.");
     }
   } catch (err) {
     setStatusOverrides((prev) => ({ ...prev, [order.id!]: previous }));
@@ -238,7 +239,9 @@ return (
                   >
                     {ORDER_STATUSES.map((status) => (
                       <option key={status} value={status}>
-                        {status}
+                        
+                           {orderStatusTranslations[status]}
+                                    
                       </option>
                     ))}
                   </select>

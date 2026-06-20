@@ -374,6 +374,12 @@ export async function getProductsByCompanyId(companyId: string) {
     return await fetchAPIWithCredentials(endpoint, {method:"GET"})
 }
 
+export async function getWearablesByCompanyId(companyId: string) {
+    const endpoint =  `/v1/public/offering/get/wearable/company/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"GET"})
+}
+
+
 export async function getProductById(id: string) {
     const endpoint =  `/v1/public/offering/product/get/${id}`
     return await fetchAPIWithoutCredentials(endpoint, {method:"GET"})
@@ -399,6 +405,13 @@ export async function addProductToCart(productId:string, quantity: number, compa
     const endpoint =  `/v1/user/cart/add/product/${productId}/${quantity}/${companyId}`
     return await fetchAPIWithCredentials(endpoint, {method:"POST"})
 }
+
+export async function addWearableToCart(itemId:string, quantity: number, companyId: string) {
+    const endpoint =  `/v1/user/cart/add/wearable/${itemId}/${quantity}/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"POST"})
+}
+
+
 
 export async function decrementCartItemQuantity(productId:string, quantity: number) {
     const endpoint =  `/v1/user/cart/decrement/product/${productId}/${quantity}`

@@ -120,6 +120,9 @@ export default function PublicCompanySidebar({
     <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
       <i className="bi bi-box-seam" /> Produtos
     </a>
+     <a style={itemStyle("wearables")} onClick={() => onNavigate("wearables")}>
+      <i className="bi bi-box-seam" /> Vestíveis
+    </a>
 
     <div style={sidebarStyles.sectionLabel}>A Sua Conta</div>
     <a style={itemStyle("cart")} onClick={() => onNavigate("cart")}>

@@ -23,8 +23,7 @@ function UserLoginPage() {
   const [error, setError] = useState<string|null>(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(userLoginForm.username)
-  console.log(userLoginForm.password)
+ 
   const onNavigate = useNavigate();
 
   const handleUserInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

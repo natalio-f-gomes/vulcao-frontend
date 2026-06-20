@@ -6,8 +6,9 @@ import {
   getUserProfileData,
   getCompanyCartItems,
   getAllCompanyAndUserOrders,
+  getWearableByCompanyId,
 } from "../../api/requests";
-import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
+import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel, WearableModel } from "../../api/interfaces";
 import GetFooterSection from "../../components/footer";
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
 import { ResponsiveSidebar } from "../../hooks/ResponsiveSidebar";
@@ -18,8 +19,9 @@ import OverviewView from "./OverviewView";
 import ProductsView from "./ProductsView";
 import CartView from "./CartView";
 import OrdersView from "./OrdersView";
+import WearableView from "./WearablesView";
 
-export type PublicView = "overview" | "products" | "cart" | "orders";
+export type PublicView = "overview" | "products" | "cart" | "orders" | "wearables";
 
 function BusinessPublicOverView() {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +36,8 @@ function BusinessPublicOverView() {
   const [orders, setOrders] = useState<OrderModel[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [wearables, setWearables] = useState<WearableModel[]>([]);
+  
 
 
 
@@ -49,6 +52,7 @@ function BusinessPublicOverView() {
         const [companyRes, productsRes] = await Promise.all([
           getCompanyDashboard(id),
           getProductsByCompanyId(id),
+          getWearableByCompanyId(id)
         ]);
 
         if (!companyRes.ok) {
@@ -142,6 +146,7 @@ function BusinessPublicOverView() {
     switch (activeView) {
       case "overview": return <OverviewView company={company} productCount={products.length} />;
       case "products": return <ProductsView products={products} onLoadCart={loadCart} user={currentUser} company={company} />;
+      case "wearables": return <WearableView wearables={wearables} onLoadCart={loadCart} user={currentUser} company={company} />;
       case "cart": return <CartView company={company} currentUser={currentUser} cartItems={cartItems}/>;
       case "orders": return <OrdersView company={company} currentUser={currentUser} orders={orders} />;
       default: return <OverviewView company={company} productCount={products.length} />;

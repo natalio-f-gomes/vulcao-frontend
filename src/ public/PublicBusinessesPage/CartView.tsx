@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CartItem, CompanyModel, OrderModel, PlaceOrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
+import { CartItem, CompanyModel, PlaceOrderModel, ProductModel, UserProfileModel } from "../../api/interfaces";
 import { getProductById, placeOrder, removeItemFromCart } from "../../api/requests";
 import { imageUrlFromKey } from "../../components/ImageCarousel";
 
@@ -16,7 +16,6 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
   const [productList, setProductList] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [order,setOrder]= useState<PlaceOrderModel>({
-
       userId: "",
       cartItems: [],
       status: "SENT",
@@ -24,7 +23,6 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
       trackId: "",
       companyId: "",
       note: ""
-
   });
   
   // We use this to track exactly WHICH item is currently being deleted
@@ -42,7 +40,7 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
           return;
       }
       if(response.status === 201){
-          alert("Encomenda realizada com sucesso");
+          alert("Encomenda realizada com sucesso. Enviamos email de confirmacao para o seu email no sistema");
           return;
       }
 
@@ -266,7 +264,7 @@ export default function CartView({ company, currentUser, cartItems }: CartViewPr
               <textarea
                 id="note"
                 name="note"
-                placeholder="Add a note to your order..."
+                placeholder="Adicione instruções ao seu pedido..."
                 onChange={handleInputChange}
                 maxLength={5000}
                 style={{

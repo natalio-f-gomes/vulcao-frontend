@@ -87,14 +87,13 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
   };
 
   const formatDate = (iso?: string): string =>
-    iso
-      ? new Date(iso).toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        })
-      : "—";
-
+  iso
+    ? new Date(iso).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      })
+    : "—";
   if (!currentUser) {
     return (
     <div style={{ padding: "3rem 2.5rem", textAlign: "center", color: "var(--mid)" }}>
@@ -144,7 +143,9 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
                 </div>
                 <h2 style={styles.orderTitle}>Encomenda #{order.id}</h2>
               </div>
-              <span style={getStatusBadgeStyle(order.status)}>{order.status}</span>
+             <span style={getStatusBadgeStyle(order.status)}>
+              {orderStatusTranslations[order.status]}
+            </span>
             </div>
 
             {/* Resumo da informação da encomenda */}
@@ -163,7 +164,7 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
               </div>
               <div style={styles.infoBox}>
                 <div style={styles.infoLabel}>Itens</div>
-                <div style={styles.infoValue}>{order.cartItems.length} linha(s)</div>
+                <div style={styles.infoValue}>{order.cartItems.length} iten(s)</div>
               </div>
             </div>
 
@@ -269,6 +270,15 @@ export default function OrdersView({ company, currentUser, orders }: OrdersViewP
     </div>
   );
 }
+
+export const orderStatusTranslations: Record<OrderStatus, string> = {
+  PENDING: "Pendente",
+  PROCESSING: "Em processamento",
+  SENT: "Enviado",
+  RECEIVED: "Recebido",
+  COMPLETED: "Concluído",
+  CANCELLED: "Cancelado",
+};
 
 // Status badges — semantic colors, squared off and letter-spaced
 // to match the brand's sharp, uppercase language
