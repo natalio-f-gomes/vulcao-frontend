@@ -100,7 +100,7 @@ return (
                 <div className="biz-name">{company.name}</div>
                 <div className="biz-cat">{company.category?.replaceAll("_", " ")}</div>
 
-                <div className="biz-stats">
+                {/* <div className="biz-stats">
                   <div>
                     <div className="biz-stat-val">{company.revenue}</div>
                     <div className="biz-stat-label">Receita</div>
@@ -113,7 +113,7 @@ return (
                     <div className="biz-stat-val">—</div>
                     <div className="biz-stat-label">Produtos</div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="biz-actions">
                   {company.id && (
