@@ -119,12 +119,7 @@ const registerRequest = async (code: string) => {
     try {
         const response = await registerUser(code, userRegistrationForm);
         
-        if (response.status === 201) {
-            alert("Utilizador registado com sucesso.");
-            setShowMFA(false);
-            window.location.href = "/";
-            return;
-        }
+       
         
         // Handle error responses - try to get message from response
         let errorMessage = "";
@@ -139,9 +134,15 @@ const registerRequest = async (code: string) => {
                 errorMessage = "";
             }
         }
+         if (response.status === 201) {
+            alert("Utilizador registado com sucesso.");
+            setShowMFA(false);
+            window.location.href = "/";
+            return;
+        }
         
         // If no message was extracted, use default messages based on status code
-        if (!errorMessage || errorMessage.trim() === "") {
+        else if (!errorMessage || errorMessage.trim() === "") {
             switch (response.status) {
                 case 400:
                     errorMessage = "Certifique-se de que os campos estão preenchidos apenas com dados válidos.";
