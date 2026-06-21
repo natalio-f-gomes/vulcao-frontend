@@ -22,11 +22,10 @@ export const BUSINESS_CATEGORIES: string[] = [
   // ===== OUTROS FORMATOS DE VENDA DE BENS =====
   "MERCADO_ABASTECEDOR",
   "LOJA_EM_SEGUNDA_MÃO",
-  "OUTROS"
+  "OUTROS",
 ];
 
-export const ProductCategories: string[] = 
-[
+export const ProductCategories: string[] = [
   // --- MERCEARIA E PRODUTOS FRESCOS ---
   "FRESCOS_E_HORTÍCOLAS",
   "CARNES_E_AVES",
@@ -60,19 +59,23 @@ export const ProductCategories: string[] =
   // --- CAIXA E SOUVENIRS / DIVERSOS ---
   "REVISTAS",
   "CARTÕES_PRESENTE",
-  "OUTROS"
-]
-
+  "OUTROS",
+];
 
 export const ISLANDS: Islands[] = [
-"BOA_VISTA" , "SANTIAGO" , "FOGO" , "MAIO" , "SÃO_NICOLAU" , "SAL" , "SANTO_ANTÃO" , "BRAVA" , "SÃO_VICENTE"
+  "BOA_VISTA",
+  "SANTIAGO",
+  "FOGO",
+  "MAIO",
+  "SÃO_NICOLAU",
+  "SAL",
+  "SANTO_ANTÃO",
+  "BRAVA",
+  "SÃO_VICENTE",
 ];
 
-export const CURRENCIES: string[] = [
-"CVE"
-];
- // for now lets just deal with the CVE and not the others
-
+export const CURRENCIES: string[] = ["CVE"];
+// for now lets just deal with the CVE and not the others
 
 export const UNIT_TYPES: string[] = [
   "SINGULAR",
@@ -119,79 +122,101 @@ export const UNIT_TYPES: string[] = [
   "RECIPIENTE",
   "SAQUETA",
   "CARTUCHO",
-  "TIRA"
-]
+  "TIRA",
+];
 
-export type OfferingType = "PRODUCT" | "TV_SHOW" | "MOVIE" | "BOOK" | "ELECTRONIC"|  "MUSIC" | "WEARABLE";
+export type OfferingType =
+  | "PRODUCT"
+  | "TV_SHOW"
+  | "MOVIE"
+  | "BOOK"
+  | "ELECTRONIC"
+  | "MUSIC"
+  | "WEARABLE";
 
-
-
-export const ALL_PERMISSIONS: { value: Permissions; label: string; description: string }[] = [
+export const ALL_PERMISSIONS: {
+  value: Permissions;
+  label: string;
+  description: string;
+}[] = [
   // Gestão de Produtos
-  { 
-    value: "ADD_PRODUCT",  
-    label: "Adicionar Produto",  
-    description: "Permite ao utilizador criar novas entradas de produto no sistema." 
+  {
+    value: "ADD_PRODUCT",
+    label: "Adicionar Produto",
+    description:
+      "Permite ao utilizador criar novas entradas de produto no sistema.",
   },
-  { 
-    value: "UPDATE_PRODUCT",    
-    label: "Atualizar Produto",    
-    description: "Permite ao utilizador editar detalhes de produtos existentes e inventário." 
+  {
+    value: "UPDATE_PRODUCT",
+    label: "Atualizar Produto",
+    description:
+      "Permite ao utilizador editar detalhes de produtos existentes e inventário.",
   },
-  { 
-    value: "DELETE_PRODUCT", 
-    label: "Eliminar Produto", 
-    description: "Permite ao utilizador remover permanentemente produtos do catálogo." 
+  {
+    value: "DELETE_PRODUCT",
+    label: "Eliminar Produto",
+    description:
+      "Permite ao utilizador remover permanentemente produtos do catálogo.",
   },
 
-   { 
-    value: "ADD_WEARABLE",  
-    label: "Adicionar Vestuário",  
-    description: "Permite ao utilizador criar novas entradas de vestuário no sistema." 
+  {
+    value: "ADD_WEARABLE",
+    label: "Adicionar Vestuário",
+    description:
+      "Permite ao utilizador criar novas entradas de vestuário no sistema.",
   },
-  { 
-    value: "UPDATE_WEARABLE",    
-    label: "Atualizar Vestuário",    
-    description: "Permite ao utilizador editar detalhes de vestuário existente e inventário." 
+  {
+    value: "UPDATE_WEARABLE",
+    label: "Atualizar Vestuário",
+    description:
+      "Permite ao utilizador editar detalhes de vestuário existente e inventário.",
   },
-  { 
-    value: "DELETE_WEARABLE", 
-    label: "Eliminar Vestuário", 
-    description: "Permite ao utilizador remover permanentemente artigos de vestuário do catálogo." 
+  {
+    value: "DELETE_WEARABLE",
+    label: "Eliminar Vestuário",
+    description:
+      "Permite ao utilizador remover permanentemente artigos de vestuário do catálogo.",
   },
 
   // Gestão de Tarefas
-  { 
-    value: "ASSIGN_TASKS", 
-    label: "Atribuir Tarefas", 
-    description: "Permite ao utilizador delegar, acompanhar e atribuir tarefas aos membros da equipa." 
+  {
+    value: "ASSIGN_TASKS",
+    label: "Atribuir Tarefas",
+    description:
+      "Permite ao utilizador delegar, acompanhar e atribuir tarefas aos membros da equipa.",
   },
-  
-  { 
-    value: "CREATE_TASK", 
-    label: "Criar Tarefas", 
-    description: "Permite ao funcionário criar tarefas para si próprio ou para outros." 
+
+  {
+    value: "CREATE_TASK",
+    label: "Criar Tarefas",
+    description:
+      "Permite ao funcionário criar tarefas para si próprio ou para outros.",
   },
-  
-  { 
-    value: "DELETE_TASK", 
-    label: "Eliminar Tarefas", 
-    description: "Permite ao funcionário eliminar tarefas para si próprio ou para outros." 
+
+  {
+    value: "DELETE_TASK",
+    label: "Eliminar Tarefas",
+    description:
+      "Permite ao funcionário eliminar tarefas para si próprio ou para outros.",
   },
 
   // Analítica e Relatórios
-  { 
-    value: "VIEW_REPORTS", 
-    label: "Visualizar Relatórios", 
-    description: "Permite ao utilizador aceder a painéis operacionais e resumos analíticos do sistema." 
-  }
-  
+  {
+    value: "VIEW_REPORTS",
+    label: "Visualizar Relatórios",
+    description:
+      "Permite ao utilizador aceder a painéis operacionais e resumos analíticos do sistema.",
+  },
 ];
 export const addressFields = ["island", "city", "zone", "street", "postalCode"];
 
-
-export type OrderStatus = "PENDING" | "PROCESSING" | "CANCELLED" | "COMPLETED" | "RECEIVED" | "SENT"
-
+export type OrderStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "CANCELLED"
+  | "COMPLETED"
+  | "RECEIVED"
+  | "SENT";
 
 export const WEARABLES_CATEGORY_LIST: WearablesCategory[] = [
   // ===== PARTE DE CIMA (Tops) =====
@@ -268,5 +293,5 @@ export const WEARABLES_CATEGORY_LIST: WearablesCategory[] = [
   // ===== ROUPA INTERIOR (Underwear) =====
   "ROUPA_INTERIOR",
   "MEIAS",
-  "OUTROS"
+  "OUTROS",
 ];

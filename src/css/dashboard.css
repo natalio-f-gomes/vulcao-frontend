@@ -6,13 +6,13 @@
   display: flex !important;
   gap: 1.5rem;
   align-items: stretch; /* CHANGE: Changed from flex-start to stretch */
-  min-height: 100vh;    /* ADD: Ensures the wrapper takes full viewport height */
+  min-height: 100vh; /* ADD: Ensures the wrapper takes full viewport height */
 }
 
 .profile-page > .rs-sidebar {
   flex-shrink: 0;
   width: 260px;
-  display: flex;        /* ADD: Helps child elements stretch fully */
+  display: flex; /* ADD: Helps child elements stretch fully */
   flex-direction: column;
 }
 

@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { CompanyModel, UserProfileModel } from "../../api/interfaces";
 import { PublicView } from "./BusinessPublicOverView";
 
-
 const sidebarStyles: Record<string, React.CSSProperties> = {
   sidebar: {
     background: "#0f0e0e",
@@ -36,7 +35,13 @@ const sidebarStyles: Record<string, React.CSSProperties> = {
     marginTop: "4px",
     padding: "0 1.25rem",
   },
-  nav: { flex: 1, display: "flex", flexDirection: "column", overflowY: "auto", padding: "0.5rem 0" },
+  nav: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "auto",
+    padding: "0.5rem 0",
+  },
   sectionLabel: {
     fontSize: "0.62rem",
     fontWeight: 700,
@@ -75,10 +80,19 @@ const sidebarStyles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
     padding: "0 5px",
   },
-  footer: { marginTop: "auto", padding: "0.85rem 1rem 0", borderTop: "1px solid #1e1e1e" },
+  footer: {
+    marginTop: "auto",
+    padding: "0.85rem 1rem 0",
+    borderTop: "1px solid #1e1e1e",
+  },
   userInfo: { display: "flex", alignItems: "center", gap: "10px" },
   userName: { fontSize: "0.85rem", fontWeight: 600, color: "#f7f4ef" },
-  userRole: { fontSize: "0.66rem", color: "#666", textTransform: "uppercase", letterSpacing: "0.04em" },
+  userRole: {
+    fontSize: "0.66rem",
+    color: "#666",
+    textTransform: "uppercase",
+    letterSpacing: "0.04em",
+  },
 };
 
 interface PublicSidebarProps {
@@ -87,7 +101,7 @@ interface PublicSidebarProps {
   onNavigate: (view: PublicView) => void;
   currentUser: UserProfileModel | null;
   cartCount: number;
-  orderCount: number
+  orderCount: number;
 }
 
 export default function PublicCompanySidebar({
@@ -96,72 +110,88 @@ export default function PublicCompanySidebar({
   onNavigate,
   currentUser,
   cartCount,
-  orderCount
+  orderCount,
 }: PublicSidebarProps) {
   const navigate = useNavigate();
 
   const itemStyle = (view: PublicView): React.CSSProperties =>
-    activeView === view ? { ...sidebarStyles.navItem, ...sidebarStyles.navItemActive } : sidebarStyles.navItem;
+    activeView === view
+      ? { ...sidebarStyles.navItem, ...sidebarStyles.navItemActive }
+      : sidebarStyles.navItem;
 
   return (
+    <aside style={sidebarStyles.sidebar}>
+      <div style={sidebarStyles.brand}>
+        <a style={sidebarStyles.brandLogo} href="/">
+          <span style={sidebarStyles.brandAccent}>
+            {company.name?.charAt(0).toUpperCase()}
+          </span>
+          {company.name?.slice(1)}
+        </a>
+      </div>
+      <span style={sidebarStyles.brandSub}>
+        {company.category?.replaceAll("_", " ") || "Loja"}
+      </span>
 
-<aside style={sidebarStyles.sidebar}>
-  <div style={sidebarStyles.brand}>
-    <a style={sidebarStyles.brandLogo} href="/">
-      <span style={sidebarStyles.brandAccent}>{company.name?.charAt(0).toUpperCase()}</span>
-      {company.name?.slice(1)}
-    </a>
-  </div>
-  <span style={sidebarStyles.brandSub}>{company.category?.replaceAll("_", " ") || "Loja"}</span>
-
-  <nav style={sidebarStyles.nav}>
-    <div style={sidebarStyles.sectionLabel}>Navegar</div>
-    <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
-      <i className="bi bi-shop" /> Visão Geral
-    </a>
-    <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
-      <i className="bi bi-box-seam" /> Produtos
-    </a>
-     <a style={itemStyle("wearables")} onClick={() => onNavigate("wearables")}>
-      <i className="bi bi-box-seam" /> Vestíveis
-    </a>
-
-    <div style={sidebarStyles.sectionLabel}>A Sua Conta</div>
-    <a style={itemStyle("cart")} onClick={() => onNavigate("cart")}>
-      <i className="bi bi-bag" /> O Meu Carrinho
-      {cartCount > 0 && <span style={sidebarStyles.badge}>{cartCount}</span>}
-    </a>
-    <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
-      <i className="bi bi-receipt" /> As Minhas Encomendas
-       {orderCount > 0 && <span style={sidebarStyles.badge}>{orderCount}</span>}
-    </a>
-  </nav>
-
-  <div style={sidebarStyles.footer}>
-    <div style={sidebarStyles.userInfo}>
-      <div className="owner-avatar"><i className="bi bi-person" /></div>
-      {currentUser ? (
-        <div>
-          <div style={sidebarStyles.userName}>{`@${currentUser.username}`}</div>
-          <div style={sidebarStyles.userRole}>Cliente</div>
-        </div>
-      ) : (
-        <button
-          style={{
-            ...sidebarStyles.userName,
-            background: "transparent",
-            border: "1px solid #2a2a2a",
-            borderRadius: 6,
-            padding: "6px 12px",
-            cursor: "pointer",
-          }}
-          onClick={() => navigate("/user-login")}
+      <nav style={sidebarStyles.nav}>
+        <div style={sidebarStyles.sectionLabel}>Navegar</div>
+        <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+          <i className="bi bi-shop" /> Visão Geral
+        </a>
+        <a style={itemStyle("products")} onClick={() => onNavigate("products")}>
+          <i className="bi bi-box-seam" /> Produtos
+        </a>
+        <a
+          style={itemStyle("wearables")}
+          onClick={() => onNavigate("wearables")}
         >
-          Iniciar Sessão
-        </button>
-      )}
-    </div>
-  </div>
-</aside>
+          <i className="bi bi-box-seam" /> Vestíveis
+        </a>
+
+        <div style={sidebarStyles.sectionLabel}>A Sua Conta</div>
+        <a style={itemStyle("cart")} onClick={() => onNavigate("cart")}>
+          <i className="bi bi-bag" /> O Meu Carrinho
+          {cartCount > 0 && (
+            <span style={sidebarStyles.badge}>{cartCount}</span>
+          )}
+        </a>
+        <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
+          <i className="bi bi-receipt" /> As Minhas Encomendas
+          {orderCount > 0 && (
+            <span style={sidebarStyles.badge}>{orderCount}</span>
+          )}
+        </a>
+      </nav>
+
+      <div style={sidebarStyles.footer}>
+        <div style={sidebarStyles.userInfo}>
+          <div className="owner-avatar">
+            <i className="bi bi-person" />
+          </div>
+          {currentUser ? (
+            <div>
+              <div
+                style={sidebarStyles.userName}
+              >{`@${currentUser.username}`}</div>
+              <div style={sidebarStyles.userRole}>Cliente</div>
+            </div>
+          ) : (
+            <button
+              style={{
+                ...sidebarStyles.userName,
+                background: "transparent",
+                border: "1px solid #2a2a2a",
+                borderRadius: 6,
+                padding: "6px 12px",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate("/user-login")}
+            >
+              Iniciar Sessão
+            </button>
+          )}
+        </div>
+      </div>
+    </aside>
   );
 }

@@ -19,9 +19,17 @@
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
 }
 
-.rs-sidebar--mobile.rs-sidebar--left  { left: 0;  transform: translateX(-100%); }
-.rs-sidebar--mobile.rs-sidebar--right { right: 0; transform: translateX(100%); }
-.rs-sidebar--mobile.rs-sidebar--open  { transform: translateX(0); }
+.rs-sidebar--mobile.rs-sidebar--left {
+  left: 0;
+  transform: translateX(-100%);
+}
+.rs-sidebar--mobile.rs-sidebar--right {
+  right: 0;
+  transform: translateX(100%);
+}
+.rs-sidebar--mobile.rs-sidebar--open {
+  transform: translateX(0);
+}
 
 /* Backdrop */
 .rs-backdrop {
@@ -56,16 +64,22 @@
   color: #1a1a1a;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: background 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    transform 0.1s;
   -webkit-tap-highlight-color: transparent;
 }
-.rs-toggle:hover  { background: #f7f6f3; }
-.rs-toggle:active { transform: scale(0.95); }
+.rs-toggle:hover {
+  background: #f7f6f3;
+}
+.rs-toggle:active {
+  transform: scale(0.95);
+}
 
 /* Notch-safe insets */
 @supports (padding-top: env(safe-area-inset-top)) {
   .rs-toggle {
-    top:  calc(12px + env(safe-area-inset-top));
+    top: calc(12px + env(safe-area-inset-top));
     left: calc(12px + env(safe-area-inset-left));
   }
 }
@@ -74,7 +88,9 @@
 @media (prefers-reduced-motion: reduce) {
   .rs-sidebar,
   .rs-backdrop,
-  .rs-toggle { transition: none; }
+  .rs-toggle {
+    transition: none;
+  }
 }
 
 /* ============================================================

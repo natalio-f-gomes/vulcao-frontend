@@ -13,7 +13,9 @@ function GetBusinessesSection() {
     try {
       const response = await getAllCompanies();
       if (!response.ok) {
-        setLoadError(`Não foi possível carregar as empresas (${response.status})`);
+        setLoadError(
+          `Não foi possível carregar as empresas (${response.status})`,
+        );
         return;
       }
       const data = await response.json();
@@ -50,10 +52,15 @@ function GetBusinessesSection() {
             key={company.id}
             onClick={() => navigate(`/business/public/${company.id}`)}
           >
-
             {/* ---- banner: carrossel de imagens (ou inicial), distintivo de estado no topo ---- */}
-            <div className="product-thumb" style={{ height: 150, background: "var(--ink)", position: "relative" }}>
-
+            <div
+              className="product-thumb"
+              style={{
+                height: 150,
+                background: "var(--ink)",
+                position: "relative",
+              }}
+            >
               {(company.imgS3UrlKeys?.length ?? 0) > 0 ? (
                 /* preencher toda a miniatura com o carrossel */
                 <div style={{ position: "absolute", inset: 0 }}>
@@ -80,11 +87,17 @@ function GetBusinessesSection() {
 
               {/* distintivo ÚLTIMO no DOM + zIndex para ficar sempre acima da imagem */}
               {company.status === "OPERATING" ? (
-                <span className="product-badge" style={{ background: "#2d6a4f", zIndex: 2 }}>
+                <span
+                  className="product-badge"
+                  style={{ background: "#2d6a4f", zIndex: 2 }}
+                >
                   Aberto
                 </span>
               ) : (
-                <span className="product-badge" style={{ background: "#888", zIndex: 2 }}>
+                <span
+                  className="product-badge"
+                  style={{ background: "#888", zIndex: 2 }}
+                >
                   {company.status?.toLowerCase()}
                 </span>
               )}
@@ -95,7 +108,10 @@ function GetBusinessesSection() {
               <div className="product-category">
                 {company.category?.replaceAll("_", " ")}
                 {sinceYear(company.createdAt) && (
-                  <span style={{ color: "#bbb" }}> · desde {sinceYear(company.createdAt)}</span>
+                  <span style={{ color: "#bbb" }}>
+                    {" "}
+                    · desde {sinceYear(company.createdAt)}
+                  </span>
                 )}
               </div>
 
@@ -129,11 +145,18 @@ function GetBusinessesSection() {
                 }}
               >
                 <span>
-                  <i className="bi bi-geo-alt" style={{ color: "var(--accent)", marginRight: 6 }}></i>
-                  {company.address?.city || "—"}, {company.address?.island || "—"}
+                  <i
+                    className="bi bi-geo-alt"
+                    style={{ color: "var(--accent)", marginRight: 6 }}
+                  ></i>
+                  {company.address?.city || "—"},{" "}
+                  {company.address?.island || "—"}
                 </span>
                 <span>
-                  <i className="bi bi-telephone" style={{ color: "var(--accent)", marginRight: 6 }}></i>
+                  <i
+                    className="bi bi-telephone"
+                    style={{ color: "var(--accent)", marginRight: 6 }}
+                  ></i>
                   {`+238 ${company.phoneNumber}` || "—"}
                 </span>
               </div>
@@ -145,13 +168,23 @@ function GetBusinessesSection() {
                 </span> */}
                 <button
                   className="add-btn"
-                  style={{ width: "auto", padding: "0 12px", fontSize: "0.72rem", letterSpacing: "0.06em", textTransform: "uppercase" }}
+                  style={{
+                    width: "auto",
+                    padding: "0 12px",
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                  }}
                   onClick={(e) => {
                     e.stopPropagation(); // evitar acionar duplo clique no cartão
                     navigate(`/business/public/${company.id}`);
                   }}
                 >
-                  Visitar <i className="bi bi-arrow-right" style={{ marginLeft: 4 }}></i>
+                  Visitar{" "}
+                  <i
+                    className="bi bi-arrow-right"
+                    style={{ marginLeft: 4 }}
+                  ></i>
                 </button>
               </div>
             </div>

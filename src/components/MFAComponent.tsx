@@ -1,20 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-
-
-
 interface MFAComponentProps {
   email?: string;
   username?: string;
   onVerify: (code: string) => void | Promise<void>;
   onClose: () => void;
-
 }
 
 const maxCodeLength: number = 6;
 
-function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps) {
+function MFAComponent({
+  email,
+  onVerify,
+  onClose,
+  username,
+}: MFAComponentProps) {
   const [code, setCode] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -42,11 +43,11 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
     try {
       await onVerify(code);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(
         err instanceof Error && err.message
           ? err.message
-          : "That code didn't match. Check it and try again."
+          : "That code didn't match. Check it and try again.",
       );
       setCode("");
       inputRef.current?.focus();
@@ -169,34 +170,47 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
         }
       `}</style>
 
-{/*  <div className="mfa-overlay" onMouseDown={onClose}> */}
-      <div className="mfa-overlay" >
+      {/*  <div className="mfa-overlay" onMouseDown={onClose}> */}
+      <div className="mfa-overlay">
         <div
           className="mfa-modal"
           role="dialog"
           aria-modal="true"
           aria-labelledby="mfa-title"
-          
         >
-            {/*    onMouseDown={(e) => e.stopPropagation()} */}
-              <div className="mfa-head">
-                <h2 id="mfa-title" className="mfa-title">Verifique a sua identidade</h2>
-                <button className="mfa-close" aria-label="Fechar" type="button" onClick={onClose}>x</button>
-              </div>
+          {/*    onMouseDown={(e) => e.stopPropagation()} */}
+          <div className="mfa-head">
+            <h2 id="mfa-title" className="mfa-title">
+              Verifique a sua identidade
+            </h2>
+            <button
+              className="mfa-close"
+              aria-label="Fechar"
+              type="button"
+              onClick={onClose}
+            >
+              x
+            </button>
+          </div>
 
-              <div className="mfa-body">
-                {email && email.trim() !== "" && (
-                  <p className="mfa-intro">
-                    Introduza o código de 6 dígitos que enviámos para <strong>{email}</strong> para continuar.
-                  </p>
-                )}
-                {username && username.trim() !== "" && (
-                  <p className="mfa-intro">
-                    Introduza o código de 6 dígitos que enviámos para o email associado ao utilizador <strong>{username}</strong> para continuar.
-                  </p>
-                )}
-                
-                <label className="mfa-label" htmlFor="mfa-code">Código de verificação</label>
+          <div className="mfa-body">
+            {email && email.trim() !== "" && (
+              <p className="mfa-intro">
+                Introduza o código de 6 dígitos que enviámos para{" "}
+                <strong>{email}</strong> para continuar.
+              </p>
+            )}
+            {username && username.trim() !== "" && (
+              <p className="mfa-intro">
+                Introduza o código de 6 dígitos que enviámos para o email
+                associado ao utilizador <strong>{username}</strong> para
+                continuar.
+              </p>
+            )}
+
+            <label className="mfa-label" htmlFor="mfa-code">
+              Código de verificação
+            </label>
             <input
               id="mfa-code"
               ref={inputRef}
@@ -210,14 +224,22 @@ function MFAComponent({ email, onVerify, onClose, username  }: MFAComponentProps
               value={code}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-             aria-label="código de verificação de 6 dígitos"
+              aria-label="código de verificação de 6 dígitos"
               aria-invalid={error ? true : undefined}
             />
 
-            {error && <p className="mfa-error" role="alert">{error}</p>}
+            {error && (
+              <p className="mfa-error" role="alert">
+                {error}
+              </p>
+            )}
 
             <div className="mfa-footer">
-              <button className="mfa-btn-cancel" type="button" onClick={onClose}>
+              <button
+                className="mfa-btn-cancel"
+                type="button"
+                onClick={onClose}
+              >
                 Cancelar
               </button>
               <button

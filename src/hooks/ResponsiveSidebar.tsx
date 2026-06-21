@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/responsive-sidebar.css"
+import "../css/responsive-sidebar.css";
 
 interface Props {
   children: React.ReactNode;

@@ -1,15 +1,18 @@
 import { CompanyModel } from "../../../api/interfaces";
 
 interface Props {
-  company:           CompanyModel;
-  onViewEmployees:   () => void;
+  company: CompanyModel;
+  onViewEmployees: () => void;
 }
 
 function CompanyHeader({ company, onViewEmployees }: Props) {
-  const statusClass = company.status === "OPERATING" ? "status-badge active" : "status-badge inactive";
+  const statusClass =
+    company.status === "OPERATING"
+      ? "status-badge active"
+      : "status-badge inactive";
 
   return (
-    <div className="company-header mt-5" style={{margin:10, padding:10}}>
+    <div className="company-header mt-5" style={{ margin: 10, padding: 10 }}>
       <div className="company-icon">
         <i className="bi bi-building" style={{ fontSize: "22px" }}></i>
       </div>

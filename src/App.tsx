@@ -1,13 +1,12 @@
-
 import React from "react";
 import { AuthProvider } from "./api/authentication-handler";
 import { Route, Routes } from "react-router-dom";
-import GetHeader from "./components/header"
-import "./css/main.css"
-import "./css/style.css"
+import GetHeader from "./components/header";
+import "./css/main.css";
+import "./css/style.css";
 import UserRegistrationPage from "./entities/user/user-register";
 import GetFooterSection from "./components/footer";
-import UserLoginPage from "./entities/user/user-login"
+import UserLoginPage from "./entities/user/user-login";
 import GetUserAccountPage from "./entities/user/user-account/user-account";
 import GetHeroSection from "./components/Hero";
 import GetFeatureSection from "./components/Feature";
@@ -25,43 +24,46 @@ import TermsPage from "./ public/terms";
 import FeatureRequestPage from "./ public/feature-request";
 import PasswordResetPage from "./ public/PasswordReset";
 
-
-
-
-function App(){
-    return (
+function App() {
+  return (
     <AuthProvider>
-        <Routes>
-            <Route path="/" element={
-                <>
-                <GetHeader/>
-                <GetHeroSection/>
-                <GetFeatureSection/>
-                <GetBusinessesSection/>
-                <GetFooterSection/>
-                </>
-            }/>
-            <Route path="/user-register" element={<UserRegistrationPage/>}/>
-            <Route path="/user-login" element={<UserLoginPage/>}/>
-             <Route path="/user-account" element={<GetUserAccountPage/>}/>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <GetHeader />
+              <GetHeroSection />
+              <GetFeatureSection />
+              <GetBusinessesSection />
+              <GetFooterSection />
+            </>
+          }
+        />
+        <Route path="/user-register" element={<UserRegistrationPage />} />
+        <Route path="/user-login" element={<UserLoginPage />} />
+        <Route path="/user-account" element={<GetUserAccountPage />} />
 
-            <Route path="/employer-register" element={<EmployerRegistrationPage/>}/>
-            <Route path="/employer-login" element={<EmployerLoginPage/>}/>
-            <Route path="/employer-dashboard" element={<EmployerDashboard/>}/>
-            <Route path="company-dashboard/:id" element={<CompanyDashboard/>}/>
-            <Route path="/staff-login" element={<StaffLoginPage/>}/>
-            <Route path="/staff-dashboard" element={<StaffDashboard/>}/>
-            <Route path="/business/public/:id" element={<BusinessPublicOverView/>}/>
-            <Route path="/about" element={<AboutPage/>}/>
-            <Route path="/terms" element={<TermsPage/>}/>
-            <Route path="/feature-request" element={<FeatureRequestPage/>}/>
-            <Route path="/password-reset/:entity" element={<PasswordResetPage/>} />
-            
-        </Routes>
+        <Route
+          path="/employer-register"
+          element={<EmployerRegistrationPage />}
+        />
+        <Route path="/employer-login" element={<EmployerLoginPage />} />
+        <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+        <Route path="company-dashboard/:id" element={<CompanyDashboard />} />
+        <Route path="/staff-login" element={<StaffLoginPage />} />
+        <Route path="/staff-dashboard" element={<StaffDashboard />} />
+        <Route
+          path="/business/public/:id"
+          element={<BusinessPublicOverView />}
+        />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/feature-request" element={<FeatureRequestPage />} />
+        <Route path="/password-reset/:entity" element={<PasswordResetPage />} />
+      </Routes>
     </AuthProvider>
-
-
-    )
+  );
 }
 
-export default App
+export default App;

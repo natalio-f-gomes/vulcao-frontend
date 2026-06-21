@@ -7,339 +7,343 @@
    ========================================================================== */
 
 :root {
-    /* Offerings palette — warm editorial */
-    --off-bg:           #f4f1ec;
-    --off-card:         #f9f9f7;
-    --off-ink:          #1a1a1a;
-    --off-ink-soft:     #5a5a5a;
-    --off-ink-faint:    #9a9a9a;
-    --off-line:         #e8e4dd;
-    --off-accent:       #c44536;
-    --off-accent-soft:  #fae5e0;
-    --off-success:      #2d6a4f;
-    --off-success-soft: #d8f3dc;
-    --off-warn:         #bc6c25;
-    --off-warn-soft:    #fbe4cc;
-    --off-radius:       8px;
+  /* Offerings palette — warm editorial */
+  --off-bg: #f4f1ec;
+  --off-card: #f9f9f7;
+  --off-ink: #1a1a1a;
+  --off-ink-soft: #5a5a5a;
+  --off-ink-faint: #9a9a9a;
+  --off-line: #e8e4dd;
+  --off-accent: #c44536;
+  --off-accent-soft: #fae5e0;
+  --off-success: #2d6a4f;
+  --off-success-soft: #d8f3dc;
+  --off-warn: #bc6c25;
+  --off-warn-soft: #fbe4cc;
+  --off-radius: 8px;
 }
-
 
 /* ==========================================================================
    1. PRODUCT GRID
    ========================================================================== */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 4px;
 }
-
 
 /* ==========================================================================
    2. PRODUCT CARD
    ========================================================================== */
 .product-card {
-    background: var(--off-card);
-    border: 1px solid var(--off-line);
-    border-radius: var(--off-radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.03),
-        0 8px 24px -8px rgba(0, 0, 0, 0.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: var(--off-card);
+  border: 1px solid var(--off-line);
+  border-radius: var(--off-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 8px 24px -8px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 .product-card:hover {
-    transform: translateY(-3px);
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.03),
-        0 16px 40px -8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 16px 40px -8px rgba(0, 0, 0, 0.1);
 }
 
 /* ── Header strip (category) ── */
 .product-card .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 16px;
-    border-bottom: 1px solid var(--off-line);
-    background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--off-line);
+  background: #fff;
 }
 
 .product-card .product-id {
-    font-family: 'JetBrains Mono', 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--off-ink-faint);
-    letter-spacing: 0.05em;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--off-ink-faint);
+  letter-spacing: 0.05em;
 }
 
 .product-card .product-category {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--off-accent);
-    font-weight: 600;
-    margin: 0;
-    padding: 0;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--off-accent);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
 }
 
 /* ── Hero (name + description) ── */
 .card-hero {
-    padding: 24px 20px 18px;
-    border-bottom: 1px solid var(--off-line);
-    flex: 0 0 auto;
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--off-line);
+  flex: 0 0 auto;
 }
 
 .product-card .product-name {
-    font-family: 'Playfair Display', 'Fraunces', serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--off-ink);
-    margin-bottom: 6px;
+  font-family: "Playfair Display", "Fraunces", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--off-ink);
+  margin-bottom: 6px;
 }
 
 .product-description {
-    font-size: 0.82rem;
-    line-height: 1.55;
-    color: var(--off-ink-soft);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--off-ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ── Stats row (stock + price) ── */
 .card-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--off-line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--off-line);
 }
 
 .product-card .stat {
-    padding: 16px 20px;
-    position: relative;
-    background: none;
-    border: none;
-    border-radius: 0;
+  padding: 16px 20px;
+  position: relative;
+  background: none;
+  border: none;
+  border-radius: 0;
 }
 .product-card .stat:first-child::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 18%;
-    width: 1px;
-    height: 64%;
-    background: var(--off-line);
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 18%;
+  width: 1px;
+  height: 64%;
+  background: var(--off-line);
 }
 
 .product-card .stat-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--off-ink-faint);
-    margin-bottom: 6px;
-    font-weight: 500;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--off-ink-faint);
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 
 .product-card .stat-value {
-    font-family: 'Playfair Display', 'Fraunces', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--off-ink);
-    line-height: 1.2;
+  font-family: "Playfair Display", "Fraunces", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--off-ink);
+  line-height: 1.2;
 }
 
 .product-card .stat-value .currency {
-    font-size: 0.8rem;
-    color: var(--off-ink-soft);
-    margin-right: 1px;
-    font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--off-ink-soft);
+  margin-right: 1px;
+  font-weight: 500;
 }
 
 .product-card .stat-value .unit {
-    font-family: 'DM Sans', 'Inter Tight', sans-serif;
-    font-size: 0.7rem;
-    color: var(--off-ink-faint);
-    font-weight: 400;
-    margin-left: 3px;
-    text-transform: lowercase;
+  font-family: "DM Sans", "Inter Tight", sans-serif;
+  font-size: 0.7rem;
+  color: var(--off-ink-faint);
+  font-weight: 400;
+  margin-left: 3px;
+  text-transform: lowercase;
 }
-
 
 /* ==========================================================================
    3. STOCK PILLS
    ========================================================================== */
 .stock-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 6px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 .stock-pill::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
 }
 
-.stock-pill.in-stock { background: var(--off-success-soft); color: var(--off-success); }
-.stock-pill.low      { background: var(--off-warn-soft);    color: var(--off-warn);    }
-.stock-pill.out      { background: var(--off-accent-soft);  color: var(--off-accent);  }
-
+.stock-pill.in-stock {
+  background: var(--off-success-soft);
+  color: var(--off-success);
+}
+.stock-pill.low {
+  background: var(--off-warn-soft);
+  color: var(--off-warn);
+}
+.stock-pill.out {
+  background: var(--off-accent-soft);
+  color: var(--off-accent);
+}
 
 /* ==========================================================================
    4. ROLE TAG
    ========================================================================== */
 .role-tag {
-    font-family: 'JetBrains Mono', 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--off-ink-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--off-ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
-
 
 /* ==========================================================================
    5. CARD META SECTION  (company + posted by)
    ========================================================================== */
 .card-meta {
-    padding: 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
 }
 
 .meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    gap: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  gap: 8px;
 }
 
 .meta-label {
-    color: var(--off-ink-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 10px;
-    flex-shrink: 0;
+  color: var(--off-ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+  flex-shrink: 0;
 }
 
 .meta-value {
-    color: var(--off-ink);
-    font-weight: 500;
-    font-size: 12px;
-    text-align: right;
-    word-break: break-word;
+  color: var(--off-ink);
+  font-weight: 500;
+  font-size: 12px;
+  text-align: right;
+  word-break: break-word;
 }
 .meta-value .sub {
-    color: var(--off-ink-faint);
-    font-weight: 400;
-    margin-left: 4px;
+  color: var(--off-ink-faint);
+  font-weight: 400;
+  margin-left: 4px;
 }
 
 .posted-by {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-
 
 /* ==========================================================================
    6. TIMESTAMPS STRIP
    ========================================================================== */
 .timestamps {
-    border-top: 1px solid var(--off-line);
-    padding: 8px 16px;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'JetBrains Mono', 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--off-ink-faint);
-    background: #fdfcfa;
-    gap: 8px;
-    flex-wrap: wrap;
+  border-top: 1px solid var(--off-line);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  font-family: "JetBrains Mono", "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--off-ink-faint);
+  background: #fdfcfa;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 .timestamps span b {
-    font-weight: 600;
-    color: var(--off-ink-soft);
-    margin-right: 5px;
+  font-weight: 600;
+  color: var(--off-ink-soft);
+  margin-right: 5px;
 }
-
 
 /* ==========================================================================
    7. CARD ACTIONS  (Edit / Delete row)
    ========================================================================== */
 .biz-actions {
-    display: flex;
-    border-top: 1px solid var(--off-line);
+  display: flex;
+  border-top: 1px solid var(--off-line);
 }
 
 .biz-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: background 0.15s, color 0.15s;
-    font-family: 'DM Sans', system-ui, sans-serif;
-    color: var(--off-ink-soft);
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: var(--off-ink-soft);
 }
 
 .biz-btn.edit {
-    border-right: 1px solid var(--off-line);
+  border-right: 1px solid var(--off-line);
 }
 .biz-btn.edit:hover {
-    background: #e6f1fb;
-    color: #0c447c;
+  background: #e6f1fb;
+  color: #0c447c;
 }
 .biz-btn.del:hover {
-    background: #fcebeb;
-    color: #c0392b;
+  background: #fcebeb;
+  color: #c0392b;
 }
-
 
 /* ==========================================================================
    8. EMPTY / LOADING STATES
    ========================================================================== */
 .loading-state,
 .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 24px;
-    color: var(--off-ink-faint);
-    font-size: 0.9rem;
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--off-ink-faint);
+  font-size: 0.9rem;
 }
 .empty-state i {
-    display: block;
-    margin-bottom: 10px;
-    opacity: 0.4;
+  display: block;
+  margin-bottom: 10px;
+  opacity: 0.4;
 }
 .empty-state p {
-    max-width: 320px;
-    margin: 0 auto;
-    line-height: 1.6;
+  max-width: 320px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
-
 
 /* ==========================================================================
    9. RESPONSIVE
@@ -347,42 +351,67 @@
 
 /* ── Large desktop (≥ 1400px): 4 columns ── */
 @media (min-width: 1400px) {
-    .product-grid { grid-template-columns: repeat(4, 1fr); }
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* ── Tablet (≤ 991px): 2 columns ── */
 @media (max-width: 991px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 
-    .card-hero { padding: 20px 16px 14px; }
-    .product-card .product-name { font-size: 1.15rem; }
-    .product-card .stat { padding: 14px 16px; }
-    .product-card .stat-value { font-size: 1.15rem; }
-    .card-meta { padding: 14px 16px; }
-    .timestamps { padding: 6px 12px; }
+  .card-hero {
+    padding: 20px 16px 14px;
+  }
+  .product-card .product-name {
+    font-size: 1.15rem;
+  }
+  .product-card .stat {
+    padding: 14px 16px;
+  }
+  .product-card .stat-value {
+    font-size: 1.15rem;
+  }
+  .card-meta {
+    padding: 14px 16px;
+  }
+  .timestamps {
+    padding: 6px 12px;
+  }
 }
 
 /* ── Mobile (≤ 768px): 1 column ── */
 @media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 
-    .product-card {
-        max-width: 100%;
-    }
+  .product-card {
+    max-width: 100%;
+  }
 }
 
 /* ── Small mobile (≤ 480px) ── */
 @media (max-width: 480px) {
-    .card-hero { padding: 18px 14px 12px; }
-    .product-card .product-name { font-size: 1.05rem; }
-    .card-stats { grid-template-columns: 1fr 1fr; }
-    .product-card .stat-value { font-size: 1rem; }
+  .card-hero {
+    padding: 18px 14px 12px;
+  }
+  .product-card .product-name {
+    font-size: 1.05rem;
+  }
+  .card-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .product-card .stat-value {
+    font-size: 1rem;
+  }
 
-    .timestamps {
-        flex-direction: column;
-        gap: 2px;
-    }
+  .timestamps {
+    flex-direction: column;
+    gap: 2px;
+  }
 }

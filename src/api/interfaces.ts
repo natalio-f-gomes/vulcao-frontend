@@ -1,72 +1,67 @@
-
 import { ImageMetadata } from "./ImageValidatorService";
 import { OfferingType, OrderStatus } from "./categories";
 
-export interface UserLoginModel{
-  username: string,
-  password: string
+export interface UserLoginModel {
+  username: string;
+  password: string;
 }
 
-
-export interface UserRegistrationModel{
+export interface UserRegistrationModel {
   firstName: string;
   lastName: string;
   username: string;
   email: string;
-  password: string
+  password: string;
 }
 
-export interface AddressModel{
-    island:Islands;
-    city:string;
-    zone:string;
-    street:string;
-    postalCode:string;
+export interface AddressModel {
+  island: Islands;
+  city: string;
+  zone: string;
+  street: string;
+  postalCode: string;
 }
 
-export interface UserProfileModel{
-    id:string;
-    username:string;
-    firstName:string;
-    lastName:string;
-    address:AddressModel;
-    phoneNumber:string;
-    email:string;
-    createdAt:string;
-    updatedAt:string;
+export interface UserProfileModel {
+  id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  address: AddressModel;
+  phoneNumber: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface EmployerModel extends UserProfileModel{
+export interface EmployerModel extends UserProfileModel {
   companiesRegistered: CompanyModel[];
-  
 }
 
-export interface AddProductModel{
-    name:string;
-    productType: ProductType
-    expirationDate:string;
-    description:string;
-    stock:number;
-    unitType: UnitTypes
-    pricePerUnit:number;
-    companyId?: string;
-    currency: Currency;
-    offeringType?: OfferingType;
-    imagesMetadata?: ImageMetadata[],
+export interface AddProductModel {
+  name: string;
+  productType: ProductType;
+  expirationDate: string;
+  description: string;
+  stock: number;
+  unitType: UnitTypes;
+  pricePerUnit: number;
+  companyId?: string;
+  currency: Currency;
+  offeringType?: OfferingType;
+  imagesMetadata?: ImageMetadata[];
 }
 
-export interface ProductModel extends AddProductModel{
-    id?:string;
-    creatorId?: string;
-    updatedBy?: string;
-    createdAt?:string;
-    updatedAt?:string;
-    imgS3UrlKeys?: string[]
+export interface ProductModel extends AddProductModel {
+  id?: string;
+  creatorId?: string;
+  updatedBy?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  imgS3UrlKeys?: string[];
 }
 
-
-
-export interface ReviewModel{
+export interface ReviewModel {
   id: string;
   rating: number;
   reviewComment: string;
@@ -77,67 +72,65 @@ export interface ReviewModel{
   updatedAt: string;
 }
 
-
-
 export type BusinessCategory =
   // ===== COMÉRCIO E RETALHO (Supermercados, Lojas e Eletrónica) =====
-  | 'LOJA_DE_CONVENIÊNCIA'
-  | 'SUPERMERCADO'
-  | 'HIPERMERCADO'
-  | 'GRANDES_ARMÁZENS'
-  | 'CENTRO_COMERCIAL'
-  | 'COMÉRCIO_ELETRÓNICO'
-  | 'LOJA_DE_ELETRÓNICA_E_INFORMÁTICA'
-  | 'FABRICANTE_DE_HARDWARE'
+  | "LOJA_DE_CONVENIÊNCIA"
+  | "SUPERMERCADO"
+  | "HIPERMERCADO"
+  | "GRANDES_ARMÁZENS"
+  | "CENTRO_COMERCIAL"
+  | "COMÉRCIO_ELETRÓNICO"
+  | "LOJA_DE_ELETRÓNICA_E_INFORMÁTICA"
+  | "FABRICANTE_DE_HARDWARE"
 
   // ===== LIVROS, ENTRETENIMENTO E MEDIA (Filmes, Séries e TV) =====
-  | 'LIVRARIA_E_EDITORIA'
-  | 'CINEMA'
-  | 'PRODUTORA_DE_CINEMA_E_TELEVISÃO'
-  | 'SERVIÇO_DE_STREAMING'
-  | 'CANAIS_DE_TELEVISÃO_E_RÁDIO'
-  | 'EMPRESA_DE_VIDEOJOGOS'
+  | "LIVRARIA_E_EDITORIA"
+  | "CINEMA"
+  | "PRODUTORA_DE_CINEMA_E_TELEVISÃO"
+  | "SERVIÇO_DE_STREAMING"
+  | "CANAIS_DE_TELEVISÃO_E_RÁDIO"
+  | "EMPRESA_DE_VIDEOJOGOS"
 
   // ===== OUTROS FORMATOS DE VENDA DE BENS =====
-  | 'MERCADO_ABASTECEDOR'
-  | 'LOJA_EM_SEGUNDA_MÃO'
-  | 'OUTROS';
-
+  | "MERCADO_ABASTECEDOR"
+  | "LOJA_EM_SEGUNDA_MÃO"
+  | "OUTROS";
 
 // Currency Type
-export type Currency =      "CVE" 
+export type Currency = "CVE";
 
 // Product Category Type
-export type ProductCategory = 
-    | "FRESH_PRODUCE"
-    | "MEAT_POULTRY"
-    | "SEAFOOD"
-    | "DAIRY_EGGS"
-    | "PLANT_BASED"
-    | "BAKERY"
-    | "FROZEN"
-    | "GRAINS_PASTA"
-    | "LEGUMES"
-    | "CANNED_JARRED"
-    | "OILS_VINEGARS"
-    | "BAKING"
-    | "SPICES_HERBS"
-    | "SNACKS"
-    | "CANDY"
-    | "CEREAL_BREAKFAST"
-    | "BEVERAGES_NON_ALCOHOLIC"
-    | "BEVERAGES_ALCOHOLIC"
-    | "DELI_PREPARED"
-    | "BABY_INFANT"
-    | "HEALTH_NUTRITION"
-    | "INTERNATIONAL"
-    | "HOUSEHOLD"
-    | "PERSONAL_CARE"
-    | "PET"
-    | "OTHER";
+export type ProductCategory =
+  | "FRESH_PRODUCE"
+  | "MEAT_POULTRY"
+  | "SEAFOOD"
+  | "DAIRY_EGGS"
+  | "PLANT_BASED"
+  | "BAKERY"
+  | "FROZEN"
+  | "GRAINS_PASTA"
+  | "LEGUMES"
+  | "CANNED_JARRED"
+  | "OILS_VINEGARS"
+  | "BAKING"
+  | "SPICES_HERBS"
+  | "SNACKS"
+  | "CANDY"
+  | "CEREAL_BREAKFAST"
+  | "BEVERAGES_NON_ALCOHOLIC"
+  | "BEVERAGES_ALCOHOLIC"
+  | "DELI_PREPARED"
+  | "BABY_INFANT"
+  | "HEALTH_NUTRITION"
+  | "INTERNATIONAL"
+  | "HOUSEHOLD"
+  | "PERSONAL_CARE"
+  | "PET"
+  | "OTHER";
 
 // Product Type (all products from the enum)
-export type ProductType = | "FRESCOS_E_HORTÍCOLAS" // Frutas e legumes frescos (Produce)
+export type ProductType =
+  | "FRESCOS_E_HORTÍCOLAS" // Frutas e legumes frescos (Produce)
   | "CARNES_E_AVES"
   | "PEIXARIA_E_MARISCO"
   | "LACTICÍNIOS"
@@ -171,126 +164,175 @@ export type ProductType = | "FRESCOS_E_HORTÍCOLAS" // Frutas e legumes frescos 
   | "CARTÕES_PRESENTE"
   | "OUTROS";
 
+export type CompanyStatuses = "OPERATING" | "INACTIVE" | "CLOSED" | null;
 
-
-
-export type  CompanyStatuses =     "OPERATING"| "INACTIVE" | "CLOSED" |null
-
-
-export interface CompanyModel extends CompanyRegistrationModel{
-    id ?: string;
-    createdAt: string;
-    updatedAt: string;
-    imgS3UrlKeys?: string[]
-    orderList?: OrderModel[]
+export interface CompanyModel extends CompanyRegistrationModel {
+  id?: string;
+  createdAt: string;
+  updatedAt: string;
+  imgS3UrlKeys?: string[];
+  orderList?: OrderModel[];
 }
 
-export interface CompanyRegistrationModel{
-    name:string;
-    category:BusinessCategory;
-    taxIdNumber:string;
-    description:string;
-    phoneNumber:string;
-    faxNumber:string;
-    revenue:number;
-    email:string;
-    address:AddressModel;
-    status:CompanyStatuses;
-    creatorId:string;
-    imagesMetadata?: ImageMetadata[],
-    weeklySchedule: WeeklySchedule | null;
-    
+export interface CompanyRegistrationModel {
+  name: string;
+  category: BusinessCategory;
+  taxIdNumber: string;
+  description: string;
+  phoneNumber: string;
+  faxNumber: string;
+  revenue: number;
+  email: string;
+  address: AddressModel;
+  status: CompanyStatuses;
+  creatorId: string;
+  imagesMetadata?: ImageMetadata[];
+  weeklySchedule: WeeklySchedule | null;
 }
 
+export type Permissions =
+  | "ADD_PRODUCT"
+  | "UPDATE_PRODUCT"
+  | "DELETE_PRODUCT"
+  | "ASSIGN_TASKS"
+  | "VIEW_REPORTS"
+  | "CREATE_TASK"
+  | "DELETE_TASK"
+  | "ADD_WEARABLE"
+  | "UPDATE_WEARABLE"
+  | "DELETE_WEARABLE";
 
-export type Permissions = "ADD_PRODUCT"|  "UPDATE_PRODUCT"|  "DELETE_PRODUCT" | "ASSIGN_TASKS" | "VIEW_REPORTS" | "CREATE_TASK" | "DELETE_TASK" 
-|"ADD_WEARABLE" | "UPDATE_WEARABLE" | "DELETE_WEARABLE" 
+export type Islands =
+  | "BOA_VISTA"
+  | "SANTIAGO"
+  | "FOGO"
+  | "MAIO"
+  | "SÃO_NICOLAU"
+  | "SAL"
+  | "SANTO_ANTÃO"
+  | "BRAVA"
+  | "SÃO_VICENTE"
+  | "";
 
-export type Islands =  "BOA_VISTA" | "SANTIAGO" | "FOGO" | "MAIO" | "SÃO_NICOLAU" | "SAL" | "SANTO_ANTÃO" | "BRAVA" | "SÃO_VICENTE" | "";
+export type UnitTypes =
+  | "LIQUID"
+  | "SOLID"
+  | "SINGULAR"
+  | "BOX"
+  | "PACK"
+  | "DOZEN"
+  | "KILOGRAM"
+  | "POUND"
+  | "GALLON"
+  | "LITER"
+  | "MILLILITER"
+  | "OUNCE"
+  | "FLUID_OUNCE"
+  | "GRAM"
+  | "TON"
+  | "QUART"
+  | "PINT"
+  | "CUP"
+  | "TABLESPOON"
+  | "TEASPOON"
+  | "PIECE"
+  | "UNIT"
+  | "SET"
+  | "PAIR"
+  | "BUNDLE"
+  | "CARTON"
+  | "CASE"
+  | "BAG"
+  | "SACK"
+  | "BARREL"
+  | "CAN"
+  | "BOTTLE"
+  | "JAR"
+  | "TUBE"
+  | "TRAY"
+  | "CRATE"
+  | "PALLET"
+  | "ROLL"
+  | "SLICE"
+  | "BLOCK"
+  | "STICK"
+  | "PORTION"
+  | "SERVING"
+  | "CONTAINER"
+  | "PACKET"
+  | "SLEEVE"
+  | "STRIP"
+  | "";
 
-
-export type UnitTypes = "LIQUID" | "SOLID" | "SINGULAR" | "BOX" |
- "PACK" | "DOZEN" | "KILOGRAM" | "POUND" | "GALLON" | "LITER" | 
- "MILLILITER" | "OUNCE" | "FLUID_OUNCE" | "GRAM" | "TON" | "QUART" |
-  "PINT" | "CUP" | "TABLESPOON" | "TEASPOON" | "PIECE" | "UNIT" | "SET" |
-   "PAIR" | "BUNDLE" | "CARTON" | "CASE" | "BAG" | "SACK" | "BARREL" | "CAN" 
-   | "BOTTLE" | "JAR" | "TUBE" | "TRAY" | "CRATE" | "PALLET" | "ROLL" | "SLICE" 
-   | "BLOCK" | "STICK" | "PORTION" | "SERVING" | "CONTAINER" | "PACKET" |
-    "SLEEVE" | "STRIP" | "";
-
-export interface StaffModel{
-    id? : string;
-    username : string;
-    firstName: string,
-    lastName: string;
-    email : string
-    phoneNumber : string;
-    hiredAt : string;
-    salary : number;
-    jobTitle: string;
-    department: string,
-    companyId : string;
-    assignedPermissions: Permissions[];
-    address: AddressModel;
-    
+export interface StaffModel {
+  id?: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  hiredAt: string;
+  salary: number;
+  jobTitle: string;
+  department: string;
+  companyId: string;
+  assignedPermissions: Permissions[];
+  address: AddressModel;
 }
-export interface RegisterStaffModel extends StaffModel{
+export interface RegisterStaffModel extends StaffModel {
   password: string;
 }
 
 export interface CompanyStats {
   staffList: number;
-  products:  number;
+  products: number;
 }
 
 // The full data shape the Company Dashboard page works with
 export interface CompanyDashboardData {
   company: CompanyModel;
-  stats:   CompanyStats;
+  stats: CompanyStats;
   staffList: StaffModel[];
 }
 
-
-
-export interface CompanyContact{
-      phoneNumber:string,
-      email:string,
-      faxNumber:string,
+export interface CompanyContact {
+  phoneNumber: string;
+  email: string;
+  faxNumber: string;
 }
 
-export interface CompanyAboutInfo{
-  description: string,
-  status: CompanyStatuses
-  taxIdNumber:string
+export interface CompanyAboutInfo {
+  description: string;
+  status: CompanyStatuses;
+  taxIdNumber: string;
 }
 
 export interface OfferingImageUploadRequest {
-  offeringId: string,
-  offeringType: OfferingType
-  s3PresignKeys: string[]
+  offeringId: string;
+  offeringType: OfferingType;
+  s3PresignKeys: string[];
 }
 
 export interface CompanyImageUploadRequest {
-  companyId: string,
-  s3PresignKeys: string[]
+  companyId: string;
+  s3PresignKeys: string[];
 }
 
-export interface PlaceOrderModel{
-  userId: string,
-  cartItems: CartItem[],
-  orderItems?: OrderItemModel[],
-  status: OrderStatus,
+export interface PlaceOrderModel {
+  userId: string;
+  cartItems: CartItem[];
+  orderItems?: OrderItemModel[];
+  status: OrderStatus;
   totalCost: number;
   trackId: string;
-  companyId: string,
-  note: string
+  companyId: string;
+  note: string;
 }
 
-
-export interface OrderModel extends PlaceOrderModel{
-  id: string,
-  createdAt: string,
-  updatedAt: string
+export interface OrderModel extends PlaceOrderModel {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CartItem {
@@ -304,13 +346,13 @@ export interface OrderItemModel {
   id?: string;
   createdAt?: string;
   updatedAt: string;
-    companyId: string,
-  userId: string,
-  itemId: string,
-  itemName: string,
-  quantity: number,
-  priceAtPurchase: number
-  itemType: OfferingType
+  companyId: string;
+  userId: string;
+  itemId: string;
+  itemName: string;
+  quantity: number;
+  priceAtPurchase: number;
+  itemType: OfferingType;
 }
 
 export type WearablesCategory =
@@ -390,7 +432,7 @@ export type WearablesCategory =
   | "MEIAS"
   | "OUTROS";
 
-export interface AddWearableModel{
+export interface AddWearableModel {
   name: string;
   brand: string;
   description: string;
@@ -405,30 +447,35 @@ export interface AddWearableModel{
   companyId: string;
   creatorId: string | undefined;
   imagesMetadata: ImageMetadata[];
-
 }
 
-export interface WearableModel extends AddWearableModel{
-    id?:string;
-    updatedBy?: string;
-    createdAt?:string;
-    updatedAt?:string;
-    imgS3UrlKeys?: string[]
+export interface WearableModel extends AddWearableModel {
+  id?: string;
+  updatedBy?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  imgS3UrlKeys?: string[];
 }
 
-export interface ResetPasswordRequest{
+export interface ResetPasswordRequest {
   newPassword: string;
 }
 
-export type entityType = "user" | "staff" | "employer"
+export type entityType = "user" | "staff" | "employer";
 
-export type WeekDays = "SEGUNDA_FEIRA" | "TERÇA_FEIRA" | "QUARTA_FEIRA" |  "QUINTA_FEIRA" | "SEXTA_FEIRA" | "SABADO" | "DOMINGO"
-
+export type WeekDays =
+  | "SEGUNDA_FEIRA"
+  | "TERÇA_FEIRA"
+  | "QUARTA_FEIRA"
+  | "QUINTA_FEIRA"
+  | "SEXTA_FEIRA"
+  | "SABADO"
+  | "DOMINGO";
 
 export interface TimeRange {
-    start: string,
-    end: string,
-    isClosed: boolean
+  start: string;
+  end: string;
+  isClosed: boolean;
 }
 
 export interface WeeklySchedule {

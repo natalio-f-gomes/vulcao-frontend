@@ -3,20 +3,29 @@ import { CompanyModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import { companyName } from "../../api/global";
 
-export type CompanyView = "overview" | "staffview" | "productView" | "electronicView" | "tvShowView" | 
-                          "filmView" | "bookView" | "reviewsView" | "customerView" | "orderView" | "wearableView" ;
-
+export type CompanyView =
+  | "overview"
+  | "staffview"
+  | "productView"
+  | "electronicView"
+  | "tvShowView"
+  | "filmView"
+  | "bookView"
+  | "reviewsView"
+  | "customerView"
+  | "orderView"
+  | "wearableView";
 
 interface Parameters {
-    activeView: CompanyView;
-    onNavigate: (view: CompanyView) => void;
-    onBack: ()=> void;
-    onLogout: (entityType: string) => void;
-    company: CompanyModel
+  activeView: CompanyView;
+  onNavigate: (view: CompanyView) => void;
+  onBack: () => void;
+  onLogout: (entityType: string) => void;
+  company: CompanyModel;
 }
 
 export const styles: Record<string, React.CSSProperties> = {
- sidebar: {
+  sidebar: {
     background: "#0f0e0e",
     color: "#bbb",
     minHeight: "100vh",
@@ -25,7 +34,7 @@ export const styles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     padding: "1.25rem 0",
     fontFamily: "'DM Sans', system-ui, sans-serif",
-    flex: 1,         
+    flex: 1,
   },
   brand: {
     padding: "0 1.25rem 1rem",
@@ -120,48 +129,63 @@ export const styles: Record<string, React.CSSProperties> = {
   },
 };
 
+function CompanySidebar({
+  activeView,
+  onBack,
+  onNavigate,
+  onLogout,
+  company,
+}: Parameters) {
+  const navigate = useNavigate();
+  const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
 
-function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Parameters){
-    const navigate = useNavigate();
-    const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
-    
-      async function handleLogout() {
-        await logoutHandler();
-        navigate("/");
-      }
+  async function handleLogout() {
+    await logoutHandler();
+    navigate("/");
+  }
 
-  
   const itemStyle = (view: CompanyView): React.CSSProperties =>
-    activeView === view ? { ...styles.navItem, ...styles.navItemActive } : styles.navItem;
-  
+    activeView === view
+      ? { ...styles.navItem, ...styles.navItemActive }
+      : styles.navItem;
+
   return (
-<aside style={styles.sidebar}>
-  <div style={styles.brand}>
-    <a style={styles.brandLogo} href="/">
-      <span style={styles.brandAccent}>{companyName}</span>
-    </a>
-  </div>
-  <span style={styles.brandSub}>{company.name} - Painel de Controlo</span>
+    <aside style={styles.sidebar}>
+      <div style={styles.brand}>
+        <a style={styles.brandLogo} href="/">
+          <span style={styles.brandAccent}>{companyName}</span>
+        </a>
+      </div>
+      <span style={styles.brandSub}>{company.name} - Painel de Controlo</span>
 
-  <nav style={styles.nav}>
-    <div style={styles.sectionLabel}>Visão Geral</div>
-    <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
-      <i className="bi bi-grid-1x2" /> Painel de Controlo
-    </a>
+      <nav style={styles.nav}>
+        <div style={styles.sectionLabel}>Visão Geral</div>
+        <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+          <i className="bi bi-grid-1x2" /> Painel de Controlo
+        </a>
 
-    <a style={itemStyle("staffview")} onClick={() => onNavigate("staffview")}>
-      <i className="bi bi-people" /> Gestão de Funcionários
-    </a>
+        <a
+          style={itemStyle("staffview")}
+          onClick={() => onNavigate("staffview")}
+        >
+          <i className="bi bi-people" /> Gestão de Funcionários
+        </a>
 
-    <div style={styles.sectionLabel}>Ofertas</div>
+        <div style={styles.sectionLabel}>Ofertas</div>
 
-    <a style={itemStyle("productView")} onClick={() => onNavigate("productView")}>
-      <i className="bi bi-box-seam" /> Produtos
-    </a>
-     <a style={itemStyle("wearableView")} onClick={() => onNavigate("wearableView")}>
-      <i className="bi bi-box-seam" /> Vestíveis
-    </a>
-    {/* 
+        <a
+          style={itemStyle("productView")}
+          onClick={() => onNavigate("productView")}
+        >
+          <i className="bi bi-box-seam" /> Produtos
+        </a>
+        <a
+          style={itemStyle("wearableView")}
+          onClick={() => onNavigate("wearableView")}
+        >
+          <i className="bi bi-box-seam" /> Vestíveis
+        </a>
+        {/* 
     <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
       <i className="bi bi-box-seam" /> Eletrónicos
     </a>
@@ -176,40 +200,49 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
     </a>
     */}
 
-    <div style={styles.sectionLabel}>Loja</div>
-    <a style={itemStyle("orderView")} onClick={() => onNavigate("orderView")}>
-      <i className="bi bi-bag-check" /> Encomendas
-    </a>
-    {/*
+        <div style={styles.sectionLabel}>Loja</div>
+        <a
+          style={itemStyle("orderView")}
+          onClick={() => onNavigate("orderView")}
+        >
+          <i className="bi bi-bag-check" /> Encomendas
+        </a>
+        {/*
     <a style={itemStyle("customerView")}>
       <i className="bi bi-people" /> Clientes
     </a>
     */}
-    {/*
+        {/*
     <a style={itemStyle("reviewsView")}>
       <i className="bi bi-people" /> Avaliações
     </a>
     */}
 
-    {/* <div style={styles.sectionLabel}>Sistema</div>
+        {/* <div style={styles.sectionLabel}>Sistema</div>
     <a style={itemStyle("productView")}>
       <i className="bi bi-gear" /> Definições
     </a> */}
-  </nav>
+      </nav>
 
-  <div style={styles.footer}>
-    <div style={styles.ownerInfo}>
-      <div className="owner-avatar"><i className="bi bi-person" /></div>
-      <div>
-        <div style={styles.ownerName}>{`@${company?.creatorId} `}</div>
-        <div style={styles.ownerRole}>Empresário</div>
+      <div style={styles.footer}>
+        <div style={styles.ownerInfo}>
+          <div className="owner-avatar">
+            <i className="bi bi-person" />
+          </div>
+          <div>
+            <div style={styles.ownerName}>{`@${company?.creatorId} `}</div>
+            <div style={styles.ownerRole}>Empresário</div>
+          </div>
+          <button
+            style={styles.signoutBtn}
+            onClick={handleLogout}
+            title="Terminar Sessão"
+          >
+            <i className="bi bi-box-arrow-right" />
+          </button>
+        </div>
       </div>
-      <button style={styles.signoutBtn} onClick={handleLogout} title="Terminar Sessão">
-        <i className="bi bi-box-arrow-right" />
-      </button>
-    </div>
-  </div>
-</aside>
+    </aside>
   );
 }
 

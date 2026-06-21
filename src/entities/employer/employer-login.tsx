@@ -35,27 +35,24 @@ function EmployerLoginPage() {
     );
   };
 
-
-
-
 const sendMfACode = async () => {
   if (!loginForm) return;
   setError(null);
   setLoading(true);
 
     if (!isValidUsername(loginForm.username)) {
-                if (loginForm.username.includes(' ')) {
-                    alert("O nome de utilizador não pode conter espaços.");
-                } else if (loginForm.username.includes('\'')) {
-                    alert("O nome de utilizador não pode conter aspas simples.");
-                } else if (loginForm.username.includes('/') || loginForm.username.includes('\\')) {
-                    alert("O nome de utilizador não pode conter barras (/ ou \\).");
-                } else if (loginForm.username.length < 8 || loginForm.username.length > 50) {
-                    alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
-                }
-                 setLoading(false);
-                return;
-            }
+      if (loginForm.username.includes(' ')) {
+          alert("O nome de utilizador não pode conter espaços.");
+      } else if (loginForm.username.includes('\'')) {
+          alert("O nome de utilizador não pode conter aspas simples.");
+      } else if (loginForm.username.includes('/') || loginForm.username.includes('\\')) {
+          alert("O nome de utilizador não pode conter barras (/ ou \\).");
+      } else if (loginForm.username.length < 8 || loginForm.username.length > 50) {
+          alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+      }
+        setLoading(false);
+      return;
+  }
 
     const response = await requestEmployerLogin(loginForm.username);
     console.log('MFA CODE REQUEST RESPONSE:', response);
@@ -65,7 +62,7 @@ try{
     } else if (response.status === 401) {
       alert("Dados de autenticação inválidos.");
     } else if (response.status === 404) {
-      alert("Credenciais incorretas.");
+      alert("Não foi encontrado Empresário(a) com este nome the usuário.");
     } else if (response.status === 409) {
       alert("Já existe uma entidade com estas credenciais.");
     } else if (response.status === 403) {
@@ -88,19 +85,17 @@ try{
    
 };
   
-  
-      const LoginRequest = async(code: string) => {
-          if(!loginForm){return;}
-          setError(null)
-          setLoading(true)
+  const LoginRequest = async(code: string) => {
+    if(!loginForm){return;}
+    setError(null)
+    setLoading(true)
 
-            try{
+    try{
       const response = await confirmEmployerLogin (code, loginForm)
       console.log(response)
       if(!response.ok){
         console.log("Registration Failed")
         console.log(response)
-        
       }
 
     if(response.status === 200){

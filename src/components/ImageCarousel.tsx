@@ -32,8 +32,8 @@ function ImageCarousel({
   const containerStyle: React.CSSProperties = {
     position: "relative",
     width: "100%",
-    maxWidth: width,                       // number → px cap; "100%" → no cap
-    aspectRatio: `${ratioW} / ${height}`,  // height derived at ANY width
+    maxWidth: width, // number → px cap; "100%" → no cap
+    aspectRatio: `${ratioW} / ${height}`, // height derived at ANY width
   };
 
   // No images — show a neutral placeholder box (same fluid sizing).
@@ -58,16 +58,14 @@ function ImageCarousel({
 
   const safeIndex = Math.min(index, keys.length - 1);
 
-  const prev = () =>
-    setIndex((i) => (i - 1 + keys.length) % keys.length); // wraps around
-  const next = () =>
-    setIndex((i) => (i + 1) % keys.length);
+  const prev = () => setIndex((i) => (i - 1 + keys.length) % keys.length); // wraps around
+  const next = () => setIndex((i) => (i + 1) % keys.length);
 
   const arrowStyle: React.CSSProperties = {
     position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
-    width: "clamp(22px, 12%, 30px)",   // arrows scale with the carousel
+    width: "clamp(22px, 12%, 30px)", // arrows scale with the carousel
     aspectRatio: "1 / 1",
     borderRadius: "50%",
     border: "none",

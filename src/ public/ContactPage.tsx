@@ -113,7 +113,9 @@ function ContactPage() {
       <style>{STYLES}</style>
 
       <nav className="nav">
-        <a href="#" className="brand">Meridian<span>.</span></a>
+        <a href="#" className="brand">
+          Meridian<span>.</span>
+        </a>
         <div className="nav-links">
           <a href="#">About</a>
           <a href="#form">Get in Touch</a>
@@ -125,8 +127,14 @@ function ContactPage() {
       <header className="hero">
         <div className="wrap">
           <div className="hero-eyebrow">Contact Meridian</div>
-          <h1 className="hero-title">Let's start a <em>conversation.</em></h1>
-          <p className="hero-lead">Whether you're a seller with a question, a customer chasing an order, or a journalist on deadline — there's a real person on the other end. Most messages get a reply within one business day.</p>
+          <h1 className="hero-title">
+            Let's start a <em>conversation.</em>
+          </h1>
+          <p className="hero-lead">
+            Whether you're a seller with a question, a customer chasing an
+            order, or a journalist on deadline — there's a real person on the
+            other end. Most messages get a reply within one business day.
+          </p>
         </div>
       </header>
 
@@ -135,7 +143,10 @@ function ContactPage() {
           {/* FORM */}
           <div className="form-card">
             <h2>Send us a message</h2>
-            <p className="sub">Fill out the form and the right team will get back to you. No bots, no phone trees.</p>
+            <p className="sub">
+              Fill out the form and the right team will get back to you. No
+              bots, no phone trees.
+            </p>
 
             <div className="f-row">
               <div className="f-field">
@@ -144,14 +155,22 @@ function ContactPage() {
               </div>
               <div className="f-field">
                 <label className="f-label">Last Name</label>
-                <input className="f-input" type="text" placeholder="Velasquez" />
+                <input
+                  className="f-input"
+                  type="text"
+                  placeholder="Velasquez"
+                />
               </div>
             </div>
 
             <div className="f-row">
               <div className="f-field">
                 <label className="f-label">Email Address</label>
-                <input className="f-input" type="email" placeholder="you@example.com" />
+                <input
+                  className="f-input"
+                  type="email"
+                  placeholder="you@example.com"
+                />
               </div>
               <div className="f-field">
                 <label className="f-label">Phone (optional)</label>
@@ -161,7 +180,10 @@ function ContactPage() {
 
             <div className="f-field">
               <label className="f-label">I am a…</label>
-              <select className="f-select" defaultValue="Seller / Business owner">
+              <select
+                className="f-select"
+                defaultValue="Seller / Business owner"
+              >
                 <option>Seller / Business owner</option>
                 <option>Customer / Buyer</option>
                 <option>Logistics partner</option>
@@ -172,16 +194,28 @@ function ContactPage() {
 
             <div className="f-field">
               <label className="f-label">Subject</label>
-              <input className="f-input" type="text" placeholder="What's this about?" />
+              <input
+                className="f-input"
+                type="text"
+                placeholder="What's this about?"
+              />
             </div>
 
             <div className="f-field">
               <label className="f-label">Message</label>
-              <textarea className="f-textarea" placeholder="Tell us what's on your mind…" />
+              <textarea
+                className="f-textarea"
+                placeholder="Tell us what's on your mind…"
+              />
             </div>
 
-            <button className="f-submit"><i className="bi bi-send"></i> Send Message</button>
-            <p className="form-note"><i className="bi bi-shield-check"></i> We'll never share your details. Read our privacy promise.</p>
+            <button className="f-submit">
+              <i className="bi bi-send"></i> Send Message
+            </button>
+            <p className="form-note">
+              <i className="bi bi-shield-check"></i> We'll never share your
+              details. Read our privacy promise.
+            </p>
           </div>
 
           {/* INFO COLUMN */}
@@ -189,29 +223,65 @@ function ContactPage() {
             <div className="info-card">
               <h3>Reach us directly</h3>
               <div className="info-line">
-                <div className="info-ic"><i className="bi bi-envelope-fill"></i></div>
-                <div><div className="lbl">General</div><div className="val"><a href="#">hello@meridian.example</a></div></div>
+                <div className="info-ic">
+                  <i className="bi bi-envelope-fill"></i>
+                </div>
+                <div>
+                  <div className="lbl">General</div>
+                  <div className="val">
+                    <a href="#">hello@meridian.example</a>
+                  </div>
+                </div>
               </div>
               <div className="info-line">
-                <div className="info-ic"><i className="bi bi-headset"></i></div>
-                <div><div className="lbl">Seller Support</div><div className="val"><a href="#">sellers@meridian.example</a></div></div>
+                <div className="info-ic">
+                  <i className="bi bi-headset"></i>
+                </div>
+                <div>
+                  <div className="lbl">Seller Support</div>
+                  <div className="val">
+                    <a href="#">sellers@meridian.example</a>
+                  </div>
+                </div>
               </div>
               <div className="info-line">
-                <div className="info-ic"><i className="bi bi-telephone-fill"></i></div>
-                <div><div className="lbl">Phone</div><div className="val">+1 (555) 0142-8800</div></div>
+                <div className="info-ic">
+                  <i className="bi bi-telephone-fill"></i>
+                </div>
+                <div>
+                  <div className="lbl">Phone</div>
+                  <div className="val">+1 (555) 0142-8800</div>
+                </div>
               </div>
               <div className="info-line">
-                <div className="info-ic"><i className="bi bi-geo-alt-fill"></i></div>
-                <div><div className="lbl">HQ</div><div className="val">17 Harbour Row, Port Harbour</div></div>
+                <div className="info-ic">
+                  <i className="bi bi-geo-alt-fill"></i>
+                </div>
+                <div>
+                  <div className="lbl">HQ</div>
+                  <div className="val">17 Harbour Row, Port Harbour</div>
+                </div>
               </div>
             </div>
 
             <div className="hours-card">
               <h3>Support hours</h3>
-              <div className="hours-row"><span>Mon – Fri</span><span className="open">07:00 – 20:00</span></div>
-              <div className="hours-row"><span>Saturday</span><span className="open">09:00 – 17:00</span></div>
-              <div className="hours-row"><span>Sunday</span><span className="closed">Closed</span></div>
-              <div className="hours-row"><span>Public holidays</span><span className="closed">Closed</span></div>
+              <div className="hours-row">
+                <span>Mon – Fri</span>
+                <span className="open">07:00 – 20:00</span>
+              </div>
+              <div className="hours-row">
+                <span>Saturday</span>
+                <span className="open">09:00 – 17:00</span>
+              </div>
+              <div className="hours-row">
+                <span>Sunday</span>
+                <span className="closed">Closed</span>
+              </div>
+              <div className="hours-row">
+                <span>Public holidays</span>
+                <span className="closed">Closed</span>
+              </div>
             </div>
           </div>
         </div>
@@ -223,16 +293,52 @@ function ContactPage() {
         <h2 className="section-title">Three islands, one team.</h2>
         <div className="office-grid">
           <div className="office">
-            <div className="office-banner"><span className="pin"><i className="bi bi-geo-alt-fill"></i></span><span className="city">Port Harbour</span></div>
-            <div className="office-body"><div className="role">Headquarters</div><p>17 Harbour Row, Windward District. Where it all started — above the old fish market.</p><div className="ph">+1 555 0142-8800</div></div>
+            <div className="office-banner">
+              <span className="pin">
+                <i className="bi bi-geo-alt-fill"></i>
+              </span>
+              <span className="city">Port Harbour</span>
+            </div>
+            <div className="office-body">
+              <div className="role">Headquarters</div>
+              <p>
+                17 Harbour Row, Windward District. Where it all started — above
+                the old fish market.
+              </p>
+              <div className="ph">+1 555 0142-8800</div>
+            </div>
           </div>
           <div className="office">
-            <div className="office-banner"><span className="pin"><i className="bi bi-geo-alt-fill"></i></span><span className="city">Saltmere</span></div>
-            <div className="office-body"><div className="role">Logistics Hub</div><p>Unit 9, Coastal Trade Park. Our largest consolidation and dispatch centre.</p><div className="ph">+1 555 0142-8810</div></div>
+            <div className="office-banner">
+              <span className="pin">
+                <i className="bi bi-geo-alt-fill"></i>
+              </span>
+              <span className="city">Saltmere</span>
+            </div>
+            <div className="office-body">
+              <div className="role">Logistics Hub</div>
+              <p>
+                Unit 9, Coastal Trade Park. Our largest consolidation and
+                dispatch centre.
+              </p>
+              <div className="ph">+1 555 0142-8810</div>
+            </div>
           </div>
           <div className="office">
-            <div className="office-banner"><span className="pin"><i className="bi bi-geo-alt-fill"></i></span><span className="city">Velha Costa</span></div>
-            <div className="office-body"><div className="role">Seller Studio</div><p>2nd Floor, Mercado Velho. Walk-in onboarding and photography for new vendors.</p><div className="ph">+1 555 0142-8820</div></div>
+            <div className="office-banner">
+              <span className="pin">
+                <i className="bi bi-geo-alt-fill"></i>
+              </span>
+              <span className="city">Velha Costa</span>
+            </div>
+            <div className="office-body">
+              <div className="role">Seller Studio</div>
+              <p>
+                2nd Floor, Mercado Velho. Walk-in onboarding and photography for
+                new vendors.
+              </p>
+              <div className="ph">+1 555 0142-8820</div>
+            </div>
           </div>
         </div>
       </section>
@@ -242,14 +348,42 @@ function ContactPage() {
         <div className="section-eyebrow">Before You Write</div>
         <h2 className="section-title">Quick answers.</h2>
         <div style={{ marginTop: 32 }}>
-          <div className="faq-item"><h4><i className="bi bi-box-seam"></i>Where's my order?</h4><p>Track any order live from your dashboard under Orders → Track. Support can only see what the tracking shows, so checking there first is usually faster.</p></div>
-          <div className="faq-item"><h4><i className="bi bi-shop"></i>How do I start selling?</h4><p>Hit "Start Selling" on the homepage, or walk into our Velha Costa studio. Onboarding takes about 20 minutes and your first listing can go live the same day.</p></div>
-          <div className="faq-item"><h4><i className="bi bi-cash-coin"></i>When do sellers get paid?</h4><p>Payouts clear every Tuesday and Friday for all orders marked delivered, minus the flat platform fee. No surprises, no held funds.</p></div>
+          <div className="faq-item">
+            <h4>
+              <i className="bi bi-box-seam"></i>Where's my order?
+            </h4>
+            <p>
+              Track any order live from your dashboard under Orders → Track.
+              Support can only see what the tracking shows, so checking there
+              first is usually faster.
+            </p>
+          </div>
+          <div className="faq-item">
+            <h4>
+              <i className="bi bi-shop"></i>How do I start selling?
+            </h4>
+            <p>
+              Hit "Start Selling" on the homepage, or walk into our Velha Costa
+              studio. Onboarding takes about 20 minutes and your first listing
+              can go live the same day.
+            </p>
+          </div>
+          <div className="faq-item">
+            <h4>
+              <i className="bi bi-cash-coin"></i>When do sellers get paid?
+            </h4>
+            <p>
+              Payouts clear every Tuesday and Friday for all orders marked
+              delivered, minus the flat platform fee. No surprises, no held
+              funds.
+            </p>
+          </div>
         </div>
       </section>
 
       <footer className="foot">
-        &copy; 2025 Meridian Marketplace &nbsp;·&nbsp; Built on the islands<span>.</span> &nbsp;·&nbsp; Port Harbour HQ
+        &copy; 2025 Meridian Marketplace &nbsp;·&nbsp; Built on the islands
+        <span>.</span> &nbsp;·&nbsp; Port Harbour HQ
       </footer>
     </>
   );

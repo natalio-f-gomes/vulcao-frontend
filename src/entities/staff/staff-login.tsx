@@ -50,7 +50,7 @@ function StaffLoginPage() {
       } else if (response.status === 401) {
         alert("Dados de autenticação inválidos.");
       } else if (response.status === 404) {
-        alert("Credenciais incorretas.");
+        alert("Não foi encontrado Funcionario(a) com este nome the usuário.");
       } else if (response.status === 409) {
         alert("Já existe uma entidade com estas credenciais.");
       } else if (response.status === 403) {

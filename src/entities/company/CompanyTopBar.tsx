@@ -1,5 +1,3 @@
-
-
 import { useNavigate } from "react-router-dom";
 
 interface PublicTopBarProps {
@@ -22,14 +20,20 @@ function CompanyHeader({ companyName, onBack }: PublicTopBarProps) {
     >
       <button
         onClick={() => navigate("/")}
-        style={{ background: "transparent", border: "1px solid #d8d2c8", borderRadius: 6, padding: "1x 12px", cursor: "pointer", fontSize: "0.85rem" }}
+        style={{
+          background: "transparent",
+          border: "1px solid #d8d2c8",
+          borderRadius: 6,
+          padding: "1x 12px",
+          cursor: "pointer",
+          fontSize: "0.85rem",
+        }}
       >
         <i className="bi bi-arrow-left" /> Inicio
       </button>
       <span style={{ fontWeight: 600 }}>{companyName}</span>
-
     </div>
   );
 }
 
-export default CompanyHeader
+export default CompanyHeader;

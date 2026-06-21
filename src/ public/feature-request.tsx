@@ -112,36 +112,59 @@ section{padding:60px 0;}
 function FeatureRequestPage() {
   return (
     <>
-    <GetHeader/>
+      <GetHeader />
       <style>{STYLES}</style>
-
 
       <header className="hero">
         <div className="wrap">
           <div className="hero-eyebrow">Feature Requests</div>
-          <h1 className="hero-title">You build this <em>with us.</em></h1>
-          <p className="hero-lead">Every feature on our roadmap started as someone's idea. Post yours, vote on others, and watch the most-wanted ones get built. We ship the things you ask for most.</p>
+          <h1 className="hero-title">
+            You build this <em>with us.</em>
+          </h1>
+          <p className="hero-lead">
+            Every feature on our roadmap started as someone's idea. Post yours,
+            vote on others, and watch the most-wanted ones get built. We ship
+            the things you ask for most.
+          </p>
         </div>
       </header>
 
       <section className="wrap" id="board">
         {/* roadmap legend */}
         <div className="legend">
-          <div className="legend-card"><div className="num blue">18</div><div className="lbl">Planned</div></div>
-          <div className="legend-card"><div className="num orange">7</div><div className="lbl">In Progress</div></div>
-          <div className="legend-card"><div className="num green">42</div><div className="lbl">Shipped</div></div>
-          <div className="legend-card"><div className="num purple">5</div><div className="lbl">Under Review</div></div>
+          <div className="legend-card">
+            <div className="num blue">18</div>
+            <div className="lbl">Planned</div>
+          </div>
+          <div className="legend-card">
+            <div className="num orange">7</div>
+            <div className="lbl">In Progress</div>
+          </div>
+          <div className="legend-card">
+            <div className="num green">42</div>
+            <div className="lbl">Shipped</div>
+          </div>
+          <div className="legend-card">
+            <div className="num purple">5</div>
+            <div className="lbl">Under Review</div>
+          </div>
         </div>
 
         <div className="board-layout">
           {/* SUBMIT FORM */}
           <div className="submit-card" id="submit">
             <h2>Suggest a feature</h2>
-            <p className="sub">Got an idea that'd make Meridian better? We read every single one.</p>
+            <p className="sub">
+              Got an idea that'd make Meridian better? We read every single one.
+            </p>
 
             <div className="f-field">
               <label className="f-label">Feature title</label>
-              <input className="f-input" type="text" placeholder="e.g. Bulk product upload via CSV" />
+              <input
+                className="f-input"
+                type="text"
+                placeholder="e.g. Bulk product upload via CSV"
+              />
             </div>
             <div className="f-field">
               <label className="f-label">Category</label>
@@ -155,13 +178,22 @@ function FeatureRequestPage() {
             </div>
             <div className="f-field">
               <label className="f-label">Describe it</label>
-              <textarea className="f-textarea" placeholder="What problem does it solve? Who benefits?" />
+              <textarea
+                className="f-textarea"
+                placeholder="What problem does it solve? Who benefits?"
+              />
             </div>
             <div className="f-field">
               <label className="f-label">Your email</label>
-              <input className="f-input" type="email" placeholder="you@example.com" />
+              <input
+                className="f-input"
+                type="email"
+                placeholder="you@example.com"
+              />
             </div>
-            <button className="f-submit"><i className="bi bi-lightbulb"></i> Post Request</button>
+            <button className="f-submit">
+              <i className="bi bi-lightbulb"></i> Post Request
+            </button>
           </div>
 
           {/* REQUEST BOARD */}
@@ -178,74 +210,195 @@ function FeatureRequestPage() {
 
             <div>
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">284</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">284</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Offline mode for the seller app</h3>
-                  <p>Let vendors add and edit listings without signal, then sync when they're back online. Half our islands have patchy coverage.</p>
-                  <div className="req-meta"><span className="tag mobile">Mobile App</span><span className="status progress">In Progress</span><span className="req-author"><i className="bi bi-person-circle"></i>Rina K.</span></div>
+                  <p>
+                    Let vendors add and edit listings without signal, then sync
+                    when they're back online. Half our islands have patchy
+                    coverage.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag mobile">Mobile App</span>
+                    <span className="status progress">In Progress</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Rina K.
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">201</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">201</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Bulk product upload via CSV</h3>
-                  <p>Wholesalers with hundreds of SKUs need to upload a spreadsheet instead of adding items one by one.</p>
-                  <div className="req-meta"><span className="tag seller">Seller Tools</span><span className="status planned">Planned</span><span className="req-author"><i className="bi bi-person-circle"></i>Dauda O.</span></div>
+                  <p>
+                    Wholesalers with hundreds of SKUs need to upload a
+                    spreadsheet instead of adding items one by one.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag seller">Seller Tools</span>
+                    <span className="status planned">Planned</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Dauda O.
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">176</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">176</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Split payments across multiple cards</h3>
-                  <p>Customers want to pay part now, part on delivery, or split a large order between two payment methods.</p>
-                  <div className="req-meta"><span className="tag payments">Payments</span><span className="status planned">Planned</span><span className="req-author"><i className="bi bi-person-circle"></i>Tomas M.</span></div>
+                  <p>
+                    Customers want to pay part now, part on delivery, or split a
+                    large order between two payment methods.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag payments">Payments</span>
+                    <span className="status planned">Planned</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Tomas M.
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">143</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">143</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Live delivery driver tracking on a map</h3>
-                  <p>Show buyers exactly where their courier is between islands, like ride-share apps do.</p>
-                  <div className="req-meta"><span className="tag logistics">Logistics</span><span className="status review">Under Review</span><span className="req-author"><i className="bi bi-person-circle"></i>Amara V.</span></div>
+                  <p>
+                    Show buyers exactly where their courier is between islands,
+                    like ride-share apps do.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag logistics">Logistics</span>
+                    <span className="status review">Under Review</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Amara V.
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">119</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">119</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Dark mode for the dashboard</h3>
-                  <p>Sellers working late nights want an easier-on-the-eyes theme across the whole admin panel.</p>
-                  <div className="req-meta"><span className="tag ui">UI / Design</span><span className="status progress">In Progress</span><span className="req-author"><i className="bi bi-person-circle"></i>Leah F.</span></div>
+                  <p>
+                    Sellers working late nights want an easier-on-the-eyes theme
+                    across the whole admin panel.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag ui">UI / Design</span>
+                    <span className="status progress">In Progress</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Leah F.
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">312</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">312</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Saturday delivery slots</h3>
-                  <p>Weekend delivery was the #1 ask for two years running. Now live across all six logistics hubs.</p>
-                  <div className="req-meta"><span className="tag logistics">Logistics</span><span className="status shipped">Shipped</span><span className="req-author"><i className="bi bi-person-circle"></i>Community</span></div>
+                  <p>
+                    Weekend delivery was the #1 ask for two years running. Now
+                    live across all six logistics hubs.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag logistics">Logistics</span>
+                    <span className="status shipped">Shipped</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Community
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">227</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">227</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Multi-language product listings</h3>
-                  <p>Sellers can now publish listings in three languages at once, auto-shown by buyer preference.</p>
-                  <div className="req-meta"><span className="tag seller">Seller Tools</span><span className="status shipped">Shipped</span><span className="req-author"><i className="bi bi-person-circle"></i>Community</span></div>
+                  <p>
+                    Sellers can now publish listings in three languages at once,
+                    auto-shown by buyer preference.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag seller">Seller Tools</span>
+                    <span className="status shipped">Shipped</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Community
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <div className="req">
-                <div className="vote"><span className="v-arrow"><i className="bi bi-caret-up-fill"></i></span><span className="v-count">88</span><span className="v-label">votes</span></div>
+                <div className="vote">
+                  <span className="v-arrow">
+                    <i className="bi bi-caret-up-fill"></i>
+                  </span>
+                  <span className="v-count">88</span>
+                  <span className="v-label">votes</span>
+                </div>
                 <div className="req-body">
                   <h3>Wishlist sharing with friends</h3>
-                  <p>Let buyers send a wishlist link so others can buy items for birthdays and holidays.</p>
-                  <div className="req-meta"><span className="tag mobile">Mobile App</span><span className="status planned">Planned</span><span className="req-author"><i className="bi bi-person-circle"></i>Priya N.</span></div>
+                  <p>
+                    Let buyers send a wishlist link so others can buy items for
+                    birthdays and holidays.
+                  </p>
+                  <div className="req-meta">
+                    <span className="tag mobile">Mobile App</span>
+                    <span className="status planned">Planned</span>
+                    <span className="req-author">
+                      <i className="bi bi-person-circle"></i>Priya N.
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -253,7 +406,7 @@ function FeatureRequestPage() {
         </div>
       </section>
 
-      <GetFooterSection/>
+      <GetFooterSection />
     </>
   );
 }

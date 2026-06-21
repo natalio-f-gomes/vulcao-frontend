@@ -6,183 +6,217 @@
    ========================================================================== */
 
 .profile-main {
-    --p-ink:    var(--ink, #0f0e0e);
-    --p-cream:  var(--cream, #f7f4ef);
-    --p-accent: var(--accent, #c8452a);
-    --p-mid:    var(--mid, #5a5650);
-    --p-border: var(--card-border, #e8e4de);
-    --p-font:   var(--font, 'DM Sans', system-ui, sans-serif);
+  --p-ink: var(--ink, #0f0e0e);
+  --p-cream: var(--cream, #f7f4ef);
+  --p-accent: var(--accent, #c8452a);
+  --p-mid: var(--mid, #5a5650);
+  --p-border: var(--card-border, #e8e4de);
+  --p-font: var(--font, "DM Sans", system-ui, sans-serif);
 
-    font-family: var(--p-font);
-    color: var(--p-ink);
+  font-family: var(--p-font);
+  color: var(--p-ink);
 }
 
 /* ── Page header ─────────────────────────────────────────────────────────── */
-.page-header { padding-top: 32px; margin-bottom: 20px; }
+.page-header {
+  padding-top: 32px;
+  margin-bottom: 20px;
+}
 .page-eyebrow {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--p-accent);
-    margin: 0 0 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--p-accent);
+  margin: 0 0 4px;
 }
 
 .page-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--p-ink);
-    margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--p-ink);
+  margin: 0;
 }
 
 /* ── Section card ────────────────────────────────────────────────────────── */
 .profile-section {
-    background: #fff;
-    border: 1px solid var(--p-border);
-    border-radius: 8px;
-    margin-bottom: 20px;
-    overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--p-border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .section-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 22px;
-    border-bottom: 1px solid #f0ece6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f0ece6;
 }
 .section-head-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
-.section-head-left i { color: var(--p-accent); font-size: 1rem; }
+.section-head-left i {
+  color: var(--p-accent);
+  font-size: 1rem;
+}
 .section-head-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.98rem;
-    font-weight: 700;
-    color: var(--p-ink);
+  font-family: "Playfair Display", serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--p-ink);
 }
 
 /* ── Edit button ─────────────────────────────────────────────────────────── */
 .btn-edit {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 14px;
-    font-family: var(--p-font);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--p-mid);
-    background: transparent;
-    border: 1px solid var(--p-border);
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-family: var(--p-font);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--p-mid);
+  background: transparent;
+  border: 1px solid var(--p-border);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
 }
-.btn-edit:hover { border-color: var(--p-ink); color: var(--p-ink); }
-.btn-edit.editing { border-color: var(--p-accent); color: var(--p-accent); }
+.btn-edit:hover {
+  border-color: var(--p-ink);
+  color: var(--p-ink);
+}
+.btn-edit.editing {
+  border-color: var(--p-accent);
+  color: var(--p-accent);
+}
 
 /* ── Fields grid ─────────────────────────────────────────────────────────── */
 .fields-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px 24px;
-    padding: 20px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+  padding: 20px 22px;
 }
-.fields-grid.triple { grid-template-columns: repeat(3, 1fr); }
+.fields-grid.triple {
+  grid-template-columns: repeat(3, 1fr);
+}
 
 .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
 }
 .field-label {
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--p-mid);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-mid);
 }
 .field-value {
-    font-size: 0.92rem;
-    font-weight: 500;
-    color: var(--p-ink);
-    word-break: break-word;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--p-ink);
+  word-break: break-word;
 }
-.pwd-dots { letter-spacing: 0.18em; color: var(--p-mid); }
+.pwd-dots {
+  letter-spacing: 0.18em;
+  color: var(--p-mid);
+}
 
 /* Input is hidden until the section enters edit mode */
 .field-input {
-    display: none;
-    width: 100%;
-    padding: 9px 12px;
-    font-family: var(--p-font);
-    font-size: 0.9rem;
-    color: var(--p-ink);
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.18s;
+  display: none;
+  width: 100%;
+  padding: 9px 12px;
+  font-family: var(--p-font);
+  font-size: 0.9rem;
+  color: var(--p-ink);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.18s;
 }
-.field-input:focus { border-color: var(--p-accent); }
+.field-input:focus {
+  border-color: var(--p-accent);
+}
 
 /* When editing: swap the static value for the input */
-.field-group.is-editing .field-value { display: none; }
-.field-group.is-editing .field-input { display: block; }
+.field-group.is-editing .field-value {
+  display: none;
+}
+.field-group.is-editing .field-input {
+  display: block;
+}
 
 /* ── Save bar ────────────────────────────────────────────────────────────── */
 .save-bar {
-    display: none;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: 16px 22px;
-    border-top: 1px solid #f0ece6;
-    background: var(--p-cream);
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 22px;
+  border-top: 1px solid #f0ece6;
+  background: var(--p-cream);
 }
-.save-bar.visible { display: flex; }
+.save-bar.visible {
+  display: flex;
+}
 
 .btn-cancel,
 .btn-save {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 18px;
-    font-family: var(--p-font);
-    font-size: 0.74rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-family: var(--p-font);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.18s;
 }
 .btn-cancel {
-    background: transparent;
-    color: var(--p-mid);
-    border: 1px solid #ddd;
+  background: transparent;
+  color: var(--p-mid);
+  border: 1px solid #ddd;
 }
-.btn-cancel:hover { border-color: #aaa; color: var(--p-ink); }
+.btn-cancel:hover {
+  border-color: #aaa;
+  color: var(--p-ink);
+}
 .btn-save {
-    background: var(--p-ink);
-    color: var(--p-cream);
-    border: none;
+  background: var(--p-ink);
+  color: var(--p-cream);
+  border: none;
 }
-.btn-save:hover { background: var(--p-accent); }
+.btn-save:hover {
+  background: var(--p-accent);
+}
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .fields-grid,
-    .fields-grid.triple { grid-template-columns: 1fr; }
-    .page-title { font-size: 1.3rem; }
+  .fields-grid,
+  .fields-grid.triple {
+    grid-template-columns: 1fr;
+  }
+  .page-title {
+    font-size: 1.3rem;
+  }
 }

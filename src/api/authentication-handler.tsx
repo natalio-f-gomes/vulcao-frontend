@@ -1,85 +1,98 @@
-import { createContext, useState, useContext, useEffect, ReactNode} from "react"
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
 import { logoutEntity, fetchAPIWithCredentials } from "./requests";
 
-
-type Entity = "user" | "staff" | "employer" | "admin" | null
+type Entity = "user" | "staff" | "employer" | "admin" | null;
 
 interface AuthenticationContextModel {
-    isLoading: boolean;
-    isEntityLoggedIn: boolean;
-    entityType: Entity
-    login: (currentEntity: Entity) => Promise<void>;
-    logoutHandler: () => Promise<void>;
+  isLoading: boolean;
+  isEntityLoggedIn: boolean;
+  entityType: Entity;
+  login: (currentEntity: Entity) => Promise<void>;
+  logoutHandler: () => Promise<void>;
 }
 
-const AuthenticationContext  = createContext<AuthenticationContextModel| undefined>(undefined);
-
+const AuthenticationContext = createContext<
+  AuthenticationContextModel | undefined
+>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [entity, setEntity]       = useState<Entity>(null);
+  const [entity, setEntity] = useState<Entity>(null);
 
   const login = async (currentEntity: Entity) => {
-    if(currentEntity) localStorage.setItem("active_role", currentEntity)
+    if (currentEntity) localStorage.setItem("active_role", currentEntity);
     setEntity(currentEntity);
   };
 
   const logoutHandler = async () => {
-    if(entity){
-        try{
-            await logoutEntity(entity); // Spring Boot clears the cookie
-            localStorage.removeItem("active_role")
-            window.location.href = "/"
-        }catch(error){
-            console.log("Logout Error")
-        }finally{setEntity(null); localStorage.removeItem("active_role")}
-          
+    if (entity) {
+      try {
+        await logoutEntity(entity); // Spring Boot clears the cookie
+        localStorage.removeItem("active_role");
+        window.location.href = "/";
+      } catch (error) {
+        console.log("Logout Error");
+      } finally {
+        setEntity(null);
+        localStorage.removeItem("active_role");
+      }
     }
   };
 
-
   useEffect(() => {
     async function checkSession() {
-        const savedRole = localStorage.getItem("active_role") as Entity;
-        if(!savedRole){
-         setIsLoading(false);
-         return;   
-        }
-   
+      const savedRole = localStorage.getItem("active_role") as Entity;
+      if (!savedRole) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetchAPIWithCredentials(`/v1/${savedRole}/get/my-profile`);
-        console.log(`Response Getting profile: `, response)
+        const response = await fetchAPIWithCredentials(
+          `/v1/${savedRole}/get/my-profile`,
+        );
+        console.log(`Response Getting profile: `, response);
         if (response.ok) {
-            setEntity(savedRole)
+          setEntity(savedRole);
         }
-        } catch (error) {
-            localStorage.removeItem("active_role")
-            setEntity(null);
-        } finally {
-            setIsLoading(false);
-        }
-        
-        }
+      } catch (error) {
+        localStorage.removeItem("active_role");
+        setEntity(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
     checkSession();
   }, []);
 
-    console.log(`Entity in localstorage: ${localStorage.getItem("active_role")}`) 
-    console.log(`Entity in entity field: ${entity}`)
+  console.log(`Entity in localstorage: ${localStorage.getItem("active_role")}`);
+  console.log(`Entity in entity field: ${entity}`);
   return (
     <AuthenticationContext.Provider
-      value={{ isEntityLoggedIn: !!entity, entityType: entity, isLoading, login, logoutHandler }}
+      value={{
+        isEntityLoggedIn: !!entity,
+        entityType: entity,
+        isLoading,
+        login,
+        logoutHandler,
+      }}
     >
-      {! isLoading ? children: <div className="spinner-border"></div>}
+      {!isLoading ? children : <div className="spinner-border"></div>}
     </AuthenticationContext.Provider>
   );
 }
 
 export function useUserAuthManager() {
-    const context = useContext(AuthenticationContext);
+  const context = useContext(AuthenticationContext);
 
-    if(context === undefined){
-        throw new Error("useAuth must be used within an AuthProvider")
-    }
-    return context;
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }
-

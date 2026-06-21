@@ -1,6 +1,4 @@
-
 import { OfferingType } from "./categories";
-
 
 export interface ImageMetadata {
   name: string;
@@ -13,31 +11,27 @@ export interface Dimensions {
   height: number;
 }
 
-
-export interface PresignBatchRequest{
-    offeringType: OfferingType,
-    images: ImageMetadata[]
+export interface PresignBatchRequest {
+  offeringType: OfferingType;
+  images: ImageMetadata[];
 }
-    
 
 export function buildImageMetadata(images: File[]): ImageMetadata[] {
   return images.map((img) => ({
     name: img.name,
     byteSize: img.size,
     extension: img.type,
-
   }));
 }
 
-
 // Part 2 — PUT the actual bytes straight to S3
 export async function uploadFileToS3(url: string, file: File): Promise<void> {
-  console.log("File type", file.type)
-  
+  console.log("File type", file.type);
+
   const res = await fetch(url, {
     method: "PUT",
-    headers: { "Content-Type": file.type }, 
-    body: file,                             
+    headers: { "Content-Type": file.type },
+    body: file,
   });
 
   if (!res.ok) {
@@ -46,9 +40,6 @@ export async function uploadFileToS3(url: string, file: File): Promise<void> {
     throw new Error(`S3 upload failed: ${res.status}`);
   }
 }
-
-
-
 
 export const getImageDimensions = (file: File): Promise<Dimensions> => {
   return new Promise((resolve, reject) => {
@@ -64,5 +55,4 @@ export const getImageDimensions = (file: File): Promise<Dimensions> => {
       reject(err);
     };
   });
-}; 
-  
+};

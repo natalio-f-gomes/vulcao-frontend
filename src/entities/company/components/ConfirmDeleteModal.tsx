@@ -3,10 +3,10 @@ import { useEffect } from "react";
 interface ConfirmDeleteModalProps {
   isOpen: boolean;
   itemName: string;
-  itemType?: string;           
+  itemType?: string;
   onConfirm: () => void | Promise<void>;
   onCancel: () => void;
-  isDeleting?: boolean;         // shows spinner on confirm button during deletion
+  isDeleting?: boolean; // shows spinner on confirm button during deletion
 }
 
 export function ConfirmDeleteModal({
@@ -73,8 +73,7 @@ export function ConfirmDeleteModal({
 
             <div className="modal-body">
               <p className="mb-0">
-                Are you sure you want to delete{" "}
-                <strong>{itemName}</strong>?
+                Are you sure you want to delete <strong>{itemName}</strong>?
               </p>
               <p className="text-muted small mt-2 mb-0">
                 This action cannot be undone.

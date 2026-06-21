@@ -1,15 +1,14 @@
-
-import { CompanyStats as CompanyStatsModel} from "../../../api/interfaces"
+import { CompanyStats as CompanyStatsModel } from "../../../api/interfaces";
 
 interface Props {
-  staffList: number
-  products: number
+  staffList: number;
+  products: number;
 }
 
 function CompanyStats({ staffList, products }: Props) {
   const cards = [
-    { label: "Staff", value: staffList, sub: "Active staff"      },
-    { label: "Products",  value: products,  sub: "In catalogue"      },
+    { label: "Staff", value: staffList, sub: "Active staff" },
+    { label: "Products", value: products, sub: "In catalogue" },
   ];
 
   return (

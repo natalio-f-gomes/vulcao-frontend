@@ -426,7 +426,7 @@ function AboutPage() {
   const onNavigate = useNavigate();
   return (
     <>
-    <GetHeader/>
+      <GetHeader />
       <style>{STYLES}</style>
 
       <nav className="nav">
@@ -438,57 +438,124 @@ function AboutPage() {
         </div>
       </nav>
 
-    {/* HERO */}
-<header className="hero" style={{ background: 'var(--ink)', color: 'var(--cream)', padding: '60px 0', overflow: 'hidden' }}>
-  <div className="container-fluid px-md-5">
-    <div className="row align-items-center flex-column-reverse flex-lg-row">
-      
-      {/* LADO ESQUERDO: Texto (Em mobile fica abaixo) */}
-      <div className="col-12 col-lg-6 text-center text-lg-start mt-4 mt-lg-0" style={{ paddingRight: 'min(48px, 5%)' }}>
-        <div className="hero-eyebrow" style={{ color: 'var(--accent)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '18px' }}>
-          Sobre o {companyName}.net
+      {/* HERO */}
+      <header
+        className="hero"
+        style={{
+          background: "var(--ink)",
+          color: "var(--cream)",
+          padding: "60px 0",
+          overflow: "hidden",
+        }}
+      >
+        <div className="container-fluid px-md-5">
+          <div className="row align-items-center flex-column-reverse flex-lg-row">
+            {/* LADO ESQUERDO: Texto (Em mobile fica abaixo) */}
+            <div
+              className="col-12 col-lg-6 text-center text-lg-start mt-4 mt-lg-0"
+              style={{ paddingRight: "min(48px, 5%)" }}
+            >
+              <div
+                className="hero-eyebrow"
+                style={{
+                  color: "var(--accent)",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  marginBottom: "18px",
+                }}
+              >
+                Sobre o {companyName}.net
+              </div>
+              <h1
+                className="hero-title"
+                style={{
+                  fontFamily: "var(--serif)",
+                  fontWeight: 900,
+                  fontSize: "clamp(2.3rem, 5vw, 4.2rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "-1.5px",
+                }}
+              >
+                Negócios online, encomendas mais{" "}
+                <em style={{ color: "var(--accent)", fontStyle: "normal" }}>
+                  rápidas.
+                </em>
+              </h1>
+              <p
+                className="hero-lead"
+                style={{
+                  marginTop: "24px",
+                  fontSize: "1.05rem",
+                  color: "#cbc6bf",
+                  fontWeight: 400,
+                  maxWidth: "54ch",
+                  marginInline: "auto inherit",
+                }}
+              >
+                A {companyName} aproxima negócios e clientes em Cabo Verde.
+                Qualquer empresa — independentemente da dimensão — pode estar
+                presente na plataforma, e qualquer cliente pode encomendar
+                online de forma rápida e cómoda.
+              </p>
+            </div>
+
+            {/* LADO DIREITO: Logótipo (Em mobile fica no topo, 100% de largura e centrado) */}
+            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center p-0 ">
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src="/logo.png"
+                  alt={`Logótipo animado da ${companyName} em erupção`}
+                  style={{
+                    // Em ecrãs pequenos ocupa 85% da largura total do dispositivo.
+                    // Em ecrãs grandes (desktop), expande dinamicamente até um máximo ideal.
+                    width: "100vw",
+                    maxWidth: "1200px",
+                    marginLeft: "50px",
+
+                    // Mantém a proporção perfeita da imagem sem distorcer
+                    height: "auto",
+                    maxHeight: "70vh",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <h1 className="hero-title" style={{ fontFamily: 'var(--serif)', fontWeight: 900, fontSize: 'clamp(2.3rem, 5vw, 4.2rem)', lineHeight: 1.1, letterSpacing: '-1.5px' }}>
-          Negócios online, encomendas mais <em style={{ color: 'var(--accent)', fontStyle: 'normal' }}>rápidas.</em>
-        </h1>
-        <p className="hero-lead" style={{ marginTop: '24px', fontSize: '1.05rem', color: '#cbc6bf', fontWeight: 400, maxWidth: '54ch', marginInline: 'auto inherit' }}>
-          A {companyName} aproxima negócios e clientes em Cabo Verde. Qualquer empresa — independentemente da dimensão — pode estar presente na plataforma, e qualquer cliente pode encomendar online de forma rápida e cómoda.
-        </p>
-      </div>
-
-      {/* LADO DIREITO: Logótipo (Em mobile fica no topo, 100% de largura e centrado) */}
-    <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center p-0 ">
-  <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-    <img 
-      src="/logo.png" 
-      alt={`Logótipo animado da ${companyName} em erupção`} 
-      style={{ 
-        // Em ecrãs pequenos ocupa 85% da largura total do dispositivo. 
-        // Em ecrãs grandes (desktop), expande dinamicamente até um máximo ideal.
-        width: '100vw', 
-        maxWidth: '1200px', 
-        marginLeft: "50px",
-        
-        // Mantém a proporção perfeita da imagem sem distorcer
-        height: 'auto', 
-        maxHeight: '70vh',
-        objectFit: 'contain'
-      }} 
-    />
-  </div>
-</div>
-
-    </div>
-  </div>
-</header>
+      </header>
 
       {/* STAT STRIP */}
       <div className="wrap">
         <div className="stat-strip">
-          <div className="stat"><div className="stat-num">100<span>%</span></div><div className="stat-label">Encomendas online</div></div>
-          <div className="stat"><div className="stat-num">24<span>/7</span></div><div className="stat-label">Sempre disponível</div></div>
-          <div className="stat"><div className="stat-num">Todas</div><div className="stat-label">Empresas, qualquer dimensão</div></div>
-          <div className="stat"><div className="stat-num">1</div><div className="stat-label">Plataforma para tudo</div></div>
+          <div className="stat">
+            <div className="stat-num">
+              100<span>%</span>
+            </div>
+            <div className="stat-label">Encomendas online</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">
+              24<span>/7</span>
+            </div>
+            <div className="stat-label">Sempre disponível</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">Todas</div>
+            <div className="stat-label">Empresas, qualquer dimensão</div>
+          </div>
+          <div className="stat">
+            <div className="stat-num">1</div>
+            <div className="stat-label">Plataforma para tudo</div>
+          </div>
         </div>
       </div>
 
@@ -497,16 +564,39 @@ function AboutPage() {
         <div className="story">
           <div className="story-text">
             <div className="section-eyebrow">A Nossa História</div>
-            <h2 className="section-title">De um projeto de estudante a uma ferramenta para Cabo Verde.</h2>
-            <p>A {companyName} nasceu da ideia de um estudante de Engenharia Informática que acreditava que comprar e vender devia ser simples, rápido e acessível a qualquer negócio.</p>
-            <p>O objetivo era claro: dar a Cabo Verde uma plataforma onde qualquer empresa — independentemente da dimensão — possa apresentar-se e receber encomendas online.</p>
-            <p>Para os clientes, significa encomendar de forma muito mais rápida e cómoda. Para os empregadores, significa gerir o negócio e a equipa a partir de um só lugar.</p>
-            <p>A visão continua a mesma: tornar a vida de cada utilizador mais fácil, aproximando negócios e clientes através de uma experiência digital simples.</p>
+            <h2 className="section-title">
+              De um projeto de estudante a uma ferramenta para Cabo Verde.
+            </h2>
+            <p>
+              A {companyName} nasceu da ideia de um estudante de Engenharia
+              Informática que acreditava que comprar e vender devia ser simples,
+              rápido e acessível a qualquer negócio.
+            </p>
+            <p>
+              O objetivo era claro: dar a Cabo Verde uma plataforma onde
+              qualquer empresa — independentemente da dimensão — possa
+              apresentar-se e receber encomendas online.
+            </p>
+            <p>
+              Para os clientes, significa encomendar de forma muito mais rápida
+              e cómoda. Para os empregadores, significa gerir o negócio e a
+              equipa a partir de um só lugar.
+            </p>
+            <p>
+              A visão continua a mesma: tornar a vida de cada utilizador mais
+              fácil, aproximando negócios e clientes através de uma experiência
+              digital simples.
+            </p>
           </div>
           <div className="story-card">
             <span className="quote-mark">&ldquo;</span>
-            <blockquote>Quero que qualquer negócio, por mais pequeno que seja, possa estar online — e que encomendar seja tão simples como deve ser.</blockquote>
-            <cite><b>{creatorName}</b>Fundador &amp; Programador</cite>
+            <blockquote>
+              Quero que qualquer negócio, por mais pequeno que seja, possa estar
+              online — e que encomendar seja tão simples como deve ser.
+            </blockquote>
+            <cite>
+              <b>{creatorName}</b>Fundador &amp; Programador
+            </cite>
           </div>
         </div>
       </section>
@@ -515,37 +605,70 @@ function AboutPage() {
       <section id="values" className="wrap">
         <div className="section-eyebrow">Aquilo em que Acreditamos</div>
         <h2 className="section-title">Os princípios que guiam cada decisão.</h2>
-        <p className="section-intro">Não são frases bonitas numa parede — são a forma como decidimos o que construir e o que nunca vamos comprometer.</p>
+        <p className="section-intro">
+          Não são frases bonitas numa parede — são a forma como decidimos o que
+          construir e o que nunca vamos comprometer.
+        </p>
         <div className="values-grid">
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-geo-alt-fill"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-geo-alt-fill"></i>
+            </div>
             <h3>Pensado para Cabo Verde</h3>
-            <p>Construído de raiz para a realidade dos negócios Cabo Verdianos, das pequenas equipas às maiores operações.</p>
+            <p>
+              Construído de raiz para a realidade dos negócios Cabo Verdianos,
+              das pequenas equipas às maiores operações.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-shield-check"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-shield-check"></i>
+            </div>
             <h3>Confiança em Primeiro Lugar</h3>
-            <p>Tratamos os seus dados e os dos seus clientes com o máximo cuidado, com transparência e sem surpresas.</p>
+            <p>
+              Tratamos os seus dados e os dos seus clientes com o máximo
+              cuidado, com transparência e sem surpresas.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-magic"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-magic"></i>
+            </div>
             <h3>Simplicidade Acima de Tudo</h3>
-            <p>Se uma funcionalidade não torna o seu dia mais simples, não entra. Menos cliques, menos atrito.</p>
+            <p>
+              Se uma funcionalidade não torna o seu dia mais simples, não entra.
+              Menos cliques, menos atrito.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-people-fill"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-people-fill"></i>
+            </div>
             <h3>Acesso para Todos</h3>
-            <p>Quer seja um negócio de uma pessoa ou uma equipa inteira, a plataforma é igual para todos.</p>
+            <p>
+              Quer seja um negócio de uma pessoa ou uma equipa inteira, a
+              plataforma é igual para todos.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-lightning-charge-fill"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-lightning-charge-fill"></i>
+            </div>
             <h3>Rápido e Cómodo</h3>
-            <p>Encomendar leva segundos, não idas e voltas. Menos tempo a tratar de pedidos, mais tempo para o que importa.</p>
+            <p>
+              Encomendar leva segundos, não idas e voltas. Menos tempo a tratar
+              de pedidos, mais tempo para o que importa.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-chat-heart-fill"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-chat-heart-fill"></i>
+            </div>
             <h3>Apoio Real</h3>
-            <p>Quando precisar de ajuda, fala com pessoas. Sem labirintos de menus nem respostas automáticas.</p>
+            <p>
+              Quando precisar de ajuda, fala com pessoas. Sem labirintos de
+              menus nem respostas automáticas.
+            </p>
           </div>
         </div>
       </section>
@@ -553,23 +676,43 @@ function AboutPage() {
       {/* FEATURES */}
       <section id="features" className="wrap">
         <div className="section-eyebrow">O Que Pode Fazer</div>
-        <h2 className="section-title">Uma plataforma, várias formas de simplificar o seu dia.</h2>
-        <p className="section-intro">Tudo o que precisa para colocar o negócio online e para encomendar sem complicações, num único sítio.</p>
+        <h2 className="section-title">
+          Uma plataforma, várias formas de simplificar o seu dia.
+        </h2>
+        <p className="section-intro">
+          Tudo o que precisa para colocar o negócio online e para encomendar sem
+          complicações, num único sítio.
+        </p>
         <div className="values-grid">
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-shop"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-shop"></i>
+            </div>
             <h3>Qualquer Empresa, Online</h3>
-            <p>Pequena ou grande, qualquer negócio pode apresentar-se na plataforma e chegar a novos clientes.</p>
+            <p>
+              Pequena ou grande, qualquer negócio pode apresentar-se na
+              plataforma e chegar a novos clientes.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-cart-check-fill"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-cart-check-fill"></i>
+            </div>
             <h3>Encomendas Rápidas</h3>
-            <p>Os clientes encontram o que precisam e encomendam em segundos, de forma simples e cómoda.</p>
+            <p>
+              Os clientes encontram o que precisam e encomendam em segundos, de
+              forma simples e cómoda.
+            </p>
           </div>
           <div className="value-card">
-            <div className="value-icon"><i className="bi bi-person-badge"></i></div>
+            <div className="value-icon">
+              <i className="bi bi-person-badge"></i>
+            </div>
             <h3>Gestão do Negócio e da Equipa</h3>
-            <p>Os empregadores acompanham encomendas, gerem a equipa e controlam as operações num só painel.</p>
+            <p>
+              Os empregadores acompanham encomendas, gerem a equipa e controlam
+              as operações num só painel.
+            </p>
           </div>
         </div>
       </section>
@@ -578,14 +721,30 @@ function AboutPage() {
       <section id="creator" className="wrap">
         <div className="section-eyebrow">Quem Está Por Trás</div>
         <h2 className="section-title">Um estudante, uma missão.</h2>
-        <p className="section-intro">A {companyName} é um projeto independente, construído por uma só pessoa com uma ideia muito clara.</p>
+        <p className="section-intro">
+          A {companyName} é um projeto independente, construído por uma só
+          pessoa com uma ideia muito clara.
+        </p>
         <div className="creator-wrap">
           <div className="member">
-            <div className="member-banner"><div className="member-avatar">{creatorName.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}</div></div>
+            <div className="member-banner">
+              <div className="member-avatar">
+                {creatorName
+                  .split(" ")
+                  .map((w) => w[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </div>
+            </div>
             <div className="member-body">
               <div className="member-name">{creatorName}</div>
               <div className="member-role">Fundador &amp; Programador</div>
-              <p className="member-bio">Estudante de Engenharia Informática em Cabo Verde. Criou a {companyName} sozinho, convicto de que qualquer negócio merece estar online e que encomendar devia ser simples e rápido.</p>
+              <p className="member-bio">
+                Estudante de Engenharia Informática em Cabo Verde. Criou a{" "}
+                {companyName} sozinho, convicto de que qualquer negócio merece
+                estar online e que encomendar devia ser simples e rápido.
+              </p>
               {/* <div className="member-socials"><a href="#"><i className="bi bi-linkedin"></i></a><a href="#"><i className="bi bi-github"></i></a></div> */}
             </div>
           </div>
@@ -595,14 +754,22 @@ function AboutPage() {
       {/* CTA */}
       <section className="cta">
         <h2>Pronto para levar o seu negócio para online?</h2>
-        <p>Junte-se à {companyName} — qualquer empresa, de qualquer dimensão, pode começar a receber encomendas online.</p>
+        <p>
+          Junte-se à {companyName} — qualquer empresa, de qualquer dimensão,
+          pode começar a receber encomendas online.
+        </p>
         <div className="cta-btns">
-          <a className="btn primary" onClick={()=> onNavigate("/employer-register")}><i className="bi bi-rocket-takeoff" ></i> Começar Agora</a>
+          <a
+            className="btn primary"
+            onClick={() => onNavigate("/employer-register")}
+          >
+            <i className="bi bi-rocket-takeoff"></i> Começar Agora
+          </a>
           {/* <a href="#" className="btn ghost"><i className="bi bi-envelope"></i> Falar Connosco</a> */}
         </div>
       </section>
 
-      <GetFooterSection/>
+      <GetFooterSection />
     </>
   );
 }

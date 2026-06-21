@@ -8,7 +8,14 @@ import {
   getAllCompanyAndUserOrders,
   getWearableByCompanyId,
 } from "../../api/requests";
-import { CartItem, CompanyModel, OrderModel, ProductModel, UserProfileModel, WearableModel } from "../../api/interfaces";
+import {
+  CartItem,
+  CompanyModel,
+  OrderModel,
+  ProductModel,
+  UserProfileModel,
+  WearableModel,
+} from "../../api/interfaces";
 import GetFooterSection from "../../components/footer";
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
 import { ResponsiveSidebar } from "../../hooks/ResponsiveSidebar";
@@ -21,7 +28,12 @@ import CartView from "./CartView";
 import OrdersView from "./OrdersView";
 import WearableView from "./WearablesView";
 
-export type PublicView = "overview" | "products" | "cart" | "orders" | "wearables";
+export type PublicView =
+  | "overview"
+  | "products"
+  | "cart"
+  | "orders"
+  | "wearables";
 
 function BusinessPublicOverView() {
   const { id } = useParams<{ id: string }>();
@@ -37,9 +49,6 @@ function BusinessPublicOverView() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [wearables, setWearables] = useState<WearableModel[]>([]);
-  
-
-
 
   useEffect(() => {
     const loadData = async () => {
@@ -52,7 +61,7 @@ function BusinessPublicOverView() {
         const [companyRes, productsRes, wearableRes] = await Promise.all([
           getCompanyDashboard(id),
           getProductsByCompanyId(id),
-          getWearableByCompanyId(id)
+          getWearableByCompanyId(id),
         ]);
 
         if (!companyRes.ok) {
@@ -61,7 +70,7 @@ function BusinessPublicOverView() {
         }
         setCompany(await companyRes.json());
         if (productsRes.ok) setProducts(await productsRes.json());
-         if (wearableRes.ok) setWearables(await wearableRes.json());
+        if (wearableRes.ok) setWearables(await wearableRes.json());
       } catch (err) {
         console.error("Failed to load business page:", err);
         setLoadError("Could not load this business.");
@@ -70,11 +79,10 @@ function BusinessPublicOverView() {
       }
     };
 
-
     const loadUser = async () => {
       try {
         const data = await getUserProfileData();
-        console.log("UserData: ", data)
+        console.log("UserData: ", data);
         if (data) setCurrentUser(data);
       } catch {
         /* anonymous visitors are fine */
@@ -101,60 +109,114 @@ function BusinessPublicOverView() {
   };
 
   const loadOrders = async () => {
-    console.log("LOAD ORDERS ACHIEVED")
-    if(currentUser?.id && company?.id){
+    console.log("LOAD ORDERS ACHIEVED");
+    if (currentUser?.id && company?.id) {
       setLoading(true);
-        const response = await getAllCompanyAndUserOrders(currentUser.id, company.id);
-        console.log("Response Getting User Orders: ", response);
-        setLoading(false);
-        if(!response){
-          console.log("There was an issue with your request.");
-          return;
-        }
-        if(response.status === 200){
-          const data = await response.json();
-          console.log("Order data: ", data);
-          setOrders(data);
-          return;
-        }
+      const response = await getAllCompanyAndUserOrders(
+        currentUser.id,
+        company.id,
+      );
+      console.log("Response Getting User Orders: ", response);
+      setLoading(false);
+      if (!response) {
+        console.log("There was an issue with your request.");
+        return;
+      }
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("Order data: ", data);
+        setOrders(data);
+        return;
+      }
     }
-  }
-    
-    
+  };
 
   useEffect(() => {
-  if (!currentUser || !company) return;
-  if (activeView === "orders") loadOrders();
-  if (activeView === "cart") loadCart();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [activeView]);
+    if (!currentUser || !company) return;
+    if (activeView === "orders") loadOrders();
+    if (activeView === "cart") loadCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeView]);
 
   const cartCount = cartItems.reduce((sum, line) => sum + line.quantity, 0);
   if (loading) {
-    return <div style={{ padding: "6rem", textAlign: "center", color: "var(--mid)" }}>Loading business…</div>;
+    return (
+      <div
+        style={{ padding: "6rem", textAlign: "center", color: "var(--mid)" }}
+      >
+        Loading business…
+      </div>
+    );
   }
   if (loadError || !company) {
     return (
       <div style={{ padding: "6rem", textAlign: "center" }}>
-        <p style={{ color: "#c0392b", marginBottom: "1.5rem" }}>{loadError ?? "Business not found."}</p>
-        <button className="btn-primary-custom" onClick={() => navigate("/")}>Back to Home</button>
+        <p style={{ color: "#c0392b", marginBottom: "1.5rem" }}>
+          {loadError ?? "Business not found."}
+        </p>
+        <button className="btn-primary-custom" onClick={() => navigate("/")}>
+          Back to Home
+        </button>
       </div>
     );
   }
 
   const renderView = () => {
     switch (activeView) {
-      case "overview": return <OverviewView company={company} productCount={products.length} />;
-      case "products": return <ProductsView products={products} onLoadCart={loadCart} user={currentUser} company={company} />;
-      case "wearables": return <WearableView wearables={wearables} onLoadCart={loadCart} user={currentUser} company={company} />;
-      case "cart": return <CartView company={company} currentUser={currentUser} cartItems={cartItems}/>;
-      case "orders": return <OrdersView company={company} currentUser={currentUser} orders={orders} />;
-      default: return <OverviewView company={company} productCount={products.length} />;
+      case "overview":
+        return (
+          <OverviewView company={company} productCount={products.length} />
+        );
+      case "products":
+        return (
+          <ProductsView
+            products={products}
+            onLoadCart={loadCart}
+            user={currentUser}
+            company={company}
+          />
+        );
+      case "wearables":
+        return (
+          <WearableView
+            wearables={wearables}
+            onLoadCart={loadCart}
+            user={currentUser}
+            company={company}
+          />
+        );
+      case "cart":
+        return (
+          <CartView
+            company={company}
+            currentUser={currentUser}
+            cartItems={cartItems}
+          />
+        );
+      case "orders":
+        return (
+          <OrdersView
+            company={company}
+            currentUser={currentUser}
+            orders={orders}
+          />
+        );
+      default:
+        return (
+          <OverviewView company={company} productCount={products.length} />
+        );
     }
   };
-return (
+  return (
     <>
-      <div className="profile-page" style={{ display: "flex", minHeight: "100vh", background: "var(--cream)" }}>
+      <div
+        className="profile-page"
+        style={{
+          display: "flex",
+          minHeight: "100vh",
+          background: "var(--cream)",
+        }}
+      >
         <ResponsiveSidebar
           isOpen={sidebar.isOpen}
           isMobile={sidebar.isMobile}
@@ -165,7 +227,10 @@ return (
           <PublicCompanySidebar
             company={company}
             activeView={activeView}
-            onNavigate={(view) => { setActiveView(view); sidebar.close(); }}
+            onNavigate={(view) => {
+              setActiveView(view);
+              sidebar.close();
+            }}
             currentUser={currentUser}
             cartCount={cartCount}
             orderCount={orders.length}
@@ -173,15 +238,15 @@ return (
         </ResponsiveSidebar>
 
         {/* Added gap and overflow handling here */}
-        <div 
+        <div
           className="main-content-area"
-          style={{ 
-            flex: 1, 
-            display: "flex", 
-            minWidth: 0, 
+          style={{
+            flex: 1,
+            display: "flex",
+            minWidth: 0,
             flexDirection: "column",
-            gap: "1rem" /* This creates the small gap between topbar/sidebar and content */
-          }} 
+            gap: "1rem" /* This creates the small gap between topbar/sidebar and content */,
+          }}
         >
           <PublicTopBar
             companyName={company.name}

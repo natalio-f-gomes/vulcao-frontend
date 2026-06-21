@@ -4,39 +4,44 @@ import { useState } from "react";
 import { RegisterStaffModel, StaffModel } from "../../../api/interfaces";
 
 interface Props {
-  employees:  RegisterStaffModel[];
-  onAdd:      () => void;
-  onEdit:     (employee: RegisterStaffModel) => void;
-  onDelete:   (employee: RegisterStaffModel) => void;
+  employees: RegisterStaffModel[];
+  onAdd: () => void;
+  onEdit: (employee: RegisterStaffModel) => void;
+  onDelete: (employee: RegisterStaffModel) => void;
 }
 
 function StaffSection({ employees, onAdd, onEdit, onDelete }: Props) {
   const [search, setSearch] = useState<string>("");
-  console.log(employees)
+  console.log(employees);
   const filtered = employees.filter((emp) => {
     const term = search.toLowerCase();
     return (
       emp.firstName.toLowerCase().includes(term) ||
-      emp.lastName.toLowerCase().includes(term)  ||
-      emp.email.toLowerCase().includes(term)     ||
+      emp.lastName.toLowerCase().includes(term) ||
+      emp.email.toLowerCase().includes(term) ||
       emp.jobTitle.toLowerCase().includes(term)
     );
   });
-
-  
 
   const formatDate = (dateStr?: string) =>
     dateStr ? new Date(dateStr).toLocaleDateString() : "—";
 
   return (
-    <div className="emp-section ms-1 mt-2" style={{paddingTop:10}} id="emp-section">
-
+    <div
+      className="emp-section ms-1 mt-2"
+      style={{ paddingTop: 10 }}
+      id="emp-section"
+    >
       {/* Toolbar */}
-      <div className="emp-toolbar" style={{paddingBottom:10}}>
+      <div className="emp-toolbar" style={{ paddingBottom: 10 }}>
         <div className="emp-toolbar-left">
           <div className="ms-3">
-            <h3> Staff Members&nbsp;
-            <span className="emp-count-badge me-5" style={{fontSize:20}}>{employees.length}</span>
+            <h3>
+              {" "}
+              Staff Members&nbsp;
+              <span className="emp-count-badge me-5" style={{ fontSize: 20 }}>
+                {employees.length}
+              </span>
             </h3>
           </div>
           <div className="search-wrap">
@@ -75,7 +80,9 @@ function StaffSection({ employees, onAdd, onEdit, onDelete }: Props) {
                 <td colSpan={8}>
                   <div className="table-state">
                     <i className="bi bi-people"></i>
-                    {search ? "No employees match your search." : "No employees yet. Add one to get started."}
+                    {search
+                      ? "No employees match your search."
+                      : "No employees yet. Add one to get started."}
                   </div>
                 </td>
               </tr>
@@ -85,10 +92,13 @@ function StaffSection({ employees, onAdd, onEdit, onDelete }: Props) {
                   <td>
                     <div className="emp-name-cell">
                       <div className="emp-avatar">
-                        {emp.firstName.charAt(0)}{emp.lastName.charAt(0)}
+                        {emp.firstName.charAt(0)}
+                        {emp.lastName.charAt(0)}
                       </div>
                       <div>
-                        <div className="emp-full-name">{emp.firstName} {emp.lastName}</div>
+                        <div className="emp-full-name">
+                          {emp.firstName} {emp.lastName}
+                        </div>
                         <div className="emp-username">@{emp.username}</div>
                       </div>
                     </div>
@@ -96,15 +106,25 @@ function StaffSection({ employees, onAdd, onEdit, onDelete }: Props) {
                   <td>{emp.jobTitle || "—"}</td>
                   <td>{emp.email || "—"}</td>
                   <td>{emp.phoneNumber || "—"}</td>
-                  <td>{emp.salary ? `$${emp.salary.toLocaleString()}` : "—"}</td>
+                  <td>
+                    {emp.salary ? `$${emp.salary.toLocaleString()}` : "—"}
+                  </td>
                   <td>{formatDate(emp.hiredAt)}</td>
-                  <td>{emp.phoneNumber|| "-"}</td>
+                  <td>{emp.phoneNumber || "-"}</td>
                   <td>
                     <div className="row-actions">
-                      <button className="row-btn edit" onClick={() => onEdit(emp)} title="Edit">
+                      <button
+                        className="row-btn edit"
+                        onClick={() => onEdit(emp)}
+                        title="Edit"
+                      >
                         <i className="bi bi-pencil"></i>
                       </button>
-                      <button className="row-btn del" onClick={() => onDelete(emp)} title="Remove">
+                      <button
+                        className="row-btn del"
+                        onClick={() => onDelete(emp)}
+                        title="Remove"
+                      >
                         <i className="bi bi-trash"></i>
                       </button>
                     </div>

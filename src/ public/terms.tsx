@@ -4,7 +4,6 @@ import GetHeader from "../components/header";
 
 // TODO: substituir pelos valores reais
 
-
 const contactEmail = "[email de contacto]";
 const lastUpdated = "14 de Junho de 2026";
 
@@ -30,7 +29,7 @@ const SECTIONS = [
     title: "Responsabilidades do Utilizador",
     items: [
       `O utilizador é responsável por manter a segurança da  palavra-passe.`,
-       `O utilizador é responsável por manter a segurança da seu email.`,
+      `O utilizador é responsável por manter a segurança da seu email.`,
       `O utilizador é responsável por todas as atividades realizadas através da sua conta.`,
     ],
   },
@@ -129,20 +128,20 @@ const SECTIONS = [
       `O utilizador deve cumprir toda a legislação local, regional, nacional e internacional aplicável durante a utilização da plataforma.`,
     ],
   },
-//   {
-//     id: "lei-aplicavel",
-//     title: "Lei Aplicável",
-//     items: [
-//       `Estes Termos são regidos e interpretados de acordo com a legislação de ${jurisdiction}.`,
-//     ],
-//   },
-//   {
-//     id: "contactos",
-//     title: "Contactos",
-//     items: [
-//       `Questões relativas a estes Termos podem ser enviadas para: ${contactEmail}.`,
-//     ],
-//   },
+  //   {
+  //     id: "lei-aplicavel",
+  //     title: "Lei Aplicável",
+  //     items: [
+  //       `Estes Termos são regidos e interpretados de acordo com a legislação de ${jurisdiction}.`,
+  //     ],
+  //   },
+  //   {
+  //     id: "contactos",
+  //     title: "Contactos",
+  //     items: [
+  //       `Questões relativas a estes Termos podem ser enviadas para: ${contactEmail}.`,
+  //     ],
+  //   },
 ];
 
 const STYLES = `
@@ -294,14 +293,17 @@ body::before{
 function TermsPage() {
   return (
     <>
-    <GetHeader/>
+      <GetHeader />
       <style>{STYLES}</style>
       {/* HERO */}
       <header className="hero">
         <div className="wrap">
           <div className="hero-eyebrow">Aspetos Legais</div>
           <h1 className="hero-title">Termos e Condições</h1>
-          <p className="hero-lead">As regras que regem a utilização da {companyName}. Ao utilizar a plataforma, o utilizador concorda com os termos descritos abaixo.</p>
+          <p className="hero-lead">
+            As regras que regem a utilização da {companyName}. Ao utilizar a
+            plataforma, o utilizador concorda com os termos descritos abaixo.
+          </p>
         </div>
       </header>
 
@@ -309,26 +311,35 @@ function TermsPage() {
       <section className="terms-section">
         <div className="wrap">
           <div className="terms-layout">
-
             <aside className="toc">
               <div className="toc-title">Índice</div>
               <ol>
                 {SECTIONS.map((s, i) => (
                   <li key={s.id}>
-                    <a href={`#${s.id}`}>{String(i + 1).padStart(2, "0")}. {s.title}</a>
+                    <a href={`#${s.id}`}>
+                      {String(i + 1).padStart(2, "0")}. {s.title}
+                    </a>
                   </li>
                 ))}
               </ol>
             </aside>
 
             <div className="terms-doc">
-              <div className="terms-updated">Última atualização: {lastUpdated}</div>
-              <p className="terms-intro">Bem-vindo à {companyName}. Estes Termos e Condições estabelecem as regras de utilização da plataforma. Leia-os com atenção antes de criar uma conta ou efetuar qualquer encomenda.</p>
+              <div className="terms-updated">
+                Última atualização: {lastUpdated}
+              </div>
+              <p className="terms-intro">
+                Bem-vindo à {companyName}. Estes Termos e Condições estabelecem
+                as regras de utilização da plataforma. Leia-os com atenção antes
+                de criar uma conta ou efetuar qualquer encomenda.
+              </p>
 
               {SECTIONS.map((s, i) => (
                 <div className="term-block" id={s.id} key={s.id}>
                   <div className="term-head">
-                    <span className="term-num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="term-num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <h2>{s.title}</h2>
                   </div>
                   <ul>
@@ -338,15 +349,12 @@ function TermsPage() {
                   </ul>
                 </div>
               ))}
-
-             
             </div>
-
           </div>
         </div>
       </section>
 
-      <GetFooterSection/>
+      <GetFooterSection />
     </>
   );
 }
