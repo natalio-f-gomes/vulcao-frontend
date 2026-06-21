@@ -134,7 +134,7 @@ function GetBusinessesSection() {
                 </span>
                 <span>
                   <i className="bi bi-telephone" style={{ color: "var(--accent)", marginRight: 6 }}></i>
-                  {`+1 ${company.phoneNumber}` || "—"}
+                  {`+238 ${company.phoneNumber}` || "—"}
                 </span>
               </div>
 
