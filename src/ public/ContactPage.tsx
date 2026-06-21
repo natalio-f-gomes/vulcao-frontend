@@ -155,7 +155,7 @@ function ContactPage() {
               </div>
               <div className="f-field">
                 <label className="f-label">Phone (optional)</label>
-                <input className="f-input" type="tel" placeholder="+1 555 0142" />
+                <input className="f-input" type="tel" placeholder="954 0142" />
               </div>
             </div>
 

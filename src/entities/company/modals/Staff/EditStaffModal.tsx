@@ -173,7 +173,7 @@ function EditStaffModal({isOpen, company, onClose, onSave, staff}:Properties){
                             <input 
                                 className="m-input" 
                                 type="tel" 
-                                placeholder="+1 (555) 000-0000" 
+                                placeholder="555 0000" 
                                 name="phoneNumber" 
                                 value={staffForm.phoneNumber} 
                                 onChange={handleInputChange} 
