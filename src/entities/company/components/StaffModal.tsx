@@ -216,7 +216,7 @@ useEffect(() => {
             <div className="form-group">
               <label className="form-label">Phone</label>
               <input className="form-control-custom" type="text" name="phoneNumber"
-                placeholder="+1 555 0100" value={staffRegistrationForm.phoneNumber} onChange={handleInputChange} />
+                placeholder="123 4567" value={staffRegistrationForm.phoneNumber} onChange={handleInputChange} />
             </div>
 
             {/* Job Details */}
