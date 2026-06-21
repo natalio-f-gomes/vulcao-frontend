@@ -118,7 +118,7 @@ return (
         <div className="m-row" style={{ opacity: 0.7, fontSize: "0.8rem", display: 'flex' }}>
           {/* <div className="m-field">
             <label className="m-label">Adicionado por</label>
-            <input className="m-input" type="text" value={`@${product.creatorUsername}`} readOnly disabled />
+            <input className="m-input" type="text" value={`@${product.creatorId}`} readOnly disabled />
           </div> */}
           <div className="m-field">
             <label className="m-label">Atualizado por</label> 

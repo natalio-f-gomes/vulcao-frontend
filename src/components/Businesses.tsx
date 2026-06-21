@@ -140,9 +140,9 @@ function GetBusinessesSection() {
 
               {/* rodapé: botão visitar */}
               <div className="product-footer">
-                <span style={{ fontSize: "0.72rem", color: "#aaa", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  @{company.creatorUsername}
-                </span>
+                {/* <span style={{ fontSize: "0.72rem", color: "#aaa", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  @{company.creatorId}
+                </span> */}
                 <button
                   className="add-btn"
                   style={{ width: "auto", padding: "0 12px", fontSize: "0.72rem", letterSpacing: "0.06em", textTransform: "uppercase" }}

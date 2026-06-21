@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CompanyRegistrationModel, CompanyImageUploadRequest } from "../../../../api/interfaces";
+import { CompanyRegistrationModel, CompanyImageUploadRequest, WeekDays, TimeRange, WeeklySchedule } from "../../../../api/interfaces";
 import { postCompanyImageKeys, registerCompany } from "../../../../api/requests";
 import { BUSINESS_CATEGORIES, ISLANDS } from "../../../../api/categories";
 import { buildImageMetadata, uploadFileToS3 } from "../../../../api/ImageValidatorService";
@@ -10,9 +10,10 @@ interface Properties {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  employerId: string;
 }
 
-function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
+function RegisterBusinessModal({ isOpen, onClose, onSuccess, employerId }: Properties) {
   const username = localStorage.getItem("username");
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -31,11 +32,35 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
     address: { island: "SANTIAGO", city: "", zone: "", street: "", postalCode: "" },
     status: null,
     imagesMetadata: [],
-    creatorUsername: username!,
+    creatorId: employerId!,
     revenue: 0,
+    weeklySchedule: null
   });
 
   const addressFields = ["island", "city", "zone", "street", "postalCode"];
+
+  const DAYS: { key: WeekDays; label: string }[] = [
+  { key: "SEGUNDA_FEIRA", label: "Segunda" },
+  { key: "TERÇA_FEIRA",  label: "Terça" },
+  { key: "QUARTA_FEIRA", label: "Quarta" },
+  { key: "QUINTA_FEIRA", label: "Quinta" },
+  { key: "SEXTA_FEIRA",  label: "Sexta" },
+  { key: "SABADO",       label: "Sábado" },
+  { key: "DOMINGO",      label: "Domingo" },
+];
+
+const [open247, setOpen247] = useState<boolean>(false);
+const [daySchedule, setDaySchedule] = useState<Record<WeekDays, TimeRange>>(() => {
+  const init = {} as Record<WeekDays, TimeRange>;
+  DAYS.forEach(({ key }) => {
+    init[key] = { start: "09:00", end: "18:00", isClosed: false };
+  });
+  return init;
+});
+
+const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
+  setDaySchedule((prev) => ({ ...prev, [day]: { ...prev[day], ...patch } }));
+};
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -85,13 +110,17 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess }: Properties) {
     event.preventDefault();
     setError(null);
     setLoading(true);
-
+    const weeklySchedule: WeeklySchedule = {
+      daySchedule,
+      open247,
+    };
     try {
       const metadata = await buildImageMetadata(selectedImages);
       // IMPORTANT: send the request object that carries the metadata
       const companyRegistrationRequest: CompanyRegistrationModel = {
         ...companyRegistrationForm,
         imagesMetadata: metadata,
+        weeklySchedule
       };
 
       const response = await registerCompany(companyRegistrationRequest);
@@ -307,6 +336,96 @@ return (
                 </select>
               </div>
             </div>
+         {/* ---------- Horário de Funcionamento ---------- */}
+          <div className="m-field">
+            <label className="m-label"><i className="bi bi-clock me-1"></i> Horário de Funcionamento</label>
+
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+              <input
+                type="checkbox"
+                checked={open247}
+                onChange={(e) => setOpen247(e.target.checked)}
+              />
+              Aberto 24/7
+            </label>
+
+            {!open247 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {DAYS.map(({ key, label }) => {
+                  const day = daySchedule[key];
+                  return (
+                    <div
+                      key={key}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {/* day name + "Fechado" toggle */}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          flex: "1 1 140px",
+                          minWidth: 0,
+                        }}
+                      >
+                        <span style={{ flex: "0 0 70px", fontWeight: 500 }}>{label}</span>
+                        <label
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            fontSize: "0.85rem",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={day.isClosed}
+                            onChange={(e) => updateDay(key, { isClosed: e.target.checked })}
+                          />
+                          Fechado
+                        </label>
+                      </div>
+
+                      {/* time range — grows, shrinks, and wraps to its own line when tight */}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          flex: "1 1 240px",
+                          minWidth: 0,
+                        }}
+                      >
+                        <input
+                          className="m-input"
+                          type="time"
+                          value={day.start}
+                          disabled={day.isClosed}
+                          onChange={(e) => updateDay(key, { start: e.target.value })}
+                          style={{ flex: "1 1 0", minWidth: 0, width: "auto" }}
+                        />
+                        <span aria-hidden="true">—</span>
+                        <input
+                          className="m-input"
+                          type="time"
+                          value={day.end}
+                          disabled={day.isClosed}
+                          onChange={(e) => updateDay(key, { end: e.target.value })}
+                          style={{ flex: "1 1 0", minWidth: 0, width: "auto" }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
 
             <div className="m-field">
               <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Morada</label>

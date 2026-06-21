@@ -201,7 +201,7 @@ function CompanySidebar({activeView, onBack, onNavigate, onLogout, company}: Par
     <div style={styles.ownerInfo}>
       <div className="owner-avatar"><i className="bi bi-person" /></div>
       <div>
-        <div style={styles.ownerName}>{`@${company?.creatorUsername} `}</div>
+        <div style={styles.ownerName}>{`@${company?.creatorId} `}</div>
         <div style={styles.ownerRole}>Empresário</div>
       </div>
       <button style={styles.signoutBtn} onClick={handleLogout} title="Terminar Sessão">

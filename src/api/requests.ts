@@ -1,7 +1,7 @@
 
 import { OfferingType } from "./categories";
 import { ImageMetadata } from "./ImageValidatorService";
-import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel, ResetPasswordRequest, entityType } from "./interfaces";
+import { UserLoginModel, UserRegistrationModel, AddressModel, RegisterStaffModel, CompanyModel, CompanyRegistrationModel, ProductModel, CompanyContact, CompanyAboutInfo, OfferingImageUploadRequest, CompanyImageUploadRequest, PlaceOrderModel, WearableModel, ResetPasswordRequest, entityType, WeekDays, WeeklySchedule } from "./interfaces";
 
 //const URL = "http://localhost:8080";
 const URL = "";
@@ -626,4 +626,8 @@ export async function resetPasswordConfirm(entity: entityType, email:string, mfa
     return await fetchAPIWithoutCredentials(endpoint, {method:"POST", body:JSON.stringify(newPassword)});
 }
 
+export async function updateCompanySchedule(companyId: string, schedule: WeeklySchedule){
+    const endpoint =  `/v1/company/update/weekly-schedule/${companyId}`
+    return await fetchAPIWithCredentials(endpoint, {method:"PUT", body: JSON.stringify(schedule)})
 
+}

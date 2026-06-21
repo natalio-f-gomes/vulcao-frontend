@@ -1,4 +1,4 @@
-import { CompanyModel } from "../../api/interfaces";
+import { CompanyModel, WeekDays } from "../../api/interfaces";
 import { imageUrlFromKey } from "../../components/ImageCarousel";
 
 interface OverviewViewProps {
@@ -6,9 +6,27 @@ interface OverviewViewProps {
   productCount: number;
 }
 
+const SCHEDULE_DAYS: { key: WeekDays; label: string }[] = [
+  { key: "SEGUNDA_FEIRA", label: "Segunda" },
+  { key: "TERÇA_FEIRA",  label: "Terça" },
+  { key: "QUARTA_FEIRA", label: "Quarta" },
+  { key: "QUINTA_FEIRA", label: "Quinta" },
+  { key: "SEXTA_FEIRA",  label: "Sexta" },
+  { key: "SABADO",       label: "Sábado" },
+  { key: "DOMINGO",      label: "Domingo" },
+];
+
+// JS getDay() (0=Sun … 6=Sat) -> schedule key, for the "today" highlight
+const JS_DAY_TO_KEY: WeekDays[] = [
+  "DOMINGO", "SEGUNDA_FEIRA", "TERÇA_FEIRA", "QUARTA_FEIRA",
+  "QUINTA_FEIRA", "SEXTA_FEIRA", "SABADO",
+];
+
 export default function OverviewView({ company, productCount }: OverviewViewProps) {
   const sinceYear = company.createdAt ? new Date(company.createdAt).getFullYear() : null;
 
+  const todayKey = JS_DAY_TO_KEY[new Date().getDay()];
+  
   return (
     <>
       {/* cover image */}
@@ -153,6 +171,75 @@ export default function OverviewView({ company, productCount }: OverviewViewProp
               ))}
           </div>
         </section>
+        {/* horário de funcionamento */}
+{company.weeklySchedule && (
+  <section style={{ padding: "0 2.5rem 3rem 0" }}>
+    <div style={{ background: "#fff", border: "1px solid #e8e4de", padding: "2rem" }}>
+      <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>
+        Horário
+      </div>
+      <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", fontWeight: 800, marginBottom: 18 }}>
+        Horário de funcionamento
+      </h2>
+
+      {company.weeklySchedule.open247 ? (
+        <span
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "8px 16px", borderRadius: 20,
+            background: "rgba(45,106,79,0.12)", color: "#2d6a4f",
+            fontSize: "0.85rem", fontWeight: 600,
+          }}
+        >
+          <i className="bi bi-clock-fill"></i> Aberto 24 horas, todos os dias
+        </span>
+      ) : (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            columnGap: "2.5rem",
+          }}
+        >
+          {SCHEDULE_DAYS.map(({ key, label }) => {
+            const day = company.weeklySchedule!.daySchedule?.[key];
+            const isToday = key === todayKey;
+            const closed = !day || day.isClosed;
+            const value = !day ? "—" : day.isClosed ? "Fechado" : `${day.start} – ${day.end}`;
+            return (
+              <div
+                key={key}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  gap: 12,
+                  padding: "10px 0",
+                  borderBottom: "1px solid #f0ece6",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    fontWeight: isToday ? 700 : 600,
+                    color: isToday ? "var(--accent)" : "#888",
+                  }}
+                >
+                  {label}{isToday && " · hoje"}
+                </span>
+                <span style={{ fontSize: "0.9rem", fontWeight: 500, color: closed ? "var(--mid)" : "var(--ink)" }}>
+                  {value}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+)}
     </>
   );
 }

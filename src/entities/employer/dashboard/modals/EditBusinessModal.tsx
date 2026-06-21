@@ -1,9 +1,38 @@
 // src/pages/Executive-Dashboard/components/EditBusinessModal.tsx
 
 import { useState, useEffect } from "react";
-import { CompanyModel, AddressModel } from "../../../../api/interfaces";
-import { registerCompany } from "../../../../api/requests";
+import { CompanyModel, WeekDays, TimeRange, WeeklySchedule } from "../../../../api/interfaces";
 import { BUSINESS_CATEGORIES, ISLANDS } from "../../../../api/categories";
+
+const DAYS: { key: WeekDays; label: string }[] = [
+  { key: "SEGUNDA_FEIRA", label: "Segunda" },
+  { key: "TERÇA_FEIRA",  label: "Terça" },
+  { key: "QUARTA_FEIRA", label: "Quarta" },
+  { key: "QUINTA_FEIRA", label: "Quinta" },
+  { key: "SEXTA_FEIRA",  label: "Sexta" },
+  { key: "SABADO",       label: "Sábado" },
+  { key: "DOMINGO",      label: "Domingo" },
+];
+
+// A full schedule with sensible defaults for every day.
+const emptySchedule = (): WeeklySchedule => {
+  const daySchedule = {} as Record<WeekDays, TimeRange>;
+  DAYS.forEach(({ key }) => {
+    daySchedule[key] = { start: "09:00", end: "18:00", isClosed: false };
+  });
+  return { daySchedule, open247: false };
+};
+
+// Fills any missing days so the form always has all 7, even for
+// businesses saved before the schedule existed (weeklySchedule === null).
+const normalizeSchedule = (ws: WeeklySchedule | null | undefined): WeeklySchedule => {
+  const base = emptySchedule();
+  if (!ws) return base;
+  return {
+    open247: ws.open247 ?? false,
+    daySchedule: { ...base.daySchedule, ...(ws.daySchedule ?? {}) },
+  };
+};
 
 //Business is the brain and passes the edit business modal these properties
 //this component call the onsave, it will call the onsave method on the businessview
@@ -16,19 +45,19 @@ interface Properties {
 
 function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
   const [formData, setFormData] = useState<CompanyModel>({
-    id:                      "",
-    name:                    "",
-    category:                 "OUTROS",
+    id:          "",
+    name:        "",
+    category:    "OUTROS",
     taxIdNumber: "",
-    description:             "",
-    phoneNumber:             "",
-    faxNumber:               "",
-    email:                   "",
-    status:                  null,
-    revenue:                 0,
-    createdAt:               "",
-    updatedAt:               "",
-    creatorUsername:  "",
+    description: "",
+    phoneNumber: "",
+    faxNumber:   "",
+    email:       "",
+    status:      null,
+    revenue:     0,
+    createdAt:   "",
+    updatedAt:   "",
+    creatorId:   "",
     address: {
       island:     "",
       city:       "",
@@ -36,13 +65,18 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
       street:     "",
       postalCode: "",
     },
+    weeklySchedule: null,
   });
 
   // When a different business is clicked for editing,
-  // re-populate the form — like @ModelAttribute filling a form bean
+  // re-populate the form — like @ModelAttribute filling a form bean.
+  // Normalize the schedule so all 7 days exist even if the stored one is null/partial.
   useEffect(() => {
     if (business) {
-      setFormData(business);
+      setFormData({
+        ...business,
+        weeklySchedule: normalizeSchedule(business.weeklySchedule),
+      });
     }
   }, [business]);
 
@@ -66,9 +100,37 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
     }
   };
 
+  /* ---------- schedule handlers (write into formData.weeklySchedule) ---------- */
+  const handleOpen247 = (value: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      weeklySchedule: { ...(prev.weeklySchedule ?? emptySchedule()), open247: value },
+    }));
+  };
+
+  const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
+    setFormData((prev) => {
+      const ws = prev.weeklySchedule ?? emptySchedule();
+      return {
+        ...prev,
+        weeklySchedule: {
+          ...ws,
+          daySchedule: {
+            ...ws.daySchedule,
+            [day]: { ...ws.daySchedule[day], ...patch },
+          },
+        },
+      };
+    });
+  };
+
   const handleSave = () => {
     onSave(formData);
   };
+
+  // Safe view of the schedule for rendering (covers the brief gap before
+  // the effect normalizes, and the initial null state).
+  const schedule = formData.weeklySchedule ?? emptySchedule();
 
   return (
     <div className="m-overlay open">
@@ -86,29 +148,29 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
                 value={formData.name} onChange={handleChange} />
             </div>
             <div className="m-field">
-            <label className="m-label">Category *</label>
-                        <select 
-                                className="form-select" 
-                                id="type" 
-                                name="category" 
-                                value={formData.category ?? ""} 
-                                onChange={handleChange}
-                            >
-                                <option value="">Select Category</option>
-                                {BUSINESS_CATEGORIES.map((cat: string) => {
-                                // Formats "FAST_FOOD" -> "Fast Food", "AI_ML_COMPANY" -> "Ai Ml Company"
-                                const formattedLabel = cat
-                                    .toLowerCase()
-                                    .replace(/_/g, " ")
-                                    .replace(/\b\w/g, (char) => char.toUpperCase());
-        
-                                return (
-                                    <option key={cat} value={cat}>
-                                    {formattedLabel}
-                                    </option>
-                                );
-                                })}
-                            </select>
+              <label className="m-label">Category *</label>
+              <select
+                className="form-select"
+                id="type"
+                name="category"
+                value={formData.category ?? ""}
+                onChange={handleChange}
+              >
+                <option value="">Select Category</option>
+                {BUSINESS_CATEGORIES.map((cat: string) => {
+                  // Formats "FAST_FOOD" -> "Fast Food", "AI_ML_COMPANY" -> "Ai Ml Company"
+                  const formattedLabel = cat
+                    .toLowerCase()
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+                  return (
+                    <option key={cat} value={cat}>
+                      {formattedLabel}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
 
@@ -120,7 +182,7 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
 
           <div className="m-field">
             <label className="m-label">Tax Identification Number</label>
-            <input className="m-input" type="text" name="taxIdentificationNumber"
+            <input className="m-input" type="text" name="taxIdNumber"
               value={formData.taxIdNumber} onChange={handleChange} />
           </div>
 
@@ -160,29 +222,81 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
             </select>
           </div>
 
+          {/* ---------- Horário de Funcionamento ---------- */}
+          <div className="m-field">
+            <label className="m-label"><i className="bi bi-clock me-1"></i> Horário de Funcionamento</label>
+
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+              <input
+                type="checkbox"
+                checked={schedule.open247}
+                onChange={(e) => handleOpen247(e.target.checked)}
+              />
+              Aberto 24/7
+            </label>
+
+            {!schedule.open247 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {DAYS.map(({ key, label }) => {
+                  const day = schedule.daySchedule[key];
+                  return (
+                    <div key={key} style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                      <span style={{ width: "80px" }}>{label}</span>
+
+                      <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.85rem" }}>
+                        <input
+                          type="checkbox"
+                          checked={day.isClosed}
+                          onChange={(e) => updateDay(key, { isClosed: e.target.checked })}
+                        />
+                        Fechado
+                      </label>
+
+                      <input
+                        className="m-input"
+                        type="time"
+                        value={day.start}
+                        disabled={day.isClosed}
+                        onChange={(e) => updateDay(key, { start: e.target.value })}
+                        style={{ width: "120px" }}
+                      />
+                      <span>—</span>
+                      <input
+                        className="m-input"
+                        type="time"
+                        value={day.end}
+                        disabled={day.isClosed}
+                        onChange={(e) => updateDay(key, { end: e.target.value })}
+                        style={{ width: "120px" }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           <div className="m-field">
             <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Address</label>
           </div>
 
           <div className="m-row">
-              </div>
-                <div className="m-row">
-                <div className="m-field">
-                <div className="m-field">
+            <div className="m-field">
+              <div className="m-field">
                 <label className="m-label">Ilha</label>
-                  <select
-                    className="m-select form-select"
-                    name="island"
-                    value={formData.address.island ?? "SANTIAGO"}
-                    onChange={handleChange}
-                  >
-                    <option value="" disabled>Selecionar ilha</option>
-                    {ISLANDS.map((island) => (
-                      <option key={island} value={island}>{island}</option>
-                    ))}
-                  </select>
+                <select
+                  className="m-select form-select"
+                  name="island"
+                  value={formData.address.island ?? "SANTIAGO"}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>Selecionar ilha</option>
+                  {ISLANDS.map((island) => (
+                    <option key={island} value={island}>{island}</option>
+                  ))}
+                </select>
               </div>
-                </div>
+            </div>
             <div className="m-field">
               <label className="m-label">City</label>
               <input className="m-input" type="text" name="city"

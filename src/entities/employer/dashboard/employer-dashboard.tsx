@@ -69,7 +69,7 @@ function EmployerDashboard(){
     if(!employer) return <div>Loading ... </div>
     switch (activeView) {
       case "overview":    return <OverviewView />;
-      case "businesses":  return <BusinessesView />;
+      case "businesses":  return <BusinessesView employer={employer}/>;
       case "orders":      return <OrdersView />;
       case "products":    return <ProductsView />;
       case "staffs":      return <EmployeesView />;

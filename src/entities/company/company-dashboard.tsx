@@ -46,7 +46,8 @@ function CompanyDashboard(){
           zone:""
         },
           status: null,
-        creatorUsername: "",
+        creatorId: "",
+        weeklySchedule: null
     });
 
        // Modal state

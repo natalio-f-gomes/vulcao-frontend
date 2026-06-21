@@ -2,12 +2,17 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterBusinessModal from "../modals/RegisterBusinessModal";
 import EditBusinessModal from "../modals/EditBusinessModal";
-import { CompanyModel } from "../../../../api/interfaces";
+import { CompanyModel, EmployerModel, WeekDays } from "../../../../api/interfaces";
 import { getEmployerCompanies, updateCompany } from "../../../../api/requests";
 import ImageCarousel from "../../../../components/ImageCarousel";
 import UpdateCompanyImageModal from "../modals/CompanyUpdateImageModal";
 
-function BusinessesView() {
+interface Props{
+  employer: EmployerModel
+}
+
+
+function BusinessesView({employer}: Props) {
   const navigate = useNavigate();
 
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -41,6 +46,7 @@ function BusinessesView() {
       if (response.ok) {
         setEditingBusiness(null);
         await loadCompanies();
+        alert("Empresa Atualizada com sucesso")
         return;
       }
       if (response.status === 400) {
@@ -155,6 +161,7 @@ return (
         isOpen={showRegisterModal}
         onClose={() => setShowRegisterModal(false)}
         onSuccess={loadCompanies}
+        employerId={employer.id}
       />
 
       <EditBusinessModal

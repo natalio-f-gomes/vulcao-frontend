@@ -196,8 +196,10 @@ export interface CompanyRegistrationModel{
     email:string;
     address:AddressModel;
     status:CompanyStatuses;
-    creatorUsername:string;
-    imagesMetadata?: ImageMetadata[]
+    creatorId:string;
+    imagesMetadata?: ImageMetadata[],
+    weeklySchedule: WeeklySchedule | null;
+    
 }
 
 
@@ -419,3 +421,17 @@ export interface ResetPasswordRequest{
 }
 
 export type entityType = "user" | "staff" | "employer"
+
+export type WeekDays = "SEGUNDA_FEIRA" | "TERÇA_FEIRA" | "QUARTA_FEIRA" |  "QUINTA_FEIRA" | "SEXTA_FEIRA" | "SABADO" | "DOMINGO"
+
+
+export interface TimeRange {
+    start: string,
+    end: string,
+    isClosed: boolean
+}
+
+export interface WeeklySchedule {
+  daySchedule: Record<WeekDays, TimeRange>;
+  open247: boolean;
+}

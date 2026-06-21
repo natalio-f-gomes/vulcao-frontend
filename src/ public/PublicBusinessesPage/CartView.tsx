@@ -159,7 +159,7 @@ setWearableList(wearables);
   if (!currentUser) {
     return (
       <div style={{ padding: "3rem 2.5rem", textAlign: "center", color: "var(--mid)" }}>
-        <p style={{ marginBottom: "1.25rem" }}>Inicie sessão para ver o seu carrinho da empresa '{company.name}'.</p>
+        <p style={{ marginBottom: "1.25rem" }}>Inicie sessão para ver o seu carrinho da empresa {company.name}.</p>
         <button className="btn-primary-custom" onClick={() => navigate("/user-login")}>Sign in</button>
       </div>
     );
