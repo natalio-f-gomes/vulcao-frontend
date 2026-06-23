@@ -149,7 +149,6 @@ export default function CartView({
       setProductIdToBeDeleted(itemId);
       try {
         const response = await removeItemFromCart(itemId, company.id);
-        console.log("delete item from cart response ", response);
 
         if (!response.ok) {
           alert("Ocorreu um problema com o seu pedido");

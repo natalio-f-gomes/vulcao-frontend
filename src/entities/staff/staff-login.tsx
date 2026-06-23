@@ -1,8 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
-import { Link, useNavigate } from "react-router-dom"; 
-import { confirmStaffLogin, loginStaff, requestStaffLogin } from "../../api/requests";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  confirmStaffLogin,
+  loginStaff,
+  requestStaffLogin,
+} from "../../api/requests";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
@@ -10,106 +14,101 @@ import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
 
 function StaffLoginPage() {
-  const {login} = useUserAuthManager();
+  const { login } = useUserAuthManager();
   const onNavigate = useNavigate();
 
-  const [loginForm, setLoginForm] = useState<UserLoginModel>(
-    {
-      username: "",
-      password: ""
-    }
-  )
-  const [error, setError] = useState<string|null>(null);
+  const [loginForm, setLoginForm] = useState<UserLoginModel>({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-   const [showMFA, setShowMFA] = useState<boolean>(false);
+  const [showMFA, setShowMFA] = useState<boolean>(false);
 
-  console.log(loginForm.username)
-  console.log(loginForm.password)
+  console.log(loginForm.username);
+  console.log(loginForm.password);
 
-  const handleUserInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginForm(
-      {...loginForm,
-        [event.target.name]: event.target.value
-      }
-    );
+  const handleUserInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setLoginForm({ ...loginForm, [event.target.name]: event.target.value });
   };
 
- 
-
-   
   const sendMfACode = async () => {
     if (!loginForm) return;
     setError(null);
     setLoading(true);
-  
-      const response = await requestStaffLogin(loginForm.username);
-      console.log('MFA CODE REQUEST RESPONSE:', response);
-  
-      if (response.status === 202) {
-        setShowMFA(true);          // code sent → show the popup
-      } else if (response.status === 401) {
-        alert("Dados de autenticação inválidos.");
-      } else if (response.status === 404) {
-        alert("Não foi encontrado Funcionario(a) com este nome the usuário.");
-      } else if (response.status === 409) {
-        alert("Já existe uma entidade com estas credenciais.");
-      } else if (response.status === 403) {
-        alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
-      } else if (response.status === 400) {
-        const data = await response.text();
-      console.log("Data: " , data)
-      const errorMessage = JSON.parse(data)
-        alert(errorMessage.error);
-      } else {
-        alert("Erro inesperado. Por favor volte mais tarde");
-        console.log("Unexpected error", response);
-      }
+
+    const response = await requestStaffLogin(loginForm.username);
+    console.log("MFA CODE REQUEST RESPONSE:", response);
+
+    if (response.status === 202) {
+      setShowMFA(true); // code sent → show the popup
+    } else if (response.status === 401) {
+      alert("Dados de autenticação inválidos.");
+    } else if (response.status === 404) {
+      alert("Não foi encontrado Funcionario(a) com este nome the usuário.");
+    } else if (response.status === 409) {
+      alert("Já existe uma entidade com estas credenciais.");
+    } else if (response.status === 403) {
+      alert(
+        "Código errado. Verifique a sua caixa de entrada ou a pasta de spam.",
+      );
+    } else if (response.status === 400) {
+      const data = await response.text();
+      console.log("Data: ", data);
+      const errorMessage = JSON.parse(data);
+      alert(errorMessage.error);
+    } else {
+      alert("Erro inesperado. Por favor volte mais tarde");
+      console.log("Unexpected error", response);
+    }
     setLoading(false);
   };
 
-  const loginRequest = async(code: string) => {
-      if(!loginForm){return;}
-      setError(null)
-      setLoading(true)
+  const loginRequest = async (code: string) => {
+    if (!loginForm) {
+      return;
+    }
+    setError(null);
+    setLoading(true);
 
-        try{
-  const response = await confirmStaffLogin (code, loginForm)
-  console.log(response)
-  if(!response.ok){
-    console.log("Registration Failed")
-    console.log(response)
-    
-  }
+    try {
+      const response = await confirmStaffLogin(code, loginForm);
+      console.log(response);
+      if (!response.ok) {
+        console.log("Registration Failed");
+        console.log(response);
+      }
 
-  if(response.status === 200){
-    alert("Sessão do Utilizador iniciada com sucesso.")
-    await login("staff");
-    window.location.href = "/"
-  }
-  else if(response.status === 403){
-    alert("Dados MFA incorretos. Por favor, tente novamente.")
-  }
-  else if(response.status === 401 || response.status === 400){
-      setShowMFA(false)
-      alert("Credenciais incorretas.")
-  }
-  else{
-      alert("Teve um erro com o servidor. Por favor retorne mais tarde")
-      console.log(response)
-  }
-}catch(error){
-    setError(`An expected error Occured ${error}`)
-}finally{setLoading(false)}
+      if (response.status === 200) {
+        alert("Sessão do Utilizador iniciada com sucesso.");
+        localStorage.setItem("username", loginForm.username);
+        await login("staff");
+        window.location.href = "/";
+      } else if (response.status === 403) {
+        alert("Dados MFA incorretos. Por favor, tente novamente.");
+      } else if (response.status === 401 || response.status === 400) {
+        setShowMFA(false);
+        alert("Credenciais incorretas.");
+      } else {
+        alert("Teve um erro com o servidor. Por favor retorne mais tarde");
+        console.log(response);
+      }
+    } catch (error) {
+      setError(`An expected error Occured ${error}`);
+    } finally {
+      setLoading(false);
+    }
 
-console.log(error)
-
-}
+    console.log(error);
+  };
   return (
     <>
-    <div className="d-flex flex-column min-vh-100">
-      <GetHeader />
-      
-      <style>{`
+      <div className="d-flex flex-column min-vh-100">
+        <GetHeader />
+
+        <style>{`
         .login-wrapper { 
           flex: 1; 
           background: #f7f4ef; 
@@ -147,37 +146,62 @@ console.log(error)
         .btn-auth:hover { background: #a83420; }
       `}</style>
 
-      <main className="login-wrapper">
-        <div className="auth-card shadow-lg">
-          <h2 className="auth-title">Bem-vindo de volta, caro empragado(a).</h2>
-
+        <main className="login-wrapper">
+          <div className="auth-card shadow-lg">
+            <h2 className="auth-title">
+              Bem-vindo de volta, caro empragado(a).
+            </h2>
             <div className="mb-3">
-              <label className="form-label small text-uppercase fw-bold text-secondary" >Username (Mínimo de 8 caracteres)</label>
-              <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
+              <label className="form-label small text-uppercase fw-bold text-secondary">
+                Username (Mínimo de 8 caracteres)
+              </label>
+              <input
+                type="text"
+                className="form-control-custom"
+                name="username"
+                value={loginForm.username}
+                onChange={handleUserInputChange}
+                required
+              />
             </div>
             <div className="mb-4">
-              <label className="form-label small text-uppercase fw-bold text-secondary"  >Password</label>
-              <input type="password" className="form-control-custom" name="password" value={loginForm.password} onChange={handleUserInputChange} required />
+              <label className="form-label small text-uppercase fw-bold text-secondary">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control-custom"
+                name="password"
+                value={loginForm.password}
+                onChange={handleUserInputChange}
+                required
+              />
             </div>
-            
-            <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Sign In</button>
-               <span><a href="password-reset/staff">Esqueci a senha</a></span> <br />
-             <GetTermsSection/>
-            
-           
-        </div>
-      </main>
+            <button
+              type="submit"
+              className="btn-auth mb-3"
+              onClick={() => sendMfACode()}
+            >
+              Sign In
+            </button>
+            <span>
+              <a href="password-reset/staff">Esqueci a senha</a>
+            </span>{" "}
+            <br />
+            <GetTermsSection />
+          </div>
+        </main>
 
-      <GetFooterSection />
-    </div>
-     {showMFA && (
+        <GetFooterSection />
+      </div>
+      {showMFA && (
         <MFAComponent
           username={loginForm.username}
           onVerify={(code) => loginRequest(code)}
           onClose={() => setShowMFA(false)}
         />
       )}
-      </>
+    </>
   );
 }
 

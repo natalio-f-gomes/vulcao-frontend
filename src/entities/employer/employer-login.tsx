@@ -1,145 +1,163 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import GetHeader from "../../components/header";
 import GetFooterSection from "../../components/footer";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import { UserLoginModel } from "../../api/interfaces";
 import { useUserAuthManager } from "../../api/authentication-handler";
 import MFAComponent from "../../components/MFAComponent";
-import { confirmEmployerLogin, loginUserRequest, requestEmployerLogin } from "../../api/requests";
+import {
+  confirmEmployerLogin,
+  loginUserRequest,
+  requestEmployerLogin,
+} from "../../api/requests";
 import { companyName } from "../../api/global";
 import GetTermsSection from "../../components/TermsSection";
 import { isValidUsername } from "../../api/validators";
 
 function EmployerLoginPage() {
-  const {login} = useUserAuthManager();
+  const { login } = useUserAuthManager();
   const onNavigate = useNavigate();
 
-  const [loginForm, setLoginForm] = useState<UserLoginModel>(
-    {
-      username: "",
-      password: ""
-    }
-  );
+  const [loginForm, setLoginForm] = useState<UserLoginModel>({
+    username: "",
+    password: "",
+  });
   const [showMFA, setShowMFA] = useState<boolean>(false);
-  const [error, setError] = useState<string|null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(loginForm.username)
-  console.log(loginForm.password)
+  console.log(loginForm.username);
+  console.log(loginForm.password);
 
-  const handleUserInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginForm(
-      {...loginForm,
-        [event.target.name]: event.target.value
-      }
-    );
+  const handleUserInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setLoginForm({ ...loginForm, [event.target.name]: event.target.value });
   };
 
-const sendMfACode = async () => {
-  if (!loginForm) return;
-  setError(null);
-  setLoading(true);
+  const sendMfACode = async () => {
+    if (!loginForm) return;
+    setError(null);
+    setLoading(true);
 
     if (!isValidUsername(loginForm.username)) {
-      if (loginForm.username.includes(' ')) {
-          alert("O nome de utilizador não pode conter espaços.");
-      } else if (loginForm.username.includes('\'')) {
-          alert("O nome de utilizador não pode conter aspas simples.");
-      } else if (loginForm.username.includes('/') || loginForm.username.includes('\\')) {
-          alert("O nome de utilizador não pode conter barras (/ ou \\).");
-      } else if (loginForm.username.length < 8 || loginForm.username.length > 50) {
-          alert("O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.");
+      if (loginForm.username.includes(" ")) {
+        alert("O nome de utilizador não pode conter espaços.");
+      } else if (loginForm.username.includes("'")) {
+        alert("O nome de utilizador não pode conter aspas simples.");
+      } else if (
+        loginForm.username.includes("/") ||
+        loginForm.username.includes("\\")
+      ) {
+        alert("O nome de utilizador não pode conter barras (/ ou \\).");
+      } else if (
+        loginForm.username.length < 8 ||
+        loginForm.username.length > 50
+      ) {
+        alert(
+          "O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.",
+        );
       }
-        setLoading(false);
+      setLoading(false);
       return;
-  }
+    }
 
     const response = await requestEmployerLogin(loginForm.username);
-    console.log('MFA CODE REQUEST RESPONSE:', response);
-try{
-    if (response.status === 202) {
-      setShowMFA(true);          // code sent → show the popup
-    } else if (response.status === 401) {
-      alert("Dados de autenticação inválidos.");
-    } else if (response.status === 404) {
-      alert("Não foi encontrado Empresário(a) com este nome the usuário.");
-    } else if (response.status === 409) {
-      alert("Já existe uma entidade com estas credenciais.");
-    } else if (response.status === 403) {
-      alert("Código errado. Verifique a sua caixa de entrada ou a pasta de spam.");
-    } else if (response.status === 400) {
-         console.log(response)
-             const data = await response.json();
-              console.log("Data: " , data.error)
-              //const errorMessage = JSON.parse(data)
-              alert(data.error);
-    } else {
-      alert("Erro inesperado. Por favor volte mais tarde");
-      console.log("Unexpected error", response);
+    console.log("MFA CODE REQUEST RESPONSE:", response);
+    try {
+      if (response.status === 202) {
+        setShowMFA(true); // code sent → show the popup
+      } else if (response.status === 401) {
+        alert("Dados de autenticação inválidos.");
+      } else if (response.status === 404) {
+        alert("Não foi encontrado Empresário(a) com este nome the usuário.");
+      } else if (response.status === 409) {
+        alert("Já existe uma entidade com estas credenciais.");
+      } else if (response.status === 403) {
+        alert(
+          "Código errado. Verifique a sua caixa de entrada ou a pasta de spam.",
+        );
+      } else if (response.status === 400) {
+        console.log(response);
+        const data = await response.json();
+        console.log("Data: ", data.error);
+        //const errorMessage = JSON.parse(data)
+        alert(data.error);
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde");
+        console.log("Unexpected error", response);
+      }
+    } catch (exception) {
+      console.log(exception);
+    } finally {
+      setLoading(false);
     }
-    }catch(exception){
-      console.log(exception)
-    }finally{
- setLoading(false);
+  };
+
+  const LoginRequest = async (code: string) => {
+    if (!loginForm) {
+      return;
     }
-   
-};
-  
-  const LoginRequest = async(code: string) => {
-    if(!loginForm){return;}
-    setError(null)
-    setLoading(true)
+    setError(null);
+    setLoading(true);
 
-    try{
-      const response = await confirmEmployerLogin (code, loginForm)
-      console.log(response)
-      if(!response.ok){
-        console.log("Registration Failed")
-        console.log(response)
+    try {
+      const response = await confirmEmployerLogin(code, loginForm);
+      console.log(response);
+      if (!response.ok) {
+        console.log("Registration Failed");
+        console.log(response);
       }
 
-    if(response.status === 200){
-    alert("Sessão do Empregador iniciada com sucesso.")
-      await login("employer");
-      window.location.href = "/"
+      if (response.status === 200) {
+        alert("Sessão do Empregador iniciada com sucesso.");
+        await login("employer");
+        localStorage.setItem("username", loginForm.username);
+        window.location.href = "/";
+      } else if (response.status === 401) {
+        alert("Credenciais inválidas.");
+      } else if (response.status === 400) {
+        console.log(response);
+        const data = await response.json();
+        console.log("Data: ", data.error);
+        //const errorMessage = JSON.parse(data)
+        alert(data.error);
+      } else if (response.status === 403) {
+        alert("Codigo incorreto.");
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde");
+        console.log(response);
       }
-      else if(response.status === 401){
-          alert("Credenciais inválidas.")
-      }
-      else if(response.status === 400){
-        console.log(response)
-             const data = await response.json();
-              console.log("Data: " , data.error)
-              //const errorMessage = JSON.parse(data)
-              alert(data.error);
-        
-      }
-      else if(response.status === 403){
-          alert("Codigo incorreto.")
-      }
-      else{
-         alert("Erro inesperado. Por favor volte mais tarde")
-          console.log(response)
-      }
-    }catch(error){
-        setError(`An expected error Occured ${error}`)
-    }finally{setLoading(false)}
+    } catch (error) {
+      setError(`An expected error Occured ${error}`);
+    } finally {
+      setLoading(false);
+    }
 
-    console.log(error)
-
-         
-  }
+    console.log(error);
+  };
 
   return (
-      <>
-    <div className="d-flex flex-column min-vh-100">
-      <GetHeader />
-      {loading && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
-          Loading ...
-        </div>
-      )}
-      <style>{`
+    <>
+      <div className="d-flex flex-column min-vh-100">
+        <GetHeader />
+        {loading && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.5)",
+              zIndex: 9999,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#fff",
+            }}
+          >
+            Loading ...
+          </div>
+        )}
+        <style>{`
         .login-wrapper { 
           flex: 1; 
           background: #f7f4ef; 
@@ -177,32 +195,62 @@ try{
         .btn-auth:hover { background: #a83420; }
       `}</style>
 
-     <main className="login-wrapper">
-      <div className="auth-card shadow-lg">
-        <h2 className="auth-title">Bem-vindo de volta, Empresário(a).</h2>
-        <div className="mb-3">
-          <label className="form-label small text-uppercase fw-bold text-secondary">Nome de Utilizador (Mínimo de 8 caracteres)</label>
-          <input type="text" className="form-control-custom" name="username" value={loginForm.username} onChange={handleUserInputChange} required />
-        </div>
-        <div className="mb-4">
-          <label className="form-label small text-uppercase fw-bold text-secondary">Palavra-passe</label>
-          <input type="password" className="form-control-custom" name="password" value={loginForm.password} onChange={handleUserInputChange} required />
-        </div>
-        
-        <button type="submit" className="btn-auth mb-3" onClick={() => sendMfACode()}>Iniciar Sessão</button>
-           <span><a href="password-reset/employer">Esqueci a senha</a></span> <br />
-        <div className="text-center">
-          <Link to="/employer-register" className="text-secondary text-decoration-none small">
-            Novo no {companyName}.net? <span style={{color: '#c8452a'}}>Criar Conta</span>
-          </Link>
-        </div>
-        <GetTermsSection/>
-      </div>
-    </main>
+        <main className="login-wrapper">
+          <div className="auth-card shadow-lg">
+            <h2 className="auth-title">Bem-vindo de volta, Empresário(a).</h2>
+            <div className="mb-3">
+              <label className="form-label small text-uppercase fw-bold text-secondary">
+                Nome de Utilizador (Mínimo de 8 caracteres)
+              </label>
+              <input
+                type="text"
+                className="form-control-custom"
+                name="username"
+                value={loginForm.username}
+                onChange={handleUserInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="form-label small text-uppercase fw-bold text-secondary">
+                Palavra-passe
+              </label>
+              <input
+                type="password"
+                className="form-control-custom"
+                name="password"
+                value={loginForm.password}
+                onChange={handleUserInputChange}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn-auth mb-3"
+              onClick={() => sendMfACode()}
+            >
+              Iniciar Sessão
+            </button>
+            <span>
+              <a href="password-reset/employer">Esqueci a senha</a>
+            </span>{" "}
+            <br />
+            <div className="text-center">
+              <Link
+                to="/employer-register"
+                className="text-secondary text-decoration-none small"
+              >
+                Novo no {companyName}.net?{" "}
+                <span style={{ color: "#c8452a" }}>Criar Conta</span>
+              </Link>
+            </div>
+            <GetTermsSection />
+          </div>
+        </main>
 
-      <GetFooterSection />
-    </div>
-  
+        <GetFooterSection />
+      </div>
+
       {showMFA && (
         <MFAComponent
           username={loginForm.username}

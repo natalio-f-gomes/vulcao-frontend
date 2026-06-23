@@ -36,7 +36,6 @@ export async function uploadFileToS3(url: string, file: File): Promise<void> {
 
   if (!res.ok) {
     const errorText = await res.text();
-    console.error(`S3 Error Body for ${file.name}:`, errorText);
     throw new Error(`S3 upload failed: ${res.status}`);
   }
 }

@@ -151,7 +151,7 @@ function EditStaffModal({
                 className="m-input"
                 type="text"
                 value={staffForm.firstName}
-                placeholder="ex: João"
+                placeholder="ex: Eliott"
                 name="firstName"
                 onChange={handleInputChange}
                 required

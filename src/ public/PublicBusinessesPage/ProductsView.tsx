@@ -63,7 +63,6 @@ export default function ProductsView({
         selectedQuantity,
         company.id,
       );
-      console.log("RESPOSTA AO ADICIONAR ITEM AO CARRINHO: ", response);
       if (response.ok) {
         alert("Produto adicionado ao carrinho!");
         onLoadCart();

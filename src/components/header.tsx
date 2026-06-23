@@ -42,7 +42,14 @@ const GetHeader: React.FC = () => {
                 Sobre
               </a>
             </li>
-            {/* <li className="nav-item"><a className="nav-link" onClick={()=> onNavigate("/feature-request")}>Pedido de Funcionalidade</a></li> */}
+            {/* <li className="nav-item">
+              <a
+                className="nav-link"
+                onClick={() => onNavigate("/feature-request")}
+              >
+                Solicitações
+              </a>
+            </li> */}
             {/* 
         <li className="nav-item"><a className="nav-link" href="#">Contacte-nos</a></li>
         <li className="nav-item"><a className="nav-link" href="#">Sugerir Funcionalidade</a></li>

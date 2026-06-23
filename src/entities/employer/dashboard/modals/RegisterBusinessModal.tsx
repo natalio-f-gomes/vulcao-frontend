@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { CompanyRegistrationModel, CompanyImageUploadRequest, WeekDays, TimeRange, WeeklySchedule } from "../../../../api/interfaces";
-import { postCompanyImageKeys, registerCompany } from "../../../../api/requests";
+import {
+  CompanyRegistrationModel,
+  CompanyImageUploadRequest,
+  WeekDays,
+  TimeRange,
+  WeeklySchedule,
+} from "../../../../api/interfaces";
+import {
+  postCompanyImageKeys,
+  registerCompany,
+} from "../../../../api/requests";
 import { BUSINESS_CATEGORIES, ISLANDS } from "../../../../api/categories";
-import { buildImageMetadata, uploadFileToS3 } from "../../../../api/ImageValidatorService";
+import {
+  buildImageMetadata,
+  uploadFileToS3,
+} from "../../../../api/ImageValidatorService";
 
 const MAX_IMAGES = 2; // keep in sync with the backend
 
@@ -13,7 +25,12 @@ interface Properties {
   employerId: string;
 }
 
-function RegisterBusinessModal({ isOpen, onClose, onSuccess, employerId }: Properties) {
+function RegisterBusinessModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  employerId,
+}: Properties) {
   const username = localStorage.getItem("username");
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -21,49 +38,60 @@ function RegisterBusinessModal({ isOpen, onClose, onSuccess, employerId }: Prope
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [companyRegistrationForm, setCompanyRegistrationForm] = useState<CompanyRegistrationModel>({
-    name: "",
-    category: "OUTROS",
-    taxIdNumber: "",
-    description: "",
-    phoneNumber: "",
-    faxNumber: "",
-    email: "",
-    address: { island: "SANTIAGO", city: "", zone: "", street: "", postalCode: "" },
-    status: null,
-    imagesMetadata: [],
-    creatorId: employerId!,
-    revenue: 0,
-    weeklySchedule: null
-  });
+  const [companyRegistrationForm, setCompanyRegistrationForm] =
+    useState<CompanyRegistrationModel>({
+      name: "",
+      category: "OUTROS",
+      taxIdNumber: "",
+      description: "",
+      phoneNumber: "",
+      faxNumber: "",
+      email: "",
+      address: {
+        island: "SANTIAGO",
+        city: "",
+        zone: "",
+        street: "",
+        postalCode: "",
+      },
+      status: null,
+      imagesMetadata: [],
+      creatorId: employerId!,
+      revenue: 0,
+      weeklySchedule: null,
+    });
 
   const addressFields = ["island", "city", "zone", "street", "postalCode"];
 
   const DAYS: { key: WeekDays; label: string }[] = [
-  { key: "SEGUNDA_FEIRA", label: "Segunda" },
-  { key: "TERÇA_FEIRA",  label: "Terça" },
-  { key: "QUARTA_FEIRA", label: "Quarta" },
-  { key: "QUINTA_FEIRA", label: "Quinta" },
-  { key: "SEXTA_FEIRA",  label: "Sexta" },
-  { key: "SABADO",       label: "Sábado" },
-  { key: "DOMINGO",      label: "Domingo" },
-];
+    { key: "SEGUNDA_FEIRA", label: "Segunda" },
+    { key: "TERÇA_FEIRA", label: "Terça" },
+    { key: "QUARTA_FEIRA", label: "Quarta" },
+    { key: "QUINTA_FEIRA", label: "Quinta" },
+    { key: "SEXTA_FEIRA", label: "Sexta" },
+    { key: "SABADO", label: "Sábado" },
+    { key: "DOMINGO", label: "Domingo" },
+  ];
 
-const [open247, setOpen247] = useState<boolean>(false);
-const [daySchedule, setDaySchedule] = useState<Record<WeekDays, TimeRange>>(() => {
-  const init = {} as Record<WeekDays, TimeRange>;
-  DAYS.forEach(({ key }) => {
-    init[key] = { start: "09:00", end: "18:00", isClosed: false };
-  });
-  return init;
-});
+  const [open247, setOpen247] = useState<boolean>(false);
+  const [daySchedule, setDaySchedule] = useState<Record<WeekDays, TimeRange>>(
+    () => {
+      const init = {} as Record<WeekDays, TimeRange>;
+      DAYS.forEach(({ key }) => {
+        init[key] = { start: "09:00", end: "18:00", isClosed: false };
+      });
+      return init;
+    },
+  );
 
-const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
-  setDaySchedule((prev) => ({ ...prev, [day]: { ...prev[day], ...patch } }));
-};
+  const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
+    setDaySchedule((prev) => ({ ...prev, [day]: { ...prev[day], ...patch } }));
+  };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = event.target;
     if (addressFields.includes(name)) {
@@ -95,7 +123,10 @@ const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
     }
 
     setSelectedImages((prev) => [...prev, ...accepted]);
-    setImagePreviews((prev) => [...prev, ...accepted.map((f) => URL.createObjectURL(f))]);
+    setImagePreviews((prev) => [
+      ...prev,
+      ...accepted.map((f) => URL.createObjectURL(f)),
+    ]);
   };
 
   const removeImage = (indexToRemove: number) => {
@@ -106,7 +137,9 @@ const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
   };
 
   /* ---------- register -> presign -> S3 PUT -> confirm ---------- */
-  const handleApiCall = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleApiCall = async (
+    event: React.SyntheticEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     setError(null);
     setLoading(true);
@@ -120,7 +153,7 @@ const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
       const companyRegistrationRequest: CompanyRegistrationModel = {
         ...companyRegistrationForm,
         imagesMetadata: metadata,
-        weeklySchedule
+        weeklySchedule,
       };
 
       const response = await registerCompany(companyRegistrationRequest);
@@ -134,113 +167,167 @@ const updateDay = (day: WeekDays, patch: Partial<TimeRange>) => {
       // - Ilha, cidade e zona são obrigatórios
 
       if (response.status === 201) {
-          alert("Empresa registada com sucesso");
-          onSuccess();
-          onClose();
-          return;
+        alert("Empresa registada com sucesso");
+        onSuccess();
+        onClose();
+        return;
       }
       if (response.status === 204) {
-          alert("Empresa registada com sucesso. Poderá adicionar imagens mais tarde.");
-          onSuccess();
-          onClose();
-          return;
+        alert(
+          "Empresa registada com sucesso. Poderá adicionar imagens mais tarde.",
+        );
+        onSuccess();
+        onClose();
+        return;
       }
       if (response.status === 409) {
-          alert("Já existe uma empresa com este nome. Por favor, escolha um nome diferente.");
-          return;
+        alert(
+          "Já existe uma empresa com este nome. Por favor, escolha um nome diferente.",
+        );
+        return;
       }
 
       if (response.status === 200) {
-          // registada + URLs pré-assinadas devolvidas para as imagens
-          const payload = await response.json();
-          const companyId: string = payload.companyId;
-          const preSignResult: Array<{ url: string; key: string }> = payload.uploadResult;
+        // registada + URLs pré-assinadas devolvidas para as imagens
+        const payload = await response.json();
+        const companyId: string = payload.companyId;
+        const preSignResult: Array<{ url: string; key: string }> =
+          payload.uploadResult;
 
-          try {
-              // enviar cada ficheiro para o seu URL correspondente (a ordem é preservada)
-              await Promise.all(
-                  selectedImages.map((file, i) => uploadFileToS3(preSignResult[i].url, file))
-              );
+        try {
+          // enviar cada ficheiro para o seu URL correspondente (a ordem é preservada)
+          await Promise.all(
+            selectedImages.map((file, i) =>
+              uploadFileToS3(preSignResult[i].url, file),
+            ),
+          );
 
-              // confirmar para que o backend verifique, promova e persista as chaves
-              const uploadData: CompanyImageUploadRequest = {
-                  s3PresignKeys: preSignResult.map((p) => p.key),
-                  companyId: companyId,
-              };
-              const confirmResponse = await postCompanyImageKeys(uploadData);
-              if (confirmResponse.ok) {
-                  alert("Empresa e todas as imagens registadas com sucesso.");
-              } else {
-                  alert("Empresa registada, mas a confirmação das imagens falhou.");
-              }
-          } catch (uploadError) {
-              console.error("Erro durante a transferência de imagens para o S3:", uploadError);
-              setError("Empresa registada, mas algumas imagens falharam o upload.");
+          // confirmar para que o backend verifique, promova e persista as chaves
+          const uploadData: CompanyImageUploadRequest = {
+            s3PresignKeys: preSignResult.map((p) => p.key),
+            companyId: companyId,
+          };
+          const confirmResponse = await postCompanyImageKeys(uploadData);
+          if (confirmResponse.ok) {
+            alert("Empresa e todas as imagens registadas com sucesso.");
+          } else {
+            alert("Empresa registada, mas a confirmação das imagens falhou.");
           }
+        } catch (uploadError) {
+          console.error(
+            "Erro durante a transferência de imagens para o S3:",
+            uploadError,
+          );
+          setError("Empresa registada, mas algumas imagens falharam o upload.");
+        }
 
-          onSuccess();
-          onClose();
-          return;
+        onSuccess();
+        onClose();
+        return;
       }
 
       if (response.status === 409) {
-          alert("Já existe uma empresa com o mesmo nome");
+        alert("Já existe uma empresa com o mesmo nome");
       } else if (response.status === 403) {
-          alert("ACESSO NEGADO");
+        alert("ACESSO NEGADO");
       } else if (response.status === 400) {
-          const data = await response.text();
-          console.log("Data: " , data)
-          //const errorMessage = JSON.parse(data)
-            alert(data);
+        const data = await response.text();
+        console.log("Data: ", data);
+        //const errorMessage = JSON.parse(data)
+        alert(data);
       } else {
-          setError(`Registo falhou (${response.status})`);
+        setError(`Registo falhou (${response.status})`);
       }
-      } catch (err) {
+    } catch (err) {
       setError(`Registo falhou: ${err}`);
       console.error(err);
-      } finally {
+    } finally {
       setLoading(false);
-      }
-      };
+    }
+  };
 
   if (!isOpen) return null;
 
   const atLimit = selectedImages.length >= MAX_IMAGES;
-return (
+  return (
     <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
           <span className="m-head-title">Registar Nova Empresa</span>
-          <button className="m-close" onClick={onClose}>&times;</button>
+          <button className="m-close" onClick={onClose}>
+            &times;
+          </button>
         </div>
         <form id="companyRegistrationForm" onSubmit={handleApiCall}>
           <div className="m-body">
-
             {error && (
-              <div style={{ color: "#dc3545", backgroundColor: "#f8d7da", padding: "10px", borderRadius: "4px", marginBottom: "15px", fontSize: "0.9rem" }}>
+              <div
+                style={{
+                  color: "#dc3545",
+                  backgroundColor: "#f8d7da",
+                  padding: "10px",
+                  borderRadius: "4px",
+                  marginBottom: "15px",
+                  fontSize: "0.9rem",
+                }}
+              >
                 {error}
               </div>
             )}
 
             {/* ---------- Imagens da Empresa ---------- */}
             <div className="m-field">
-              <label className="m-label">Imagens da Empresa (máx. {MAX_IMAGES})</label>
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+              <label className="m-label">
+                Imagens da Empresa (máx. {MAX_IMAGES})
+              </label>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
                 {imagePreviews.map((url, index) => (
                   <div
                     key={index}
-                    style={{ position: "relative", width: "80px", height: "80px", borderRadius: "6px", overflow: "hidden", border: "1px solid #ccc" }}
+                    style={{
+                      position: "relative",
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "6px",
+                      overflow: "hidden",
+                      border: "1px solid #ccc",
+                    }}
                   >
-                    <img src={url} alt={`Pré-visualização ${index}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img
+                      src={url}
+                      alt={`Pré-visualização ${index}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
                       style={{
-                        position: "absolute", top: "2px", right: "2px",
-                        background: "rgba(0,0,0,0.6)", color: "#fff", border: "none",
-                        borderRadius: "50%", width: "18px", height: "18px",
-                        cursor: "pointer", fontSize: "12px",
-                        display: "flex", alignItems: "center", justifyContent: "center", lineHeight: "1",
+                        position: "absolute",
+                        top: "2px",
+                        right: "2px",
+                        background: "rgba(0,0,0,0.6)",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "18px",
+                        height: "18px",
+                        cursor: "pointer",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        lineHeight: "1",
                       }}
                     >
                       &times;
@@ -251,15 +338,24 @@ return (
                 {!atLimit && (
                   <label
                     style={{
-                      width: "80px", height: "80px",
-                      border: "2px dashed #ccc", borderRadius: "6px",
-                      display: "flex", flexDirection: "column",
-                      alignItems: "center", justifyContent: "center",
-                      cursor: "pointer", backgroundColor: "#f9f9f9",
-                      color: "#666", fontSize: "0.8rem",
+                      width: "80px",
+                      height: "80px",
+                      border: "2px dashed #ccc",
+                      borderRadius: "6px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      backgroundColor: "#f9f9f9",
+                      color: "#666",
+                      fontSize: "0.8rem",
                     }}
                   >
-                    <i className="bi bi-camera" style={{ fontSize: "1.2rem", marginBottom: "2px" }}></i>
+                    <i
+                      className="bi bi-camera"
+                      style={{ fontSize: "1.2rem", marginBottom: "2px" }}
+                    ></i>
                     <span>Adicionar</span>
                     <input
                       type="file"
@@ -277,17 +373,31 @@ return (
             <div className="m-row">
               <div className="m-field">
                 <label className="m-label">Nome da Empresa *</label>
-                <input className="m-input" type="text" placeholder="ex: ShopLane Boutique" name="name" value={companyRegistrationForm.name} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="text"
+                  placeholder="ex: Boutique Shop"
+                  name="name"
+                  value={companyRegistrationForm.name}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="m-field">
                 <label className="m-label">Categoria *</label>
-                <select className="form-select" id="type" name="category" value={companyRegistrationForm.category ?? ""} onChange={handleInputChange}>
+                <select
+                  className="form-select"
+                  id="type"
+                  name="category"
+                  value={companyRegistrationForm.category ?? ""}
+                  onChange={handleInputChange}
+                >
                   <option value="">Selecionar Categoria</option>
                   {BUSINESS_CATEGORIES.map((cat: string) => {
-                    const formattedLabel = cat
-                      .replace(/_/g, " ")
+                    const formattedLabel = cat.replace(/_/g, " ");
                     return (
-                      <option key={cat} value={cat}>{formattedLabel}</option>
+                      <option key={cat} value={cat}>
+                        {formattedLabel}
+                      </option>
                     );
                   })}
                 </select>
@@ -296,39 +406,91 @@ return (
 
             <div className="m-field">
               <label className="m-label">Descrição</label>
-              <textarea className="m-textarea" name="description" placeholder="Breve descrição..." required value={companyRegistrationForm.description} onChange={handleInputChange}></textarea>
+              <textarea
+                className="m-textarea"
+                name="description"
+                placeholder="Breve descrição..."
+                required
+                value={companyRegistrationForm.description}
+                onChange={handleInputChange}
+              ></textarea>
             </div>
 
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Número de Identificação Fiscal(Opcional)</label>
-                <input className="m-input" type="tel" name="taxIdNumber" placeholder="123-232434233"  value={companyRegistrationForm.taxIdNumber} onChange={handleInputChange} />
+                <label className="m-label">
+                  Número de Identificação Fiscal(Opcional)
+                </label>
+                <input
+                  className="m-input"
+                  type="tel"
+                  name="taxIdNumber"
+                  placeholder="123-232434233"
+                  value={companyRegistrationForm.taxIdNumber}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="m-field">
                 <label className="m-label">Número de Fax(Opcional)</label>
-                <input className="m-input" type="tel" name="faxNumber" placeholder="123-232434233"  value={companyRegistrationForm.faxNumber} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="tel"
+                  name="faxNumber"
+                  placeholder="123-232434233"
+                  value={companyRegistrationForm.faxNumber}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
 
             <div className="m-row">
               <div className="m-field">
                 <label className="m-label">Telefone</label>
-                <input className="m-input" type="tel" name="phoneNumber" placeholder="974 1234" required value={companyRegistrationForm.phoneNumber} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="tel"
+                  name="phoneNumber"
+                  placeholder="974 1234"
+                  required
+                  value={companyRegistrationForm.phoneNumber}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="m-field">
                 <label className="m-label">Email</label>
-                <input className="m-input" type="email" name="email" placeholder="empresa@exemplo.com" value={companyRegistrationForm.email} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="email"
+                  name="email"
+                  placeholder="empresa@exemplo.com"
+                  value={companyRegistrationForm.email}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
 
             <div className="m-field row">
               <div className="m-field col-6">
                 <label className="m-label">Receita</label>
-                <input className="m-input" type="number" name="revenue" placeholder="ex: 100000" required value={companyRegistrationForm.revenue} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="number"
+                  name="revenue"
+                  placeholder="ex: 100000"
+                  required
+                  value={companyRegistrationForm.revenue}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="col-6">
                 <label className="m-label">Estado *</label>
-                <select className="m-select form-select" name="status" id="status" value={companyRegistrationForm.status ?? ""} onChange={handleInputChange}>
+                <select
+                  className="m-select form-select"
+                  name="status"
+                  id="status"
+                  value={companyRegistrationForm.status ?? ""}
+                  onChange={handleInputChange}
+                >
                   <option value="">ESTADO</option>
                   <option value={"OPERATING"}>EM FUNCIONAMENTO</option>
                   <option value={"INACTIVE"}>INATIVO</option>
@@ -336,149 +498,216 @@ return (
                 </select>
               </div>
             </div>
-         {/* ---------- Horário de Funcionamento ---------- */}
-          <div className="m-field">
-            <label className="m-label"><i className="bi bi-clock me-1"></i> Horário de Funcionamento</label>
+            {/* ---------- Horário de Funcionamento ---------- */}
+            <div className="m-field">
+              <label className="m-label">
+                <i className="bi bi-clock me-1"></i> Horário de Funcionamento
+              </label>
 
-            <label style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-              <input
-                type="checkbox"
-                checked={open247}
-                onChange={(e) => setOpen247(e.target.checked)}
-              />
-              Aberto 24/7
-            </label>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginBottom: "10px",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={open247}
+                  onChange={(e) => setOpen247(e.target.checked)}
+                />
+                Aberto 24/7
+              </label>
 
-            {!open247 && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {DAYS.map(({ key, label }) => {
-                  const day = daySchedule[key];
-                  return (
-                    <div
-                      key={key}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {/* day name + "Fechado" toggle */}
+              {!open247 && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  {DAYS.map(({ key, label }) => {
+                    const day = daySchedule[key];
+                    return (
                       <div
+                        key={key}
                         style={{
                           display: "flex",
                           alignItems: "center",
                           gap: "10px",
-                          flex: "1 1 140px",
-                          minWidth: 0,
+                          flexWrap: "wrap",
                         }}
                       >
-                        <span style={{ flex: "0 0 70px", fontWeight: 500 }}>{label}</span>
-                        <label
+                        {/* day name + "Fechado" toggle */}
+                        <div
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            gap: "4px",
-                            fontSize: "0.85rem",
-                            whiteSpace: "nowrap",
+                            gap: "10px",
+                            flex: "1 1 140px",
+                            minWidth: 0,
+                          }}
+                        >
+                          <span style={{ flex: "0 0 70px", fontWeight: 500 }}>
+                            {label}
+                          </span>
+                          <label
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              fontSize: "0.85rem",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={day.isClosed}
+                              onChange={(e) =>
+                                updateDay(key, { isClosed: e.target.checked })
+                              }
+                            />
+                            Fechado
+                          </label>
+                        </div>
+
+                        {/* time range — grows, shrinks, and wraps to its own line when tight */}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            flex: "1 1 240px",
+                            minWidth: 0,
                           }}
                         >
                           <input
-                            type="checkbox"
-                            checked={day.isClosed}
-                            onChange={(e) => updateDay(key, { isClosed: e.target.checked })}
+                            className="m-input"
+                            type="time"
+                            value={day.start}
+                            disabled={day.isClosed}
+                            onChange={(e) =>
+                              updateDay(key, { start: e.target.value })
+                            }
+                            style={{
+                              flex: "1 1 0",
+                              minWidth: 0,
+                              width: "auto",
+                            }}
                           />
-                          Fechado
-                        </label>
+                          <span aria-hidden="true">—</span>
+                          <input
+                            className="m-input"
+                            type="time"
+                            value={day.end}
+                            disabled={day.isClosed}
+                            onChange={(e) =>
+                              updateDay(key, { end: e.target.value })
+                            }
+                            style={{
+                              flex: "1 1 0",
+                              minWidth: 0,
+                              width: "auto",
+                            }}
+                          />
+                        </div>
                       </div>
-
-                      {/* time range — grows, shrinks, and wraps to its own line when tight */}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          flex: "1 1 240px",
-                          minWidth: 0,
-                        }}
-                      >
-                        <input
-                          className="m-input"
-                          type="time"
-                          value={day.start}
-                          disabled={day.isClosed}
-                          onChange={(e) => updateDay(key, { start: e.target.value })}
-                          style={{ flex: "1 1 0", minWidth: 0, width: "auto" }}
-                        />
-                        <span aria-hidden="true">—</span>
-                        <input
-                          className="m-input"
-                          type="time"
-                          value={day.end}
-                          disabled={day.isClosed}
-                          onChange={(e) => updateDay(key, { end: e.target.value })}
-                          style={{ flex: "1 1 0", minWidth: 0, width: "auto" }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             <div className="m-field">
-              <label className="m-label"><i className="bi bi-geo-alt-fill me-1"></i> Morada</label>
+              <label className="m-label">
+                <i className="bi bi-geo-alt-fill me-1"></i> Morada
+              </label>
             </div>
-                <div className="m-row">
+            <div className="m-row">
+              <div className="m-field">
                 <div className="m-field">
-                <div className="m-field">
-                <label className="m-label">Ilha</label>
+                  <label className="m-label">Ilha</label>
                   <select
                     className="m-select form-select"
                     name="island"
                     value={companyRegistrationForm.address.island ?? "SANTIAGO"}
                     onChange={handleInputChange}
                   >
-                    <option value="" disabled>Selecionar ilha</option>
+                    <option value="" disabled>
+                      Selecionar ilha
+                    </option>
                     {ISLANDS.map((island) => (
-                      <option key={island} value={island}>{island}</option>
+                      <option key={island} value={island}>
+                        {island}
+                      </option>
                     ))}
                   </select>
-              </div>
-                </div>
-                <div className="m-field">
-                  <label className="m-label">Cidade</label>
-                  <input 
-                    className="m-input" 
-                    type="text" 
-                    name="city" 
-                    placeholder="ex: Praia" 
-                    required 
-                    value={companyRegistrationForm.address.city} 
-                    onChange={handleInputChange} 
-                  />
                 </div>
               </div>
+              <div className="m-field">
+                <label className="m-label">Cidade</label>
+                <input
+                  className="m-input"
+                  type="text"
+                  name="city"
+                  placeholder="ex: Praia"
+                  required
+                  value={companyRegistrationForm.address.city}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
             <div className="m-row">
               <div className="m-field">
                 <label className="m-label">Zona</label>
-                <input className="m-input" type="text" name="zone" placeholder="ex: Plateau" required value={companyRegistrationForm.address.zone} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="text"
+                  name="zone"
+                  placeholder="ex: Plateau"
+                  required
+                  value={companyRegistrationForm.address.zone}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="m-field">
                 <label className="m-label">Código Postal(Opcional)</label>
-                <input className="m-input" type="text" name="postalCode" placeholder="ex: 7600" value={companyRegistrationForm.address.postalCode} onChange={handleInputChange} />
+                <input
+                  className="m-input"
+                  type="text"
+                  name="postalCode"
+                  placeholder="ex: 7600"
+                  value={companyRegistrationForm.address.postalCode}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
             <div className="m-field">
               <label className="m-label">Rua(Opcional)</label>
-              <input className="m-input" type="text" name="street" placeholder="ex: Rua do Município" value={companyRegistrationForm.address.street} onChange={handleInputChange} />
+              <input
+                className="m-input"
+                type="text"
+                name="street"
+                placeholder="ex: Rua do Município"
+                value={companyRegistrationForm.address.street}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="m-footer">
-              <button className="m-btn-cancel" type="button" onClick={onClose} disabled={loading}>Cancelar</button>
+              <button
+                className="m-btn-cancel"
+                type="button"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Cancelar
+              </button>
               <button className="m-btn-save" type="submit" disabled={loading}>
-                <i className="bi bi-check2"></i> {loading ? "A guardar..." : "Guardar Empresa"}
+                <i className="bi bi-check2"></i>{" "}
+                {loading ? "A guardar..." : "Guardar Empresa"}
               </button>
             </div>
           </div>

@@ -82,7 +82,7 @@ function BusinessPublicOverView() {
     const loadUser = async () => {
       try {
         const data = await getUserProfileData();
-        console.log("UserData: ", data);
+
         if (data) setCurrentUser(data);
       } catch {
         /* anonymous visitors are fine */
@@ -96,14 +96,14 @@ function BusinessPublicOverView() {
   const loadCart = async () => {
     if (!currentUser || !company || !company.id) return;
     const response = await getCompanyCartItems(currentUser.id, company.id);
-    console.log("CART ITEMS: ", response);
+
     if (!response) {
       console.log("There was an issue getting the user cart");
       return;
     }
     if (response.status === 200) {
       const data = await response.json();
-      console.log(data);
+
       setCartItems(data);
     }
   };
@@ -116,15 +116,13 @@ function BusinessPublicOverView() {
         currentUser.id,
         company.id,
       );
-      console.log("Response Getting User Orders: ", response);
+
       setLoading(false);
       if (!response) {
-        console.log("There was an issue with your request.");
         return;
       }
       if (response.status === 200) {
         const data = await response.json();
-        console.log("Order data: ", data);
         setOrders(data);
         return;
       }

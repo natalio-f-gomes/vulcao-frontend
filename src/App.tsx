@@ -21,7 +21,7 @@ import GetBusinessesSection from "./components/Businesses";
 import BusinessPublicOverView from "./ public/PublicBusinessesPage/BusinessPublicOverView";
 import AboutPage from "./ public/AboutPage";
 import TermsPage from "./ public/terms";
-import FeatureRequestPage from "./ public/feature-request";
+import FeatureRequestPage from "./ public/FeatureRequest";
 import PasswordResetPage from "./ public/PasswordReset";
 
 function App() {

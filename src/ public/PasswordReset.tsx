@@ -68,15 +68,12 @@ function ResetPasswordPage() {
       return;
     }
 
-    console.log("Verifying code:", verificationCode);
-    console.log("Resetting password for:", email);
     const response = await resetPasswordConfirm(
       entity,
       email,
       verificationCode,
       { newPassword: newPassword },
     );
-    console.log("Response reseting password Confirm: ", response);
 
     if (response.status === 200) {
       const message = await response.text();
@@ -87,7 +84,7 @@ function ResetPasswordPage() {
         const message = await response.text();
         alert(message);
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     } else if (response.status === 403) {
       const message = await response.text();

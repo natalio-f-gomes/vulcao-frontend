@@ -33,7 +33,7 @@ function GetHeroSection() {
             className="btn-outline-custom"
             onClick={() => onNavigate("/employer-register")}
           >
-            Sou Empresário
+            Sou Empresário(a)
           </a>
         </div>
       </div>

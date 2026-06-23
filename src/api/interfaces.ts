@@ -482,3 +482,48 @@ export interface WeeklySchedule {
   daySchedule: Record<WeekDays, TimeRange>;
   open247: boolean;
 }
+
+export type FeatureRequestCategory =
+  | "VISUAL_DO_WEBSITE"
+  | "DISPOSITIVOS_MÓVEIS"
+  | "PAINEL_DE_CONTROLE"
+  | "PEDIDOS"
+  | "CARRINHO"
+  | "ESTOQUE"
+  | "GESTÃO_DE_EQUIPE"
+  | "GESTÃO_DE_EMPREGADORES"
+  | "GESTÃO_DE_USUÁRIOS"
+  | "AUTENTICAÇÃO"
+  | "RELATÓRIOS"
+  | "ANÁLISE_DE_DADOS"
+  | "NOTIFICAÇÕES"
+  | "INTEGRAÇÕES"
+  | "API"
+  | "SEGURANÇA"
+  | "DESEMPENHO"
+  | "AUTOMAÇÃO"
+  | "FLUXO_DE_TRABALHO"
+  | "FATURAMENTO"
+  | "PAGAMENTOS"
+  | "EXPORTAÇÃO_DE_DADOS"
+  | "BUSCA"
+  | "ACESSIBILIDADE"
+  | "CORREÇÃO_DE_ERROS"
+  | "OUTRO";
+
+export type FeatureRequestStatus =
+  | "PLANEJADO"
+  | "EM_ANDAMENTO"
+  | "ENVIADO"
+  | "EM_REVISÃO"
+  | "CANCELADO";
+
+export interface InquiryModel {
+  userName: string;
+  userEmail: string;
+  description: string;
+  votes: string;
+  title: string;
+  category: FeatureRequestCategory;
+  status: FeatureRequestStatus;
+}

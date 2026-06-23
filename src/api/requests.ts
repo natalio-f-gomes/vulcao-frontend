@@ -18,6 +18,7 @@ import {
   entityType,
   WeekDays,
   WeeklySchedule,
+  InquiryModel,
 } from "./interfaces";
 
 //const URL = "http://localhost:8080";
@@ -593,7 +594,6 @@ export async function updateWearableImage(item: WearableModel) {
 export async function postOfferingImageKeys(
   requestData: OfferingImageUploadRequest,
 ) {
-  console.log("Request Data", requestData);
   const endpoint: string = "/v1/offering/image/upload/confirm";
   return await fetchAPIWithCredentials(endpoint, {
     method: "POST",
@@ -604,7 +604,6 @@ export async function postOfferingImageKeys(
 export async function postCompanyImageKeys(
   requestData: CompanyImageUploadRequest,
 ) {
-  console.log("Request Data", requestData);
   const endpoint: string = "/v1/company/image/upload/confirm";
   return await fetchAPIWithCredentials(endpoint, {
     method: "POST",
@@ -801,5 +800,26 @@ export async function updateCompanySchedule(
   return await fetchAPIWithCredentials(endpoint, {
     method: "PUT",
     body: JSON.stringify(schedule),
+  });
+}
+
+export async function getAllInquiries() {
+  const endpoint = "/v1/public/inquiry/get/all";
+  return await fetchAPIWithoutCredentials(endpoint, { method: "GET" });
+}
+
+export async function postInquiryRequest(email: string) {
+  const endpoint = `/v1/public/inquiry/post/request/${email}`;
+  return await fetchAPIWithoutCredentials(endpoint, { method: "POST" });
+}
+
+export async function postInquiryConfirm(
+  mfaCode: string,
+  inquiry: InquiryModel,
+) {
+  const endpoint = `/v1/public/inquiry/post/confirm/${mfaCode}`;
+  return await fetchAPIWithoutCredentials(endpoint, {
+    method: "POST",
+    body: JSON.stringify(inquiry),
   });
 }

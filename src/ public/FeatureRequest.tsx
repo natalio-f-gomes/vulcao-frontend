@@ -1,5 +1,13 @@
+import { useEffect, useState } from "react";
+import {
+  getAllInquiries,
+  postInquiryConfirm,
+  postInquiryRequest,
+} from "../api/requests";
 import GetFooterSection from "../components/footer";
 import GetHeader from "../components/header";
+import { FeatureRequestCategory, InquiryModel } from "../api/interfaces";
+import MFAConfirmation from "./MFAConfirmation";
 
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
@@ -110,6 +118,116 @@ section{padding:60px 0;}
 `;
 
 function FeatureRequestPage() {
+  const [inquiries, setInquires] = useState<InquiryModel[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [inquiry, setInquiry] = useState<InquiryModel | null>(null);
+  const [mfaCode, setMfaCode] = useState<string>("");
+  const [planned, setPlanned] = useState<number>(0);
+  const [inProgress, setInProgress] = useState<number>(0);
+  const [shipped, setShipped] = useState<number>(0);
+  const [underReview, setUnderReview] = useState<number>(0);
+
+  const CATEGORIES: FeatureRequestCategory[] = [
+    "VISUAL_DO_WEBSITE",
+    "DISPOSITIVOS_MÓVEIS",
+    "PAINEL_DE_CONTROLE",
+    "PEDIDOS",
+    "CARRINHO",
+    "ESTOQUE",
+    "GESTÃO_DE_EQUIPE",
+    "GESTÃO_DE_EMPREGADORES",
+    "GESTÃO_DE_USUÁRIOS",
+    "AUTENTICAÇÃO",
+    "RELATÓRIOS",
+    "ANÁLISE_DE_DADOS",
+    "NOTIFICAÇÕES",
+    "INTEGRAÇÕES",
+    "API",
+    "SEGURANÇA",
+    "DESEMPENHO",
+    "AUTOMAÇÃO",
+    "FLUXO_DE_TRABALHO",
+    "FATURAMENTO",
+    "PAGAMENTOS",
+    "EXPORTAÇÃO_DE_DADOS",
+    "BUSCA",
+    "ACESSIBILIDADE",
+    "CORREÇÃO_DE_ERROS",
+    "OUTRO",
+  ];
+
+  const emptyForm: InquiryModel = {
+    title: "",
+    category: "OUTRO",
+    description: "",
+    userEmail: "",
+    userName: "",
+    votes: "0",
+    status: "EM_REVISÃO",
+  };
+
+  const [form, setForm] = useState<InquiryModel>(emptyForm);
+
+  const set = (k: keyof InquiryModel, v: string) =>
+    setForm((f) => ({ ...f, [k]: v }));
+
+  const handleOpenVerification = () => {
+    if (!form.title || !form.description || !form.userEmail || !form.userName) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+    setIsModalOpen(true); // modal will send the code via onSendCode
+  };
+
+  const handleVerifySuccess = async (code: string) => {
+    try {
+      // submit the inquiry WITH the verified code.
+      // Replace `confirmInquiry` with your real create-inquiry endpoint.
+      const response = await postInquiryConfirm(code, form);
+      if (response.ok) {
+        alert("Pedido enviado com sucesso!");
+        setIsModalOpen(false);
+        setForm(emptyForm);
+        setRefreshTrigger((p) => !p);
+      } else {
+        alert(await response.text());
+      }
+    } catch {
+      alert("Falha ao enviar o pedido.");
+    }
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState("user@example.com");
+
+  const loadInquiries = async () => {
+    try {
+      const response = await getAllInquiries();
+      console.log("Inquiries", response);
+      const data = await response.json();
+    } catch (error) {
+      alert("There was an issue loading inquiries. Please come back later");
+    }
+  };
+
+  useEffect(() => {
+    loadInquiries();
+  }, [refreshTrigger]);
+
+  const handlePostInquiryRequest = async () => {
+    try {
+      const response = await postInquiryRequest(form.userEmail);
+
+      if (response.status === 202) {
+        alert("We have sent you an code for veriication purposes!");
+        setRefreshTrigger((prev) => !prev);
+        // This forces the useEffect above to fire again
+      }
+    } catch (error) {
+      console.error("Failed to post inquiry", error);
+    }
+  };
+
   return (
     <>
       <GetHeader />
@@ -164,16 +282,22 @@ function FeatureRequestPage() {
                 className="f-input"
                 type="text"
                 placeholder="e.g. Bulk product upload via CSV"
+                value={form.title}
+                onChange={(e) => set("title", e.target.value)}
               />
             </div>
             <div className="f-field">
               <label className="f-label">Category</label>
-              <select className="f-select" defaultValue="Mobile App">
-                <option>Mobile App</option>
-                <option>Payments</option>
-                <option>Seller Tools</option>
-                <option>Logistics</option>
-                <option>UI / Design</option>
+              <select
+                className="f-select"
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c.replaceAll("_", " ")}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="f-field">
@@ -181,6 +305,8 @@ function FeatureRequestPage() {
               <textarea
                 className="f-textarea"
                 placeholder="What problem does it solve? Who benefits?"
+                value={form.description}
+                onChange={(e) => set("description", e.target.value)}
               />
             </div>
             <div className="f-field">
@@ -189,9 +315,21 @@ function FeatureRequestPage() {
                 className="f-input"
                 type="email"
                 placeholder="you@example.com"
+                value={form.userEmail}
+                onChange={(e) => set("userEmail", e.target.value)}
               />
             </div>
-            <button className="f-submit">
+            <div className="f-field">
+              <label className="f-label">Your Name</label>
+              <input
+                className="f-input"
+                type="text"
+                placeholder="Alex S. Limas"
+                value={form.userName}
+                onChange={(e) => set("userName", e.target.value)}
+              />
+            </div>
+            <button className="f-submit" onClick={handleOpenVerification}>
               <i className="bi bi-lightbulb"></i> Post Request
             </button>
           </div>
@@ -407,6 +545,12 @@ function FeatureRequestPage() {
       </section>
 
       <GetFooterSection />
+      <MFAConfirmation
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onVerifySuccess={handleVerifySuccess}
+        inquiry={form}
+      />
     </>
   );
 }

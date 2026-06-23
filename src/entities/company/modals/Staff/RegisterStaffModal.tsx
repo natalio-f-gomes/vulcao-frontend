@@ -185,7 +185,7 @@ function RegisterStaffModal({
                 <input
                   className="m-input"
                   type="text"
-                  placeholder="ex: João"
+                  placeholder="ex: GirlBoss"
                   name="firstName"
                   onChange={handleInputChange}
                   required
