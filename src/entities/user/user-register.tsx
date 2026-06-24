@@ -125,19 +125,6 @@ function UserRegistrationPage() {
     try {
       const response = await registerUser(code, userRegistrationForm);
 
-      // Handle error responses - try to get message from response
-      let errorMessage = "";
-      try {
-        const data = await response.json();
-        errorMessage = data.message || data.error || "";
-      } catch (e) {
-        // If JSON parsing fails, try text
-        try {
-          errorMessage = await response.text();
-        } catch (e2) {
-          errorMessage = "";
-        }
-      }
       if (response.status === 201) {
         alert("Utilizador registado com sucesso.");
         setShowMFA(false);

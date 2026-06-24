@@ -74,9 +74,9 @@ function UserLoginPage() {
         "Código errado. Verifique a sua caixa de entrada ou a pasta de spam.",
       );
     } else if (response.status === 400) {
-      console.log(response);
-      const data = await response.json();
-      alert(data.error);
+      const msg = await response.text();
+      alert(msg);
+      setLoading(false);
     } else {
       alert("Erro inesperado. Por favor volte mais tarde");
       console.log("Unexpected error", response);
@@ -104,10 +104,8 @@ function UserLoginPage() {
       } else if (response.status === 403) {
         alert("Dados MFA incorretos. Por favor, tente novamente.");
       } else if (response.status === 400) {
-        console.log(response);
-        const data = await response.json();
-        console.log("Data: ", data.error);
-        alert(data.error);
+        alert(response.text());
+        setLoading(false);
       } else if (response.status === 401 || response.status === 404) {
         setShowMFA(false);
         alert("Credenciais incorretas.");

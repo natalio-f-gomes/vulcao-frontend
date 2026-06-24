@@ -21,8 +21,8 @@ import {
   InquiryModel,
 } from "./interfaces";
 
-//const URL = "http://localhost:8080";
-const URL = "";
+const URL = "http://localhost:8080";
+//const URL = "";
 
 export async function fetchAPIWithCredentials(
   endpoint: string,
