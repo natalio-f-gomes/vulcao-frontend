@@ -2,22 +2,29 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterBusinessModal from "../modals/RegisterBusinessModal";
 import EditBusinessModal from "../modals/EditBusinessModal";
-import { CompanyModel, EmployerModel, WeekDays } from "../../../../api/interfaces";
+import {
+  CompanyModel,
+  UserProfileModel,
+  WeekDays,
+} from "../../../../api/interfaces";
 import { getEmployerCompanies, updateCompany } from "../../../../api/requests";
 import ImageCarousel from "../../../../components/ImageCarousel";
 import UpdateCompanyImageModal from "../modals/CompanyUpdateImageModal";
 
-interface Props{
-  employer: EmployerModel
+interface Props {
+  employer: UserProfileModel;
 }
 
-
-function BusinessesView({employer}: Props) {
+function BusinessesView({ employer }: Props) {
   const navigate = useNavigate();
 
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [editingBusiness, setEditingBusiness] = useState<CompanyModel | null>(null);
-  const [editingImagesFor, setEditingImagesFor] = useState<CompanyModel | null>(null);
+  const [editingBusiness, setEditingBusiness] = useState<CompanyModel | null>(
+    null,
+  );
+  const [editingImagesFor, setEditingImagesFor] = useState<CompanyModel | null>(
+    null,
+  );
   const [businesses, setBusinesses] = useState<CompanyModel[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +35,7 @@ function BusinessesView({employer}: Props) {
       const response = await getEmployerCompanies();
       if (response.ok) {
         const data = await response.json();
-        console.log("companies: ",data)
+        console.log("companies: ", data);
         setBusinesses(data);
       } else {
         setError(`Could not load companies (${response.status})`);
@@ -46,11 +53,13 @@ function BusinessesView({employer}: Props) {
       if (response.ok) {
         setEditingBusiness(null);
         await loadCompanies();
-        alert("Empresa Atualizada com sucesso")
+        alert("Empresa Atualizada com sucesso");
         return;
       }
       if (response.status === 400) {
-        alert("There was a problem with your request, please ensure this company name is not being used.");
+        alert(
+          "There was a problem with your request, please ensure this company name is not being used.",
+        );
       } else if (response.status === 403) {
         alert("Access DENIED");
       }
@@ -70,13 +79,20 @@ function BusinessesView({employer}: Props) {
     navigate(`/company-dashboard/${businessId}`);
   };
 
-return (
+  return (
     <>
-      <div className="view-heading" style={{ marginTop: "40px" }}>As Minhas Empresas</div>
-      <div className="view-sub">Gerir e monitorizar todas as suas empresas registadas.</div>
+      <div className="view-heading" style={{ marginTop: "40px" }}>
+        As Minhas Empresas
+      </div>
+      <div className="view-sub">
+        Gerir e monitorizar todas as suas empresas registadas.
+      </div>
 
       <div className="quick-actions">
-        <button className="qa-btn primary" onClick={() => setShowRegisterModal(true)}>
+        <button
+          className="qa-btn primary"
+          onClick={() => setShowRegisterModal(true)}
+        >
           <i className="bi bi-plus-lg"></i> Registar Nova Empresa
         </button>
       </div>
@@ -88,13 +104,23 @@ return (
             <div className="biz-card" key={company.id}>
               {/* ---- banner: apenas distintivo de estado ---- */}
               <div className="biz-banner">
-                <span className={`biz-status-badge ${company.status === "OPERATING" ? "active" : "inactive"}`}>
-                  {company.status === "OPERATING" ? "EM FUNCIONAMENTO" : company.status}
+                <span
+                  className={`biz-status-badge ${company.status === "OPERATING" ? "active" : "inactive"}`}
+                >
+                  {company.status === "OPERATING"
+                    ? "EM FUNCIONAMENTO"
+                    : company.status}
                 </span>
               </div>
 
               <div className="biz-body">
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: 14,
+                  }}
+                >
                   <ImageCarousel
                     imageKeys={company.imgS3UrlKeys}
                     width={200}
@@ -104,7 +130,9 @@ return (
                 </div>
 
                 <div className="biz-name">{company.name}</div>
-                <div className="biz-cat">{company.category?.replaceAll("_", " ")}</div>
+                <div className="biz-cat">
+                  {company.category?.replaceAll("_", " ")}
+                </div>
 
                 {/* <div className="biz-stats">
                   <div>
@@ -123,11 +151,17 @@ return (
 
                 <div className="biz-actions">
                   {company.id && (
-                    <button className="biz-btn view" onClick={() => visitCompanyDashboardHandler(company.id!)}>
+                    <button
+                      className="biz-btn view"
+                      onClick={() => visitCompanyDashboardHandler(company.id!)}
+                    >
                       <i className="bi bi-eye"></i> Ver
                     </button>
                   )}
-                  <button className="biz-btn edit" onClick={() => setEditingBusiness(company)}>
+                  <button
+                    className="biz-btn edit"
+                    onClick={() => setEditingBusiness(company)}
+                  >
                     <i className="bi bi-pencil"></i> Editar
                   </button>
                   {/* <button className="biz-btn del">
@@ -151,7 +185,10 @@ return (
           );
         })}
 
-        <div className="biz-card-new" onClick={() => setShowRegisterModal(true)}>
+        <div
+          className="biz-card-new"
+          onClick={() => setShowRegisterModal(true)}
+        >
           <i className="bi bi-plus-circle"></i>
           <span>Register a Empresa</span>
         </div>
@@ -171,14 +208,13 @@ return (
         onSave={saveBusinessUpdate}
       />
 
-      { editingImagesFor && (
+      {editingImagesFor && (
         <UpdateCompanyImageModal
-        onClose={()=> setEditingImagesFor(null)}
-        isOpen={editingImagesFor !== null}
-        company={editingImagesFor}
+          onClose={() => setEditingImagesFor(null)}
+          isOpen={editingImagesFor !== null}
+          company={editingImagesFor}
         />
       )}
-
 
       {/* TODO: wire your company image modal here (the company equivalent of
           UploadImageModal / EditProductImagesModal). It receives the company

@@ -111,7 +111,6 @@ function EmployerRegistrationPage() {
     } else if (response.status === 400) {
       const data = await response.text();
       console.log("Data: ", data);
-      //const errorMessage = JSON.parse(data)
       alert(data);
     } else {
       alert("Erro inesperado. Por favor volte mais tarde.");

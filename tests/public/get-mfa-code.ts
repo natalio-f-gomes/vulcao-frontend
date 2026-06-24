@@ -10,8 +10,8 @@ export async function getMfaCodeFromEmail(
   } = {},
 ): Promise<string> {
   const {
-    timeoutMs = 10000,
-    pollIntervalMs = 500,
+    timeoutMs = 2000,
+    pollIntervalMs = 100,
     sesUrl = "http://localhost:8005",
   } = options;
 
@@ -24,48 +24,49 @@ export async function getMfaCodeFromEmail(
     attempt++;
     console.log(`[MFA] Attempt ${attempt} — querying ${sesUrl}/store`);
 
-    const res = await page.request.get(`${sesUrl}/store`);
-    console.log(`[MFA] Store responded with status ${res.status()}`);
+    try {
+      // Use Node.js fetch instead of page.request
+      const res = await fetch(`${sesUrl}/store`);
+      console.log(`[MFA] Store responded with status ${res.status}`);
 
-    if (res.ok()) {
-      const { emails = [] } = await res.json();
-      console.log(`[MFA] ${emails.length} email(s) in store`);
+      if (res.ok) {
+        const data = await res.json();
+        const emails = data?.emails ?? [];
+        console.log(`[MFA] ${emails.length} email(s) in store`);
 
-      // Newest-first: the store appends, so reverse to start from the latest.
-      const ordered = [...emails].reverse();
+        // Newest-first
+        const ordered = [...emails].reverse();
 
-      for (const email of ordered) {
-        const to = email?.destination?.to?.[0] ?? "";
-        const at = email?.at ?? "?";
-        console.log(
-          `[MFA]  - candidate to="${to}" at=${at} subject="${email?.subject ?? ""}"`,
-        );
-
-        if (to !== toAddress) {
-          console.log(`[MFA]    skip: recipient mismatch`);
-          continue;
-        }
-
-        const text = email?.body?.text ?? "";
-        const match = text.match(/\b(\d{4,8})\b/);
-
-        if (match) {
+        for (const email of ordered) {
+          const to = email?.destination?.to?.[0] ?? "";
+          const at = email?.at ?? "?";
           console.log(
-            `[MFA] ✅ Found code ${match[1]} (newest match for ${toAddress})`,
+            `[MFA]  - candidate to="${to}" at=${at} subject="${email?.subject ?? ""}"`,
           );
-          return match[1];
+
+          if (to !== toAddress) {
+            console.log(`[MFA]    skip: recipient mismatch`);
+            continue;
+          }
+
+          const body = email?.body?.text ?? email?.body?.html ?? "";
+          const match = body.match(/\b(\d{4,8})\b/);
+          if (match) {
+            console.log(
+              `[MFA] ✅ Found code ${match[1]} (newest match for ${toAddress})`,
+            );
+            return match[1];
+          }
         }
-
-        console.log(`[MFA]    matched recipient but no code pattern in body`);
+      } else {
+        const errorText = await res.text();
+        console.log(`[MFA] Store not OK (status ${res.status}): ${errorText}`);
       }
-
-      console.log(
-        `[MFA] No matching code yet, retrying in ${pollIntervalMs}ms`,
-      );
-    } else {
-      console.log(`[MFA] Store not OK (status ${res.status()}), retrying`);
+    } catch (error) {
+      console.log(`[MFA] Error fetching store: ${error}`);
     }
 
+    console.log(`[MFA] Code not found, waiting ${pollIntervalMs}ms...`);
     await page.waitForTimeout(pollIntervalMs);
   }
 

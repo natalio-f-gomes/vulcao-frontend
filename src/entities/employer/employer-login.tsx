@@ -79,10 +79,7 @@ function EmployerLoginPage() {
         );
       } else if (response.status === 400) {
         console.log(response);
-        const data = await response.json();
-        console.log("Data: ", data.error);
-        //const errorMessage = JSON.parse(data)
-        alert(data.error);
+        alert(await response.text());
       } else {
         alert("Erro inesperado. Por favor volte mais tarde");
         console.log("Unexpected error", response);
@@ -117,11 +114,7 @@ function EmployerLoginPage() {
       } else if (response.status === 401) {
         alert("Credenciais inválidas.");
       } else if (response.status === 400) {
-        console.log(response);
-        const data = await response.json();
-        console.log("Data: ", data.error);
-        //const errorMessage = JSON.parse(data)
-        alert(data.error);
+        alert(await response.text());
       } else if (response.status === 403) {
         alert("Codigo incorreto.");
       } else {

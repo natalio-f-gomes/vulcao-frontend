@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   CompanyModel,
-  EmployerModel,
   OrderItemModel,
   OrderModel,
   StaffModel,
@@ -17,7 +16,7 @@ import { orderStatusTranslations } from "../../../ public/PublicBusinessesPage/O
 
 interface OrderProps {
   orders: OrderModel[];
-  employer?: EmployerModel | null;
+  employer?: UserProfileModel | null;
   staff?: StaffModel | null;
   company: CompanyModel | null;
 }

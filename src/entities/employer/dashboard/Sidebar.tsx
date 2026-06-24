@@ -1,17 +1,17 @@
 import React from "react";
 import { EmployerDashView } from "./employer-dashboard";
-import { EmployerModel } from "../../../api/interfaces";
 import { useNavigate } from "react-router-dom";
 import { useUserAuthManager } from "../../../api/authentication-handler";
 import { companyName } from "../../../api/global";
+import { UserProfileModel } from "../../../api/interfaces";
 interface SidebarParameters {
-    activeView: EmployerDashView;
-    onNavigate: (view: EmployerDashView) => void;
-    employer: EmployerModel | null
+  activeView: EmployerDashView;
+  onNavigate: (view: EmployerDashView) => void;
+  employer: UserProfileModel | null;
 }
 
 const styles: Record<string, React.CSSProperties> = {
- sidebar: {
+  sidebar: {
     background: "#0f0e0e",
     color: "#bbb",
     minHeight: "100vh",
@@ -20,7 +20,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     padding: "1.25rem 0",
     fontFamily: "'DM Sans', system-ui, sans-serif",
-    flex: 1,         
+    flex: 1,
   },
   brand: {
     padding: "0 1.25rem 1rem",
@@ -114,44 +114,56 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "center",
   },
 };
-function EmployerDashSideBar({activeView, onNavigate, employer}: SidebarParameters){
-    const navigate = useNavigate();
-    const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
-    
-    async function handleLogout() {
-        await logoutHandler();
-        navigate("/");
-    }
+function EmployerDashSideBar({
+  activeView,
+  onNavigate,
+  employer,
+}: SidebarParameters) {
+  const navigate = useNavigate();
+  const { isEntityLoggedIn, logoutHandler } = useUserAuthManager();
 
-    const itemStyle = (view: EmployerDashView): React.CSSProperties =>
-        activeView === view ? { ...styles.navItem, ...styles.navItemActive } : styles.navItem;
+  async function handleLogout() {
+    await logoutHandler();
+    navigate("/");
+  }
 
-    return (
-        <>
-            {employer && (
-                <aside style={styles.sidebar}>
-                    <div style={styles.brand}>
-                        <a style={styles.brandLogo} href="/">
-                            <span style={styles.brandAccent}>{companyName}</span>
-                        </a>
-                    </div>
-                    <span style={styles.brandSub}>Painel da Empresa</span>
+  const itemStyle = (view: EmployerDashView): React.CSSProperties =>
+    activeView === view
+      ? { ...styles.navItem, ...styles.navItemActive }
+      : styles.navItem;
 
-                    <nav style={styles.nav}>
-                        <div style={styles.sectionLabel}>Visão Geral</div>
-                        <a style={itemStyle("profile")} onClick={() => onNavigate("profile")}>
-                            <i className="bi bi-grid-1x2" /> Perfil
-                        </a>
-                        {/*           <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
+  return (
+    <>
+      {employer && (
+        <aside style={styles.sidebar}>
+          <div style={styles.brand}>
+            <a style={styles.brandLogo} href="/">
+              <span style={styles.brandAccent}>{companyName}</span>
+            </a>
+          </div>
+          <span style={styles.brandSub}>Painel da Empresa</span>
+
+          <nav style={styles.nav}>
+            <div style={styles.sectionLabel}>Visão Geral</div>
+            <a
+              style={itemStyle("profile")}
+              onClick={() => onNavigate("profile")}
+            >
+              <i className="bi bi-grid-1x2" /> Perfil
+            </a>
+            {/*           <a style={itemStyle("overview")} onClick={() => onNavigate("overview")}>
                             <i className="bi bi-grid-1x2" /> Painel de Controlo
                         </a>
                         */}
 
-                        <a style={itemStyle("businesses")} onClick={() => onNavigate("businesses")}>
-                            <i className="bi bi-building" /> As Minhas Empresas
-                        </a>
-                        
-                        {/* 
+            <a
+              style={itemStyle("businesses")}
+              onClick={() => onNavigate("businesses")}
+            >
+              <i className="bi bi-building" /> As Minhas Empresas
+            </a>
+
+            {/* 
 
                         <div style={styles.sectionLabel}>Loja</div>
                         <a style={itemStyle("orders")} onClick={() => onNavigate("orders")}>
@@ -165,28 +177,39 @@ function EmployerDashSideBar({activeView, onNavigate, employer}: SidebarParamete
                         </a>
                         */}
 
-                        <div style={styles.sectionLabel}>Sistema</div>
-                        <a style={itemStyle("settings")} onClick={() => onNavigate("settings")}>
-                            <i className="bi bi-gear" /> Definições
-                        </a>
-                    </nav>
+            <div style={styles.sectionLabel}>Sistema</div>
+            <a
+              style={itemStyle("settings")}
+              onClick={() => onNavigate("settings")}
+            >
+              <i className="bi bi-gear" /> Definições
+            </a>
+          </nav>
 
-                    <div style={styles.footer}>
-                        <div style={styles.ownerInfo}>
-                            <div className="owner-avatar"><i className="bi bi-person" /></div>
-                            <div>
-                                <div style={styles.ownerName}>{`${employer?.firstName} ${employer?.lastName}`}</div>
-                                <div style={styles.ownerRole}>Empresário</div>
-                            </div>
-                            <button style={styles.signoutBtn} onClick={handleLogout} title="Terminar Sessão">
-                                <i className="bi bi-box-arrow-right" />
-                            </button>
-                        </div>
-                    </div>
-                </aside>
-            )}
-        </>
-    );
+          <div style={styles.footer}>
+            <div style={styles.ownerInfo}>
+              <div className="owner-avatar">
+                <i className="bi bi-person" />
+              </div>
+              <div>
+                <div
+                  style={styles.ownerName}
+                >{`${employer?.firstName} ${employer?.lastName}`}</div>
+                <div style={styles.ownerRole}>Empresário</div>
+              </div>
+              <button
+                style={styles.signoutBtn}
+                onClick={handleLogout}
+                title="Terminar Sessão"
+              >
+                <i className="bi bi-box-arrow-right" />
+              </button>
+            </div>
+          </div>
+        </aside>
+      )}
+    </>
+  );
 }
 
 export default EmployerDashSideBar;

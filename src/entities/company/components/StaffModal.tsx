@@ -2,7 +2,6 @@ import { useState, useEffect, MouseEventHandler } from "react";
 import {
   StaffModel,
   CompanyModel,
-  EmployerModel,
   Permissions,
   RegisterStaffModel,
 } from "../../../api/interfaces";

@@ -1,5 +1,11 @@
-import { test, expect, request } from "@playwright/test";
+import { test, expect, request, Page } from "@playwright/test";
 import { getMfaCodeFromEmail } from "./public/get-mfa-code";
+import { cleanAllTableItems } from "./reset_tables";
+import {
+  getValidEntitiesRegistrationData,
+  invalidEmails,
+  invalidUsernames,
+} from "./TestingData/EntityTestData";
 const URL = "http://localhost:3000";
 const appTitle = "Vulcão";
 
@@ -10,30 +16,32 @@ test("Has Title", async ({ page }) => {
   await expect(page).toHaveTitle(appTitle);
 });
 
-async function clearLocalStackSes(): Promise<void> {
-  const url = "http://localhost:8005/store";
+test.beforeEach(async () => {
+  await clearSesStore();
+  await cleanAllTableItems();
+});
 
-  try {
-    const response = await fetch(url, { method: "DELETE" });
-    if (response.ok) {
-      console.log("LocalStack SES store cleared successfully.");
-    } else {
-      console.error(`Failed to clear store: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error connecting to LocalStack:", error);
+async function clearSesStore(): Promise<void> {
+  const res = await fetch("http://localhost:8005/clear-store", {
+    method: "POST",
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Failed to clear SES store: ${res.status} ${res.statusText}`,
+    );
   }
+  console.log("SES store cleared successfully.");
 }
 
-test("Go to client registration", async ({ page, request }) => {
-  const firstName: string = "John";
-  const lastName: string = "Doe";
-  const username: string = "jhondoe3";
-  const email: string = "jhondoe@gmail.com";
-  const password: string = "strongpassword";
-
-  await page.goto(URL);
-
+const UserRegisterBody = async (
+  page: Page,
+  firstName: string,
+  lastName: string,
+  username: string,
+  email: string,
+  password: string,
+  dialogType: string,
+) => {
   // Click the get started link.
   await page.getByText("Sou Cliente").click();
 
@@ -82,15 +90,147 @@ test("Go to client registration", async ({ page, request }) => {
   );
 
   console.log("[MFA] Clearing store before registration");
-  clearLocalStackSes();
+  await clearSesStore();
 
-  const sentAfter = Date.now();
   await page.getByRole("button", { name: "Criar Conta" }).click();
 
-  const code = await getMfaCodeFromEmail(page, email);
+  if (dialogType === "validDialog") {
+    const code = await getMfaCodeFromEmail(page, email);
 
-  await page.waitForSelector(".mfa-overlay", { timeout: 5000 }); // expects the mfa component to render about 5 seconds
-  await page.locator("#mfa-code").fill(code);
-  await expect(page.locator("#mfa-code")).toHaveValue(code);
-  await page.getByRole("button", { name: "Verificar Código" }).click();
+    await page.waitForSelector(".mfa-overlay", { timeout: 5000 }); // expects the mfa component to render about 5 seconds
+    await page.locator("#mfa-code").fill(code);
+    await expect(page.locator("#mfa-code")).toHaveValue(code);
+    await page.getByRole("button", { name: "Verificar Código" }).click();
+    await ValidDialog;
+  } else if (dialogType === "invalidUsername") {
+    await InvalidUsernameDialog;
+  } else {
+    await InvalidEmailDialog;
+  }
+};
+
+const ValidDialog = async (page: Page) => {
+  page.once("dialog", async (dialog) => {
+    expect(dialog.message()).toBe("Utilizador registado com sucesso.");
+    await dialog.accept();
+  });
+};
+
+const InvalidUsernameDialog = async (page: Page) => {
+  page.once("dialog", async (dialog) => {
+    expect(dialog.message()).toBe(
+      "O nome de utilizador só pode ter letras, números, ponto, traço e underscore (_)",
+    );
+    await dialog.accept();
+  });
+};
+
+const InvalidEmailDialog = async (page: Page) => {
+  page.once("dialog", async (dialog) => {
+    expect(dialog.message()).toBe(
+      "Email inválido. Use apenas letras, números, ponto e traço",
+    );
+    await dialog.accept();
+  });
+};
+
+// Group tests for parallel execution
+test.describe.parallel("Register Users With Valid Data", () => {
+  // Split into chunks for parallel execution
+  const chunkSize = 5;
+  const chunks = [];
+  const validData = getValidEntitiesRegistrationData();
+  for (let i = 0; i < validData.length; i += chunkSize) {
+    chunks.push(validData.slice(i, i + chunkSize));
+  }
+
+  chunks.forEach((chunk, index) => {
+    test(`Invalid Emails batch ${index + 1}`, async ({ page }) => {
+      test.setTimeout(30000);
+      await page.goto(URL);
+
+      for (const user of chunk) {
+        console.log(`Testing Valid data from: "${user.username}"`);
+        await UserRegisterBody(
+          page,
+          user.firstName,
+          user.lastName,
+          user.username,
+          user.email,
+          user.password,
+          "invalidUsername", // expectSuccess = false
+        );
+        // Go back to registration page for next test
+        await page.goto(URL);
+      }
+    });
+  });
+});
+
+// Group tests for parallel execution
+test.describe.parallel("Invalid username registration tests", () => {
+  // Split into chunks for parallel execution
+  const chunkSize = 5;
+  const chunks = [];
+
+  for (let i = 0; i < invalidUsernames.length; i += chunkSize) {
+    chunks.push(invalidUsernames.slice(i, i + chunkSize));
+  }
+
+  chunks.forEach((chunk, index) => {
+    test(`Invalid usernames batch ${index + 1}`, async ({ page }) => {
+      test.setTimeout(30000);
+      await page.goto(URL);
+
+      for (const user of chunk) {
+        console.log(`Testing invalid username: "${user.username}"`);
+        await UserRegisterBody(
+          page,
+          user.firstName,
+          user.lastName,
+          user.username,
+          user.email,
+          user.password,
+          "invalidUsername", // expectSuccess = false
+        );
+
+        // Go back to registration page for next test
+        await page.goto(URL);
+      }
+    });
+  });
+});
+
+// Group tests for parallel execution
+test.describe.parallel("Invalid Email registration tests", () => {
+  // Split into chunks for parallel execution
+  const chunkSize = 5;
+  const chunks = [];
+
+  for (let i = 0; i < invalidEmails.length; i += chunkSize) {
+    chunks.push(invalidEmails.slice(i, i + chunkSize));
+  }
+
+  chunks.forEach((chunk, index) => {
+    test(`Invalid Emails batch ${index + 1}`, async ({ page }) => {
+      test.setTimeout(30000);
+      await page.goto(URL);
+
+      for (const user of chunk) {
+        console.log(`Testing invalid username: "${user.username}"`);
+        await UserRegisterBody(
+          page,
+          user.firstName,
+          user.lastName,
+          user.username,
+          user.email,
+          user.password,
+          "invalidUsername", // expectSuccess = false
+        );
+
+        // Go back to registration page for next test
+        await page.goto(URL);
+      }
+    });
+  });
 });

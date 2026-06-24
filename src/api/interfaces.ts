@@ -34,10 +34,6 @@ export interface UserProfileModel {
   updatedAt: string;
 }
 
-export interface EmployerModel extends UserProfileModel {
-  companiesRegistered: CompanyModel[];
-}
-
 export interface AddProductModel {
   name: string;
   productType: ProductType;

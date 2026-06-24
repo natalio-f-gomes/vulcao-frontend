@@ -3,21 +3,17 @@ import CompanyTopBar from "./CompanyTopBar";
 import {
   CompanyModel,
   CompanyStats,
-  EmployerModel,
   OrderModel,
   ProductModel,
   RegisterStaffModel,
-  StaffModel,
+  UserProfileModel,
 } from "../../api/interfaces";
 import CompanySidebar, { CompanyView } from "./companySideBar";
 import {
   getAllCompanyOrders,
   getCompanyDashboard,
   getEmployerProfile,
-  getProductsByCompanyId,
-  getStaffByCompanyId,
   logoutEntity,
-  registerStaff,
 } from "../../api/requests";
 import { useEffect, useRef, useState } from "react";
 
@@ -76,9 +72,8 @@ function CompanyDashboard() {
   const staffSectionReference = useRef<HTMLDivElement>(null);
   const sidebar = useResponsiveSidebar(768);
   const [companyOrders, setCompanyOrders] = useState<OrderModel[]>([]);
-  const [currentEmployer, setCurrentEmployer] = useState<EmployerModel | null>(
-    null,
-  );
+  const [currentEmployer, setCurrentEmployer] =
+    useState<UserProfileModel | null>(null);
   const handleLogout = (entityType: string) => {
     logoutEntity(entityType);
     navigate("/");
