@@ -32,5 +32,4 @@ node_modules/
 /playwright/.auth/
 /tests/
 
-.github/workflows/playwright.yml
 /e2e/
