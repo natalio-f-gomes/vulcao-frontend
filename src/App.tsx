@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./Auth/Auth-Handler";
-import GetHeader from "./Components/getHeader";
 import "./css/main.css";
 import ClientLoginPage from "./Entities/ClientModel/client-login";
 import ClientRegistrationPage from "./Entities/ClientModel/client-register";
@@ -17,6 +16,7 @@ import AboutPage from "./Public/AboutPage";
 import TermsPage from "./Public/TermsPage";
 import GetOfferingsSection from "./Components/offerings";
 import ShoppingPage from "./Entities/Shopping/ShoppingPage";
+import GetHeader from "./Components/getHeader";
 
 function App() {
   return (

@@ -25,6 +25,7 @@ if [ "$current_email" != "$USER_EMAIL" ]; then
 fi
 
 git init
+git config core.ignorecase false
 git add .
 
 git commit -m "$message"

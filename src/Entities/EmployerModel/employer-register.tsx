@@ -10,7 +10,6 @@ import {
   employerRegisterConfirm,
   employerRegisterRequest,
 } from "../../Requests/employer";
-import GetHeader from "../../Components/getHeader";
 import { COMPANY_NAME } from "../../Interfaces/global";
 import GetTermsSection from "../../Components/termsSection";
 import { Link, useNavigate } from "react-router-dom";
