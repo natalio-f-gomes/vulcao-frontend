@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail 
 read -p "Enter commit message: " message
 
 rm -rf node_modules
@@ -24,9 +25,17 @@ if [ "$current_email" != "$USER_EMAIL" ]; then
     echo "Updated git user.email to: $USER_EMAIL"
 fi
 
-git init
+if [ ! -d .git ]; then
+  git init -b main
+  echo "Initialized new repo — remember: git remote add origin <url>"
+fi
+dupes=$(git ls-files | sort -f | uniq -di || true)
+if [ -n "$dupes" ]; then
+  echo "WARNING: case-conflicting tracked files detected:"
+  echo "$dupes"
+fi
 git config core.ignorecase false
 git add .
-
+git status --short        
 git commit -m "$message"
 git push -u origin main
