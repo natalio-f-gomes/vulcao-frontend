@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { companyName } from "../api/global";
 
 function GetTermsSection() {
   const onNavigate = useNavigate();
   return (
     <>
       <span>
-        Ao continuar, concordas com os {companyName}{" "}
+        Ao continuar, concordas com os Vulcao.net termos de usoe privacidade.
         <a
           href="#"
           onClick={(e) => {
@@ -15,7 +14,7 @@ function GetTermsSection() {
           }}
           style={{ cursor: "pointer" }}
         >
-          termos de uso
+          Termos de uso
         </a>
       </span>
     </>

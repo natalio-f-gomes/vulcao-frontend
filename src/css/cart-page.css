@@ -1,0 +1,563 @@
+/* ==========================================================================
+   CART PAGE
+   ========================================================================== */
+.cart-page {
+  min-height: calc(100vh - 64px);
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  /* Remove align-items: start */
+  align-items: stretch; /* This makes both columns stretch to the same height */
+}
+
+/* ── Sidebar content (rendered inside ResponsiveSidebar) ── */
+.cart-sidebar-inner {
+  background: var(--ink);
+  height: 100%; /* Changed from min-height to height */
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  /* Remove min-height: calc(100vh - 64px) */
+}
+.cart-sidebar-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+.cart-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cart-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 1rem;
+  color: #666;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+}
+.cart-sidebar-link i {
+  font-size: 1rem;
+  color: #444;
+  transition: color 0.2s;
+}
+.cart-sidebar-link:hover,
+.cart-sidebar-link.active {
+  color: var(--cream);
+  border-left-color: var(--accent);
+  background: #111;
+}
+.cart-sidebar-link:hover i,
+.cart-sidebar-link.active i {
+  color: var(--accent);
+}
+
+/* ── Main column ── */
+.cart-main {
+  padding: 3rem 4rem;
+  min-width: 0;
+}
+.cart-subtitle {
+  font-size: 0.85rem;
+  color: var(--mid);
+  margin-top: 0.5rem;
+}
+
+/* ── Company block ── */
+.cart-company {
+  background: #fff;
+  border: 1px solid #e8e4de;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.4s ease both;
+}
+.cart-company-head {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid #f0ece6;
+  background: #faf9f7;
+}
+.cart-company-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cart-company-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--ink);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.cart-company-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 2px;
+}
+.cart-company-meta {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: var(--mid);
+}
+.cart-company-meta i {
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+/* ── Product rows ── */
+.cart-products {
+  display: flex;
+  flex-direction: column;
+}
+.cart-product {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid #f0ece6;
+  align-items: center;
+}
+.cart-product:last-child {
+  border-bottom: none;
+}
+
+.cart-product-thumb {
+  width: 110px;
+  height: 90px;
+  background: #f0ece6;
+  position: relative; /* Context anchor for nested content */
+  overflow: hidden;
+  display: block; /* Ensures reliable block layout bounds */
+}
+
+.carousel-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cart-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-product-info {
+  min-width: 0;
+}
+.cart-product-date {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+.cart-product-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+
+.cart-product-desc {
+  width: 250px;
+  text-overflow: ellipsis;
+  font-size: 0.85rem;
+  color: var(--mid);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Quantity + remove ── */
+.cart-product-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.qty-control button {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.qty-control button:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+.qty-value {
+  min-width: 36px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: #c0392b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+.btn-remove:hover {
+  color: #e74c3c;
+}
+
+/* ── Empty / login states ── */
+.cart-empty-state,
+.cart-empty-inline {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  background: var(--cream);
+}
+.cart-empty-state i,
+.cart-empty-inline i {
+  font-size: 3rem;
+  color: var(--accent);
+}
+.cart-empty-state h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: var(--ink);
+}
+.cart-empty-state p,
+.cart-empty-inline p {
+  font-size: 0.9rem;
+  color: var(--mid);
+  max-width: 380px;
+}
+.cart-empty-state .btn-primary-custom,
+.cart-empty-inline .btn-outline-custom {
+  margin-top: 1rem;
+}
+.cart-empty-inline {
+  min-height: 40vh;
+  border: 1px dashed #ddd;
+  background: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+  .cart-page {
+    grid-template-columns: 1fr; /* sidebar becomes the drawer */
+  }
+  .cart-main {
+    padding: 2rem 1.25rem;
+  }
+  .cart-product {
+    grid-template-columns: 80px 1fr;
+  }
+  .cart-product-thumb {
+    width: 80px;
+    height: 70px;
+    font-size: 1.5rem;
+  }
+  .cart-product-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .cart-company-head {
+    padding: 1rem 1.25rem;
+  }
+  .cart-product {
+    padding: 1.25rem;
+  }
+  .cart-company-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
+.cart-company-head {
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid #f0ece6;
+  background: #faf9f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* button wraps below on narrow screens */
+}
+
+.btn-checkout {
+  background: var(--ink);
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.25s;
+  flex-shrink: 0;
+}
+.btn-checkout:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Mobile: full-width button under the company info */
+@media (max-width: 576px) {
+  .btn-checkout {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Updated Quantity Control Container ── */
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  background: #fff;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.qty-control:hover {
+  border-color: var(--ink); /* Highlights container on hover */
+}
+
+/* ── Modernized Dropdown Select ── */
+.qty-control select.dropdown {
+  width: 75px;
+  height: 34px;
+  padding: 0 24px 0 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  outline: none;
+
+  /* Hides default native browser drop arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* ── Custom Styled Arrow Indicator ── */
+.qty-control::after {
+  content: "\F2E2"; /* Bootstrap Icon code for bi-chevron-down */
+  font-family: "bootstrap-icons" !important;
+  font-size: 0.65rem;
+  color: var(--mid);
+  position: absolute;
+  right: 10px;
+  pointer-events: none; /* Allows clicks to pass through to the select */
+  transition: color 0.2s ease;
+}
+
+.qty-control:hover::after {
+  color: var(--ink);
+}
+
+/* Accessibility styling helper if not present in your utility file */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ---- Order card ---- */
+.order-status {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #e9ecef;
+  color: #495057;
+}
+.order-status--pending {
+  background: #fff3cd;
+  color: #856404;
+}
+.order-status--confirmed {
+  background: #cce5ff;
+  color: #004085;
+}
+.order-status--shipped {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+.order-status--delivered {
+  background: #d4edda;
+  color: #155724;
+}
+.order-status--cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.order-item-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+.order-item-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+.order-item-line strong {
+  color: #212529;
+}
+.order-item-subtotal {
+  border-top: 1px solid #dee2e6;
+  padding-top: 6px;
+  margin-top: 2px;
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-top: 1px solid #dee2e6;
+  flex-wrap: wrap;
+}
+.order-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-style: italic;
+  max-width: 60%;
+}
+.order-total {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+.order-total strong {
+  font-size: 1.25rem;
+  color: #212529;
+}
+.order-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-cancel-order {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #dc3545;
+  border-radius: 999px;
+  background: transparent;
+  color: #dc3545;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.btn-cancel-order:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* Add to your existing CSS */
+
+.compact-date {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+/* Make sure the compact info uses flex layout */
+.compact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Adjust the client meta for better spacing */
+.client-meta {
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+/* Add a subtle divider between client orders */
+.client-order-item:not(:last-child) {
+  border-bottom: 2px dashed #e8e4de;
+  padding-bottom: 0.5rem;
+}

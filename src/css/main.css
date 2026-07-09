@@ -1,8 +1,11 @@
 /* ==========================================================================
-   UNIFIED STYLESHEET
-   Combines: style.css, user-login.css, executive-registrer.css,
-             user-profile.css, side-bar.css, company-dashboard.css,
-             offerings-dashboard.css
+   UNIFIED STYLESHEET — SINGLE SOURCE OF TRUTH
+   Merges: style.css (incl. FORCE SCROLL FIX), user-login.css,
+           executive-registrer.css, user-profile.css, side-bar.css,
+           company-dashboard.css, offerings-dashboard.css
+   IMPORTANT: import ONLY this file. Delete / stop importing the old
+   style.css — its `.hero { min-height: 85vh !important }` was
+   overriding every hero change.
 
    HOW TO USE — add one of these classes to <body> per page:
      body.page-landing     public storefront (hero, products, footer)
@@ -72,6 +75,10 @@
   --adm-radius-sm: 6px;
   --sidebar-w: 240px;
   --topbar-h: 60px;
+
+  /* Hero height floor — small fixed value so the hero can never
+     balloon to full screen; the section grows only with its content */
+  --hero-h: 420px;
 }
 
 /* ==========================================================================
@@ -94,6 +101,8 @@ body {
   background: var(--cream);
   color: var(--ink);
   min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -107,6 +116,7 @@ a {
 
 #root {
   min-height: 100vh;
+  height: auto;
   flex: 1 0 auto;
 }
 .app-wrapper {
@@ -213,6 +223,7 @@ body.page-dashboard {
   white-space: nowrap;
   transition: all 0.2s;
   flex-shrink: 0;
+  height: auto; /* never inherits the 64px navbar height */
 }
 .btn-logout-nav:hover {
   background: #c0392b;
@@ -226,7 +237,6 @@ body.page-dashboard {
   border-radius: 0;
   min-width: 160px;
   padding: 0.4rem 0;
-  font-size: "5px";
 }
 
 /* Default size for mobile screens */
@@ -339,17 +349,21 @@ body.page-dashboard {
 }
 
 /* ==========================================================================
-   4. PUBLIC SITE — HERO
+   4. PUBLIC SITE — HERO  (compact: next section peeks above the fold)
    ========================================================================== */
 .hero {
-  min-height: 85vh;
+  min-height: var(--hero-h); /* was 85vh / calc(100vh - 64px) */
+  height: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: stretch; /* image panel FOLLOWS text height instead of forcing its own */
 }
 
 .hero-text {
-  padding: 5rem 4rem 5rem 6rem;
+  padding: 2.5rem 3rem 2.5rem 4rem; /* was 5rem top/bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-eyebrow {
@@ -373,11 +387,11 @@ body.page-dashboard {
 
 h1.display {
   font-family: "Playfair Display", serif;
-  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-size: clamp(2rem, 3.5vw, 3rem); /* was clamp(2.8rem, 5vw, 5rem) */
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -1px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem; /* was 1.5rem */
   color: var(--ink);
 }
 h1.display em {
@@ -390,7 +404,7 @@ h1.display em {
   color: var(--mid);
   line-height: 1.7;
   max-width: 420px;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem; /* was 2.5rem */
 }
 
 /* DEFAULT storefront primary button */
@@ -435,7 +449,8 @@ h1.display em {
 }
 
 .hero-image {
-  min-height: calc(100vh - 64px);
+  min-height: 0; /* was calc(100vh - 64px) — THIS was forcing the full-screen hero */
+  height: auto;
   background: var(--ink);
   position: relative;
   overflow: hidden;
@@ -454,19 +469,19 @@ h1.display em {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 2rem;
-  padding: 3rem;
+  gap: 1rem; /* was 2rem — tighter for the shorter panel */
+  padding: 1.5rem 2rem; /* was 3rem */
 }
 .hero-card {
   background: #1a1a1a;
   border: 1px solid #2a2a2a;
-  padding: 1.5rem 2rem;
-  width: 280px;
+  padding: 0.9rem 1.25rem; /* was 1.5rem 2rem */
+  width: 240px; /* was 280px */
   position: relative;
   animation: float 4s ease-in-out infinite;
 }
 .hero-card:nth-child(2) {
-  margin-left: 60px;
+  margin-left: 48px; /* was 60px */
   animation-delay: -2s;
 }
 @keyframes float {
@@ -796,7 +811,8 @@ footer span {
    10. USER PROFILE PAGE
    ========================================================================== */
 .profile-page {
-  min-height: calc(100vh - 64px);
+  min-height: auto; /* scroll fix from old file — was calc(100vh - 64px) */
+  height: auto;
   background: var(--cream);
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -806,6 +822,8 @@ footer span {
 .profile-sidebar {
   background: var(--ink);
   padding: 3rem 2rem;
+  min-height: 100%; /* grows with content — scroll fix */
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2545,7 +2563,7 @@ body.page-offerings .stat-value .unit {
     display: none;
   }
   .hero-text {
-    padding: 4rem 2rem;
+    padding: 2.5rem 2rem; /* was 4rem 2rem — compact on mobile too */
   }
   .features {
     grid-template-columns: 1fr;
@@ -2772,7 +2790,7 @@ body.page-offerings .stat-value .unit {
   }
 
   h1.display {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
   .section-title {
     font-size: 2rem;
@@ -2782,7 +2800,7 @@ body.page-offerings .stat-value .unit {
   }
 
   .hero-text {
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.5rem;
   }
 
   footer {

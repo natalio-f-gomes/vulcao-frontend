@@ -1,4 +1,4 @@
-import { companyName } from "../api/global";
+import { COMPANY_NAME } from "../Interfaces/global";
 
 function GetFooterSection() {
   const currentYear: number = new Date().getFullYear();
@@ -6,7 +6,7 @@ function GetFooterSection() {
     <footer>
       <div>
         {" "}
-        © {currentYear} <span>{companyName}</span>. Todos os direitos
+        © {currentYear} <span>{COMPANY_NAME}</span>. Todos os direitos
         reservados.{" "}
       </div>
       <div> Encomendas para clientes · Gestão para empresários. </div>
