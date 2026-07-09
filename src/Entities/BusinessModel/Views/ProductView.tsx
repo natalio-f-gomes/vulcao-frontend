@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BusinessModel } from "../../../Interfaces/businesses";
 import { ProductModel } from "../../../Interfaces/offerings";
-import ImageCarousel from "../../../Components/ImageCarousel";
+import ImageCarousel from "../../../Components/imageCarousel";
 import {
   deleteProduct,
   findProductsByCompanyId,

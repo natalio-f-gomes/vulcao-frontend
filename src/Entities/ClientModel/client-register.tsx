@@ -10,9 +10,9 @@ import {
   clientRegisterConfirm,
   clientRegisterRequest,
 } from "../../Requests/client";
-import GetTermsSection from "../../Components/TermsSection";
+import GetTermsSection from "../../Components/termsSection";
 import { Link, useNavigate } from "react-router-dom";
-import GetFooterSection from "../../Components/GetFooter";
+import GetFooterSection from "../../Components/getFooter";
 import MFAComponent from "../../Components/Modals/MFAComponent";
 
 function ClientRegistrationPage() {

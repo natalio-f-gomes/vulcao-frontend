@@ -9,7 +9,7 @@ import { getProfile, logoutEntity } from "../../Requests/global";
 import { getBusinessById, GetBusinessOrders } from "../../Requests/business";
 import { ResponsiveSidebar } from "../../hooks/ResponsiveSidebar";
 import BusinessHeader from "./BusinessHeader";
-import GetFooterSection from "../../Components/GetFooter";
+import GetFooterSection from "../../Components/getFooter";
 import BusinessOverView from "./Views/OverviewView";
 import { ProductModel } from "../../Interfaces/offerings";
 import ProductView from "./Views/ProductView";

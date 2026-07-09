@@ -1,5 +1,5 @@
 import { formatDateTime, OrderDisplay } from "../../types";
-import ImageCarousel from "../../../../Components/ImageCarousel";
+import ImageCarousel from "../../../../Components/imageCarousel";
 import { CancelOrder } from "../../../../Requests/shopping";
 
 interface Props {

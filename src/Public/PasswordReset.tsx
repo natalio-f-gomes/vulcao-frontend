@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { USER_TYPE } from "../Interfaces/global";
 import { useState } from "react";
 import { ResetPasswordConfirm, ResetPasswordRequest } from "../Requests/global";
-import GetFooterSection from "../Components/GetFooter";
+import GetFooterSection from "../Components/getFooter";
 
 function ResetPasswordPage() {
   const { entity } = useParams<{ entity: USER_TYPE }>();

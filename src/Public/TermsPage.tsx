@@ -1,6 +1,6 @@
 // TODO: substituir pelos valores reais
 
-import GetFooterSection from "../Components/GetFooter";
+import GetFooterSection from "../Components/getFooter";
 import { COMPANY_NAME } from "../Interfaces/global";
 
 const contactEmail = "[email de contacto]";

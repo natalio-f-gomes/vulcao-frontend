@@ -3,7 +3,7 @@ import { ProductModel } from "../Interfaces/offerings";
 import { ProfileModel } from "../Interfaces/Authentication";
 import { getUserProfileData } from "../Requests/client";
 import { getAllProducts } from "../Requests/offerings";
-import ImageCarousel from "./ImageCarousel";
+import ImageCarousel from "./imageCarousel";
 import { AddToCart } from "../Requests/shopping";
 
 function GetOfferingSection() {

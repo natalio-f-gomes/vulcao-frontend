@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ProfileModel } from "../../../../Interfaces/Authentication";
 import { useCallback, useEffect, useState } from "react";
 import { BusinessModel } from "../../../../Interfaces/businesses";
-import ImageCarousel from "../../../../Components/ImageCarousel";
+import ImageCarousel from "../../../../Components/imageCarousel";
 import UpdateImageModal from "../../../../Components/Modals/UpdateImageModal";
 import EditBusinessModal from "../../Modals/EditBusinessModal";
 import RegisterBusinessModal from "../../Modals/RegisterBusinessModal";

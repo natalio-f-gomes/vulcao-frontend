@@ -10,7 +10,7 @@ import {
   ImageUploadRequest,
 } from "../../Interfaces/global";
 import { postImageKeys, updateImageRequest } from "../../Requests/global";
-import { imageUrlFromKey } from "../ImageCarousel";
+import { imageUrlFromKey } from "../imageCarousel";
 
 interface Parameters {
   isOpen: boolean;

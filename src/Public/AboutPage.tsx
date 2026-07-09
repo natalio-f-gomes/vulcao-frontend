@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { COMPANY_NAME } from "../Interfaces/global";
-import GetFooterSection from "../Components/GetFooter";
+import GetFooterSection from "../Components/getFooter";
 
 const creatorName = "Natalio Gomes";
 

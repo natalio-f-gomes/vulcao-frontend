@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BusinessCart, formatDateTime } from "../../types";
 import { OrderRequest } from "../../../../Interfaces/global";
 import { PlaceOrder } from "../../../../Requests/shopping";
-import ImageCarousel from "../../../../Components/ImageCarousel";
+import ImageCarousel from "../../../../Components/imageCarousel";
 import ConfirmOrderModal from "../../Modals/ConfirmOrderModal";
 
 interface Props {

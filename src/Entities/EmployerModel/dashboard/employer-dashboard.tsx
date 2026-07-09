@@ -7,7 +7,7 @@ import OverviewView from "./views/OverviewView";
 import EmployerProfileView from "./views/EmployerProfileView";
 import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
 import EmployerDashSideBar from "./Sidebar";
-import GetFooterSection from "../../../Components/GetFooter";
+import GetFooterSection from "../../../Components/getFooter";
 import EmployerTopbar from "./Topbar";
 import "../../../css/employer-dashboard.css";
 import BusinessesView from "./views/BusinessView";

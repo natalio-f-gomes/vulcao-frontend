@@ -16,5 +16,9 @@ export const isEmailValid = (email: string): boolean => {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const username = email.split("@")[0];
-  return emailRegex.test(email) && username.charAt(username.length - 1) !== ".";
+  if (username)
+    return (
+      emailRegex.test(email) && username.charAt(username.length - 1) !== "."
+    );
+  return false;
 };

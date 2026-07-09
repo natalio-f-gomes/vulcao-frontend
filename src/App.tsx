@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./Auth/Auth-Handler";
-import GetHeader from "./Components/GetHeader";
+import GetHeader from "./Components/getHeader";
 import "./css/main.css";
 import ClientLoginPage from "./Entities/ClientModel/client-login";
 import ClientRegistrationPage from "./Entities/ClientModel/client-register";
@@ -11,11 +11,11 @@ import EmployerLoginPage from "./Entities/EmployerModel/employer-login";
 import EmployerDashboard from "./Entities/EmployerModel/dashboard/employer-dashboard";
 import BusinessDashboard from "./Entities/BusinessModel/BusinessDashboard";
 import GetFeatureSection from "./Components/Features";
-import GetHeroSection from "./Components/Hero";
-import GetFooterSection from "./Components/GetFooter";
+import GetHeroSection from "./Components/hero";
+import GetFooterSection from "./Components/getFooter";
 import AboutPage from "./Public/AboutPage";
 import TermsPage from "./Public/TermsPage";
-import GetOfferingsSection from "./Components/Offerings";
+import GetOfferingsSection from "./Components/offerings";
 import ShoppingPage from "./Entities/Shopping/ShoppingPage";
 
 function App() {

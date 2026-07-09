@@ -11,8 +11,8 @@ import {
   isUsernameValid,
 } from "../../Validators/Authentication";
 import { COMPANY_NAME } from "../../Interfaces/global";
-import GetTermsSection from "../../Components/TermsSection";
-import GetFooterSection from "../../Components/GetFooter";
+import GetTermsSection from "../../Components/termsSection";
+import GetFooterSection from "../../Components/getFooter";
 import MFAComponent from "../../Components/Modals/MFAComponent";
 
 function EmployerLoginPage() {

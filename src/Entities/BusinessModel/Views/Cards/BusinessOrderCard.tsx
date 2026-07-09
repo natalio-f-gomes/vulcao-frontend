@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import ImageCarousel from "../../../../Components/ImageCarousel";
+import ImageCarousel from "../../../../Components/imageCarousel";
 import { ProfileModel } from "../../../../Interfaces/Authentication";
 import {
   OrderModel,

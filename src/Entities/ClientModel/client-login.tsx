@@ -7,9 +7,9 @@ import {
   isUsernameValid,
 } from "../../Validators/Authentication";
 import { clientLoginConfirm, clientLoginRequest } from "../../Requests/client";
-import GetTermsSection from "../../Components/TermsSection";
+import GetTermsSection from "../../Components/termsSection";
 import { COMPANY_NAME } from "../../Interfaces/global";
-import GetFooterSection from "../../Components/GetFooter";
+import GetFooterSection from "../../Components/getFooter";
 import MFAComponent from "../../Components/Modals/MFAComponent";
 
 function ClientLoginPage() {

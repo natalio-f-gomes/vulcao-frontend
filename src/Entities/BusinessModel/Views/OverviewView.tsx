@@ -17,7 +17,7 @@ import {
   updateBusinessContact,
   updateBusinessSchedule,
 } from "../../../Requests/business";
-import ImageCarousel from "../../../Components/ImageCarousel";
+import ImageCarousel from "../../../Components/imageCarousel";
 import {
   isAddressValid,
   isPhoneNumberValid,

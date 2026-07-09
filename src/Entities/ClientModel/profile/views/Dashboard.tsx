@@ -249,7 +249,6 @@ function GetUserDashBoard() {
       <main className="profile-main">
         <div className="page-header">
           <p className="page-eyebrow">Conta</p>
-          {user.createdAt}
           <h1 className="page-title">O Meu Perfil</h1>
         </div>
 

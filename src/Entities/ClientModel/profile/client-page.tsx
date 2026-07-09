@@ -3,7 +3,7 @@ import "../../../css/dashboard.css";
 import { useEffect, useState } from "react";
 import { ProfileModel } from "../../../Interfaces/Authentication";
 import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
-import GetFooterSection from "../../../Components/GetFooter";
+import GetFooterSection from "../../../Components/getFooter";
 import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";
 import { getProfile } from "../../../Requests/global";
 import UserDashSideBar from "./components/Sidebar";

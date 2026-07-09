@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import GetFooterSection from "../../Components/GetFooter";
-import GetHeader from "../../Components/GetHeader";
+import GetFooterSection from "../../Components/getFooter";
+import GetHeader from "../../Components/getHeader";
 import { ResponsiveSidebar } from "../../hooks/ResponsiveSidebar";
 import { useResponsiveSidebar } from "../../hooks/useResponsiveSidebar";
 import ShoppingSidebar, { ShoppingView } from "./SideBar";
