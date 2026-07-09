@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import "../../../css/dashboard.css";
 import { useEffect, useState } from "react";
 import { ProfileModel } from "../../../Interfaces/Authentication";
-import GetHeader from "../../../Components/GetHeader";
 import { ResponsiveSidebar } from "../../../hooks/ResponsiveSidebar";
 import GetFooterSection from "../../../Components/GetFooter";
 import { useResponsiveSidebar } from "../../../hooks/useResponsiveSidebar";

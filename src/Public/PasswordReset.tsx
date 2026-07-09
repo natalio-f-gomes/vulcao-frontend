@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { USER_TYPE } from "../Interfaces/global";
 import { useState } from "react";
 import { ResetPasswordConfirm, ResetPasswordRequest } from "../Requests/global";
-import GetHeader from "../Components/GetHeader";
 import GetFooterSection from "../Components/GetFooter";
 
 function ResetPasswordPage() {

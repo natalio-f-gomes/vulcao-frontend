@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import GetHeader from "../Components/GetHeader";
 import { COMPANY_NAME } from "../Interfaces/global";
 import GetFooterSection from "../Components/GetFooter";
 

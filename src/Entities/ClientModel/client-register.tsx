@@ -10,7 +10,6 @@ import {
   clientRegisterConfirm,
   clientRegisterRequest,
 } from "../../Requests/client";
-import GetHeader from "../../Components/GetHeader";
 import GetTermsSection from "../../Components/TermsSection";
 import { Link, useNavigate } from "react-router-dom";
 import GetFooterSection from "../../Components/GetFooter";

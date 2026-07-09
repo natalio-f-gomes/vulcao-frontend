@@ -7,7 +7,6 @@ import {
   isUsernameValid,
 } from "../../Validators/Authentication";
 import { clientLoginConfirm, clientLoginRequest } from "../../Requests/client";
-import GetHeader from "../../Components/GetHeader";
 import GetTermsSection from "../../Components/TermsSection";
 import { COMPANY_NAME } from "../../Interfaces/global";
 import GetFooterSection from "../../Components/GetFooter";

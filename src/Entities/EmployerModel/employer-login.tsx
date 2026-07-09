@@ -10,7 +10,6 @@ import {
   isPasswordValid,
   isUsernameValid,
 } from "../../Validators/Authentication";
-import GetHeader from "../../Components/GetHeader";
 import { COMPANY_NAME } from "../../Interfaces/global";
 import GetTermsSection from "../../Components/TermsSection";
 import GetFooterSection from "../../Components/GetFooter";
