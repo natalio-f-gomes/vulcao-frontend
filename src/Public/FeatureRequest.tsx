@@ -10,17 +10,7 @@ import { FEEDBACK_TYPE_LIST, FeedbackModel } from "../Interfaces/global";
 import MFAComponent from "../Components/Modals/MFAComponent";
 import { formatDateTime } from "../Entities/Shopping/types";
 
-/* ==========================================================================
-   FEEDBACK PAGE — feature requests & problem reports
-   Standalone: no props, no API calls. All state is local and seeded
-   with dummy data. Wire `handleSubmit` / `toggleVote` to the backend
-   later without touching the markup.
-   Styles: feedback-page.css (uses the global theme tokens).
-   ========================================================================== */
-
 type FeedbackKind = "FEATURE" | "PROBLEM";
-
-type FilterTab = "ALL" | FeedbackKind;
 
 function FeedbackPage() {
   const { isEntityLoggedIn } = useUserAuthManager();

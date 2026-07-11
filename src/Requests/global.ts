@@ -8,8 +8,8 @@ import {
   USER_TYPE,
 } from "../Interfaces/global";
 
-const URL = "http://localhost:8080";
-//const URL = "";
+//const URL = "http://localhost:8080";
+const URL = "";
 
 export async function fetchAPIWithCredentials(
   endpoint: string,
