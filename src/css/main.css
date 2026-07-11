@@ -2893,3 +2893,416 @@ body.page-offerings .stat-value .unit {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   18. FEEDBACK PAGE — feature requests & problem reports
+   Component: FeedbackPage.tsx
+   Every selector is scoped under .feedback-page so this file cannot
+   leak. Built on the global tokens (--ink, --cream, --accent, --mid),
+   so it follows whichever theme (base / Cape Verde / Verde / Céu) is
+   loaded. Append to main.css or import as its own file.
+   ========================================================================== */
+
+.feedback-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 5vw, 3rem) 4rem;
+  background: var(--cream);
+}
+
+.feedback-page .fb-subtitle {
+  font-size: 0.9rem;
+  color: var(--mid);
+  margin-top: 0.5rem;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* ── Layout: sticky form left, list right ── */
+.feedback-page .fb-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ==========================================================================
+   FORM CARD
+   ========================================================================== */
+.feedback-page .fb-form {
+  background: #fff;
+  border: 1px solid #e8e4de;
+  border-top: 4px solid var(--accent);
+  position: sticky;
+  top: 84px; /* below the 64px navbar */
+}
+
+.feedback-page .fb-form-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid #f0ece6;
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.feedback-page .fb-form-head i {
+  color: var(--accent);
+}
+
+.feedback-page .fb-form-body {
+  padding: 1.5rem;
+}
+
+.feedback-page .fb-field {
+  margin-bottom: 1.1rem;
+}
+.feedback-page .fb-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 0.45rem;
+}
+
+.feedback-page .fb-input {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #faf9f7;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.feedback-page .fb-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+.feedback-page select.fb-input {
+  cursor: pointer;
+}
+
+/* Type toggle: Funcionalidade / Problema */
+.feedback-page .fb-kind-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.feedback-page .fb-kind-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.55rem 0.5rem;
+  background: transparent;
+  border: 1px solid #ddd;
+  color: var(--mid);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.feedback-page .fb-kind-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.feedback-page .fb-kind-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+.feedback-page .fb-kind-btn.problem.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.feedback-page .fb-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 2px solid var(--ink);
+  padding: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.feedback-page .fb-submit:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.feedback-page .fb-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  background: #d8f3dc;
+  color: #2d6a4f;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   FILTER TABS
+   ========================================================================== */
+.feedback-page .fb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+.feedback-page .fb-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 1px solid #ddd;
+  color: var(--mid);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.feedback-page .fb-tab:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.feedback-page .fb-tab.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+.feedback-page .fb-tab-count {
+  font-size: 0.65rem;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+.feedback-page .fb-tab.active .fb-tab-count {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ==========================================================================
+   REQUEST / REPORT CARDS
+   ========================================================================== */
+.feedback-page .fb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.feedback-page .fb-card {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  background: #fff;
+  border: 1px solid #e8e4de;
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+  animation: fadeUp 0.35s ease both;
+}
+.feedback-page .fb-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Vote column */
+.feedback-page .fb-vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: #faf9f7;
+  border: none;
+  border-right: 1px solid #f0ece6;
+  color: var(--mid);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.feedback-page .fb-vote i {
+  font-size: 0.8rem;
+}
+.feedback-page .fb-vote:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+.feedback-page .fb-vote.voted {
+  background: var(--ink);
+  color: var(--gold, #f0b800);
+}
+
+.feedback-page .fb-card-body {
+  padding: 1rem 1.25rem 0.9rem;
+  min-width: 0;
+}
+
+.feedback-page .fb-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+/* Kind badge: Funcionalidade / Problema */
+.feedback-page .fb-kind-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: #f0ece6;
+  padding: 3px 8px;
+}
+.feedback-page .fb-kind-badge.problem {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Status pills */
+.feedback-page .fb-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.feedback-page .fb-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.feedback-page .fb-status--em_analise {
+  background: #f0ece6;
+  color: var(--mid);
+}
+.feedback-page .fb-status--planeado {
+  background: #e6f1fb;
+  color: #0c447c;
+}
+.feedback-page .fb-status--em_progresso {
+  background: #fbe4cc;
+  color: #bc6c25;
+}
+.feedback-page .fb-status--concluido,
+.feedback-page .fb-status--resolvido {
+  background: #d8f3dc;
+  color: #2d6a4f;
+}
+
+.feedback-page .fb-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
+}
+.feedback-page .fb-card-desc {
+  font-size: 0.85rem;
+  color: var(--mid);
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feedback-page .fb-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+.feedback-page .fb-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.feedback-page .fb-meta-item i {
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+/* Empty state */
+.feedback-page .fb-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  border: 1px dashed #ddd;
+  background: #fff;
+  color: var(--mid);
+  font-size: 0.88rem;
+}
+.feedback-page .fb-empty i {
+  display: block;
+  font-size: 2.2rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 991px) {
+  .feedback-page .fb-layout {
+    grid-template-columns: 1fr; /* form stacks above the list */
+  }
+  .feedback-page .fb-form {
+    position: static; /* no sticky when stacked */
+  }
+}
+
+@media (max-width: 576px) {
+  .feedback-page .fb-card {
+    grid-template-columns: 46px 1fr;
+  }
+  .feedback-page .fb-card-body {
+    padding: 0.85rem 1rem 0.8rem;
+  }
+  .feedback-page .fb-card-top {
+    justify-content: flex-start;
+  }
+}

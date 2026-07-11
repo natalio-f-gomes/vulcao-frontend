@@ -151,7 +151,7 @@ function EditBusinessModal({ isOpen, onClose, business, onSave }: Properties) {
     <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
-          <span className="m-head-title">Edit Business</span>
+          <span className="m-head-title">Atualizar Negócio</span>
           <button className="m-close" onClick={onClose}>
             &times;
           </button>

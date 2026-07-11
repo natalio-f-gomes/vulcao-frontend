@@ -46,10 +46,17 @@ const GetHeader: React.FC = () => {
                 Início
               </Link>
             </li>
-
             <li className="nav-item">
               <a className="nav-link" onClick={() => onNavigate("/about")}>
                 Sobre
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                onClick={() => onNavigate("/feature-request")}
+              >
+                Solicitações
               </a>
             </li>
           </ul>

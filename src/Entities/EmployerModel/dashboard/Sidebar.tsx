@@ -156,7 +156,8 @@ function EmployerDashSideBar({
               style={itemStyle("businesses")}
               onClick={() => onNavigate("businesses")}
             >
-              <i className="bi bi-building" /> As Minhas Empresas
+              <i className="bi bi-building" />
+              Os Meus Negócios
             </a>
 
             {/* 
