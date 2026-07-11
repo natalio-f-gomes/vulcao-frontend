@@ -8,11 +8,12 @@ import {
   updateProduct,
 } from "../../../Requests/offerings";
 import { ConfirmDeleteModal } from "../../../Components/Modals/ConfirmDeleteModal";
-import EditProductModal from "../Modals/EditProductModal";
-import ViewProductModal from "../Modals/ViewProductModal";
-import AddProductModal from "../Modals/AddProductModal";
+
 import UploadImageModal from "../../../Components/Modals/UpdateImageModal";
 import { formatDateTime } from "../../Shopping/types";
+import EditProductModal from "../Modals/Product/EditProductModal";
+import AddProductModal from "../Modals/Product/AddProductModal";
+import ViewProductModal from "../Modals/Product/ViewProductModal";
 
 interface Paramaters {
   business: BusinessModel;
@@ -48,7 +49,7 @@ function ProductView({ business }: Paramaters) {
       alert(await response.text());
       return;
     } else {
-      alert("There was an isseu upading the product");
+      alert("Ocorreu um erro ao atualizar o produto.");
       console.log("There was an isseu upading the product: ", response);
     }
   };
@@ -91,6 +92,7 @@ function ProductView({ business }: Paramaters) {
       return;
     }
     const products = await response.json();
+    console.log("Prodcuts fetched: ", products);
     setProductList(products);
   };
 

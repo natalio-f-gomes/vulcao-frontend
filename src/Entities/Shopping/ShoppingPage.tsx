@@ -232,13 +232,15 @@ function ShoppingPage() {
     const response: Response = await CancelOrder(trackId);
     if (response.status === 200) {
       window.location.reload();
-      alert(`Order sucessfully canceled, we have notified the business`);
+      alert(
+        `Encomenda cancelado com sucesso. O estabelecimento foi notificado.`,
+      );
       return;
     } else if (response.status >= 400 && response.status < 500) {
       alert(await response.text());
       return;
     } else {
-      alert("There was an issue with your request");
+      alert("Teve um erro com o servidor. Por favor retorne mais tarde");
       return;
     }
   };

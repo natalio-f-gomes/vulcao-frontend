@@ -158,14 +158,16 @@ function UploadImageModal({
             color: "#fff",
           }}
         >
-          Loading ...
+          Carregando ...
         </div>
       )}
       <div className="m-overlay open">
         <div className="m-box">
           <div className="m-head">
             <span className="m-head-title">
-              {entityType ? `Update Images for ${entityName}` : "Upload Images"}
+              {entityType
+                ? `Atualizar imagens de ${entityName}`
+                : "Atualizar imagens"}
             </span>
             <button type="button" className="m-close" onClick={onClose}>
               &times;

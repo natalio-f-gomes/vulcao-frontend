@@ -63,11 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const savedRole = localStorage.getItem("active_role") as Entity;
       if (!savedRole) {
         setIsLoading(false);
-        return;
-      } else {
-        // stale role/cookie — clean up so the app lands in a definite logged-out state
         localStorage.removeItem("active_role");
         setEntity(null);
+        return;
       }
 
       try {

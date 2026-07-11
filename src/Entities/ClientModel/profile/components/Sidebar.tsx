@@ -111,12 +111,12 @@ function UserDashSideBar({
     */}
 
             {/* Encomendas - Altera a Visualização */}
-            <a
+            {/* <a
               className={`sidebar-nav-item ${currentView === "orders" ? "active" : ""}`}
               onClick={() => goToView("orders")}
             >
               <i className="bi bi-bag-fill"></i> Encomendas
-            </a>
+            </a> */}
 
             {/* Segurança - Scroll dentro de Visão Geral */}
             <a

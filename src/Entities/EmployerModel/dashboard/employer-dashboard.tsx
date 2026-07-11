@@ -62,7 +62,7 @@ function EmployerDashboard() {
   }, [navigate]); // runs once on mount
 
   const renderView = () => {
-    if (!employer) return <div>Loading ... </div>;
+    if (!employer) return <div>Carregando ... </div>;
     switch (activeView) {
       case "overview":
         return <OverviewView />;

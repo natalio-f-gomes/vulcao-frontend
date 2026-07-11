@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ProductModel } from "../../../Interfaces/offerings";
-import ImageCarousel from "../../../Components/imageCarousel";
-import { formatDateTime } from "../../Shopping/types";
+import { ProductModel } from "../../../../Interfaces/offerings";
+import ImageCarousel from "../../../../Components/imageCarousel";
+import { formatDateTime } from "../../../Shopping/types";
 
 interface Parameters {
   isOpen: boolean;
