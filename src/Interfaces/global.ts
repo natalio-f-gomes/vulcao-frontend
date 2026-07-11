@@ -500,3 +500,50 @@ export type OrderStatus =
   | "CONCLUÍDO"
   | "RECEBIDO"
   | "ENVIADO";
+
+export type FeedBackType =
+  | "LOJA_COMPRAS"
+  | "CARRINHO_ENCOMENDAS"
+  | "PERFIL"
+  | "PAINEL_DE_CONTROLO"
+  | "PAGAMENTOS"
+  | "OUTROS"
+  | "VISUAL_DO_WEBSITE"
+  | "FUNCIONALIDADE"
+  | "PROBLEMA";
+
+export const FEEDBACK_TYPE_LIST: FeedBackType[] = [
+  "LOJA_COMPRAS",
+  "CARRINHO_ENCOMENDAS",
+  "PERFIL",
+  "PAINEL_DE_CONTROLO",
+  "PAGAMENTOS",
+  "OUTROS",
+  "VISUAL_DO_WEBSITE",
+  "FUNCIONALIDADE",
+  "PROBLEMA",
+];
+
+export type RequestStatus =
+  "PLANEJADO" | "PROCESSANDO" | "ANALISANDO" | "RESOLVIDO" | "CANCELADO";
+
+export const FEEDBACK_REQUEST_LIST: RequestStatus[] = [
+  "PLANEJADO",
+  "PROCESSANDO",
+  "ANALISANDO",
+  "RESOLVIDO",
+  "CANCELADO",
+];
+
+export interface FeedbackModel {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  description: string;
+  email: string;
+  name: string;
+  status: RequestStatus;
+  votes: number;
+  feedbackType: FeedBackType;
+}

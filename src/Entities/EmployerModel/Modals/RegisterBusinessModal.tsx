@@ -247,7 +247,7 @@ function RegisterBusinessModal({
     <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
-          <span className="m-head-title">Registar Nova Empresa</span>
+          <span className="m-head-title">Registar Novo Negócio</span>
           <button className="m-close" onClick={onClose}>
             &times;
           </button>

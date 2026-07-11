@@ -24,7 +24,7 @@ function GetHeroSection() {
         <div className="d-flex flex-wrap gap-2">
           <a
             className="btn-primary-custom"
-            onClick={() => onNavigate("/user-register")}
+            onClick={() => onNavigate("/client-register")}
           >
             Sou Cliente
           </a>

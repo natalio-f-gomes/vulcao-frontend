@@ -17,6 +17,7 @@ import TermsPage from "./Public/TermsPage";
 import GetOfferingsSection from "./Components/offerings";
 import ShoppingPage from "./Entities/Shopping/ShoppingPage";
 import GetHeader from "./Components/getHeader";
+import FeatureRequest from "./Public/FeatureRequest";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/shopping" element={<ShoppingPage />} />
+        <Route path="/feature-request" element={<FeatureRequest />} />
         {/* 
         <Route path="/staff-login" element={<StaffLoginPage />} />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
@@ -64,7 +66,7 @@ function App() {
           element={<BusinessPublicOverView />}
         />
 
-        <Route path="/feature-request" element={<FeatureRequestPage />} />
+       
         */}
         <Route path="/password-reset/:entity" element={<ResetPasswordPage />} />
       </Routes>

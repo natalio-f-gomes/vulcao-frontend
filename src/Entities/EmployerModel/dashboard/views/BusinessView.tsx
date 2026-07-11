@@ -53,13 +53,13 @@ function BusinessesView({ employer }: Props) {
       if (response.ok) {
         setEditingBusiness(null);
         await loadBusinesses();
-        alert("Empresa Atualizada com sucesso");
+        alert("Negócio Atualizado com sucesso");
         return;
       }
       if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
       } else {
-        alert("There was an issue with your request!");
+        alert("Occoreu um erro com o seu pedido");
       }
     } catch (err) {
       setError(`There was an issue updating the company: ${err}`);
@@ -80,10 +80,10 @@ function BusinessesView({ employer }: Props) {
   return (
     <>
       <div className="view-heading" style={{ marginTop: "40px" }}>
-        As Minhas Empresas
+        Os Meus Negócios
       </div>
       <div className="view-sub">
-        Gerir e monitorizar todas as suas empresas registadas.
+        Gerir e monitorizar todos os seus Negócios registados.
       </div>
 
       <div className="quick-actions">
@@ -91,7 +91,7 @@ function BusinessesView({ employer }: Props) {
           className="qa-btn primary"
           onClick={() => setShowRegisterModal(true)}
         >
-          <i className="bi bi-plus-lg"></i> Registar Nova Empresa
+          <i className="bi bi-plus-lg"></i> Registar Novo Negócio
         </button>
       </div>
 
@@ -188,7 +188,7 @@ function BusinessesView({ employer }: Props) {
           onClick={() => setShowRegisterModal(true)}
         >
           <i className="bi bi-plus-circle"></i>
-          <span>Register a Empresa</span>
+          <span>Register Negócio</span>
         </div>
       </div>
 

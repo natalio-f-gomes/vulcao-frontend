@@ -1,6 +1,7 @@
 import {
   AddressModel,
   ENTITY_TYPE,
+  FeedbackModel,
   ImageMetadata,
   ImageUploadRequest,
   PasswordRequest,
@@ -138,5 +139,32 @@ export async function updateImageRequest(
   return await fetchAPIWithCredentials(endpoint, {
     method: "PUT",
     body: JSON.stringify(imagesMetadata),
+  });
+}
+
+//============ Feedback Section ==============
+export async function PostFeedBackRequest(newFeedback: FeedbackModel) {
+  const endpoint: string = `/v2/public/feedback/request`;
+  return await fetchAPIWithoutCredentials(endpoint, {
+    method: "POST",
+    body: JSON.stringify(newFeedback),
+  });
+}
+
+export async function PostFeedBackConfirm(
+  code: string,
+  feedback: FeedbackModel,
+) {
+  const endpoint: string = `/v2/public/feedback/confirm/${code}`;
+  return await fetchAPIWithoutCredentials(endpoint, {
+    method: "POST",
+    body: JSON.stringify(feedback),
+  });
+}
+
+export async function GetAllFeedbacks() {
+  const endpoint: string = `/v2/public/feedback/get/all`;
+  return await fetchAPIWithoutCredentials(endpoint, {
+    method: "GET",
   });
 }

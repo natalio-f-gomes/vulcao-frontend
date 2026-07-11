@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!savedRole) {
         setIsLoading(false);
         localStorage.removeItem("active_role");
+        localStorage.removeItem("email");
         setEntity(null);
         return;
       }
@@ -74,6 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log("ROLE ", savedRole);
         if (response.ok) {
           setEntity(savedRole);
+          const data = await response.json();
+          localStorage.setItem("email", data.email);
         }
       } catch (error) {
         localStorage.removeItem("active_role");
