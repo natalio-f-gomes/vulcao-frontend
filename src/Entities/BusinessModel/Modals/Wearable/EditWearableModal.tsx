@@ -1,44 +1,48 @@
 import { useEffect, useState } from "react";
 import {
   CURRENCIES,
-  PRODUCT_TYPE_LIST,
-  ProductModel,
   UNIT_OF_MEASUREMENT_LIST,
-} from "../../../Interfaces/offerings";
+  WEARABLE_TYPE_LIST,
+  WearableModel,
+} from "../../../../Interfaces/offerings";
+import { isWearableValid } from "../../../../Validators/Offerings";
 
 interface Parameters {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (updated: ProductModel) => void;
-  productToEdit: ProductModel;
+  onSave: (updated: WearableModel) => void;
+  wearableToEdit: WearableModel;
   companyName: string;
 }
 
-function EditProductModal({
+function EditWearableModal({
   isOpen,
   onClose,
   onSave,
-  productToEdit,
+  wearableToEdit,
   companyName,
 }: Parameters) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [product, setProduct] = useState<ProductModel>({
-    id: "",
+
+  const [wearable, setWearable] = useState<WearableModel>({
     name: "",
-    productType: "OUTROS",
-    expirationDate: "",
+    wearableType: "ROUPAS",
     description: "",
     stock: 0,
-    unit: "SINGULAR",
+    unit: "PAR",
     price: 0,
     businessId: "",
     currency: "CVE",
-    imgS3UrlKeys: [],
+    type: "WEARABLE",
+    imagesMetadata: [],
     creatorId: "",
     updatedBy: "",
-    imagesMetadata: [],
-    type: "PRODUCT",
+    imgS3UrlKeys: [],
+    brand: "",
+    colors: "",
+    material: "",
+    size: "",
   });
 
   const handleInputChange = (
@@ -47,29 +51,33 @@ function EditProductModal({
     >,
   ) => {
     const { name, value } = event.target;
-    setProduct((prev: ProductModel) => ({
+    setWearable((prev: WearableModel) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   useEffect(() => {
-    if (productToEdit) {
-      setProduct(productToEdit);
+    if (wearableToEdit) {
+      setWearable(wearableToEdit);
     }
-  }, [productToEdit]);
+  }, [wearableToEdit]);
 
-  const handleProductUpdate = () => {
-    console.log("Product data to update: ", JSON.stringify(product));
-    onSave(product);
+  const handleUpdate = () => {
+    if (!isWearableValid(wearable)) {
+      setLoading(false);
+      return;
+    }
+    console.log("Wearable data to update: ", JSON.stringify(wearable));
+    onSave(wearable);
   };
 
-  if (!isOpen || !productToEdit) return null;
+  if (!isOpen || !wearableToEdit) return null;
   return (
     <div className="m-overlay open">
       <div className="m-box">
         <div className="m-head">
-          <span className="m-head-title">Editar {productToEdit.name}</span>
+          <span className="m-head-title">Editar {wearableToEdit.name}</span>
           <button className="m-close" onClick={() => onClose()}>
             &times;
           </button>
@@ -80,29 +88,30 @@ function EditProductModal({
             {/* Informação Básica do Produto */}
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Nome do Produto *</label>
+                <label className="m-label">Nome do Vestível</label>
                 <input
                   className="m-input"
                   type="text"
                   placeholder="ex: Salmão Fresco"
                   name="name"
-                  value={product.name}
+
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="m-field">
-                <label className="m-label">Tipo de Produto *</label>
+                <label className="m-label">Tipo</label>
                 <select
                   className="m-input"
-                  name="productType"
+                  name="wearableType"
+                  value={wearable.wearableType}
                   onChange={handleInputChange}
                   required
                 >
-                  <option value={product.productType}>
-                    {product.productType.replaceAll("_", " ")}
+                  <option value={wearableToEdit.wearableType}>
+                    {wearableToEdit.wearableType.replaceAll("_", " ")}
                   </option>
-                  {PRODUCT_TYPE_LIST.map((category: string) => {
+                  {WEARABLE_TYPE_LIST.map((category: string) => {
                     return (
                       <option key={category} value={category}>
                         {category.replaceAll("_", " ")}
@@ -116,13 +125,12 @@ function EditProductModal({
             {/* Preço e Stock */}
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Preço por Unidade *</label>
+                <label className="m-label">Preço</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                   <input
                     className="m-input"
                     type="number"
                     step="0.01"
-                    value={product.price}
                     placeholder="0.00"
                     name="price"
                     onChange={handleInputChange}
@@ -131,7 +139,6 @@ function EditProductModal({
                   <select
                     className="m-input"
                     name="currency"
-                    value={product.currency}
                     style={{ width: "80px" }}
                     onChange={handleInputChange}
                     required
@@ -151,7 +158,6 @@ function EditProductModal({
                 <select
                   className="m-input"
                   name="unit"
-                  value={product.unit}
                   style={{ width: "100%" }}
                   onChange={handleInputChange}
                   required
@@ -170,28 +176,51 @@ function EditProductModal({
             {/* Detalhes de Inventário */}
             <div className="m-row">
               <div className="m-field">
-                <label className="m-label">Stock Inicial *</label>
+                <label className="m-label">Stock</label>
                 <input
                   className="m-input"
                   type="number"
                   placeholder="ex: 100"
-                  value={product.stock}
                   name="stock"
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className="m-field">
-                <label className="m-label">Data de Validade</label>
+                <label className="m-label">Marca</label>
                 <input
                   className="m-input"
-                  type="date"
-                  name="expirationDate"
-                  value={product.expirationDate}
+                  type="text"
+                  placeholder="ex: Salmão Fresco"
+                  name="brand"
                   onChange={handleInputChange}
                   required
                 />
               </div>
+            </div>
+            <div className="m-row">
+              <div className="m-field">
+                <label className="m-label">Cores</label>
+                <input
+                  className="m-input"
+                  type="text"
+                  placeholder="ex: Salmão Fresco"
+                  name="colors"
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="m-field">
+                <label className="m-label">Materiais</label>
+                <input
+                  className="m-input"
+                  type="text"
+                  placeholder="ex: Salmão Fresco"
+                  name="material"
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>{" "}
             </div>
 
             {/* Descrição */}
@@ -203,7 +232,6 @@ function EditProductModal({
                 placeholder="Descreva as características do produto, qualidade ou notas..."
                 name="description"
                 onChange={handleInputChange}
-                value={product.description}
                 style={{ resize: "none" }}
               ></textarea>
             </div>
@@ -215,7 +243,7 @@ function EditProductModal({
               <input className="m-input" type="text" value={`@${product.creatorId}`} readOnly disabled />
             </div> */}
               <div className="m-field">
-                <label className="m-label">Empresa</label>
+                <label className="m-label">Negócio</label>
                 <input
                   className="m-input"
                   type="text"
@@ -237,9 +265,9 @@ function EditProductModal({
               <button
                 className="m-btn-save"
                 type="button"
-                onClick={handleProductUpdate}
+                onClick={handleUpdate}
               >
-                <i className="bi bi-check2"></i> Atualizar Produto
+                <i className="bi bi-check2"></i> Atualizar Vestível
               </button>
             </div>
           </div>
@@ -248,4 +276,4 @@ function EditProductModal({
     </div>
   );
 }
-export default EditProductModal;
+export default EditWearableModal;

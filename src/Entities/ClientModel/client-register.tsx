@@ -162,7 +162,7 @@ function ClientRegistrationPage() {
             color: "#fff",
           }}
         >
-          Loading ...
+          Carregando ...
         </div>
       )}
 

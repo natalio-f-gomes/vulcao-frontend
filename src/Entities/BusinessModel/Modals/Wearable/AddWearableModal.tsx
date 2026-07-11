@@ -1,20 +1,22 @@
 import { useState } from "react";
-import { BusinessModel } from "../../../Interfaces/businesses";
+import { BusinessModel } from "../../../../Interfaces/businesses";
 import {
   CURRENCIES,
   PRODUCT_TYPE_LIST,
   ProductModel,
   UNIT_OF_MEASUREMENT_LIST,
-} from "../../../Interfaces/offerings";
+  WEARABLE_TYPE_LIST,
+  WearableModel,
+} from "../../../../Interfaces/offerings";
 import {
   buildImageMetadata,
   getImageDimensions,
   uploadFileToS3,
-} from "../../../Validators/Image";
-import { addProduct } from "../../../Requests/offerings";
-import { COMPANY_NAME, ImageUploadRequest } from "../../../Interfaces/global";
-import { postImageKeys } from "../../../Requests/global";
-import { isProductValid } from "../../../Validators/Offerings";
+} from "../../../../Validators/Image";
+import { addWearable } from "../../../../Requests/offerings";
+import { ImageUploadRequest } from "../../../../Interfaces/global";
+import { postImageKeys } from "../../../../Requests/global";
+import { isWearableValid } from "../../../../Validators/Offerings";
 
 interface Parameters {
   isOpen: boolean;
@@ -23,7 +25,12 @@ interface Parameters {
   business: BusinessModel;
 }
 
-function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
+function AddWearableModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  business,
+}: Parameters) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -31,21 +38,24 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  const [product, setProduct] = useState<ProductModel>({
+  const [wearable, setWearable] = useState<WearableModel>({
     name: "",
-    productType: "OUTROS",
-    expirationDate: "",
+    wearableType: "ROUPAS",
     description: "",
     stock: 0,
-    unit: "SINGULAR",
+    unit: "PAR",
     price: 0,
     businessId: business.id!,
     currency: "CVE",
-    type: "PRODUCT",
+    type: "WEARABLE",
     imagesMetadata: [],
     creatorId: "",
     updatedBy: "",
     imgS3UrlKeys: [],
+    brand: "",
+    colors: "",
+    material: "",
+    size: "",
   });
 
   const handleInputChange = (
@@ -54,10 +64,11 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
     >,
   ) => {
     const { name, value } = event.target;
-    setProduct((prev: ProductModel) => ({
+    setWearable((prev: WearableModel) => ({
       ...prev,
       [name]: value,
     }));
+    console.log("Field: ", name);
   };
 
   // Handles adding new images to the stack
@@ -84,7 +95,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
     );
   };
 
-  const handleAddProduct = async (
+  const handleAddWearable = async (
     event: React.SyntheticEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
@@ -95,18 +106,18 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
       for (const image of selectedImages) {
         console.log("Dimesions: ", getImageDimensions(image));
       }
-      const productRequest: ProductModel = {
-        ...product,
+      const wearableRequest: WearableModel = {
+        ...wearable,
         imagesMetadata: await buildImageMetadata(selectedImages),
       };
-      console.log("productType: ", productRequest.productType);
-      console.log("type", productRequest.type);
-      console.log("price", productRequest.price);
-      if (!isProductValid(productRequest)) {
+
+      if (!isWearableValid(wearableRequest)) {
         setLoading(false);
         return;
       }
-      const response = await addProduct(productRequest);
+      console.log("Colors: ", wearableRequest.colors);
+      console.log("Name: ", wearableRequest.name);
+      const response = await addWearable(wearableRequest);
       console.log("Response Adding Prodcut: ", response);
       if (response.status === 204) {
         alert(
@@ -151,7 +162,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
             };
             const postImgDataResponse = await postImageKeys(uploadData);
 
-            alert("Produto e todas as imagens adicionados com sucesso.");
+            alert("Vestível e todas as imagens adicionados com sucesso.");
             setLoading(false);
             success = true;
           } catch (uploadError) {
@@ -170,7 +181,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
 
       setLoading(false);
     } catch (err) {
-      console.error("addProduct failed:", err);
+      console.error("Add Wearable failed:", err);
     } finally {
       setLoading(false); // overlay off BEFORE the alert
       if (success) {
@@ -202,16 +213,16 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
       <div className="m-overlay open">
         <div className="m-box">
           <div className="m-head">
-            <span className="m-head-title">Adicionar Novo Produto</span>
+            <span className="m-head-title">Adicionar Novo Vestível</span>
             <button className="m-close" onClick={() => onClose()}>
               &times;
             </button>
           </div>
-          <form id="productRegistrationForm" onSubmit={handleAddProduct}>
+          <form id="wearableRegistrationForm" onSubmit={handleAddWearable}>
             <div className="m-body">
               {/* Campo de Imagens do Produto */}
               <div className="m-field">
-                <label className="m-label">Imagens do Produto</label>
+                <label className="m-label">Imagens do Vestível</label>
 
                 <div
                   style={{
@@ -305,26 +316,61 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
               {/* Informação Básica do Produto */}
               <div className="m-row">
                 <div className="m-field">
-                  <label className="m-label">Nome do Produto *</label>
+                  <label className="m-label">Nome</label>
                   <input
                     className="m-input"
                     type="text"
-                    placeholder="ex: Salmão Fresco"
+                    placeholder="Blusa"
                     name="name"
                     onChange={handleInputChange}
                     required
                   />
                 </div>
                 <div className="m-field">
-                  <label className="m-label">Tipo de Produto *</label>
+                  <label className="m-label">Cores</label>
+                  <input
+                    className="m-input"
+                    type="text"
+                    placeholder="Azul"
+                    name="colors"
+                    value={wearable.colors}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="m-field">
+                  <label className="m-label">Marca</label>
+                  <input
+                    className="m-input"
+                    type="text"
+                    placeholder="Adidas"
+                    name="brand"
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="m-field">
+                  <label className="m-label">Tamanho</label>
+                  <input
+                    className="m-input"
+                    type="text"
+                    placeholder="XL"
+                    name="size"
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="m-field">
+                  <label className="m-label">Tipo de Vestível *</label>
                   <select
                     className="m-input"
-                    name="productType"
+                    name="wearableType"
+                    value={wearable.wearableType}
                     onChange={handleInputChange}
                     required
                   >
                     <option value="">Selecionar Tipo</option>
-                    {PRODUCT_TYPE_LIST.map((category: string) => {
+                    {WEARABLE_TYPE_LIST.map((category: string) => {
                       const label = category
                         .replaceAll("_", " ")
                         .toLowerCase()
@@ -341,6 +387,18 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
                       );
                     })}
                   </select>
+                </div>
+
+                <div className="m-field">
+                  <label className="m-label">Stock Inicial *</label>
+                  <input
+                    className="m-input"
+                    type="number"
+                    placeholder="ex: 100"
+                    name="stock"
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
               </div>
 
@@ -395,29 +453,17 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
                 </div>
               </div>
 
-              {/* Detalhes de Inventário */}
-              <div className="m-row">
-                <div className="m-field">
-                  <label className="m-label">Stock Inicial *</label>
-                  <input
-                    className="m-input"
-                    type="number"
-                    placeholder="ex: 100"
-                    name="stock"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="m-field">
-                  <label className="m-label">Data de Validade</label>
-                  <input
-                    className="m-input"
-                    type="date"
-                    name="expirationDate"
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+              <div className="m-field">
+                <label className="m-label">Meteriais</label>
+                <input
+                  className="m-input"
+                  type="text"
+                  placeholder="Algodão"
+                  name="material"
+                  value={wearable.material}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
 
               {/* Descrição */}
@@ -426,7 +472,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
                 <textarea
                   className="m-input"
                   rows={4}
-                  placeholder="Descreva as características do produto, qualidade ou notas..."
+                  placeholder="Descreva as características do vestível, qualidade ou notas..."
                   name="description"
                   onChange={handleInputChange}
                   style={{ resize: "none" }}
@@ -450,11 +496,11 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
                   />
                 </div>
                 <div className="m-field">
-                  <label className="m-label">Empresa</label>
+                  <label className="m-label">Negócio</label>
                   <input
                     className="m-input"
                     type="text"
-                    value={COMPANY_NAME || "N/A"}
+                    value={business.name || "N/A"}
                     readOnly
                     disabled
                   />
@@ -471,7 +517,7 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
                 </button>
                 <button className="m-btn-save" type="submit" disabled={loading}>
                   <i className="bi bi-check2"></i>{" "}
-                  {loading ? "A guardar..." : "Guardar Produto"}
+                  {loading ? "A guardar..." : "Adicionar Vestível"}
                 </button>
               </div>
             </div>
@@ -481,4 +527,4 @@ function AddProductModal({ isOpen, onClose, onSuccess, business }: Parameters) {
     </>
   );
 }
-export default AddProductModal;
+export default AddWearableModal;

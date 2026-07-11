@@ -155,7 +155,7 @@ function EmployerRegistrationPage() {
             color: "#fff",
           }}
         >
-          Loading ...
+          Carregando ...
         </div>
       )}
 

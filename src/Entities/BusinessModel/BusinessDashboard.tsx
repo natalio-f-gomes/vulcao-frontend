@@ -16,6 +16,7 @@ import ProductView from "./Views/ProductView";
 import OrderView from "./Views/OrderView";
 import { GetClientById } from "../../Requests/client";
 import { ClientOrderDisplay } from "./Views/types";
+import WearableView from "./Views/WearableView";
 
 function BusinessDashboard() {
   const navigate = useNavigate();
@@ -191,7 +192,8 @@ function BusinessDashboard() {
   };
 
   const renderView = () => {
-    if (!business || !currentEmployer) return <div>Loading Company ....</div>;
+    if (!business || !currentEmployer)
+      return <div>Carregando o Negócio ....</div>;
     switch (activeView) {
       case "overview":
         return <BusinessOverView business={business} />;
@@ -199,6 +201,8 @@ function BusinessDashboard() {
         return <ProductView business={business} />;
       case "orderView":
         return <OrderView orderList={orderDisplayList} />;
+      case "wearableView":
+        return <WearableView business={business} />;
       // case "staffview":
       //   return <CompanyStaffView company={company} />;
       //   case "productView":

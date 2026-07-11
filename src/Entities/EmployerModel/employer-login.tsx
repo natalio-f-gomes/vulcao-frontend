@@ -116,7 +116,7 @@ function EmployerLoginPage() {
               color: "#fff",
             }}
           >
-            Loading ...
+            Carregando ...
           </div>
         )}
         <style>{`

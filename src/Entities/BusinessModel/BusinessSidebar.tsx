@@ -176,12 +176,12 @@ function BusinessSidebar({
         >
           <i className="bi bi-box-seam" /> Produtos
         </a>
-        {/* <a
+        <a
           style={itemStyle("wearableView")}
           onClick={() => onNavigate("wearableView")}
         >
           <i className="bi bi-box-seam" /> Vestíveis
-        </a> */}
+        </a>
         {/* 
     <a style={itemStyle("electronicView")} onClick={() => onNavigate("electronicView")}>
       <i className="bi bi-box-seam" /> Eletrónicos

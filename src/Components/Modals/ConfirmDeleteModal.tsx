@@ -60,7 +60,7 @@ export function ConfirmDeleteModal({
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="confirmDeleteTitle">
-                Confirm deletion
+                Confirmar exclusão
               </h5>
               <button
                 type="button"
@@ -73,10 +73,10 @@ export function ConfirmDeleteModal({
 
             <div className="modal-body">
               <p className="mb-0">
-                Are you sure you want to delete <strong>{itemName}</strong>?
+                Tem certeza de que deseja excluir <strong>{itemName}</strong>?
               </p>
               <p className="text-muted small mt-2 mb-0">
-                This action cannot be undone.
+                Esta ação não poderá ser desfeita.
               </p>
             </div>
 
@@ -87,7 +87,7 @@ export function ConfirmDeleteModal({
                 onClick={onCancel}
                 disabled={isDeleting}
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 type="button"

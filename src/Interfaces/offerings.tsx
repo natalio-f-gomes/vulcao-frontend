@@ -194,6 +194,21 @@ export interface BaseOfferingModel {
   imagesMetadata: ImageMetadata[];
 }
 
+export interface WearableModel extends BaseOfferingModel {
+  brand: string;
+  colors: string;
+  material: string;
+  size: string;
+  wearableType: WearableType;
+}
+
+export type WearableType = "ROUPAS" | "CALÇADOS" | "ACESSÓRIOS";
+export const WEARABLE_TYPE_LIST: WearableType[] = [
+  "ROUPAS",
+  "CALÇADOS",
+  "ACESSÓRIOS",
+];
+
 export interface ProductModel extends BaseOfferingModel {
   expirationDate: string;
   productType: ProductType;
