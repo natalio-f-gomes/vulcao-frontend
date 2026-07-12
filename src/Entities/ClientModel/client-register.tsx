@@ -29,7 +29,7 @@ function ClientRegistrationPage() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [showMFA, setShowMFA] = useState<boolean>(false);
 
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +44,8 @@ function ClientRegistrationPage() {
   };
 
   const sendMfACode = async () => {
-    if (!userRegistrationForm) return;
     setError(null);
+
     if (userRegistrationForm.password.length < 8) {
       alert(
         "O comprimento das palavras-passe deve ter, pelo menos, 8 caracteres.",
@@ -62,7 +62,6 @@ function ClientRegistrationPage() {
       );
       return;
     }
-
     if (!isEmailValid(userRegistrationForm.email)) {
       alert(
         "Por favor, insira um e-mail válido (exemplo: seu-email@dominio.com).",
@@ -93,36 +92,38 @@ function ClientRegistrationPage() {
     }
 
     setLoading(true);
+    try {
+      const response = await clientRegisterRequest(
+        userRegistrationForm.username,
+        userRegistrationForm.email,
+      );
 
-    const response = await clientRegisterRequest(
-      userRegistrationForm.username,
-      userRegistrationForm.email,
-    );
-
-    if (response.status === 202) {
-      setShowMFA(true);
-    } else if (response.status >= 400 && response.status < 500) {
-      alert(await response.text());
-    } else {
-      alert("Erro inesperado. Por favor volte mais tarde.");
-      console.log("Unexpected error", response);
+      if (response.status === 202) {
+        setShowMFA(true);
+      } else if (response.status >= 400 && response.status < 500) {
+        alert(await response.text());
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde.");
+        console.error("Unexpected status:", response.status);
+      }
+    } catch (exception) {
+      console.error("Registration request error:", exception);
+      alert("Não foi possível contactar o servidor. Tente novamente.");
+      setError(`Registration failed: ${exception}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const registerRequest = async (code: string) => {
-    if (!userRegistrationForm) {
-      return;
-    }
     setError(null);
-    setLoading(true);
 
     if (confirmPassword !== userRegistrationForm.password) {
-      alert("As palavras-passe não coincidem");
-      setLoading(false);
+      alert("As palavras-passe não coincidem.");
       return;
     }
 
+    setLoading(true);
     try {
       const response = await clientRegisterConfirm(code, userRegistrationForm);
 
@@ -134,14 +135,13 @@ function ClientRegistrationPage() {
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
       } else {
-        alert("Teve um erro com o servidor. Por favor retorne mais tarde");
-        console.log(response);
-        setLoading(false);
+        alert("Teve um erro com o servidor. Por favor retorne mais tarde.");
+        console.error("Unexpected status:", response.status);
       }
     } catch (exception) {
-      console.error("Registration error:", exception);
+      console.error("Registration confirm error:", exception);
       alert("Erro ao registar. Por favor, tente novamente.");
-      setError(`Registration Failed: ${exception}`);
+      setError(`Registration failed: ${exception}`);
     } finally {
       setLoading(false);
     }
@@ -186,6 +186,12 @@ function ClientRegistrationPage() {
             >
               Junte-se à Vulcão.net
             </h2>
+
+            {error && (
+              <div className="alert alert-danger py-2 small" role="alert">
+                {error}
+              </div>
+            )}
 
             <div className="row mb-3">
               <div className="col">
@@ -298,6 +304,7 @@ function ClientRegistrationPage() {
               className="btn btn-dark w-100 py-2 text-uppercase fw-bold"
               style={{ borderRadius: "0" }}
               onClick={() => sendMfACode()}
+              disabled={loading}
             >
               Criar Conta
             </button>

@@ -27,58 +27,56 @@ function EmployerLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(loginForm.username);
-  console.log(loginForm.password);
-
   const handleUserInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setLoginForm({ ...loginForm, [event.target.name]: event.target.value });
   };
+
   const sendMfACode = async () => {
-    if (!loginForm) return;
     setError(null);
-    setLoading(true);
 
     if (!isUsernameValid(loginForm.username)) {
       alert(
         "O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.",
       );
-      setLoading(false);
       return;
     }
     if (!isPasswordValid(loginForm.password)) {
       alert(
         "Por favor, insira uma palavra-passe válida, sem espaços e com um mínimo de 8 caracteres.",
       );
-      setLoading(false);
       return;
     }
 
-    const response = await employerLoginRequest(loginForm.username);
+    setLoading(true);
+    try {
+      const response = await employerLoginRequest(loginForm.username);
 
-    if (response.status === 202) {
-      setShowMFA(true); // code sent → show the popup
-    } else if (response.status >= 400 && response.status < 500) {
-      alert(await response.text());
+      if (response.status === 202) {
+        setShowMFA(true); // code sent → show the popup
+      } else if (response.status >= 400 && response.status < 500) {
+        alert(await response.text());
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde.");
+        console.error("Unexpected status:", response.status);
+      }
+    } catch (exception) {
+      console.error("Login request error:", exception);
+      alert("Não foi possível contactar o servidor. Tente novamente.");
+      setError(`Login failed: ${exception}`);
+    } finally {
       setLoading(false);
-    } else {
-      alert("Erro inesperado. Por favor volte mais tarde");
-      console.log("Unexpected error", response);
     }
-    setLoading(false);
   };
 
   const LoginRequest = async (code: string) => {
-    if (!loginForm) {
-      return;
-    }
     setError(null);
     setLoading(true);
+
     try {
       const response = await employerLoginConfirm(code, loginForm);
 
-      console.log(response);
       if (response.status === 200) {
         alert("Sessão do Empresário(a) iniciada com sucesso.");
         setShowMFA(false);
@@ -88,13 +86,14 @@ function EmployerLoginPage() {
         return;
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
-        setLoading(false);
       } else {
-        alert("Teve um erro com o servidor. Por favor retorne mais tarde");
-        console.log(response);
+        alert("Teve um erro com o servidor. Por favor retorne mais tarde.");
+        console.error("Unexpected status:", response.status);
       }
     } catch (exception) {
-      setError(`Registration Failed ${exception}`);
+      console.error("Login confirm error:", exception);
+      alert("Não foi possível contactar o servidor. Tente novamente.");
+      setError(`Login failed: ${exception}`);
     } finally {
       setLoading(false);
     }
@@ -155,11 +154,19 @@ function EmployerLoginPage() {
           transition: 0.3s; 
         }
         .btn-auth:hover { background: #a83420; }
+        .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
       `}</style>
 
         <main className="login-wrapper">
           <div className="auth-card shadow-lg">
             <h2 className="auth-title">Bem-vindo de volta, Empresário(a).</h2>
+
+            {error && (
+              <div className="alert alert-danger py-2 small" role="alert">
+                {error}
+              </div>
+            )}
+
             <div className="mb-3">
               <label className="form-label small text-uppercase fw-bold text-secondary">
                 Nome de Utilizador (Mínimo de 8 caracteres)
@@ -193,6 +200,7 @@ function EmployerLoginPage() {
               id="login"
               className="btn-auth mb-3"
               onClick={() => sendMfACode()}
+              disabled={loading}
             >
               Iniciar Sessão
             </button>

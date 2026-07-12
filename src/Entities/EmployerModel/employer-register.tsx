@@ -87,7 +87,8 @@ function EmployerRegistrationPage() {
       return;
     }
 
-    setLoading(true);
+   setLoading(true);
+  try {
     const response = await employerRegisterRequest(
       registrationForm.username,
       registrationForm.email,
@@ -99,9 +100,14 @@ function EmployerRegistrationPage() {
       alert(await response.text());
     } else {
       alert("Erro inesperado. Por favor volte mais tarde.");
-      console.log("Unexpected error", response);
+      console.error("Unexpected status:", response.status);
     }
-    setLoading(false);
+  } catch (exception) {
+    console.error("MFA request error:", exception);
+    alert("Não foi possível contactar o servidor. Tente novamente.");
+  } finally {
+    setLoading(false);   // ← runs no matter what
+  }
   };
 
   const registerRequest = async (code: string) => {
@@ -129,7 +135,6 @@ function EmployerRegistrationPage() {
       } else {
         alert("Teve um erro com o servidor. Por favor retorne mais tarde");
         console.log(response);
-        setLoading(false);
       }
     } catch (exception) {
       console.error("Registration error:", exception);

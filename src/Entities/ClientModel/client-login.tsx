@@ -23,8 +23,6 @@ function ClientLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const onNavigate = useNavigate();
-
   const handleUserInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -35,49 +33,49 @@ function ClientLoginPage() {
   };
 
   const sendMfACode = async () => {
-    if (!userLoginForm) return;
     setError(null);
-    setLoading(true);
 
     if (!isUsernameValid(userLoginForm.username)) {
       alert(
         "O comprimento do nome de utilizador deve ter entre 8 e 50 caracteres.",
       );
-      setLoading(false);
       return;
     }
     if (!isPasswordValid(userLoginForm.password)) {
       alert(
         "Por favor, insira uma palavra-passe válida, sem espaços e com um mínimo de 8 caracteres.",
       );
-      setLoading(false);
       return;
     }
 
-    const response = await clientLoginRequest(userLoginForm.username);
+    setLoading(true);
+    try {
+      const response = await clientLoginRequest(userLoginForm.username);
 
-    if (response.status === 202) {
-      setShowMFA(true); // code sent → show the popup
-    } else if (response.status >= 400 && response.status < 500) {
-      alert(await response.text());
+      if (response.status === 202) {
+        setShowMFA(true); // code sent → show the popup
+      } else if (response.status >= 400 && response.status < 500) {
+        alert(await response.text());
+      } else {
+        alert("Erro inesperado. Por favor volte mais tarde.");
+        console.error("Unexpected status:", response.status);
+      }
+    } catch (exception) {
+      console.error("Login request error:", exception);
+      alert("Não foi possível contactar o servidor. Tente novamente.");
+      setError(`Login failed: ${exception}`);
+    } finally {
       setLoading(false);
-    } else {
-      alert("Erro inesperado. Por favor volte mais tarde");
-      console.log("Unexpected error", response);
     }
-    setLoading(false);
   };
 
   const userLoginRequest = async (code: string) => {
-    if (!userLoginForm) {
-      return;
-    }
     setError(null);
     setLoading(true);
+
     try {
       const response = await clientLoginConfirm(code, userLoginForm);
 
-      console.log(response);
       if (response.status === 200) {
         alert("Sessão do Utilizador iniciada com sucesso.");
         setShowMFA(false);
@@ -87,13 +85,14 @@ function ClientLoginPage() {
         return;
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
-        setLoading(false);
       } else {
-        alert("Teve um erro com o servidor. Por favor retorne mais tarde");
-        console.log(response);
+        alert("Teve um erro com o servidor. Por favor retorne mais tarde.");
+        console.error("Unexpected status:", response.status);
       }
     } catch (exception) {
-      setError(`Registration Failed ${exception}`);
+      console.error("Login confirm error:", exception);
+      alert("Não foi possível contactar o servidor. Tente novamente.");
+      setError(`Login failed: ${exception}`);
     } finally {
       setLoading(false);
     }
@@ -102,6 +101,23 @@ function ClientLoginPage() {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
+        {loading && (
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.5)",
+              zIndex: 9999,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#fff",
+            }}
+          >
+            Carregando ...
+          </div>
+        )}
+
         <style>{`
         .login-wrapper { 
           flex: 1; 
@@ -138,11 +154,19 @@ function ClientLoginPage() {
           transition: 0.3s; 
         }
         .btn-auth:hover { background: #a83420; }
+        .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
       `}</style>
 
         <main className="login-wrapper">
           <div className="auth-card shadow-lg">
             <h2 className="auth-title">Bem-vindo de volta, caro Cliente.</h2>
+
+            {error && (
+              <div className="alert alert-danger py-2 small" role="alert">
+                {error}
+              </div>
+            )}
+
             <div className="mb-3">
               <label className="form-label small text-uppercase fw-bold text-secondary">
                 Nome de Utilizador (Mínimo de 8 caracteres)
@@ -173,6 +197,7 @@ function ClientLoginPage() {
               type="submit"
               className="btn-auth mb-3"
               onClick={() => sendMfACode()}
+              disabled={loading}
             >
               Iniciar Sessão
             </button>
