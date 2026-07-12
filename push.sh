@@ -38,4 +38,4 @@ git config core.ignorecase false
 git add .
 git status --short        
 git commit -m "$message"
-git push -u origin artisan
+git push -u origin main

@@ -1,6 +1,14 @@
 export const isNameValid = (firstName: string, lastName: string): boolean => {
+  const normalize = (s: string) =>
+    s
+      .normalize("NFC") // compose accents: e + ́  → é
+      .replace(/\s+/g, " ") // collapse NBSP/tabs/doubles into one space
+      .trim(); // strip leading/trailing whitespace
+
   const nameRegex = /^(?=.{1,20}$)\p{L}+(?:[- ]\p{L}+)*$/u;
-  return nameRegex.test(firstName) && nameRegex.test(lastName);
+  return (
+    nameRegex.test(normalize(firstName)) && nameRegex.test(normalize(lastName))
+  );
 };
 
 export const isUsernameValid = (username: string): boolean => {

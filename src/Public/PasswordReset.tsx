@@ -262,7 +262,7 @@ function ResetPasswordPage() {
 
             {/* Back to Login Link */}
             <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-              <a href="/user-login" className="auth-link">
+              <a href="/client-login" className="auth-link">
                 <span>← Voltar ao início de sessão</span>
               </a>
             </div>

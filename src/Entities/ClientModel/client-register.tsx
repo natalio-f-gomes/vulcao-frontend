@@ -306,7 +306,7 @@ function ClientRegistrationPage() {
 
             <p className="text-center mt-3 small">
               Já tem uma conta?{" "}
-              <Link to="/user-login" className="text-dark fw-bold">
+              <Link to="/client-login" className="text-dark fw-bold">
                 Iniciar Sessão
               </Link>
             </p>

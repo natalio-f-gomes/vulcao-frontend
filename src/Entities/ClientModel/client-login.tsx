@@ -183,7 +183,7 @@ function ClientLoginPage() {
             <GetTermsSection />
             <div className="text-center">
               <Link
-                to="/user-register"
+                to="/client-register"
                 className="text-secondary text-decoration-none small"
               >
                 Novo no {COMPANY_NAME}.net?{" "}
