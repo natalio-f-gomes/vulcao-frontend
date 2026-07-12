@@ -3115,10 +3115,9 @@ body.page-offerings .stat-value .unit {
 }
 
 .feedback-page .fb-card {
-  display: grid;
-  grid-template-columns: 56px 1fr;
   background: #fff;
   border: 1px solid #e8e4de;
+  border-left: 3px solid var(--accent);
   transition:
     transform 0.25s,
     box-shadow 0.25s;

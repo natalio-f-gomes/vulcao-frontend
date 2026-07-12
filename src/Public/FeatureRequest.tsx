@@ -19,7 +19,7 @@ function FeedbackPage() {
   const [showMFA, setShowMFA] = useState<boolean>(false);
   const [items, setItems] = useState<FeedbackModel[]>([]);
   const [submitted, setSubmitted] = useState(false);
-  const [success, setSuccess] = useState<boolean>(false)
+  const [success, setSuccess] = useState<boolean>(false);
   const [newFeedback, setNewFeedback] = useState<FeedbackModel>({
     id: "",
     title: "",
@@ -72,7 +72,7 @@ function FeedbackPage() {
 
         getFeedbacks();
         setShowMFA(false);
-        setSuccess(true)
+        setSuccess(true);
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
         setLoading(false);
@@ -97,11 +97,11 @@ function FeedbackPage() {
       newFeedback.email = email;
       const response = await PostFeedBackRequest(newFeedback, true);
       if (response.status === 200) {
-         getFeedbacks();
+        getFeedbacks();
         alert(
           "Novo feedback publicado com sucesso. O administrador foi notificado!",
         );
-        setSuccess(true)
+        setSuccess(true);
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
       } else {
@@ -326,30 +326,18 @@ function FeedbackPage() {
               </button>
             ))}
           </div> */}
-
           <div className="fb-list">
             {items.map((item) => (
               <article className="fb-card" key={item.id}>
-                <button
-                // className={`fb-vote ${item.vote ? "voted" : ""}`}
-                // onClick={() => toggleVote(item.id)}
-                // aria-pressed={item.voted}
-                // title={item.voted ? "Remover voto" : "Votar"}
-                >
-                  <i className="bi bi-caret-up-fill" />
-                  <span>{item.votes}</span>
-                </button>
-
                 <div className="fb-card-body">
                   <div className="fb-card-top">
-                    <span className={`fb-kind-badge `}>
-                      <i className={`bi "bi-bug" `} />
-                      {item.status}
-                    </span>
                     <span
                       className={`fb-status fb-status--${item.status.toLowerCase()}`}
                     >
-                      {/* {STATUS_LABEL[item.status]} */}
+                      {item.status.replaceAll("_", " ")}
+                    </span>
+                    <span className="fb-card-date">
+                      {formatDateTime(item.createdAt)}
                     </span>
                   </div>
 
@@ -358,15 +346,17 @@ function FeedbackPage() {
 
                   <div className="fb-card-meta">
                     <span className="fb-meta-item">
+                      <i className="bi bi-tag" />
                       {item.feedbackType.replaceAll("_", " ")}
                     </span>
-                    <span className="fb-meta-item">{item.name}</span>
                     <span className="fb-meta-item">
-                      {formatDateTime(item.createdAt)}
+                      <i className="bi bi-person" />
+                      {item.name}
                     </span>
-                    {/* <span className="fb-meta-item">
-                      <i className="bi bi-chat" /> {item.comments}
-                    </span> */}
+                    <span className="fb-meta-item">
+                      <i className="bi bi-caret-up-fill" />
+                      {item.votes}
+                    </span>
                   </div>
                 </div>
               </article>

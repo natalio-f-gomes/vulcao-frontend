@@ -9,7 +9,6 @@ permissions:
   id-token: write
   contents: read
 
-
 env:
   AWS_REGION: eu-south-2
   S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME}}
@@ -26,14 +25,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "24"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build
         run: npm run build
-        env: 
+        env:
           CI: false
 
       - name: Configure AWS credentials (OIDC)
@@ -57,7 +56,7 @@ jobs:
             else echo " AWS_DEPLOY_ROLE_ARN is set (length: ${#ROLE})"; fi
           exit $fail
 
-      - name: Upload files 
+      - name: Upload files
         run: |
           aws s3 sync ${{ env.BUILD_DIR }}/ s3://${{ secrets.AWS_S3_BUCKET_NAME }}
 
