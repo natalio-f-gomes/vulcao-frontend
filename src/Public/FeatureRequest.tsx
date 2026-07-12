@@ -19,6 +19,7 @@ function FeedbackPage() {
   const [showMFA, setShowMFA] = useState<boolean>(false);
   const [items, setItems] = useState<FeedbackModel[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false)
   const [newFeedback, setNewFeedback] = useState<FeedbackModel>({
     id: "",
     title: "",
@@ -71,6 +72,7 @@ function FeedbackPage() {
 
         getFeedbacks();
         setShowMFA(false);
+        setSuccess(true)
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
         setLoading(false);
@@ -90,13 +92,16 @@ function FeedbackPage() {
     event.preventDefault();
     console.log(newFeedback);
     const email: string | null = localStorage.getItem("email");
-
+    console.log("Entity is logged in: ", isEntityLoggedIn, email);
     if (isEntityLoggedIn && email) {
-      const response = await PostFeedBackRequest(newFeedback);
+      newFeedback.email = email;
+      const response = await PostFeedBackRequest(newFeedback, true);
       if (response.status === 200) {
+         getFeedbacks();
         alert(
           "Novo feedback publicado com sucesso. O administrador foi notificado!",
         );
+        setSuccess(true)
       } else if (response.status >= 400 && response.status < 500) {
         alert(await response.text());
       } else {
@@ -105,7 +110,7 @@ function FeedbackPage() {
       return;
     } else {
       console.log("REQUEST ENDPOINTQ");
-      const response = await PostFeedBackRequest(newFeedback);
+      const response = await PostFeedBackRequest(newFeedback, false);
       if (response.status === 202) {
         setShowMFA(true); // code sent → show the popup
       } else if (response.status >= 400 && response.status < 500) {
@@ -293,7 +298,7 @@ function FeedbackPage() {
                 <i className="bi bi-send" /> Enviar
               </button>
 
-              {submitted && (
+              {success === true && (
                 <div className="fb-success" role="status">
                   <i className="bi bi-check-circle" /> Recebido! Obrigado pela
                   contribuição.

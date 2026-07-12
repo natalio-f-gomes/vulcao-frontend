@@ -143,8 +143,17 @@ export async function updateImageRequest(
 }
 
 //============ Feedback Section ==============
-export async function PostFeedBackRequest(newFeedback: FeedbackModel) {
+export async function PostFeedBackRequest(
+  newFeedback: FeedbackModel,
+  loggedIn: boolean,
+) {
   const endpoint: string = `/v2/public/feedback/request`;
+  if (loggedIn) {
+    return await fetchAPIWithCredentials(endpoint, {
+      method: "POST",
+      body: JSON.stringify(newFeedback),
+    });
+  }
   return await fetchAPIWithoutCredentials(endpoint, {
     method: "POST",
     body: JSON.stringify(newFeedback),
