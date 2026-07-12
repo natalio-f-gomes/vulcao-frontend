@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { ProductModel, WearableModel } from "../Interfaces/offerings";
-import { ProfileModel } from "../Interfaces/Authentication";
+import ImageCarousel from "./imageCarousel";
 import { getUserProfileData } from "../Requests/client";
 import { getAllProducts, getAllWearables } from "../Requests/offerings";
-import ImageCarousel from "./imageCarousel";
 import { AddToCart } from "../Requests/shopping";
+import type { ProductModel, WearableModel } from "../Interfaces/offerings";
+import type { ProfileModel } from "../Interfaces/Authentication";
 
 /* ── 1. Unified display model ─────────────────────────────── */
 interface DisplayOffering {
@@ -119,10 +119,17 @@ function GetOfferingSection() {
     const all: DisplayOffering[] = [];
     for (let i = 0; i < OFFERING_TYPES.length; i++) {
       const r = results[i];
+      if(r){
       if (r.status === "fulfilled" && r.value.status === 200) {
-        const data = await r.value.json();
-        all.push(...data.map(OFFERING_TYPES[i].normalize));
+              const data = await r.value.json();
+              if(i){
+ all.push(...data.map(OFFERING_TYPES[i].normalize));
+              }
+             
+            }
+
       }
+     
     }
     setOfferings(all);
 
